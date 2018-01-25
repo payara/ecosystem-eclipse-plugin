@@ -1,0 +1,22 @@
+<%@ jet package="org.eclipse.glassfish.tools.v3.wizards" 
+	imports="java.util.* org.eclipse.jst.j2ee.internal.common.operations.*" 
+	class="EjbTimerTemplate" 
+	skeleton="generator.skeleton"
+%>
+<% AddEjbTimerTemplateModel model = (AddEjbTimerTemplateModel) argument; %>
+<%@ include file="_flags.template" %>
+<%@ include file="_package.template" %>
+<%@ include file="_imports.template" %>
+@Stateless
+<%@ include file="_class.template" %>
+<%@ include file="_constructors.template" %>
+<%@ include file="_methods.template" %>
+	<%
+		String schedule = model.getProperty(AddEjbTimerDataModelProvider.SCHEDULE).trim();
+	%>
+	@SuppressWarnings("unused")
+	@Schedule(<%= schedule %>)
+    private void scheduledTimeout(final Timer t) {
+        System.out.println("@Schedule called at: " + new java.util.Date());
+    }
+}

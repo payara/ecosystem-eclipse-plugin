@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definition>
+    <import>
+        <package>org.eclipse.glassfish.tools</package>
+    </import>
+    <composite>
+        <id>glassfish.server</id>
+        <content>
+            <property-editor>Name</property-editor>
+            <property-editor>HostName</property-editor>
+            <property-editor>
+                <visible-when>${ Enabled }</visible-when>
+                <property>DomainPath</property>
+			    <action>
+			        <id>CreateNewDomain</id>
+			        <label>New Domain</label>
+			        <location>after:Sapphire.Browse</location>
+                    <image>icons/obj16/create.png</image>
+			    </action>                
+                <action-handler>
+                    <action>CreateNewDomain</action>
+                    <id>CreateNewDomain.Handler</id>
+                    <impl>org.eclipse.glassfish.tools.ui.wizards.NewGlassfishDomainAction</impl>
+                    <label>new domain</label>
+                </action-handler>
+            </property-editor>
+            <separator></separator>
+            <property-editor>AdminName</property-editor>
+            <property-editor>AdminPassword</property-editor>
+            <property-editor>
+                <visible-when>${ Enabled }</visible-when>
+                <property>AdminPort</property>
+            </property-editor>
+            <property-editor>DebugPort</property-editor>
+            <composite>
+                <indent>true</indent>
+                <content>
+		          	<actuator>
+			            <visible-when>${Remote}</visible-when>
+                        <action-id>Glassfish.Server.TestConnection</action-id>
+                        <label>test connection</label>
+                        <style>Sapphire.Actuator.Button</style>
+                        <action>
+                            <id>Glassfish.Server.TestConnection</id>
+                            <label>test connection</label>
+                        </action>
+                        <action-handler>
+                            <action>Glassfish.Server.TestConnection</action>
+                            <impl>org.eclipse.glassfish.tools.ui.wizards.GlassfishTestConnectionAction</impl>
+                            <id>Glassfish.Server.TestConnection.handler</id>
+                 		</action-handler>
+                    </actuator>
+                </content>  
+            </composite>    
+            <separator></separator>
+            <property-editor>PreserveSessions</property-editor>
+            <property-editor>
+                <visible-when>${ Enabled }</visible-when>
+            	<property>UseJarDeployment</property>
+            </property-editor>
+        </content>
+    </composite>
+    <composite>
+        <id>glassfish.runtime</id>
+        <content>
+            <property-editor>Name</property-editor>
+            <property-editor>ServerRoot</property-editor>
+            <property-editor>JavaRuntimeEnvironment</property-editor>
+        </content>
+    </composite>
+    <wizard>
+    	<id>new-domain-wizard</id>
+    	<label>New GlassFish Server Domain</label>
+    	<page>
+   		<id>main.page</id>
+      	<label>Create New GlassFish Server Domain</label>
+      	<description>Create a GlassFish server domain with default admin user, no password, administration port: portbase + 48 and HTTP port: portbase + 80. </description>
+      	<image>icons/wizard75x66.png</image>
+      <content>
+        <property-editor>Name</property-editor>
+		<property-editor>DomainDir</property-editor>
+        <property-editor>PortBase</property-editor>
+      </content>
+     </page>
+     <element-type>org.eclipse.glassfish.tools.ICreateGlassfishDomainOp</element-type>
+   </wizard> 
+</definition>

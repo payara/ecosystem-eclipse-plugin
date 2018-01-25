@@ -1,0 +1,18 @@
+<project name="gf-tools" default="full-build">
+
+  <dirname property="root.dir" file="${ant.file.sapphire}"/>
+  <property name="build.dir" value="${root.dir}/build"/>
+  <property name="releng.dir" value="${root.dir}/releng"/>
+  
+  <delete dir="releng/corundum" quiet="true"/>
+  <property name="corundum-url" value="https://hudson.eclipse.org/sapphire/job/Corundum/lastSuccessfulBuild/artifact/corundum.zip"/>
+  <get src="${corundum-url}" dest="releng/corundum.zip" usetimestamp="true"/>
+  <unzip src="releng/corundum.zip" dest="releng/corundum"/>
+    
+  <import file="releng/corundum/corundum.xml"/>
+    
+  <import>
+    <fileset dir="releng/corundum/extensions/eclipse.org" includes="*.xml"/>
+  </import>
+
+</project>

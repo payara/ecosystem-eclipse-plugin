@@ -1,0 +1,93 @@
+<%@ jet package="org.eclipse.glassfish.tools.v3.wizards" 
+	imports="java.util.* org.eclipse.jst.j2ee.internal.common.operations.*" 
+	class="GenericResourceTemplate" 
+	skeleton="generator.skeleton"
+%>
+<% 
+	AddGenericResourceTemplateModel model = (AddGenericResourceTemplateModel) argument;
+	String representationClass = model.getUnqualifiedRepresentationClass();
+	String mimeType = model.getProperty(AddGenericResourceDataModelProvider.MIME_TYPE).trim();
+	String path = model.getProperty(AddGenericResourceDataModelProvider.PATH).trim();
+	String methodNameFromMimeType = model.getMethodNameSuffixFromMimeType();
+	boolean isSimplePattern = model.isSimplePattern();
+	String[] paramListStrings = model.getParamList();
+	String paramList = model.getCommaSeparatedParamList();
+	boolean hasParam = (paramListStrings != null);
+	String paramListNoTypes = (hasParam ? paramList : "");
+	String paramListWithTypes = (hasParam ? model.getCommaSeparatedParamListWithTypes() : "");
+	String assignmentStmts = "";
+	
+	if (hasParam) { 
+		for (int i=0;i<paramListStrings.length;i++) { 
+			assignmentStmts+="this." + paramListStrings[i] + " = " + paramListStrings[i] + ";";
+			if (i < paramListStrings.length - 1) {
+				assignmentStmts+="\n		";
+			}
+		}
+	}
+%>
+<%@ include file="_flags.template" %>
+<%@ include file="_package.template" %>
+<%@ include file="_imports.template" %>
+<% if (isSimplePattern) { %>
+@Path("<%= path %>")
+<% } %>
+<%@ include file="_class.template" %>
+<% if (isSimplePattern) { %>
+    @SuppressWarnings("unused")
+    @Context
+    private UriInfo context;
+<% } else if (hasParam) { %>
+	@SuppressWarnings("unused")
+	private String <%= paramList %>;
+
+<% } %>
+<% if (!isSimplePattern) { %>
+    /** Creates a new instance of <%= model.getClassName() %> */
+    private <%= model.getClassName() %>(<%= paramListWithTypes %>) {
+		<%= assignmentStmts %>
+    }
+<% } else { %>
+<%@ include file="_constructors.template" %>
+<% } %>
+<%@ include file="_methods.template" %>
+<% if (!isSimplePattern) { %>
+
+    /** Get instance of the <%= model.getClassName() %> */
+    public static <%= model.getClassName() %> getInstance(<%= paramListWithTypes %>) {
+        // The user may use some kind of persistence mechanism
+        // to store and restore instances of <%= model.getClassName() %> class.
+        return new <%= model.getClassName() %>(<%= paramListNoTypes %>);
+    }
+<% } %>
+
+    /**
+     * Retrieves representation of an instance of <%= model.getClassName() %>
+     * @return an instance of <%= representationClass %>
+     */
+    @GET
+    @Produces("<%= mimeType %>")
+    public <%= representationClass %> get<%= methodNameFromMimeType %>() {
+        // TODO return proper representation object
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * PUT method for updating or creating an instance of <%= model.getClassName() %>
+     * @param content representation for the resource
+     * @return an HTTP response with content of the updated or created resource.
+     */
+    @PUT
+    @Consumes("<%= mimeType %>")
+    public void put<%= methodNameFromMimeType %>(<%= representationClass %> content) {
+    }
+
+<% if (!isSimplePattern) { %>
+    /**
+     * DELETE method for resource <%= model.getClassName() %>
+     */
+    @DELETE
+    public void delete() {
+    }
+<% } %>
+}
