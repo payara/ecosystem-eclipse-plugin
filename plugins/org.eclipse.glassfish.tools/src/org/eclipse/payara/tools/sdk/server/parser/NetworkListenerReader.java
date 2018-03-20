@@ -52,7 +52,7 @@ public class NetworkListenerReader extends TargetConfigReader implements
     public NetworkListenerReader(String path, String targetConfigName) {
         super(targetConfigName);
         this.path = path;
-        this.result = new HashMap<String, HttpData>();
+        this.result = new HashMap<>();
     }
     
     @Override
@@ -99,7 +99,7 @@ public class NetworkListenerReader extends TargetConfigReader implements
     
     @Override
     public List<TreeParser.Path> getPathsToListen() {
-        LinkedList<TreeParser.Path> paths = new LinkedList<TreeParser.Path>();
+        LinkedList<TreeParser.Path> paths = new LinkedList<>();
         paths.add(new Path(path, this));
         paths.add(new Path(CONFIG_PATH, new TargetConfigMarker()));
         return paths;

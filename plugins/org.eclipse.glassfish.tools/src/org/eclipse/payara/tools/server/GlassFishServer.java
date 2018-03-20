@@ -13,6 +13,9 @@ import static java.io.File.separator;
 import static java.text.MessageFormat.format;
 import static org.eclipse.core.runtime.IStatus.ERROR;
 import static org.eclipse.core.runtime.Status.OK_STATUS;
+import static org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities.getServerContextRoot;
+import static org.eclipse.jst.server.core.FacetUtil.getRuntime;
+import static org.eclipse.osgi.util.NLS.bind;
 import static org.eclipse.payara.tools.GlassfishToolsPlugin.SYMBOLIC_NAME;
 import static org.eclipse.payara.tools.GlassfishToolsPlugin.createErrorStatus;
 import static org.eclipse.payara.tools.GlassfishToolsPlugin.logError;
@@ -28,9 +31,6 @@ import static org.eclipse.payara.tools.sapphire.IGlassfishServerModel.PROP_HOST_
 import static org.eclipse.payara.tools.sapphire.IGlassfishServerModel.PROP_NAME;
 import static org.eclipse.payara.tools.sdk.server.parser.TreeParser.readXml;
 import static org.eclipse.payara.tools.utils.Utils.canWrite;
-import static org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities.getServerContextRoot;
-import static org.eclipse.jst.server.core.FacetUtil.getRuntime;
-import static org.eclipse.osgi.util.NLS.bind;
 import static org.eclipse.wst.server.core.util.SocketUtil.isLocalhost;
 
 import java.beans.PropertyChangeEvent;
@@ -55,6 +55,10 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jst.server.core.IEnterpriseApplication;
+import org.eclipse.jst.server.core.IWebModule;
+import org.eclipse.jst.server.core.internal.J2EEUtil;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.payara.tools.GlassfishToolsPlugin;
 import org.eclipse.payara.tools.Messages;
 import org.eclipse.payara.tools.facets.IGlassfishWebDeploymentDescriptor;
@@ -69,10 +73,6 @@ import org.eclipse.payara.tools.server.deploying.GlassFishServerBehaviour;
 import org.eclipse.payara.tools.utils.GlassFishLocationUtils;
 import org.eclipse.payara.tools.utils.ModuleUtil;
 import org.eclipse.payara.tools.utils.Utils;
-import org.eclipse.jst.server.core.IEnterpriseApplication;
-import org.eclipse.jst.server.core.IWebModule;
-import org.eclipse.jst.server.core.internal.J2EEUtil;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.sapphire.Property;
 import org.eclipse.sapphire.PropertyBinding;
 import org.eclipse.sapphire.PropertyDef;
@@ -369,8 +369,9 @@ public final class GlassFishServer extends ServerDelegate implements IURLProvide
 			}
 
 			for (IServer server : ServerCore.getServers()) {
-				if (server.getId().equals(this.getServer().getId()))
-					continue;
+				if (server.getId().equals(this.getServer().getId())) {
+                    continue;
+                }
 
 				if (server.getServerType() == this.getServer().getServerType()) {
 					GlassFishServer gfServer = (GlassFishServer) server.loadAdapter(GlassFishServer.class, null);
@@ -412,7 +413,7 @@ public final class GlassFishServer extends ServerDelegate implements IURLProvide
 	 */
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
 		if (propChangeListeners == null) {
-			propChangeListeners = new ArrayList<PropertyChangeListener>();
+			propChangeListeners = new ArrayList<>();
 		}
 		
 		propChangeListeners.add(listener);
@@ -474,7 +475,7 @@ public final class GlassFishServer extends ServerDelegate implements IURLProvide
 	protected boolean readServerConfiguration(File domainXml) {
 		boolean result = false;
 
-		final Map<String, HttpData> httpMap = new LinkedHashMap<String, HttpData>();
+		final Map<String, HttpData> httpMap = new LinkedHashMap<>();
 
 		if (domainXml.exists()) {
 			TargetConfigNameReader configNameReader = new TargetConfigNameReader();
@@ -793,9 +794,10 @@ public final class GlassFishServer extends ServerDelegate implements IURLProvide
 			}
 			
 			IModule[] root = doGetParentModules(module);
-			if (root != null && root.length > 0 && root[0] != module)
-				return createErrorStatus(
+			if (root != null && root.length > 0 && root[0] != module) {
+                return createErrorStatus(
 						"Web module which is part of an Ear cannot be added as top level module to this server", null);
+            }
 		}
 
 		return OK_STATUS;
@@ -835,24 +837,27 @@ public final class GlassFishServer extends ServerDelegate implements IURLProvide
 
 	@Override
 	public IModule[] getRootModules(IModule module) throws CoreException {
-		if (!isModuleSupported(module))
-			return null;
+		if (!isModuleSupported(module)) {
+            return null;
+        }
 		IModule[] parents = doGetParentModules(module);
-		if (parents.length > 0)
-			return parents;
+		if (parents.length > 0) {
+            return parents;
+        }
 		return new IModule[] { module };
 	}
 
 	private IModule[] doGetParentModules(IModule module) {
 		IModule[] ears = ServerUtil.getModules("jst.ear"); //$NON-NLS-1$
-		ArrayList<IModule> list = new ArrayList<IModule>();
+		ArrayList<IModule> list = new ArrayList<>();
 		for (int i = 0; i < ears.length; i++) {
 			IEnterpriseApplication ear = (IEnterpriseApplication) ears[i].loadAdapter(IEnterpriseApplication.class,
 					null);
 			IModule[] childs = ear.getModules();
 			for (int j = 0; j < childs.length; j++) {
-				if (childs[j].equals(module))
-					list.add(ears[i]);
+				if (childs[j].equals(module)) {
+                    list.add(ears[i]);
+                }
 			}
 		}
 		return list.toArray(new IModule[list.size()]);
@@ -961,9 +966,9 @@ public final class GlassFishServer extends ServerDelegate implements IURLProvide
 		// determine the root
 		IModule[] ear = J2EEUtil.getEnterpriseApplications(module, null);
 		if (ear != null && ear.length > 0) {
-			ArrayList<IModule> ret = new ArrayList<IModule>();
+			ArrayList<IModule> ret = new ArrayList<>();
 			// Return only the EAR modules on current server.
-			HashSet<IModule> allmodules = new HashSet<IModule>(Arrays.asList(getServer().getModules()));
+			HashSet<IModule> allmodules = new HashSet<>(Arrays.asList(getServer().getModules()));
 			for (int i = 0; i < ear.length; i++) {
 				if (allmodules.contains(ear[i])) {
 					ret.add(ear[i]);
@@ -977,8 +982,9 @@ public final class GlassFishServer extends ServerDelegate implements IURLProvide
 	private int getMonitorPort(int configedPort) {
 		IServerMonitorManager manager = ServerMonitorManager.getInstance();
 		for (IMonitoredServerPort port : manager.getMonitoredPorts(getServer())) {
-			if (port.getServerPort().getPort() == configedPort)
-				return port.getMonitorPort();
+			if (port.getServerPort().getPort() == configedPort) {
+                return port.getMonitorPort();
+            }
 		}
 		return configedPort;
 	}

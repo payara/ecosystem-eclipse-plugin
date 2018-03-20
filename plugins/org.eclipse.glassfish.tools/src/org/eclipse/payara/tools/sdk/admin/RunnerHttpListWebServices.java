@@ -64,7 +64,7 @@ public class RunnerHttpListWebServices extends RunnerHttp {
      */
     @Override
     protected ResultList<String> createResult() {
-        return result = new ResultList<String>();
+        return result = new ResultList<>();
     }
    /**
      * Extracts result value from internal <code>Manifest</code> object.
@@ -79,20 +79,24 @@ public class RunnerHttpListWebServices extends RunnerHttp {
             if(manifest == null) {
                 return false;
             }
-            result.value = new ArrayList<String>();
-            Map <String, String> filter = new HashMap<String, String>();
+            result.value = new ArrayList<>();
+            Map <String, String> filter = new HashMap<>();
             Iterator<String> keyIterator = manifest.getEntries().keySet().iterator();
             while (keyIterator.hasNext()) {
                 String k = keyIterator.next();
-                if (!k.contains("address:/")) // NOI18N
+                if (!k.contains("address:/")) {
                     continue;
-                if (k.contains("address:/wsat-wsat")) // NOI18N
+                }
+                if (k.contains("address:/wsat-wsat")) {
                     continue;
-                if (k.contains("address:/__wstx-services")) // NOI18N
+                }
+                if (k.contains("address:/__wstx-services")) {
                     continue;
+                }
                 String a = k.replaceFirst(".* address:/", "").replaceFirst("\\. .*", ""); // NOI18N
-                if (filter.containsKey(a))
+                if (filter.containsKey(a)) {
                     continue;
+                }
                 filter.put(a,a);
                 result.value.add(a);
             }

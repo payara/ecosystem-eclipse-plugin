@@ -20,8 +20,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.payara.tools.server.GlassFishRuntime;
 import org.eclipse.jst.common.project.facet.core.StandardJreRuntimeComponent;
+import org.eclipse.payara.tools.server.GlassFishRuntime;
 import org.eclipse.sapphire.Version;
 import org.eclipse.sapphire.util.SetFactory;
 import org.eclipse.wst.common.project.facet.core.runtime.IRuntimeBridge;
@@ -67,12 +67,14 @@ public final class GlassFishRuntimeBridge implements IRuntimeBridge {
             this.id = id;
         }
 
+        @Override
         public List<IRuntimeComponent> getRuntimeComponents() {
-            List<IRuntimeComponent> components = new ArrayList<IRuntimeComponent>(2);
+            List<IRuntimeComponent> components = new ArrayList<>(2);
             final IRuntime runtime = findRuntime(this.id);
 
-            if (runtime == null)
+            if (runtime == null) {
                 return components;
+            }
 
             final GlassFishRuntime gfRuntime = (GlassFishRuntime) runtime.loadAdapter(GlassFishRuntime.class, new NullProgressMonitor());
 
@@ -86,7 +88,7 @@ public final class GlassFishRuntimeBridge implements IRuntimeBridge {
                     final String gfComponentVersionStr = gfVersion.matches("[5") ? "5" : (gfVersion.matches("[4") ? "4" : "3.1");
                     final IRuntimeComponentVersion gfComponentVersion = gfComponentType.getVersion(gfComponentVersionStr);
 
-                    Map<String, String> properties = new HashMap<String, String>(5);
+                    Map<String, String> properties = new HashMap<>(5);
                     if (runtime.getLocation() != null) {
                         properties.put("location", runtime.getLocation().toPortableString());
                     } else {
@@ -115,19 +117,22 @@ public final class GlassFishRuntimeBridge implements IRuntimeBridge {
             return components;
         }
 
+        @Override
         public Map<String, String> getProperties() {
-            final Map<String, String> props = new HashMap<String, String>();
+            final Map<String, String> props = new HashMap<>();
             final IRuntime runtime = findRuntime(this.id);
             if (runtime != null) {
                 props.put("id", runtime.getId());
                 props.put("localized-name", runtime.getName());
                 String s = ((Runtime) runtime).getAttribute("alternate-names", (String) null);
-                if (s != null)
+                if (s != null) {
                     props.put("alternate-names", s);
+                }
             }
             return props;
         }
 
+        @Override
         public IStatus validate(final IProgressMonitor monitor) {
             final IRuntime runtime = findRuntime(this.id);
             if (runtime != null) {
@@ -141,10 +146,12 @@ public final class GlassFishRuntimeBridge implements IRuntimeBridge {
             int size = runtimes.length;
 
             for (int i = 0; i < size; i++) {
-                if (runtimes[i].getId().equals(id))
+                if (runtimes[i].getId().equals(id)) {
                     return runtimes[i];
-                if (runtimes[i].getName().equals(id))
+                }
+                if (runtimes[i].getName().equals(id)) {
                     return runtimes[i];
+                }
 
             }
             return null;

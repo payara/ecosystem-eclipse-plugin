@@ -11,9 +11,6 @@ package org.eclipse.payara.tools.sapphire;
 
 import static org.eclipse.sapphire.modeling.annotations.FileSystemResourceType.FOLDER;
 
-import org.eclipse.payara.tools.sapphire.GlassfishServerConfigServices.DomainLocationListener;
-import org.eclipse.payara.tools.sapphire.GlassfishServerConfigServices.DomainLocationValidationService;
-import org.eclipse.payara.tools.sapphire.GlassfishServerConfigServices.UniqueServerNameValidationService;
 import org.eclipse.sapphire.Element;
 import org.eclipse.sapphire.ElementType;
 import org.eclipse.sapphire.Type;

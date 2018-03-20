@@ -46,7 +46,7 @@ public class V3LogFilter {
     }
 
     public  Map<String, String> getLevelMap() {
-        Map<String, String> levelMap = new HashMap<String, String>();
+        Map<String, String> levelMap = new HashMap<>();
         for(Level l: new Level [] { Level.ALL, Level.CONFIG, Level.FINE,
                 Level.FINER, Level.FINEST, Level.INFO, Level.SEVERE, Level.WARNING } ) {
             String name = l.getName();
@@ -114,6 +114,7 @@ public class V3LogFilter {
          *
          * !PW FIXME This parser should be checked for I18N stability.
          */
+        @Override
         public String process(char c) {
             String result = null;
 

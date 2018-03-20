@@ -88,12 +88,14 @@ public class GlassfishDescriptorRootController extends StandardRootElementContro
 	private GlassfishRootElementInfo getGlassfishRootElementInfo() {
     	GlassfishRootElementInfo defaultInfo = GlassfishDescriptorType.getGlassfishRootElementInfo(type);
     	GlassFishLocationUtils gfInstall = GlassFishLocationUtils.find(resource().adapt(IProject.class));
-    	if (gfInstall == null)
-    		return defaultInfo;
+    	if (gfInstall == null) {
+            return defaultInfo;
+        }
     	Version v = gfInstall.version();
         Version gfVersion = new Version(v.toString());
-        if (gfVersion == null)
-        	return defaultInfo;
+        if (gfVersion == null) {
+            return defaultInfo;
+        }
         
         GlassfishRootElementInfo rootInfo = GlassfishDescriptorType.getGlassfishRootElementInfo(type);
         return rootInfo != null ? rootInfo : defaultInfo;

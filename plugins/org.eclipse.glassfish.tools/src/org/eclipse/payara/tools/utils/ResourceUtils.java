@@ -35,6 +35,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jst.j2ee.project.JavaEEProjectUtilities;
 import org.eclipse.payara.tools.GlassfishToolsPlugin;
 import org.eclipse.payara.tools.sdk.TaskState;
 import org.eclipse.payara.tools.sdk.admin.Command;
@@ -46,9 +47,8 @@ import org.eclipse.payara.tools.sdk.admin.ServerAdmin;
 import org.eclipse.payara.tools.sdk.data.IdeContext;
 import org.eclipse.payara.tools.sdk.server.parser.ResourcesReader;
 import org.eclipse.payara.tools.sdk.server.parser.ResourcesReader.ResourceType;
-import org.eclipse.payara.tools.server.GlassFishServer;
 import org.eclipse.payara.tools.sdk.server.parser.TreeParser;
-import org.eclipse.jst.j2ee.project.JavaEEProjectUtilities;
+import org.eclipse.payara.tools.server.GlassFishServer;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
@@ -123,7 +123,7 @@ public class ResourceUtils {
             header = sunResourcesBuf.substring(0, closeIndex);
             footer = sunResourcesBuf.substring(closeIndex);
             
-            if(closeIndex > 0 && sunResourcesBuf.charAt(closeIndex-1) != '\n') { //$NON-NLS-1$
+            if(closeIndex > 0 && sunResourcesBuf.charAt(closeIndex-1) != '\n') { 
                 insertNewLine = true;
             }
         }
@@ -219,7 +219,7 @@ public class ResourceUtils {
 	
 		
 	public static List<String> getResources(IProject selectedProject, ResourceType... types){
-		List<String> resources = new ArrayList<String>();
+		List<String> resources = new ArrayList<>();
 		if (selectedProject != null) {
 			File xmlFile = getSunResourceFile(selectedProject);
 			if (xmlFile.exists()) {
@@ -236,7 +236,7 @@ public class ResourceUtils {
 	}
 
 	public static void checkUpdateServerResources(File sunResourcesXml, GlassFishServer sunAppsrv) {
-		Map<String, String> changedData = new HashMap<String, String>();
+		Map<String, String> changedData = new HashMap<>();
 		
 		ResourcesReader cpReader = new ResourcesReader(ResourceType.JDBC_CONNECTION_POOL);
 		ResourcesReader jdbcReader = new ResourcesReader(ResourceType.JDBC_RESOURCE);
@@ -251,7 +251,7 @@ public class ResourceUtils {
 		} catch (IllegalStateException ex) {
 			GlassfishToolsPlugin.logError("Exception while reading resource file : " + sunResourcesXml, ex);	//$NON-NLS-1$
 		}
-		Map<String, String> allRemoteData = getResourceData(sunAppsrv, null); //$NON-NLS-1$
+		Map<String, String> allRemoteData = getResourceData(sunAppsrv, null); 
 		changedData = checkResources(cpReader, "resources.jdbc-connection-pool.", allRemoteData, changedData); //$NON-NLS-1$
 		changedData = checkResources(jdbcReader, "resources.jdbc-resource.", allRemoteData, changedData); //$NON-NLS-1$
 		changedData = checkResources(connectorPoolReader, "resources.connector-connection-pool.", allRemoteData, changedData); //$NON-NLS-1$
@@ -284,7 +284,9 @@ public class ResourceUtils {
             if (TaskState.COMPLETED.equals(result.getState())) {
             	Map<String, String> retVal = result.getValue();
             	if (retVal.isEmpty())
+                 {
                     Logger.getLogger("glassfish").log(Level.INFO, null, new IllegalStateException(query+" has no data"));  //$NON-NLS-1$
+                }
                 return retVal;
             }
         } catch (InterruptedException ex) {
@@ -292,7 +294,7 @@ public class ResourceUtils {
         } catch (Exception ex) {
             Logger.getLogger("glassfish").log(Level.INFO, ex.getMessage(), ex);  //$NON-NLS-1$
         }
-        return new HashMap<String,String>();
+        return new HashMap<>();
     }
 	
 	private static Map<String, String> checkResources(ResourcesReader resourceReader, String prefix, Map<String, String> allRemoteData, Map<String, String> changedData) {
@@ -301,7 +303,7 @@ public class ResourceUtils {
             Map<String, String> localData = resourceReader.getResourceData().get(jndiName);
             String remoteKey = prefix + jndiName + "."; //$NON-NLS-1$
 
-            Map<String, String> remoteData = new HashMap<String, String>();
+            Map<String, String> remoteData = new HashMap<>();
             for( final Map.Entry<String,String> entry : allRemoteData.entrySet() ) {
             	final String key = entry.getKey();
             	if(key.startsWith(remoteKey)){
@@ -316,7 +318,7 @@ public class ResourceUtils {
     }
 	
 	private static Map<String, String> getChangedData(Map<String, String> remoteData, Map<String, String> localData, Map<String, String> changedData, String resourceKey) {
-        List<String> props = new ArrayList<String>();
+        List<String> props = new ArrayList<>();
         Set<String> localKeySet = localData.keySet();
         for( final Map.Entry<String,String> entry : remoteData.entrySet() ) {
             final String remoteDataKey = entry.getKey();
@@ -326,7 +328,7 @@ public class ResourceUtils {
             if (key.indexOf("property.") != -1) { //$NON-NLS-1$
                 props.add(key);
             }
-            String localValue = (String) localData.get(key);
+            String localValue = localData.get(key);
             if (localValue != null) {
                 if (remoteValue == null || ! localValue.equals(remoteValue)) {
                 	changedData.put(remoteDataKey, localValue);

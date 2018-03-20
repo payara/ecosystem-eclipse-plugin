@@ -72,9 +72,10 @@ public class RunnerHttp extends Runner {
             for (Map.Entry<String,String> entry : entrySet) {
                 String key = entry.getKey();
                 String val = entry.getValue();
-                if (key == null)
+                if (key == null) {
                     throw new CommandException(
                             CommandException.ILLEGAL_NULL_VALUE);
+                }
                 if (first) {
                     first = false;
                 }

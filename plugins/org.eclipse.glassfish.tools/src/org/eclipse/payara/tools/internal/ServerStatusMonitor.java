@@ -48,7 +48,7 @@ public class ServerStatusMonitor implements Runnable {
 	private ServerStatusMonitor(GlassFishServer server, int checkInterval, ServerStateListener... listeners) {
 		this.server = server;
 		this.delay = checkInterval;
-		this.listeners = new CopyOnWriteArrayList<ServerStateListener>(listeners);
+		this.listeners = new CopyOnWriteArrayList<>(listeners);
 	}
 	
 	public static ServerStatusMonitor getInstance(GlassFishServer server) {

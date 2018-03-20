@@ -17,14 +17,14 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jdt.launching.IVMInstall;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.payara.tools.Messages;
 import org.eclipse.payara.tools.server.GlassFishRuntime;
 import org.eclipse.payara.tools.server.GlassFishServer;
 import org.eclipse.payara.tools.utils.GlassFishLocationUtils;
 import org.eclipse.payara.tools.utils.JavaLocationDefaultValueService;
 import org.eclipse.payara.tools.utils.JavaLocationValidationService;
-import org.eclipse.jdt.launching.IVMInstall;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.sapphire.DefaultValueService;
 import org.eclipse.sapphire.Event;
 import org.eclipse.sapphire.FilteredListener;
@@ -175,8 +175,9 @@ public final class GlassfishServerConfigServices {
 			IRuntime r = context(Value.class).element().adapt(IRuntime.class);
 			GlassFishRuntime runtimeDelegate = (GlassFishRuntime) r.loadAdapter(GlassFishRuntime.class, null);
 			IStatus s = runtimeDelegate.validateServerLocation();
-			if (!s.isOK())
-				return StatusBridge.create(s);
+			if (!s.isOK()) {
+                return StatusBridge.create(s);
+            }
 			return StatusBridge.create(runtimeDelegate.validateVersion());
 		}
 	}

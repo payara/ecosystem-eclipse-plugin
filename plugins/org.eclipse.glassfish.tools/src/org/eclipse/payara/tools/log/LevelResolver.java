@@ -24,7 +24,7 @@ class LevelResolver implements ILevelResolver {
 	LevelResolver() {
 		Locale logLocale = getLogLocale();
 		String logBundle = getLogBundle();
-		localizedLevels = new HashMap<String, String>();
+		localizedLevels = new HashMap<>();
         for(Level l: new Level [] { Level.ALL, Level.CONFIG, Level.FINE,
                 Level.FINER, Level.FINEST, Level.INFO, Level.SEVERE, Level.WARNING } ) {
             String name = l.getName();

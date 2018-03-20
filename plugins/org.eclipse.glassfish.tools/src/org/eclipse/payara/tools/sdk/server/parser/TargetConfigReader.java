@@ -34,7 +34,7 @@ class TargetConfigReader extends NodeListener {
     public TargetConfigReader(String targetConfigName) {
         this.targetConfigName = targetConfigName;
         // TODO all parsing has to be rewritten at some point
-        this.readData = false;
+        TargetConfigReader.readData = false;
     }
 
     class TargetConfigMarker extends NodeListener {

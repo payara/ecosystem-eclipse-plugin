@@ -113,8 +113,9 @@ public class GlassFishConfigXMLImpl implements GlassFishConfig {
      * Make sure Payara configuration XML file was read and processed.
      */
     private void readXml() {
-        if (readDone)
+        if (readDone) {
             return;
+        }
         synchronized(reader) {
             if (!readDone) {
                 TreeParser.readXml(configFile, reader);

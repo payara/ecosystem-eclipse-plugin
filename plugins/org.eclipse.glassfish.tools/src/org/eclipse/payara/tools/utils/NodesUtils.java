@@ -52,7 +52,7 @@ public class NodesUtils {
 			if (COMPLETED.equals(res.getState())) {
 				result = res.getValue();
 			}
-			retVal = new LinkedList<ResourceDesc>();
+			retVal = new LinkedList<>();
 			for (String rsc : result) {
 				retVal.add(new ResourceDesc(rsc, type));
 			}
@@ -90,7 +90,7 @@ public class NodesUtils {
 	}
 
 	private static Map<String, List<AppDesc>> processApplications(Map<String, List<String>> appsList) {
-		Map<String, List<AppDesc>> result = new HashMap<String, List<AppDesc>>();
+		Map<String, List<AppDesc>> result = new HashMap<>();
 		for (final Map.Entry<String, List<String>> entry : appsList.entrySet()) {
 			final String engine = entry.getKey();
 			final List<String> apps = entry.getValue();
@@ -99,7 +99,7 @@ public class NodesUtils {
 
 				List<AppDesc> appList = result.get(engine);
 				if (appList == null) {
-					appList = new ArrayList<AppDesc>();
+					appList = new ArrayList<>();
 					result.put(engine, appList);
 				}
 				appList.add(new AppDesc(name, null, null, engine));
@@ -137,7 +137,7 @@ public class NodesUtils {
 	}
 
 	private static List<WSDesc> processWebServices(List<String> wssList) {
-		List<WSDesc> result = new ArrayList<WSDesc>();
+		List<WSDesc> result = new ArrayList<>();
 		for (String a : wssList) {
 			result.add(new WSDesc(a, a + "?wsdl", a + "?Tester")); // NOI18N
 		}

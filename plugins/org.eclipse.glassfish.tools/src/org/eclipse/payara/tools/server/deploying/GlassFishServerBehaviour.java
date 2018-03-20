@@ -18,6 +18,7 @@ import static org.eclipse.core.runtime.Status.OK_STATUS;
 import static org.eclipse.debug.core.DebugEvent.TERMINATE;
 import static org.eclipse.debug.core.ILaunchManager.DEBUG_MODE;
 import static org.eclipse.debug.core.ILaunchManager.RUN_MODE;
+import static org.eclipse.osgi.util.NLS.bind;
 import static org.eclipse.payara.tools.GlassfishToolsPlugin.SYMBOLIC_NAME;
 import static org.eclipse.payara.tools.GlassfishToolsPlugin.createErrorStatus;
 import static org.eclipse.payara.tools.GlassfishToolsPlugin.logError;
@@ -32,7 +33,6 @@ import static org.eclipse.payara.tools.utils.ResourceUtils.RESOURCE_FILE_NAME;
 import static org.eclipse.payara.tools.utils.ResourceUtils.checkUpdateServerResources;
 import static org.eclipse.payara.tools.utils.Utils.isEmpty;
 import static org.eclipse.payara.tools.utils.Utils.simplifyModuleID;
-import static org.eclipse.osgi.util.NLS.bind;
 import static org.eclipse.wst.common.componentcore.internal.util.ComponentUtilities.getServerContextRoot;
 import static org.eclipse.wst.server.core.IServer.PUBLISH_AUTO;
 import static org.eclipse.wst.server.core.IServer.PUBLISH_CLEAN;
@@ -75,6 +75,10 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.jdt.internal.debug.core.model.JDIDebugTarget;
+import org.eclipse.jdt.internal.launching.JavaRemoteApplicationLaunchConfigurationDelegate;
+import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
+import org.eclipse.jst.server.core.IEnterpriseApplication;
 import org.eclipse.payara.tools.GlassfishToolsPlugin;
 import org.eclipse.payara.tools.Messages;
 import org.eclipse.payara.tools.exceptions.GlassfishLaunchException;
@@ -109,10 +113,6 @@ import org.eclipse.payara.tools.server.starting.GlassfishServerLaunchDelegate;
 import org.eclipse.payara.tools.server.starting.StartupArgsImpl;
 import org.eclipse.payara.tools.utils.ResourceUtils;
 import org.eclipse.payara.tools.utils.Utils;
-import org.eclipse.jdt.internal.debug.core.model.JDIDebugTarget;
-import org.eclipse.jdt.internal.launching.JavaRemoteApplicationLaunchConfigurationDelegate;
-import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
-import org.eclipse.jst.server.core.IEnterpriseApplication;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.internal.DeletedModule;
@@ -148,7 +148,8 @@ public final class GlassFishServerBehaviour extends ServerBehaviourDelegate impl
 		logMessage("in GlassFishServerBehaviour CTOR ");
 	}
 
-	protected void initialize(IProgressMonitor monitor) {
+	@Override
+    protected void initialize(IProgressMonitor monitor) {
 		super.initialize(monitor);
 		logMessage("in Behaviour initialize for " + getGlassfishServerDelegate().getName());
 
@@ -188,7 +189,8 @@ public final class GlassFishServerBehaviour extends ServerBehaviourDelegate impl
 		stopServer(false);
 		
 		Thread thread = new Thread("Synchronous server start") {
-			public void run() {
+			@Override
+            public void run() {
 				try {
 					getServer().getLaunchConfiguration(true, null).launch(launchMode, new NullProgressMonitor());
 					logMessage("GlassfishServerBehaviourDelegate restart done");
@@ -284,7 +286,7 @@ public final class GlassFishServerBehaviour extends ServerBehaviourDelegate impl
 	 * get the correct adapter for the GlassFish server
 	 */
 	public GlassFishServer getGlassfishServerDelegate() {
-		GlassFishServer payaraServer = (GlassFishServer) getServer().getAdapter(GlassFishServer.class);
+		GlassFishServer payaraServer = getServer().getAdapter(GlassFishServer.class);
 		if (payaraServer == null) {
 			payaraServer = (GlassFishServer) getServer().loadAdapter(GlassFishServer.class, new NullProgressMonitor());
 		}
@@ -465,10 +467,11 @@ public final class GlassFishServerBehaviour extends ServerBehaviourDelegate impl
 		try {
 			Map args = config.getAttribute(IJavaLaunchConfigurationConstants.ATTR_CONNECT_MAP, (Map) null);
 
-			if (args != null)
-				args = new HashMap(args);
-			else
-				args = new HashMap();
+			if (args != null) {
+                args = new HashMap(args);
+            } else {
+                args = new HashMap();
+            }
 			args.put(key, String.valueOf(arg));
 
 			config.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CONNECT_MAP, args);
@@ -508,13 +511,15 @@ public final class GlassFishServerBehaviour extends ServerBehaviourDelegate impl
 				IModule m = childModules[i];
 				IModule[] modules = { module[0], m };
 				if (PUBLISH_STATE_NONE != getGlassfishServerDelegate().getServer()
-						.getModulePublishState(modules))
-					return true;
+						.getModulePublishState(modules)) {
+                    return true;
+                }
 			}
 		} else {
 			int publishState = getGlassfishServerDelegate().getServer().getModulePublishState(module);
-			if (PUBLISH_STATE_NONE != publishState)
-				return true;
+			if (PUBLISH_STATE_NONE != publishState) {
+                return true;
+            }
 		}
 		return false;
 	}
@@ -791,7 +796,7 @@ public final class GlassFishServerBehaviour extends ServerBehaviourDelegate impl
 	}
 	
 	private Map<String, String> getDeploymentProperties() {
-		Map<String, String> properties = new HashMap<String, String>();
+		Map<String, String> properties = new HashMap<>();
 		
 		String preserveSessionKey = getGlassfishServerDelegate().computePreserveSessions();
 		if (preserveSessionKey != null) {
@@ -827,14 +832,16 @@ public final class GlassFishServerBehaviour extends ServerBehaviourDelegate impl
 				statusMsg = Messages.invalidCredentials;
 				break;
 			case STOPPED_DOMAIN_NOT_MATCHING:
-				if (!getGlassfishServerDelegate().isRemote())
-					statusMsg = Messages.serverNotMatchingLocal;
-				else
-					statusMsg = Messages.serverNotMatchingRemote;
+				if (!getGlassfishServerDelegate().isRemote()) {
+                    statusMsg = Messages.serverNotMatchingLocal;
+                } else {
+                    statusMsg = Messages.serverNotMatchingRemote;
+                }
 				break;
 			case RUNNING_CONNECTION_ERROR:
-				if (server2.getServerState() != IServer.STATE_STOPPED)
-					statusMsg = Messages.connectionError;
+				if (server2.getServerState() != IServer.STATE_STOPPED) {
+                    statusMsg = Messages.connectionError;
+                }
 				break;
 			default:
 				server2.setServerStatus(null);

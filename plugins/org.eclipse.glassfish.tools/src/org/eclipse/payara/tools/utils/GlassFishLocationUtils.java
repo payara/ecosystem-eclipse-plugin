@@ -28,12 +28,12 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.payara.tools.internal.SystemLibrariesSetting;
 import org.eclipse.jdt.core.IAccessRule;
 import org.eclipse.jdt.core.IClasspathAttribute;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.payara.tools.internal.SystemLibrariesSetting;
 import org.eclipse.sapphire.Version;
 import org.eclipse.sapphire.util.ListFactory;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
@@ -222,7 +222,7 @@ public final class GlassFishLocationUtils {
 					return null;
 				}
 
-				CACHE.put(location, new SoftReference<GlassFishLocationUtils>(glassFishInstall));
+				CACHE.put(location, new SoftReference<>(glassFishInstall));
 			}
 		}
 

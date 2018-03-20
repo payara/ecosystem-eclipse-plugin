@@ -10,8 +10,8 @@
 package org.eclipse.payara.tools.preferences;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
-import org.eclipse.payara.tools.GlassfishToolsPlugin;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.payara.tools.GlassfishToolsPlugin;
 
 /**
  * Class used to initialize default preference values.
@@ -25,7 +25,8 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 	 * 
 	 * @see org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer#initializeDefaultPreferences()
 	 */
-	public void initializeDefaultPreferences() {
+	@Override
+    public void initializeDefaultPreferences() {
 		IPreferenceStore store = GlassfishToolsPlugin.getInstance().getPreferenceStore();
 		store.setDefault(PreferenceConstants.ENABLE_LOG, false);
 		store.setDefault(PreferenceConstants.ENABLE_START_VERBOSE, false);

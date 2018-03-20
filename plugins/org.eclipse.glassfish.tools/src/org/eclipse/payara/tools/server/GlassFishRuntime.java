@@ -11,25 +11,25 @@ package org.eclipse.payara.tools.server;
 
 import static org.eclipse.core.runtime.IStatus.ERROR;
 import static org.eclipse.core.runtime.Status.OK_STATUS;
+import static org.eclipse.osgi.util.NLS.bind;
 import static org.eclipse.payara.tools.GlassfishToolsPlugin.SYMBOLIC_NAME;
 import static org.eclipse.payara.tools.Messages.notValidGlassfishInstall;
 import static org.eclipse.payara.tools.Messages.pathDoesNotExist;
 import static org.eclipse.payara.tools.sapphire.IGlassfishRuntimeModel.PROP_JAVA_RUNTIME_ENVIRONMENT;
 import static org.eclipse.payara.tools.utils.GlassFishLocationUtils.find;
 import static org.eclipse.payara.tools.utils.JdtUtil.findOrCreateJvm;
-import static org.eclipse.osgi.util.NLS.bind;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.launching.IVMInstall;
+import org.eclipse.jst.server.core.IJavaRuntime;
 import org.eclipse.payara.tools.GlassfishToolsPlugin;
 import org.eclipse.payara.tools.Messages;
 import org.eclipse.payara.tools.sapphire.IGlassfishRuntimeModel;
 import org.eclipse.payara.tools.utils.GlassFishLocationUtils;
-import org.eclipse.jdt.launching.IVMInstall;
-import org.eclipse.jst.server.core.IJavaRuntime;
 import org.eclipse.sapphire.Property;
 import org.eclipse.sapphire.PropertyBinding;
 import org.eclipse.sapphire.PropertyDef;

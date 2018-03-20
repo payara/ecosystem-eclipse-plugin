@@ -200,13 +200,14 @@ public class ConfigBuilder {
      */
     private void versionCheck(final Version version)
             throws ServerConfigException {
-        if (this.version == null)
+        if (this.version == null) {
             this.version = version;
-        else if (this.version != version)
+        } else if (this.version != version) {
             throw new ServerConfigException(
                     "Library builder was already used for GlassFish "
                     + this.version + " use new instance for GlassFish"
                     + version);
+        }
     }
 
     private void fetch(final Version version) {
@@ -243,8 +244,9 @@ public class ConfigBuilder {
     public List<GlassFishLibrary> getLibraries(
             final Version version) throws ServerConfigException {
         versionCheck(version);
-        if (!fetchDone)
+        if (!fetchDone) {
             fetch(version);
+        }
         return libraryCache;
     }
 
@@ -263,8 +265,9 @@ public class ConfigBuilder {
     public GlassFishJavaEEConfig getJavaEEConfig(
             final Version version) throws ServerConfigException {
         versionCheck(version);
-        if (!fetchDone)
+        if (!fetchDone) {
             fetch(version);
+        }
         return javaEEConfigCache;
     }
 
@@ -283,8 +286,9 @@ public class ConfigBuilder {
     public GlassFishJavaSEConfig getJavaSEConfig(
             final Version version) throws ServerConfigException {
         versionCheck(version);
-        if (!fetchDone)
+        if (!fetchDone) {
             fetch(version);
+        }
         return javaSEConfigCache;
     }
 

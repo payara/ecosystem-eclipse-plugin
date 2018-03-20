@@ -63,7 +63,8 @@ public abstract class JavaLocationDefaultValueService extends DefaultValueServic
 	private synchronized void update() {
 		if (!this.computing) {
 			new Thread() {
-				public void run() {
+				@Override
+                public void run() {
 					refresh();
 				}
 			}.start();

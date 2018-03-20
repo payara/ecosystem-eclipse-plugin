@@ -11,9 +11,9 @@ package org.eclipse.payara.tools.utils;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.payara.tools.GlassfishToolsPlugin;
 import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.jst.j2ee.project.JavaEEProjectUtilities;
+import org.eclipse.payara.tools.GlassfishToolsPlugin;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.server.core.IRuntime;
 

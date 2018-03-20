@@ -64,8 +64,9 @@ public class ServerStatusHelper {
 					null);
 			String thisServerVersion = gfRuntime.getVersion().toString();
 			int n = thisServerVersion.indexOf(".X");
-			if (n > 0)
-				thisServerVersion = thisServerVersion.substring(0, n + 1);
+			if (n > 0) {
+                thisServerVersion = thisServerVersion.substring(0, n + 1);
+            }
 			if (remoteServerVersion != null && remoteServerVersion.indexOf(thisServerVersion) < 0) {
 				return STOPPED_DOMAIN_NOT_MATCHING;
 			}
@@ -88,8 +89,9 @@ public class ServerStatusHelper {
 			logMessage("ServerStatusMonitor for " + server.getName() + " location timed out");
 		} finally {
 			if (result == null) {
-				if (locationTask != null)
-					locationTask.cancel(true);
+				if (locationTask != null) {
+                    locationTask.cancel(true);
+                }
 				return RUNNING_CONNECTION_ERROR;
 			}
 		}
@@ -134,8 +136,9 @@ public class ServerStatusHelper {
 
 	private static boolean domainMatching(GlassFishServer server, Map<String, String> locationResult)
 			throws IOException {
-		if (server.isRemote())
-			return true;
+		if (server.isRemote()) {
+            return true;
+        }
 		String expectedDomainRoot = server.getDomainsFolder() + File.separator + server.getDomainName();
 		String actualDomainRoot = locationResult.get("Domain-Root_value");
 		if ((expectedDomainRoot != null) && (actualDomainRoot != null)) {

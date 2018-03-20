@@ -12,13 +12,13 @@ package org.eclipse.payara.tools;
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
-    
-	static {
+
+    static {
         initializeMessages(
-           "org.eclipse.payara.tools.Messages", 
-           Messages.class);
+                "org.eclipse.payara.tools.Messages",
+                Messages.class);
     }
-    
+
     public static String serverHome;
     public static String runtimeName;
     public static String emptyRuntimeName;
@@ -27,15 +27,15 @@ public class Messages extends NLS {
     public static String unsupportedVersion;
     public static String runtimeNotValid;
     public static String versionsNotMatching;
-    
+
     // server status
     public static String invalidCredentials;
     public static String serverNotMatchingLocal;
     public static String serverNotMatchingRemote;
     public static String connectionError;
-    
+
     public static String facetNotSupported;
-    
+
     public static String AdminName;
     public static String AdminPassword;
     public static String ServerPortNumber;
@@ -48,7 +48,7 @@ public class Messages extends NLS {
     public static String keepSessions;
     public static String jarDeploy;
     public static String targetTooltip;
-     
+
     // additional strings to workaround for issue 222688
     public static String canInstallPath;
     public static String possibleInstallExists;
@@ -57,7 +57,7 @@ public class Messages extends NLS {
 
     public static String register;
     public static String updateCenter;
- 
+
     public static String pathDoesNotExist;
     public static String pathNotDirectory;
     public static String pathNotWritable;
@@ -70,20 +70,20 @@ public class Messages extends NLS {
 
     public static String startupWarning;
     public static String noProfilersConfigured;
-	public static String profilingUnsupportedInVersion;
-	
-	public static String serverDirectoryGone;
-	public static String emptyTargetMsg;
-	public static String target;
-	
-	public static String uniqueNameNotFound;
-	
-	public static String errorAppWebContentRootMapping;
-	
-	public static String canntCommunicate;
-	public static String abortLaunchMsg;
-	public static String checkVpnOrProxy;
-	public static String wrongUsernamePassword;
-	public static String badGateway;
-	public static String domainNotMatch;
+    public static String profilingUnsupportedInVersion;
+
+    public static String serverDirectoryGone;
+    public static String emptyTargetMsg;
+    public static String target;
+
+    public static String uniqueNameNotFound;
+
+    public static String errorAppWebContentRootMapping;
+
+    public static String canntCommunicate;
+    public static String abortLaunchMsg;
+    public static String checkVpnOrProxy;
+    public static String wrongUsernamePassword;
+    public static String badGateway;
+    public static String domainNotMatch;
 }

@@ -21,14 +21,14 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.payara.tools.GlassfishToolsPlugin;
-import org.eclipse.payara.tools.server.GlassFishServer;
-import org.eclipse.payara.tools.server.deploying.GlassFishServerBehaviour;
 import org.eclipse.jst.server.core.IEnterpriseApplication;
 import org.eclipse.jst.server.core.IJ2EEModule;
 import org.eclipse.jst.server.core.IWebModule;
 import org.eclipse.jst.server.generic.core.internal.CorePlugin;
 import org.eclipse.jst.server.generic.core.internal.publishers.ModulePackager;
+import org.eclipse.payara.tools.GlassfishToolsPlugin;
+import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.deploying.GlassFishServerBehaviour;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.internal.Server;
@@ -67,8 +67,9 @@ public class AssembleModules {
 
 		IPath parent = assembleRoot;
 		boolean shouldCopy = (IServer.PUBLISH_STATE_NONE != server.getServer().getModulePublishState(modulePath));
-		if (shouldCopy)
-			copyModule(module, monitor);
+		if (shouldCopy) {
+            copyModule(module, monitor);
+        }
 
 		IWebModule webModule = (IWebModule) module.loadAdapter(IWebModule.class, monitor);
 		IModule[] childModules = webModule.getModules();
@@ -164,11 +165,11 @@ public class AssembleModules {
 			}
 		} else {
 			String destination = resource.getModuleRelativePath().append(resource.getName()).toPortableString();
-			IFile file = (IFile) resource.getAdapter(IFile.class);
+			IFile file = resource.getAdapter(IFile.class);
 			if (file != null) {
 				packager.write(file, destination);
 			} else {
-				File file2 = (File) resource.getAdapter(File.class);
+				File file2 = resource.getAdapter(File.class);
 				packager.write(file2, destination);
 			}
 		}
@@ -213,7 +214,7 @@ public class AssembleModules {
 		// call
 		IModule[] childModules = earModule.getModules();
 		GlassfishToolsPlugin.logMessage("copyEarModule childModules.length=" + childModules.length);
-		ArrayList<IPath> ignorePaths = new ArrayList<IPath>(childModules.length);
+		ArrayList<IPath> ignorePaths = new ArrayList<>(childModules.length);
 		for (int i = 0; i < childModules.length; i++) {
 
 			IModule childModule = childModules[i];
@@ -262,8 +263,9 @@ public class AssembleModules {
 		IPath parent = assembleRoot;
 
 		boolean shouldCopy = (IServer.PUBLISH_STATE_NONE != server.getServer().getModulePublishState(modulePath));
-		if (shouldCopy)
-			copyModule(module, monitor);
+		if (shouldCopy) {
+            copyModule(module, monitor);
+        }
 		IEnterpriseApplication earModule = (IEnterpriseApplication) module.loadAdapter(IEnterpriseApplication.class,
 				monitor);
 		IModule[] childModules = earModule.getModules();
@@ -420,8 +422,9 @@ public class AssembleModules {
 		IPath parent = assembleRoot;
 
 		boolean shouldCopy = (IServer.PUBLISH_STATE_NONE != server.getServer().getModulePublishState(modulePath));
-		if (shouldCopy)
-			copyEarModule(module, monitor);
+		if (shouldCopy) {
+            copyEarModule(module, monitor);
+        }
 		IEnterpriseApplication earModule = (IEnterpriseApplication) module.loadAdapter(IEnterpriseApplication.class,
 				monitor);
 		IModule[] childModules = earModule.getModules();

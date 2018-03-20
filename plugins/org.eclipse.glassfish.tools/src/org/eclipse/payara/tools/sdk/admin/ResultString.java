@@ -47,6 +47,7 @@ public class ResultString extends Result<String> {
      * <p/>
      * @return Value returned by administration command execution.
      */
+    @Override
     public String getValue() {
         return value;
     }

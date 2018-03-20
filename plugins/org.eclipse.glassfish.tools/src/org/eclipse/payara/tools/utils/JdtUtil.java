@@ -18,7 +18,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.payara.tools.GlassfishToolsPlugin;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.launching.IVMInstall;
@@ -26,6 +25,7 @@ import org.eclipse.jdt.launching.IVMInstall2;
 import org.eclipse.jdt.launching.IVMInstallType;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jdt.launching.VMStandin;
+import org.eclipse.payara.tools.GlassfishToolsPlugin;
 import org.eclipse.sapphire.Filter;
 import org.eclipse.sapphire.LocalizableText;
 import org.eclipse.sapphire.Text;
@@ -66,7 +66,7 @@ public final class JdtUtil
         LocalizableText.init( JdtUtil.class );
     }
     
-    private static final Map<File,String> jvmLocationToVersionMap = new HashMap<File,String>();
+    private static final Map<File,String> jvmLocationToVersionMap = new HashMap<>();
     
     public static final class JvmValidator
     {

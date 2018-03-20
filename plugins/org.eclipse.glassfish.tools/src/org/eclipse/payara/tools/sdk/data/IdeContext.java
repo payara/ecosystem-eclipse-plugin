@@ -15,6 +15,7 @@ package org.eclipse.payara.tools.sdk.data;
  * @author Tomas Kraus, Peter Benedikovic
  * @deprecated IDE context support was removed. DO NOT USE!
  */
+@Deprecated
 public class IdeContext {
 
     ////////////////////////////////////////////////////////////////////////////
@@ -26,6 +27,7 @@ public class IdeContext {
      * <p/>
      * @deprecated IDE context support was removed. DO NOT USE!
      */
+    @Deprecated
     public IdeContext() {
     }
 

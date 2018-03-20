@@ -24,7 +24,6 @@ import static org.eclipse.payara.tools.sdk.utils.ServerUtils.getJarName;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;

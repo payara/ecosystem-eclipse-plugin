@@ -56,7 +56,7 @@ public class TargetConfigNameReader extends TreeParser.NodeListener implements
 
     @Override
     public List<Path> getPathsToListen() {
-        LinkedList<TreeParser.Path> paths = new LinkedList<TreeParser.Path>();
+        LinkedList<TreeParser.Path> paths = new LinkedList<>();
         paths.add(new Path(SERVER_PATH, this));
         return paths;
     }

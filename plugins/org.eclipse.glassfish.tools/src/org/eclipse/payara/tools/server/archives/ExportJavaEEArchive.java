@@ -9,11 +9,11 @@
 
 package org.eclipse.payara.tools.server.archives;
 
-import static org.eclipse.payara.tools.server.archives.AssembleModules.isModuleType;
 import static org.eclipse.jst.j2ee.datamodel.properties.IJ2EEComponentExportDataModelProperties.ARCHIVE_DESTINATION;
 import static org.eclipse.jst.j2ee.datamodel.properties.IJ2EEComponentExportDataModelProperties.EXPORT_SOURCE_FILES;
 import static org.eclipse.jst.j2ee.datamodel.properties.IJ2EEComponentExportDataModelProperties.OVERWRITE_EXISTING;
 import static org.eclipse.jst.j2ee.datamodel.properties.IJ2EEComponentExportDataModelProperties.PROJECT_NAME;
+import static org.eclipse.payara.tools.server.archives.AssembleModules.isModuleType;
 import static org.eclipse.wst.common.frameworks.datamodel.DataModelFactory.createDataModel;
 
 import java.io.File;

@@ -51,7 +51,7 @@ public class HttpListenerReader extends TargetConfigReader implements XMLReader 
     public HttpListenerReader(String path, String targetConfigName) {
         super(targetConfigName);
         this.path = path;
-        this.result = new HashMap<String, HttpData>();
+        this.result = new HashMap<>();
     }
 
     @Override
@@ -92,7 +92,7 @@ public class HttpListenerReader extends TargetConfigReader implements XMLReader 
 
     @Override
     public List<TreeParser.Path> getPathsToListen() {
-        LinkedList<TreeParser.Path> paths = new LinkedList<TreeParser.Path>();
+        LinkedList<TreeParser.Path> paths = new LinkedList<>();
         paths.add(new Path(path, this));
         paths.add(new Path(CONFIG_PATH, new TargetConfigMarker()));
         return paths;

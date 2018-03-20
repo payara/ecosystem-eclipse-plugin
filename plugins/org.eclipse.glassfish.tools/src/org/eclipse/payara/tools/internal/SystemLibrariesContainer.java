@@ -28,14 +28,14 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.payara.tools.GlassfishToolsPlugin;
-import org.eclipse.payara.tools.utils.GlassFishLocationUtils;
 import org.eclipse.jdt.core.ClasspathContainerInitializer;
 import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.payara.tools.GlassfishToolsPlugin;
+import org.eclipse.payara.tools.utils.GlassFishLocationUtils;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IRuntimeLifecycleListener;
 import org.eclipse.wst.server.core.ServerCore;
@@ -73,19 +73,23 @@ public final class SystemLibrariesContainer implements IClasspathContainer {
 		this.entries = (gf == null ? Collections.<IClasspathEntry>emptyList() : gf.classpath(project.getProject()));
 	}
 
-	public IClasspathEntry[] getClasspathEntries() {
+	@Override
+    public IClasspathEntry[] getClasspathEntries() {
 		return this.entries.toArray(new IClasspathEntry[this.entries.size()]);
 	}
 
-	public String getDescription() {
+	@Override
+    public String getDescription() {
 		return Resources.containerLabel;
 	}
 
-	public int getKind() {
+	@Override
+    public int getKind() {
 		return K_APPLICATION;
 	}
 
-	public IPath getPath() {
+	@Override
+    public IPath getPath() {
 		return PATH;
 	}
 
@@ -241,15 +245,18 @@ public final class SystemLibrariesContainer implements IClasspathContainer {
 			ServerCore.addRuntimeLifecycleListener(new RuntimeLifecycleListener());
 		}
 
-		public void runtimeAdded(final IRuntime runtime) {
+		@Override
+        public void runtimeAdded(final IRuntime runtime) {
 			handleEvent(runtime);
 		}
 
-		public void runtimeChanged(final IRuntime runtime) {
+		@Override
+        public void runtimeChanged(final IRuntime runtime) {
 			handleEvent(runtime);
 		}
 
-		public void runtimeRemoved(final IRuntime runtime) {
+		@Override
+        public void runtimeRemoved(final IRuntime runtime) {
 			handleEvent(runtime);
 		}
 
@@ -278,11 +285,12 @@ public final class SystemLibrariesContainer implements IClasspathContainer {
 		}
 
 		private ResourceChangeListener() {
-			this.triggerFiles = new ArrayList<IPath>();
+			this.triggerFiles = new ArrayList<>();
 			this.triggerFiles.add(new Path(FPROJ_METADATA_FILE));
 		}
 
-		public void resourceChanged(IResourceChangeEvent event) {
+		@Override
+        public void resourceChanged(IResourceChangeEvent event) {
 			for (IResourceDelta subdelta : event.getDelta().getAffectedChildren()) {
 				final IProject project = (IProject) subdelta.getResource();
 				boolean relevant = false;
@@ -312,7 +320,7 @@ public final class SystemLibrariesContainer implements IClasspathContainer {
 		private final LinkedList<IProject> projects;
 
 		public ContainersRefresherThread() {
-			this.projects = new LinkedList<IProject>();
+			this.projects = new LinkedList<>();
 		}
 
 		public IProject getProjectFromQueue() {
@@ -336,7 +344,8 @@ public final class SystemLibrariesContainer implements IClasspathContainer {
 			}
 		}
 
-		public void run() {
+		@Override
+        public void run() {
 			while (true) {
 				final IProject project = getProjectFromQueue();
 
@@ -346,7 +355,8 @@ public final class SystemLibrariesContainer implements IClasspathContainer {
 
 				try {
 					final IWorkspaceRunnable wsr = new IWorkspaceRunnable() {
-						public void run(final IProgressMonitor monitor) throws CoreException {
+						@Override
+                        public void run(final IProgressMonitor monitor) throws CoreException {
 							refresh(project);
 						}
 					};

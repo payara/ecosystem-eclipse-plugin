@@ -725,22 +725,25 @@ public class StatusScheduler {
                 portCheckOnly(job);
                 return;
             case ONLINE:
-                if (job.getStatus().getServer().isRemote())
+                if (job.getStatus().getServer().isRemote()) {
                     remoteChecksCommand(job);
-                else
+                } else {
                     localChecksCommand(job);
+                }
                 return;
             case SHUTDOWN:
-                if (job.getStatus().getServer().isRemote())
+                if (job.getStatus().getServer().isRemote()) {
                     remoteChecksStepByStep(job);
-                else
+                } else {
                     localChecksStepByStep(job);
+                }
                 return;
             case STARTUP_PORT: case OFFLINE_PORT: case UNKNOWN_PORT:
-                if (job.getStatus().getServer().isRemote())
+                if (job.getStatus().getServer().isRemote()) {
                     remoteChecksAtOnce(job);
-                else
+                } else {
                     localChecksAtOnce(job);
+                }
                 return;
             default:
                 throw new IllegalStateException(

@@ -65,7 +65,8 @@ public class ServerAdmin {
 	 *            IDE Context object (not used).
 	 * @deprecated {@link IdeContext} class will be removed.
 	 */
-	public static <E extends Result> Future<E> exec(final GlassFishServer srv, final Command cmd,
+	@Deprecated
+    public static <E extends Result> Future<E> exec(final GlassFishServer srv, final Command cmd,
 			final IdeContext ide) {
 		AdminFactory af = AdminFactory.getInstance(srv.getAdminInterface());
 		Runner runner = af.getRunner(srv, cmd);
@@ -88,7 +89,8 @@ public class ServerAdmin {
 	 *            Listeners that are called when command execution status changes.
 	 * @deprecated {@link IdeContext} class will be removed.
 	 */
-	public static <E extends Result> Future<E> exec(final GlassFishServer srv, final Command cmd, final IdeContext ide,
+	@Deprecated
+    public static <E extends Result> Future<E> exec(final GlassFishServer srv, final Command cmd, final IdeContext ide,
 			final TaskStateListener... listeners) {
 		AdminFactory af = AdminFactory.getInstance(srv.getAdminInterface());
 		Runner runner = af.getRunner(srv, cmd);
@@ -126,7 +128,8 @@ public class ServerAdmin {
 	 *            IDE Context object (not used).
 	 * @deprecated {@link IdeContext} class will be removed.
 	 */
-	public static <E extends Result> Future<E> exec(final ExecutorService executor, final GlassFishServer srv,
+	@Deprecated
+    public static <E extends Result> Future<E> exec(final ExecutorService executor, final GlassFishServer srv,
 			final Command cmd, final IdeContext ide) {
 		AdminFactory af = AdminFactory.getInstance(srv.getAdminInterface());
 		Runner runner = af.getRunner(srv, cmd);
@@ -149,7 +152,8 @@ public class ServerAdmin {
 	 *            Listeners that are called when command execution status changes.
 	 * @deprecated {@link IdeContext} class will be removed.
 	 */
-	public static <E extends Result> Future<E> exec(final ExecutorService executor, final GlassFishServer srv,
+	@Deprecated
+    public static <E extends Result> Future<E> exec(final ExecutorService executor, final GlassFishServer srv,
 			final Command cmd, final IdeContext ide, final TaskStateListener... listeners) {
 		AdminFactory af = AdminFactory.getInstance(srv.getAdminInterface());
 		Runner runner = af.getRunner(srv, cmd);

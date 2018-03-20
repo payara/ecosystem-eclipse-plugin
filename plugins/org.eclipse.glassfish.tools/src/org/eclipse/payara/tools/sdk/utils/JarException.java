@@ -33,6 +33,11 @@ public class JarException extends GlassFishIdeException {
     // Class attributes                                                       //
     ////////////////////////////////////////////////////////////////////////////
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
     /** Exception message for JAR file opening issues. */
     static final String OPEN_ERROR = "Cannot open JAR file.";
 

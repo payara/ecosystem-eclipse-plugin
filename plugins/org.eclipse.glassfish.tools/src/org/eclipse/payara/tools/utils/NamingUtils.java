@@ -24,7 +24,7 @@ public class NamingUtils {
 
 	public static String createUniqueRuntimeName(String runtimeName) throws UniqueNameNotFound {
 		IRuntime[] runtimes = ServerCore.getRuntimes();
-		HashSet<String> takenNames = new HashSet<String>(runtimes.length);
+		HashSet<String> takenNames = new HashSet<>(runtimes.length);
 		for (IRuntime runtime : runtimes) {
 			takenNames.add(runtime.getName());
 		}

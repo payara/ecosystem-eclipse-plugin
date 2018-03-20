@@ -69,7 +69,7 @@ public class GlassfishConsole extends AbstractGlassfishConsole implements IGlass
 			System.out.println("stopJobResult is null in console " + getName());
 			stopLoggingImpl();
 		}
-		readers = new ArrayList<LogReader>(logFetchers.length);
+		readers = new ArrayList<>(logFetchers.length);
 		latch = new CountDownLatch(logFetchers.length);
 		filter.reset();
 		int i = 0;
@@ -83,13 +83,15 @@ public class GlassfishConsole extends AbstractGlassfishConsole implements IGlass
 	
 	@Override
 	public synchronized void stopLogging() {
-		if (isLogging())
-			stopLoggingImpl();
+		if (isLogging()) {
+            stopLoggingImpl();
+        }
 	}
 	
 	private void stopLoggingImpl() {
-		if (readers == null)
-			return;
+		if (readers == null) {
+            return;
+        }
 		for (LogReader r : readers) {
 			r.stop();
 		}

@@ -22,7 +22,7 @@ public class MessagePart {
     Properties props = new Properties();
     String message;
 
-    List<MessagePart> children = new ArrayList<MessagePart>();
+    List<MessagePart> children = new ArrayList<>();
 
     public List<MessagePart> getChildren() {
         return children;

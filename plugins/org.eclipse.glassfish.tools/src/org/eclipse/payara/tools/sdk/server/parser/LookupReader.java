@@ -68,7 +68,7 @@ public class LookupReader extends TreeParser.NodeListener {
      * Reset this XML element reader.
      */
     public void reset() {
-        lookups = new LinkedList<String>();
+        lookups = new LinkedList<>();
     }
 
 }

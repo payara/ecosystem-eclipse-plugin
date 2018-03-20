@@ -68,7 +68,7 @@ public class RunnerHttpListResources extends RunnerHttpTarget {
      */
     @Override
     protected ResultList<String> createResult() {
-        return result = new ResultList<String>();
+        return result = new ResultList<>();
     }
 
     /**
@@ -90,7 +90,7 @@ public class RunnerHttpListResources extends RunnerHttpTarget {
                 ? resourcesAttr.split(ServerUtils.MANIFEST_RESOURCES_SEPARATOR)
                 : null;
         int resoucesCount = resources != null ? resources.length : 0;
-        result.value = new ArrayList<String>(resoucesCount);
+        result.value = new ArrayList<>(resoucesCount);
         if (resources != null) {
             for (String resource : resources) {
                 Attributes resourceAttr = manifest.getAttributes(resource);

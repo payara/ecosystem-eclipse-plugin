@@ -49,7 +49,7 @@ public class RunnerRestLocation extends RunnerRest {
 
     @Override
     protected Result createResult() {
-        return result = new ResultMap<String, String>();
+        return result = new ResultMap<>();
     }
 
     @Override
@@ -58,7 +58,7 @@ public class RunnerRestLocation extends RunnerRest {
             return false;
         }
         Properties props = report.getTopMessagePart().getProperties();
-        result.value = new HashMap<String, String>(props.size());
+        result.value = new HashMap<>(props.size());
         for (String key : props.stringPropertyNames()) {
             result.value.put(key, props.getProperty(key));
         }

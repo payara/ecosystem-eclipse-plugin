@@ -53,6 +53,7 @@ public abstract class AbstractLogFilter implements ILogFilter {
 	/**
      * Resets log filter after reading complete log record.
      */
+    @Override
     public void reset() {
     	record.reset();
     	buffer.setLength(0);
@@ -66,6 +67,7 @@ public abstract class AbstractLogFilter implements ILogFilter {
      * @param line - mustn't contain new line character
      * @return Complete log record or null if the read line haven't completed the log record.
      */
+    @Override
     public abstract String process(String line);
     
     public static AbstractLogFilter createFilter(GlassFishServer server)

@@ -19,7 +19,7 @@ import org.eclipse.sapphire.ElementType;
 enum GlassfishDescriptorType {
 	GF_WEB, GF_EJB;
 
-	private static final Map<ElementType, GlassfishDescriptorType> ROOT_MODEL_ELEMENT_TYPE_TO_DESCRIPTOR_TYPE = new HashMap<ElementType, GlassfishDescriptorType>();
+	private static final Map<ElementType, GlassfishDescriptorType> ROOT_MODEL_ELEMENT_TYPE_TO_DESCRIPTOR_TYPE = new HashMap<>();
 
 	static {
 		ROOT_MODEL_ELEMENT_TYPE_TO_DESCRIPTOR_TYPE.put(

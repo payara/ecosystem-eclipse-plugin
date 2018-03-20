@@ -34,6 +34,7 @@ public final class StreamGobbler extends Thread
         this.output = new StringBuffer();
     }
 
+    @Override
     public void run()
     {
         try

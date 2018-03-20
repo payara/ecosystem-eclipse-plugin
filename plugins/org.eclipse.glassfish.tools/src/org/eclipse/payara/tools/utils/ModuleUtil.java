@@ -76,15 +76,17 @@ public class ModuleUtil {
 	    private static boolean matchModuleType(IModule[] modulePath, String typeId) {
 	        IModule module = modulePath[modulePath.length-1];
 	        IModuleType type = module.getModuleType();
-	        if (type==null)
-	            return false;
+	        if (type==null) {
+                return false;
+            }
 	        return typeId.equals(type.getId());
 	    }
 	    
 	    private static boolean matchModuleType(IModule module, String typeId) {
 	        IModuleType type = module.getModuleType();
-	        if (type==null)
-	            return false;
+	        if (type==null) {
+                return false;
+            }
 	        return typeId.equals(type.getId());
 	    }
 }

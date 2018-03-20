@@ -259,21 +259,24 @@ public abstract class Runner implements Callable<Result> {
 	 *             recognized.
 	 */
 	static boolean toBoolean(final String constant) throws CommandException {
-		if (constant == null || constant.length() < 1)
-			throw new CommandException(CommandException.INVALID_BOOLEAN_CONSTANT);
+		if (constant == null || constant.length() < 1) {
+            throw new CommandException(CommandException.INVALID_BOOLEAN_CONSTANT);
+        }
 		switch (constant.charAt(0)) {
 		case 'T':
 		case 't':
-			if (constant.regionMatches(true, 1, "rue", 1, 3))
-				return true;
-			else
-				throw new CommandException(CommandException.INVALID_BOOLEAN_CONSTANT);
+			if (constant.regionMatches(true, 1, "rue", 1, 3)) {
+                return true;
+            } else {
+                throw new CommandException(CommandException.INVALID_BOOLEAN_CONSTANT);
+            }
 		case 'F':
 		case 'f':
-			if (constant.regionMatches(true, 1, "alse", 1, 4))
-				return false;
-			else
-				throw new CommandException(CommandException.INVALID_BOOLEAN_CONSTANT);
+			if (constant.regionMatches(true, 1, "alse", 1, 4)) {
+                return false;
+            } else {
+                throw new CommandException(CommandException.INVALID_BOOLEAN_CONSTANT);
+            }
 		default:
 			throw new CommandException(CommandException.INVALID_BOOLEAN_CONSTANT);
 		}

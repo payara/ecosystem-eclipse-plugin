@@ -71,7 +71,7 @@ public class RunnerRestGetProperty extends RunnerRest {
      */
     @Override
     protected ResultMap<String, String> createResult() {
-        return result = new ResultMap<String, String>();
+        return result = new ResultMap<>();
     }
 
     @Override
@@ -81,7 +81,7 @@ public class RunnerRestGetProperty extends RunnerRest {
         if ((childMessages == null) || childMessages.isEmpty()) {
             return false;
         }
-        result.value = new HashMap<String, String>(childMessages.size());
+        result.value = new HashMap<>(childMessages.size());
         
         for (MessagePart msg : childMessages) {
             String message = msg.getMessage();

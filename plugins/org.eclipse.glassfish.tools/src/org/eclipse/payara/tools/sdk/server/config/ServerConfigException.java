@@ -22,6 +22,11 @@ public class ServerConfigException extends GlassFishIdeException {
     // Class attributes                                                       //
     ////////////////////////////////////////////////////////////////////////////
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
     /** Exception message for invalid GlassFish JavaSE profile version. */
     static final String INVALID_SE_PLATFORM_VERSION
             = "Invalid GlassFish JavaSE version";

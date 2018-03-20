@@ -75,8 +75,9 @@ public class JvmConfigReader extends NodeListener implements
 
             @Override
             public void endNode(String qname) throws SAXException {
-                if ("config".equals(qname))
+                if ("config".equals(qname)) {
                     readConfig = false;
+                }
             }
         };
     }
@@ -102,8 +103,9 @@ public class JvmConfigReader extends NodeListener implements
                 String name = attributes.getLocalName(i);
                 // seems that sometimes from uknown reasons
                 // getLocalName returns empty string...
-                if ((name == null) || name.isEmpty())
+                if ((name == null) || name.isEmpty()) {
                     name = attributes.getQName(i);
+                }
                 String value = attributes.getValue(i);
                 if (name != null && name.length() > 0 && value != null && value.length() > 0) {
                     propMap.put(name, value);

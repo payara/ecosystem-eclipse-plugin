@@ -25,6 +25,11 @@ public class FetchLogException extends GlassFishIdeException {
     ////////////////////////////////////////////////////////////////////////////
 
     /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
+    /**
      * Constructs an instance of <code>FetchLogException</code> without
      * detail message.
      */

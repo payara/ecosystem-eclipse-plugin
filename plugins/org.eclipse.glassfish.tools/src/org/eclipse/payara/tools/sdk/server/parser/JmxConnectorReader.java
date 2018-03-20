@@ -71,7 +71,7 @@ public class JmxConnectorReader extends TargetConfigReader implements XMLReader 
 
     @Override
     public List<TreeParser.Path> getPathsToListen() {
-        LinkedList<TreeParser.Path> paths = new LinkedList<TreeParser.Path>();
+        LinkedList<TreeParser.Path> paths = new LinkedList<>();
         paths.add(new Path(path, this));
         paths.add(new Path(CONFIG_PATH, new TargetConfigMarker()));
         return paths;

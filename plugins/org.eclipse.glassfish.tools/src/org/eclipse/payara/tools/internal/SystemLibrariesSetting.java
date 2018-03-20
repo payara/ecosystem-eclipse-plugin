@@ -29,7 +29,7 @@ import org.eclipse.core.runtime.Path;
 public class SystemLibrariesSetting {
 
 	static final String SETTING_XML = "/.settings/org.eclipse.payara.tools.syslib.xml"; //$NON-NLS-1$
-	private ArrayList<Library> libraryList = new ArrayList<Library>();
+	private ArrayList<Library> libraryList = new ArrayList<>();
 
 	@XmlElement(name = "library")
 	public void setLibraryList(ArrayList<Library> libList) {
@@ -67,7 +67,7 @@ public class SystemLibrariesSetting {
 			    
 			    ArrayList<Library> libsList = settings.getLibraryList();
 				if(libsList==null){
-					libsList = new ArrayList<Library>();
+					libsList = new ArrayList<>();
 					settings.setLibraryList(libsList);
 				}
 			}
@@ -102,8 +102,9 @@ public class SystemLibrariesSetting {
 		for( Library lib : libraryList ){
 			if( jar.equals( new File(lib.getPath() ) )){
 				File f = new File( lib.getSource() );
-				if( f.exists() )
-					return f;
+				if( f.exists() ) {
+                    return f;
+                }
 				//Workspace location
 				IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(lib.getSource()));
 				return file.getLocation().toFile();

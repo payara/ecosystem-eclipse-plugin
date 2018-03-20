@@ -30,7 +30,7 @@ public class FilesetReader extends TreeParser.NodeListener {
 
     /** File sets retrieved from XML elements. */
     private Map<String, List<String>> filesets
-            = new HashMap<String, List<String>>();
+            = new HashMap<>();
     
     /** File set being actually processed. */
     private List<String> actualFileset = null;
@@ -90,7 +90,7 @@ public class FilesetReader extends TreeParser.NodeListener {
      * Reset this XML element reader.
      */
     public void reset() {
-        filesets = new HashMap<String, List<String>>();
+        filesets = new HashMap<>();
         actualFileset = null;
     }
 

@@ -39,8 +39,9 @@ public abstract class AbstractReader extends TreeParser.NodeListener {
         StringBuilder sb = new StringBuilder(
                 (pathPrefix != null ? pathPrefix.length() : 0)
                 + TreeParser.PATH_SEPARATOR.length() + node.length());
-        if (pathPrefix != null)
+        if (pathPrefix != null) {
             sb.append(pathPrefix);
+        }
         sb.append(TreeParser.PATH_SEPARATOR);
         sb.append(node);
         path = sb.toString();

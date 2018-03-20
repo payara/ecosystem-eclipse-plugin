@@ -66,7 +66,7 @@ public class RunnerHttpListComponents extends RunnerHttpTarget {
      */
     @Override
     protected ResultMap<String, List<String>> createResult() {
-        return result = new ResultMap<String, List<String>>();
+        return result = new ResultMap<>();
     }
 
    /**
@@ -84,7 +84,7 @@ public class RunnerHttpListComponents extends RunnerHttpTarget {
         String[] components = resourcesAttr != null
                 ? resourcesAttr.split(ServerUtils.MANIFEST_COMPONENTS_SEPARATOR)
                 : null;
-        result.value = new HashMap<String, List<String>>();
+        result.value = new HashMap<>();
         if (components != null) {
             for (String component : components) {
                 String decodedComponent;

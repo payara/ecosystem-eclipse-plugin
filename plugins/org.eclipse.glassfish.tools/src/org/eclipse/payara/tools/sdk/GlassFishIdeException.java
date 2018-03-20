@@ -28,6 +28,10 @@ public class GlassFishIdeException extends RuntimeException {
     // Class attributes                                                       //
     ////////////////////////////////////////////////////////////////////////////
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     /** Logger instance for this class. */
     private static final Logger LOGGER
             = new Logger(GlassFishIdeException.class);

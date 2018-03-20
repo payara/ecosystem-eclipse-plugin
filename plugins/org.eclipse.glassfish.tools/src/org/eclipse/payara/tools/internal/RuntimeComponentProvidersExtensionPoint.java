@@ -40,7 +40,7 @@ public final class RuntimeComponentProvidersExtensionPoint
     
     public static List<IRuntimeComponent> getRuntimeComponents( final IRuntime runtime )
     {
-        final List<IRuntimeComponent> components = new ArrayList<IRuntimeComponent>();
+        final List<IRuntimeComponent> components = new ArrayList<>();
         
         for( final RuntimeComponentProvider provider : getProviders() )
         {
@@ -66,7 +66,7 @@ public final class RuntimeComponentProvidersExtensionPoint
     {
         if( providers == null )
         {
-            final List<RuntimeComponentProvider> list = new ArrayList<RuntimeComponentProvider>();
+            final List<RuntimeComponentProvider> list = new ArrayList<>();
             
             for( final ProviderDef pdef : readExtensions() )
             {
@@ -87,7 +87,7 @@ public final class RuntimeComponentProvidersExtensionPoint
     
     private static List<ProviderDef> readExtensions()
     {
-        final List<ProviderDef> providers = new ArrayList<ProviderDef>();
+        final List<ProviderDef> providers = new ArrayList<>();
         
         for( final IConfigurationElement element 
              : getTopLevelElements( findExtensions( GlassfishToolsPlugin.SYMBOLIC_NAME, EXTENSION_POINT_ID ) ) )

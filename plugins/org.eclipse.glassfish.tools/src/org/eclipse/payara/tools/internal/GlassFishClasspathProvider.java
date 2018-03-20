@@ -30,6 +30,7 @@ public final class GlassFishClasspathProvider implements IClasspathProvider
 {
     private static final String MODULES_GROUP_ID = "modules";
 
+    @Override
     public List<IClasspathEntry> getClasspathEntries( final IProjectFacetVersion fv )
     {
         if( ! ProjectFacetsManager.isGroupDefined( MODULES_GROUP_ID ) )
@@ -54,11 +55,13 @@ public final class GlassFishClasspathProvider implements IClasspathProvider
     {
         private static final Class[] ADAPTER_TYPES = { IClasspathProvider.class };
 
+        @Override
         public Class[] getAdapterList()
         {
             return ADAPTER_TYPES;
         }
 
+        @Override
         public Object getAdapter( final Object adaptableObject, final Class adapterType )
         {
             return new GlassFishClasspathProvider();

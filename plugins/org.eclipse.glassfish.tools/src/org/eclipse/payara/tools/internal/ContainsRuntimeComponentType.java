@@ -27,6 +27,7 @@ public final class ContainsRuntimeComponentType extends PropertyTester{
     
     private static final String PROP_CONTAINS_RUNTIME_COMPONENT_TYPE = "containsRuntimeComponentType"; //$NON-NLS-1$
 
+    @Override
     public boolean test(final Object receiver, final String property, final Object[] args, final Object value) {
         try {
             if (!property.equals(PROP_CONTAINS_RUNTIME_COMPONENT_TYPE)) {

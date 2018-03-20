@@ -26,10 +26,6 @@ import java.util.logging.Level;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.payara.tools.GlassfishToolsPlugin;
-import org.eclipse.payara.tools.Messages;
-import org.eclipse.payara.tools.sdk.logging.Logger;
-import org.eclipse.payara.tools.sdk.utils.OsUtils;
 import org.eclipse.jst.j2ee.application.Module;
 import org.eclipse.jst.j2ee.application.WebModule;
 import org.eclipse.jst.j2ee.componentcore.J2EEModuleVirtualArchiveComponent;
@@ -37,6 +33,10 @@ import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.jst.j2ee.model.IEARModelProvider;
 import org.eclipse.jst.j2ee.model.ModelProviderManager;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.payara.tools.GlassfishToolsPlugin;
+import org.eclipse.payara.tools.Messages;
+import org.eclipse.payara.tools.sdk.logging.Logger;
+import org.eclipse.payara.tools.sdk.utils.OsUtils;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFile;
@@ -274,10 +274,13 @@ public class Utils {
 	
 	public static final boolean hasProjectFacet(IModule module, IProjectFacet facet) {
         try {
-            if( module == null )
+            if( module == null ) {
                 return false;
+            }
             if (module.getProject()==null)
+             {
                 return false; // handle the case that the project is removed from workspace
+            }
             IFacetedProject facetProject = ProjectFacetsManager.create(module.getProject());
             if( facetProject == null ){
                 return false;
@@ -301,8 +304,9 @@ public class Utils {
             	if( comp instanceof J2EEModuleVirtualArchiveComponent ){
             		J2EEModuleVirtualArchiveComponent archive = (J2EEModuleVirtualArchiveComponent)comp;
             		String aName = archive.getName();
-            		if( module.getName().endsWith( aName ) )
-            			return archive.getDeploymentPath().toPortableString();
+            		if( module.getName().endsWith( aName ) ) {
+                        return archive.getDeploymentPath().toPortableString();
+                    }
             	}
             }
         	

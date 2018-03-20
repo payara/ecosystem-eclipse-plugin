@@ -22,8 +22,8 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.payara.tools.server.GlassFishServer;
 import org.eclipse.jst.server.core.Servlet;
+import org.eclipse.payara.tools.server.GlassFishServer;
 import org.eclipse.wst.server.core.IModuleArtifact;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.model.IURLProvider;
@@ -59,8 +59,9 @@ public class EclipseToPayaraArchiveConverter extends LaunchableAdapterDelegate {
 
 		GlassFishServer glassfish = load(server, GlassFishServer.class);
 		
-		if (glassfish == null)
-			return null;
+		if (glassfish == null) {
+            return null;
+        }
 
 		// Implementation borrowed from org.eclipse.jst.server.tomcat.core.
 		// TomcatServerLaunchableAdapterDelegate.java
@@ -74,8 +75,9 @@ public class EclipseToPayaraArchiveConverter extends LaunchableAdapterDelegate {
 
 		try {
 			IURLProvider delegate = load(server, IURLProvider.class);
-			if (delegate == null)
-				return null;
+			if (delegate == null) {
+                return null;
+            }
 
 			URL url = delegate.getModuleRootURL(moduleArtifact.getModule());
 			if (url == null) {

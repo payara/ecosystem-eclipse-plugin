@@ -40,7 +40,7 @@ public class StartupArgsImpl implements StartupArgs {
 	public void addJavaArgs(String javaArgsString) {
 		String[] args = javaArgsString.split("\\s+(?=-)");
 		if (javaArgs == null) {
-			javaArgs = new ArrayList<String>(args.length);
+			javaArgs = new ArrayList<>(args.length);
 		}
 		Collections.addAll(javaArgs, args);
 	}
@@ -52,7 +52,7 @@ public class StartupArgsImpl implements StartupArgs {
 	 */
 	public void addGlassfishArgs(String glassfishArgsString) {
 		if (glassfishArgs == null) {
-			glassfishArgs = new ArrayList<String>();
+			glassfishArgs = new ArrayList<>();
 		}
 		glassfishArgs.add(glassfishArgsString);
 	}

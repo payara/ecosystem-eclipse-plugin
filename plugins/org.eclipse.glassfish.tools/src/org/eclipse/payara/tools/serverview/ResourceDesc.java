@@ -32,6 +32,7 @@ public class ResourceDesc implements Comparable<ResourceDesc> {
         return cmdSuffix;
     }
 
+    @Override
     public int compareTo(ResourceDesc o) {
         int result = name.compareTo(o.name);
         if(result == 0) {

@@ -25,6 +25,11 @@ public class DataException extends GlassFishIdeException {
     // Class attributes                                                       //
     ////////////////////////////////////////////////////////////////////////////
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
     /** Exception message for invalid GlassFish administration interface
      *  type. */
     static final String INVALID_ADMIN_INTERFACE =

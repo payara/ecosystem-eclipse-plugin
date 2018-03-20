@@ -59,7 +59,7 @@ public final class PluginUtil
             throw new RuntimeException();
         }
 
-        final List<IExtension> extensions = new ArrayList<IExtension>();
+        final List<IExtension> extensions = new ArrayList<>();
 
         for( IExtension extension : point.getExtensions() )
         {
@@ -71,7 +71,7 @@ public final class PluginUtil
 
     public static Collection<IConfigurationElement> getTopLevelElements( final Collection<IExtension> extensions )
     {
-        final List<IConfigurationElement> elements = new ArrayList<IConfigurationElement>();
+        final List<IConfigurationElement> elements = new ArrayList<>();
 
         for( IExtension extension : extensions )
         {

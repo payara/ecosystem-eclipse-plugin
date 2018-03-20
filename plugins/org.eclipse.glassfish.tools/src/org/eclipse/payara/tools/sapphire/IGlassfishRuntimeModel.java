@@ -11,11 +11,6 @@ package org.eclipse.payara.tools.sapphire;
 
 import static org.eclipse.sapphire.modeling.annotations.FileSystemResourceType.FOLDER;
 
-import org.eclipse.payara.tools.sapphire.GlassfishServerConfigServices.JdkDefaultValueService;
-import org.eclipse.payara.tools.sapphire.GlassfishServerConfigServices.JdkValidationService;
-import org.eclipse.payara.tools.sapphire.GlassfishServerConfigServices.ServerLocationListener;
-import org.eclipse.payara.tools.sapphire.GlassfishServerConfigServices.ServerLocationValidationService;
-import org.eclipse.payara.tools.sapphire.GlassfishServerConfigServices.UniqueRuntimeNameValidationService;
 import org.eclipse.sapphire.Element;
 import org.eclipse.sapphire.ElementType;
 import org.eclipse.sapphire.Type;

@@ -67,7 +67,7 @@ public class ResourcesReader extends NodeListener implements
     private Map<String, String> properties = null;
 
     private Map<String, Map<String, String>> resourceData =
-            new HashMap<String, Map<String, String>>();
+            new HashMap<>();
 
     public ResourcesReader(ResourceType type) {
         this(type.getDefaultPath(), type.getDefaultKeyName());
@@ -81,7 +81,7 @@ public class ResourcesReader extends NodeListener implements
     @Override
     public void readAttributes(String qname, Attributes attributes) throws
             SAXException {
-        properties = new HashMap<String, String>();
+        properties = new HashMap<>();
 
         String resourceName = attributes.getValue(keyName);
         properties.put(keyName, resourceName);
@@ -112,7 +112,7 @@ public class ResourcesReader extends NodeListener implements
 
     @Override
     public List<TreeParser.Path> getPathsToListen() {
-        LinkedList<TreeParser.Path> paths = new LinkedList<TreeParser.Path>();
+        LinkedList<TreeParser.Path> paths = new LinkedList<>();
         paths.add(new Path(path, this));
         return paths;
     }

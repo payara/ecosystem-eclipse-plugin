@@ -39,8 +39,9 @@ class GlassfishWebDeploymentDescriptorSapphire extends
 	protected boolean isPossibleToCreate() {
 		// check for existence of older sun descriptor
 		IPath sunDescriptor = file.getLocation().removeLastSegments(1).append(IGlassfishWebDeploymentDescriptor.SUN_WEB_DEPLOYMENT_DESCRIPTOR_NAME);
-		if (sunDescriptor.toFile().exists())
-			return false;
+		if (sunDescriptor.toFile().exists()) {
+            return false;
+        }
 		return true;
 	}
 

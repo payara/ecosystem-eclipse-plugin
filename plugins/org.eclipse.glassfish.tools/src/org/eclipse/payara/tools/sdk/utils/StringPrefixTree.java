@@ -311,7 +311,7 @@ public class StringPrefixTree<Type> {
         while((item = stack.getLast())!= null) {
             // Tree step down.
             if (item.child.hasNext()) {
-                stack.addLast(new StackItem((Node)item.child.next()));
+                stack.addLast(new StackItem(item.child.next()));
             // Current node processing and tree setep up.
             } else {
                 item.node.destroy();

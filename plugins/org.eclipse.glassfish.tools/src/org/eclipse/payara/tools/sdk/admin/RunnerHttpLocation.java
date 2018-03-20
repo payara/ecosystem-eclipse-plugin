@@ -44,15 +44,16 @@ public class RunnerHttpLocation extends RunnerHttp {
 
     @Override
     protected Result createResult() {
-        return result = new ResultMap<String, String>();
+        return result = new ResultMap<>();
     }
 
     @Override
     protected boolean processResponse() {
-        if (manifest == null)
+        if (manifest == null) {
             return false;
+        }
         
-        result.value = new HashMap<String, String>();
+        result.value = new HashMap<>();
         Attributes mainAttrs = manifest.getMainAttributes();
             if(mainAttrs != null) {
                 result.value.put("Base-Root_value", mainAttrs.getValue("Base-Root_value"));

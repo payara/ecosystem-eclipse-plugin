@@ -172,11 +172,13 @@ public class ConfigUtils {
                  Logger.log(Level.WARNING, "Cannot process JAR file "
                          + jar.getAbsolutePath() + ":", ise);
             } finally {
-                if (zip != null) try {
-                    zip.close();
-                } catch (IOException ioe) {
-                    Logger.log(Level.WARNING, "Cannot close JAR file "
-                         + jar.getAbsolutePath() + ":", ioe);
+                if (zip != null) {
+                    try {
+                        zip.close();
+                    } catch (IOException ioe) {
+                        Logger.log(Level.WARNING, "Cannot close JAR file "
+                             + jar.getAbsolutePath() + ":", ioe);
+                    }
                 }
             }
             
