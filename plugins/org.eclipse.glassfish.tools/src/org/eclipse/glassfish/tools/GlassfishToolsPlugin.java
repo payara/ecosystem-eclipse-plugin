@@ -33,7 +33,7 @@ import org.osgi.framework.BundleContext;
  */
 public class GlassfishToolsPlugin extends AbstractUIPlugin {
 
-	public static final String RUNTIME_TYPE = "glassfish"; //$NON-NLS-1$
+	public static final String RUNTIME_TYPE = "payara.runtime"; //$NON-NLS-1$
 
 	public static final String GF_SERVER_IMG = "gf-server.img";
 

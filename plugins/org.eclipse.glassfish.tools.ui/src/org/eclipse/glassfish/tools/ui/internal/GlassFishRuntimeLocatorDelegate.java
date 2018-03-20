@@ -37,7 +37,7 @@ import org.eclipse.wst.server.core.model.RuntimeLocatorDelegate;
 @SuppressWarnings("restriction")
 public final class GlassFishRuntimeLocatorDelegate extends RuntimeLocatorDelegate {
 
-	private static final IRuntimeType RUNTIME_TYPE = ServerCore.findRuntimeType("glassfish");
+	private static final IRuntimeType RUNTIME_TYPE = ServerCore.findRuntimeType("payara.runtime");
 
 	@Override
 	public void searchForRuntimes(IPath path, final IRuntimeSearchListener listener, IProgressMonitor monitor) {

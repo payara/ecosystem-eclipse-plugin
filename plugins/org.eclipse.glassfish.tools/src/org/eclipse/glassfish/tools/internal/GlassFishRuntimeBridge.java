@@ -34,41 +34,33 @@ import org.eclipse.wst.server.core.IRuntimeType;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.core.internal.Runtime;
 
-public final class GlassFishRuntimeBridge implements IRuntimeBridge
-{
-    @Override
-
-    public Set<String> getExportedRuntimeNames() throws CoreException
-    {
-        final SetFactory<String> namesSetFactory = SetFactory.start();
-        
-        for( final IRuntime runtime : ServerCore.getRuntimes() )
-        {
-            final IRuntimeType type = runtime.getRuntimeType();
-            
-            if( type != null && "glassfish".equals( type.getId() ) )
-            {
-                namesSetFactory.add( runtime.getId() );
-            }
-        }
-        
-        return namesSetFactory.result();
-    }
+public final class GlassFishRuntimeBridge implements IRuntimeBridge {
     
     @Override
+    public Set<String> getExportedRuntimeNames() throws CoreException {
+        final SetFactory<String> namesSetFactory = SetFactory.start();
 
-    public IStub bridge( final String name ) throws CoreException
-    {
-        if( name == null )
-        {
-            throw new IllegalArgumentException();
+        for (final IRuntime runtime : ServerCore.getRuntimes()) {
+            final IRuntimeType type = runtime.getRuntimeType();
+
+            if (type != null && "payara.runtime".equals(type.getId())) {
+                namesSetFactory.add(runtime.getId());
+            }
         }
-        
-        return new Stub( name );
+
+        return namesSetFactory.result();
     }
 
-    private static class Stub extends IRuntimeBridge.Stub
-    {
+    @Override
+    public IStub bridge(final String name) throws CoreException {
+        if (name == null) {
+            throw new IllegalArgumentException();
+        }
+
+        return new Stub(name);
+    }
+
+    private static class Stub extends IRuntimeBridge.Stub {
         private String id;
 
         public Stub(String id) {
@@ -77,75 +69,74 @@ public final class GlassFishRuntimeBridge implements IRuntimeBridge
 
         public List<IRuntimeComponent> getRuntimeComponents() {
             List<IRuntimeComponent> components = new ArrayList<IRuntimeComponent>(2);
-            final IRuntime runtime = findRuntime( this.id );
-            
+            final IRuntime runtime = findRuntime(this.id);
+
             if (runtime == null)
                 return components;
-            
-            final GlassFishRuntime gfRuntime = (GlassFishRuntime) runtime.loadAdapter( GlassFishRuntime.class, new NullProgressMonitor() );
-            
-            if( gfRuntime != null )
-            {
+
+            final GlassFishRuntime gfRuntime = (GlassFishRuntime) runtime.loadAdapter(GlassFishRuntime.class, new NullProgressMonitor());
+
+            if (gfRuntime != null) {
                 final Version gfVersion = gfRuntime.getVersion();
-                
-                if( gfVersion != null )
-                {
+
+                if (gfVersion != null) {
                     // GlassFish
-                    
-                    final IRuntimeComponentType gfComponentType = RuntimeManager.getRuntimeComponentType( "glassfish" );
-                    final String gfComponentVersionStr = gfVersion.matches( "[5" ) ? "5" : ( gfVersion.matches( "[4" ) ? "4" : "3.1" );
-                    final IRuntimeComponentVersion gfComponentVersion = gfComponentType.getVersion( gfComponentVersionStr );
-                    
+
+                    final IRuntimeComponentType gfComponentType = RuntimeManager.getRuntimeComponentType("payara.runtime");
+                    final String gfComponentVersionStr = gfVersion.matches("[5") ? "5" : (gfVersion.matches("[4") ? "4" : "3.1");
+                    final IRuntimeComponentVersion gfComponentVersion = gfComponentType.getVersion(gfComponentVersionStr);
+
                     Map<String, String> properties = new HashMap<String, String>(5);
-                    if (runtime.getLocation() != null)
+                    if (runtime.getLocation() != null) {
                         properties.put("location", runtime.getLocation().toPortableString());
-                    else
+                    } else {
                         properties.put("location", "");
+                    }
+                    
                     properties.put("name", runtime.getName());
                     properties.put("id", runtime.getId());
                     if (runtime.getRuntimeType() != null) {
                         properties.put("type", runtime.getRuntimeType().getName());
                         properties.put("type-id", runtime.getRuntimeType().getId());
                     }
-                    
-                    components.add( RuntimeManager.createRuntimeComponent( gfComponentVersion, properties ) );
-                    
+
+                    components.add(RuntimeManager.createRuntimeComponent(gfComponentVersion, properties));
+
                     // Java Runtime Environment
-                    
-                    components.add( StandardJreRuntimeComponent.create( gfRuntime.getVMInstall() ) );
-                    
+
+                    components.add(StandardJreRuntimeComponent.create(gfRuntime.getVMInstall()));
+
                     // Other
-                    
-                    components.addAll( RuntimeComponentProvidersExtensionPoint.getRuntimeComponents( runtime ) );
+
+                    components.addAll(RuntimeComponentProvidersExtensionPoint.getRuntimeComponents(runtime));
                 }
             }
-            
+
             return components;
         }
 
         public Map<String, String> getProperties() {
             final Map<String, String> props = new HashMap<String, String>();
-            final IRuntime runtime = findRuntime( this.id );
+            final IRuntime runtime = findRuntime(this.id);
             if (runtime != null) {
                 props.put("id", runtime.getId());
                 props.put("localized-name", runtime.getName());
-                String s = ((Runtime)runtime).getAttribute("alternate-names", (String)null);
+                String s = ((Runtime) runtime).getAttribute("alternate-names", (String) null);
                 if (s != null)
                     props.put("alternate-names", s);
             }
             return props;
         }
-        
+
         public IStatus validate(final IProgressMonitor monitor) {
-            final IRuntime runtime = findRuntime( this.id );
-            if( runtime != null ) {
-                return runtime.validate( monitor );
+            final IRuntime runtime = findRuntime(this.id);
+            if (runtime != null) {
+                return runtime.validate(monitor);
             }
-            return Status.OK_STATUS; 
+            return Status.OK_STATUS;
         }
-        
-        private static final IRuntime findRuntime( final String id )
-        {
+
+        private static final IRuntime findRuntime(final String id) {
             IRuntime[] runtimes = ServerCore.getRuntimes();
             int size = runtimes.length;
 
@@ -159,5 +150,5 @@ public final class GlassFishRuntimeBridge implements IRuntimeBridge
             return null;
         }
     }
-    
+
 }

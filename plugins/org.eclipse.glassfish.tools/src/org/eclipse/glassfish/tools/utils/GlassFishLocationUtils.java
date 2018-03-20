@@ -106,8 +106,8 @@ public final class GlassFishLocationUtils {
     
 	// Defined as:
 	// <extension point="org.eclipse.wst.common.project.facet.core.runtimes">
-	// <runtime-component-type id="glassfish"/>
-	private static final String RUNTIME_COMPONENT_ID = "glassfish"; //$NON-NLS-1$
+	// <runtime-component-type id="payara.runtime"/>
+	private static final String RUNTIME_COMPONENT_ID = "payara.runtime"; //$NON-NLS-1$
 
 	private static final Map<File, SoftReference<GlassFishLocationUtils>> CACHE = new HashMap<>();
 

@@ -61,7 +61,7 @@ import org.eclipse.wst.server.core.model.RuntimeDelegate;
 @SuppressWarnings("restriction")
 public final class GlassFishRuntime extends RuntimeDelegate implements IJavaRuntime {
 
-	public static final String TYPE_ID = "glassfish";
+	public static final String TYPE_ID = "payara.runtime";
 	public static final IRuntimeType TYPE = ServerCore.findRuntimeType(TYPE_ID);
 	public static final String ATTR_SERVER_ROOT = "server.root"; //$NON-NLS-1$
 	public static final String ATTR_SERVER_JDK = "server.jdk";
@@ -307,14 +307,12 @@ public final class GlassFishRuntime extends RuntimeDelegate implements IJavaRunt
 		}
 
 		@Override
-
 		public String read() {
 			return ((org.eclipse.wst.server.core.internal.Runtime) this.runtime).getAttribute(this.attribute,
 					(String) null);
 		}
 
 		@Override
-
 		public void write(final String value) {
 			if (this.runtime instanceof RuntimeWorkingCopy) {
 				final RuntimeWorkingCopy wc = (RuntimeWorkingCopy) this.runtime;

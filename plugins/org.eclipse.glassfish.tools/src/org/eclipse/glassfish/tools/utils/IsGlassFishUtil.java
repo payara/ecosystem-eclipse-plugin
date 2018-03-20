@@ -13,7 +13,7 @@ import org.eclipse.wst.common.project.facet.core.runtime.IRuntime;
 import org.eclipse.wst.common.project.facet.core.runtime.IRuntimeComponent;
 
 /**
- * Set of utility methods to help determining whether something constitutes "GlassFish".
+ * Set of utility methods to help determining whether something constitutes "Payara" or "GlassFish".
  * 
  * 
  * @author <a href="mailto:konstantin.komissarchik@oracle.com">Konstantin
@@ -24,9 +24,7 @@ public final class IsGlassFishUtil {
 	
 	public static boolean isGlassFish(org.eclipse.wst.server.core.IRuntime runtime) {
 		if (runtime != null) {
-			final String type = runtime.getRuntimeType().getId();
-
-			return type.equals("glassfish");
+			return runtime.getRuntimeType().getId().equals("payara.runtime");
 		}
 
 		return false;
@@ -34,7 +32,7 @@ public final class IsGlassFishUtil {
 
 	public static boolean isGlassFish(IRuntime runtime) {
 		if (runtime != null) {
-			for (final IRuntimeComponent component : runtime.getRuntimeComponents()) {
+			for (IRuntimeComponent component : runtime.getRuntimeComponents()) {
 				return isGlassFish(component);
 			}
 		}
@@ -44,7 +42,7 @@ public final class IsGlassFishUtil {
 
 	public static boolean isGlassFish(IRuntimeComponent component) {
 		if (component != null) {
-			return (component.getRuntimeComponentType().getId().equals("glassfish"));
+			return component.getRuntimeComponentType().getId().equals("payara.runtime");
 		}
 
 		return false;

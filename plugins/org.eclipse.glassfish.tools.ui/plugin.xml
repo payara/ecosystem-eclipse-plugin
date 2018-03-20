@@ -11,7 +11,7 @@
     <extension point="org.eclipse.wst.server.ui.wizardFragments">
        <fragment
              class="org.eclipse.glassfish.tools.ui.wizards.NewPayaraRuntimeWizardFragment"
-             typeIds="glassfish">
+             typeIds="payara.runtime">
        </fragment>
        <fragment
              class="org.eclipse.glassfish.tools.ui.wizards.NewPayaraServerWizardFragment"
@@ -26,7 +26,7 @@
     <extension point="org.eclipse.wst.server.ui.serverImages">
        <image
              id="org.eclipse.jst.server.glassfish.image"
-       		 typeIds="glassfish,payara.server"
+       		 typeIds="payara.runtime,payara.server"
              icon="icons/obj16/glassfishserver.gif">
        </image>
     </extension>
@@ -34,7 +34,7 @@
     <extension point="org.eclipse.wst.common.project.facet.ui.images">
        <image
              path="icons/obj16/glassfishserver.gif"
-             runtime-component-type="glassfish">
+             runtime-component-type="payara.runtime">
        </image>
     </extension>
     
@@ -44,7 +44,7 @@
     -->
     <extension point="org.eclipse.wst.common.project.facet.core.runtimes">
         <adapter>
-            <runtime-component id="glassfish"/>
+            <runtime-component id="payara.runtime"/>
             <factory class="org.eclipse.glassfish.tools.ui.internal.GlassFishRuntimeComponentLabelProviderFactory"/>
             <type class="org.eclipse.wst.common.project.facet.ui.IRuntimeComponentLabelProvider"/>
         </adapter>
@@ -410,7 +410,7 @@
     <runtimeLocator
       id="org.eclipse.glassfish.tools"
       class="org.eclipse.glassfish.tools.ui.internal.GlassFishRuntimeLocatorDelegate"
-	  typeIds="glassfish"/>
+	  typeIds="payara.runtime"/>
   </extension> 
 
 </plugin>
