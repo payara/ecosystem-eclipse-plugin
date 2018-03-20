@@ -104,14 +104,14 @@ public class UrlData {
         Map<String, String> result = new LinkedHashMap<>();
         if (data != null && data.length() > 0) {
             String[] properties = data.split("[;?&:]");
-            for (int i = 0; i < properties.length; i++) {
-                if (properties[i] != null && properties[i].length() > 0) {
-                    int eqIndex = properties[i].indexOf("=");
+            for (String propertie : properties) {
+                if (propertie != null && propertie.length() > 0) {
+                    int eqIndex = propertie.indexOf("=");
                     if (eqIndex != -1) {
-                        result.put(properties[i].substring(0, eqIndex), properties[i].substring(eqIndex + 1));
+                        result.put(propertie.substring(0, eqIndex), propertie.substring(eqIndex + 1));
                     } else {
                         // not sure if we should keep this. Possibly invalid property
-                        result.put(properties[i], "");
+                        result.put(propertie, "");
                     }
                 }
             }

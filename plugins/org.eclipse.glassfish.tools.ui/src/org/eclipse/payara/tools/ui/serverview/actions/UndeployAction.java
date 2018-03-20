@@ -78,9 +78,9 @@ public class UndeployAction extends Action {
 
                                 IModule[] im = server.getModules();
                                 IModule imodule = null;
-                                for (int i = 0; i < im.length; i++) {
-                                    if (im[i].getName().equals(module.getName())) {
-                                        imodule = im[i];
+                                for (IModule element : im) {
+                                    if (element.getName().equals(module.getName())) {
+                                        imodule = element;
 
                                     }
                                 }
