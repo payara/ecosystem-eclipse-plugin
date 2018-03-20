@@ -12,9 +12,8 @@ package org.eclipse.glassfish.tools.facets;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-
 public interface IGlassfishDeploymentDescriptor {
-	
+
 	public void store(IProgressMonitor monitor) throws CoreException;
 
 }

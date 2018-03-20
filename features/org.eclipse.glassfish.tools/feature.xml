@@ -1,5 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<feature id="org.eclipse.glassfish.tools" label="%featureName" plugin="org.eclipse.glassfish.tools" provider-name="%providerName" version="1.0.0.qualifier">
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.eclipse.glassfish.tools"
+      label="%featureName"
+      version="1.0.0.qualifier"
+      provider-name="%providerName"
+      plugin="org.eclipse.glassfish.tools">
 
    <description>
       %featureDescription
@@ -14,22 +19,80 @@
    </license>
 
    <requires>
-
-      <import feature="org.eclipse.platform" match="compatible" version="4.7.2"/>
-      
-      <import feature="org.eclipse.sapphire" match="compatible" version="9.1"/>
-      <import feature="org.eclipse.sapphire.java" match="compatible" version="9.1"/>
-      <import feature="org.eclipse.sapphire.java.jdt" match="compatible" version="9.1"/>
-      <import feature="org.eclipse.sapphire.modeling.xml" match="compatible" version="9.1"/>
-      <import feature="org.eclipse.sapphire.osgi" match="compatible" version="9.1"/>
-      <import feature="org.eclipse.sapphire.platform" match="compatible" version="9.1"/>
-      <import feature="org.eclipse.sapphire.ui" match="compatible" version="9.1"/>
-      <import feature="org.eclipse.sapphire.ui.swt.xml.editor" match="compatible" version="9.1"/>
-
+      <import feature="org.eclipse.sapphire.modeling.xml" version="9.1" match="compatible"/>
+      <import feature="org.eclipse.sapphire.platform" version="9.1" match="compatible"/>
+      <import feature="org.eclipse.sapphire.ui" version="9.1" match="compatible"/>
+      <import feature="org.eclipse.platform" version="4.7.2" match="compatible"/>
+      <import feature="org.eclipse.sapphire" version="9.1" match="compatible"/>
+      <import feature="org.eclipse.sapphire.java" version="9.1" match="compatible"/>
+      <import feature="org.eclipse.sapphire.java.jdt" version="9.1" match="compatible"/>
+      <import feature="org.eclipse.sapphire.modeling.xml" version="9.1" match="compatible"/>
+      <import feature="org.eclipse.sapphire.osgi" version="9.1" match="compatible"/>
+      <import feature="org.eclipse.sapphire.platform" version="9.1" match="compatible"/>
+      <import feature="org.eclipse.sapphire.ui" version="9.1" match="compatible"/>
+      <import feature="org.eclipse.sapphire.ui.swt.xml.editor" version="9.1" match="compatible"/>
+      <import plugin="org.apache.xerces"/>
+      <import plugin="org.apache.ant"/>
+      <import plugin="org.eclipse.jdt.core"/>
+      <import plugin="org.eclipse.jst.server.core"/>
+      <import plugin="org.eclipse.jst.j2ee"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.wst.server.core"/>
+      <import plugin="org.eclipse.wst.server.ui"/>
+      <import plugin="org.eclipse.wst.common.project.facet.core"/>
+      <import plugin="org.eclipse.emf.edit.ui"/>
+      <import plugin="org.eclipse.datatools.connectivity"/>
+      <import plugin="org.eclipse.datatools.connectivity.ui"/>
+      <import plugin="org.eclipse.debug.ui"/>
+      <import plugin="org.eclipse.jdt.debug"/>
+      <import plugin="org.eclipse.ui.console"/>
+      <import plugin="org.eclipse.wst.common.frameworks.ui"/>
+      <import plugin="org.eclipse.jst.j2ee.ejb"/>
+      <import plugin="org.eclipse.jst.common.project.facet.core"/>
+      <import plugin="org.eclipse.jst.j2ee.web"/>
+      <import plugin="org.eclipse.ant.core"/>
+      <import plugin="org.eclipse.ui.externaltools"/>
+      <import plugin="org.eclipse.sapphire.modeling"/>
+      <import plugin="org.eclipse.sapphire.workspace"/>
+      <import plugin="org.eclipse.jst.j2ee.core"/>
+      <import plugin="org.eclipse.jst.server.generic.core"/>
+      <import plugin="org.eclipse.jdt.debug.ui"/>
+      <import plugin="org.eclipse.wst.common.project.facet.ui"/>
+      <import plugin="org.eclipse.ui.forms"/>
+      <import plugin="org.eclipse.jem.util"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.emf.ecore"/>
+      <import plugin="org.eclipse.emf.codegen"/>
+      <import plugin="org.eclipse.jst.servlet.ui"/>
+      <import plugin="org.eclipse.jst.j2ee.ui"/>
+      <import plugin="org.eclipse.jdt.ui"/>
+      <import plugin="org.eclipse.jdt.launching"/>
+      <import plugin="org.eclipse.jst.jee.ui"/>
+      <import plugin="org.eclipse.jst.common.project.facet.ui"/>
+      <import plugin="org.eclipse.ui.navigator"/>
+      <import plugin="org.eclipse.ui.workbench.texteditor"/>
+      <import plugin="org.eclipse.text"/>
    </requires>
 
-   <plugin download-size="0" id="org.eclipse.glassfish.tools" install-size="0" unpack="false" version="0.0.0"/>
-   <plugin download-size="0" id="org.eclipse.glassfish.tools.jver" install-size="0" unpack="false" version="0.0.0"/>
-   <plugin download-size="0" id="org.eclipse.glassfish.tools.ui" install-size="0" unpack="false" version="0.0.0"/>
+   <plugin
+         id="org.eclipse.glassfish.tools"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.glassfish.tools.jver"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.glassfish.tools.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
 </feature>

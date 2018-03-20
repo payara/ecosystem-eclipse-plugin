@@ -9,34 +9,31 @@
 
 package org.eclipse.glassfish.tools.handlers;
 
+import static org.eclipse.glassfish.tools.utils.WtpUtil.load;
+import static org.eclipse.wst.server.core.IServer.STATE_STARTED;
+
 import org.eclipse.core.expressions.PropertyTester;
-import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.glassfish.tools.GlassFishServer;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
 import org.eclipse.wst.server.core.IServer;
 
 public class GlassFishStateTester extends PropertyTester {
 
 	@Override
-	public boolean test(Object receiver, String property, Object[] args,
-			Object expectedValue) {
+	public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
 		IServer server = (IServer) receiver;
-		if( property.equals("isRunning"))
-			return (server.getServerState() == IServer.STATE_STARTED);
-		if( property.equals("isRemote")){
-			GlassFishServer gf = (GlassFishServer)server.loadAdapter(GlassFishServer.class,
-					new NullProgressMonitor());
-			if( gf!=null)
-				return gf.isRemote();
+		
+		if (property.equals("isRunning")) {
+			return (server.getServerState() == STATE_STARTED);
 		}
-//		SunAppServer sunServer = (SunAppServer)server.getAdapter(SunAppServer.class);
-//		if (sunServer == null) {
-//			sunServer = (SunAppServer) server.loadAdapter(SunAppServer.class, new NullProgressMonitor());
-//		}
-//		try {
-//			return sunServer.isRunning();
-//		} catch (CoreException e) {
-//			SunAppSrvPlugin.logMessage("Testing server state failed", e);
-//		}
+		
+		if (property.equals("isRemote")) {
+			GlassFishServer gf = load(server, GlassFishServer.class);
+			
+			if (gf != null) {
+				return gf.isRemote();
+			}
+		}
+
 		return false;
 	}
 

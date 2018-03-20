@@ -17,6 +17,66 @@
     id="runtimeComponentProviders" 
     name="%runtimeComponentProvidersExtensionPoint" 
     schema="schema/runtimeComponentProviders.exsd"/>
+    
+    
+    
+    <extension point="org.eclipse.debug.core.launchConfigurationTypes">
+        
+        <launchConfigurationType
+            id="org.glassfish.jst.server.GlassfishServerLaunchConfigurationType"
+            name="%glassfish.runConfigurationName"
+            delegate="org.eclipse.glassfish.tools.server.starting.GlassfishServerLaunchDelegate"
+            modes="run, debug"
+            sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector"
+            sourcePathComputerId="org.eclipse.jst.server.generic.core.sourcePathComputer"/>
+            
+    </extension> 
+    
+    <extension point="org.eclipse.wst.server.core.launchableAdapters">
+      <launchableAdapter
+            id="org.glassfish.launchableAdapter"
+            class="org.eclipse.glassfish.tools.server.archives.EclipseToPayaraArchiveConverter"
+            priority="999"
+            typeIds="payara.server"/>
+    </extension>
+    
+    <extension point="org.eclipse.wst.server.core.runtimeTypes">
+        <runtimeType
+             id="glassfish"
+             class="org.eclipse.glassfish.tools.server.GlassFishRuntime"
+             name="%runtimeTypeNameglassfish"
+             description="%runtimeTypeDescriptionglassfish"
+             vendor="%runtimeTypeGlassFishVendor">
+            <moduleType types="jst.web" versions="2.2, 2.3, 2.4, 2.5, 3.0, 3.1, 4.0"/>
+            <moduleType types="jst.ejb" versions="1.1, 2.0, 2.1, 3.0, 3.1, 3.2"/>
+            <moduleType types="jst.connector" versions="1.0, 1.5, 1.6, 1.7"/>
+            <moduleType types="jst.ear" versions="1.2, 1.3, 1.4, 5.0, 6.0, 7.0, 8.0"/>
+            <moduleType types="jst.utility"  versions="1.0"/>
+            <moduleType types="jst.appclient" versions="1.2, 1.3, 1.4, 5.0, 6.0, 7.0, 8.0"/>
+       </runtimeType>
+    </extension>
+    
+    <extension point="org.eclipse.wst.server.core.serverTypes">
+            <serverType
+             id="payara.server"
+             class="org.eclipse.glassfish.tools.server.GlassFishServer"
+             behaviourClass="org.eclipse.glassfish.tools.server.deploying.GlassFishServerBehaviour"
+             name="%serverTypeNameglassfish"
+             description="%serverTypeDescriptionglassfish"
+             hasConfiguration="false"
+             launchConfigId="org.glassfish.jst.server.GlassfishServerLaunchConfigurationType"
+             launchModes="run,debug"
+             runtime="true"
+             runtimeTypeId="glassfish"
+             startBeforePublish="true"
+             supportsRemoteHosts="true">
+       </serverType>
+    </extension>
+    
+    
+    
+    
+    
 
   <!--
     ********************
@@ -118,72 +178,24 @@
     </provider>
   </extension>
 
+
+
+
   <!--
     *********
     * Other *
     *********
   -->
 
-    <extension point="org.eclipse.debug.core.launchConfigurationTypes">
-        
-        <launchConfigurationType
-            id="org.glassfish.jst.server.GlassfishServerLaunchConfigurationType"
-            name="%glassfish.runConfigurationName"
-            delegate="org.eclipse.glassfish.tools.GlassfishServerLaunchDelegate"
-            modes="run, debug"
-            sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector"
-            sourcePathComputerId="org.eclipse.jst.server.generic.core.sourcePathComputer"/>
-            
-    </extension> 
+   
     
-    <extension point="org.eclipse.wst.server.core.launchableAdapters">
-      <launchableAdapter
-            class="org.eclipse.glassfish.tools.GlassfishLaunchableAdapterDelegate"
-            id="org.glassfish.launchableAdapter"
-            priority="999"
-            typeIds="glassfish.server"/>
-   	</extension>
+	<extension point="org.eclipse.wst.common.project.facet.core.runtimeBridges">	
+		<bridge
+			id="org.eclipse.glassfish.tools.bridge"
+ 			class="org.eclipse.glassfish.tools.internal.GlassFishRuntimeBridge"/>
+	</extension>
     
-    <extension point="org.eclipse.wst.server.core.runtimeTypes">
-    	<runtimeType
-             id="glassfish"
-             class="org.eclipse.glassfish.tools.GlassFishRuntime"
-             name="%runtimeTypeNameglassfish"
-             description="%runtimeTypeDescriptionglassfish"
-             vendor="%runtimeTypeGlassFishVendor">
-          	<moduleType types="jst.web" versions="2.2, 2.3, 2.4, 2.5, 3.0, 3.1, 4.0"/>
-            <moduleType types="jst.ejb" versions="1.1, 2.0, 2.1, 3.0, 3.1, 3.2"/>
-            <moduleType types="jst.connector" versions="1.0, 1.5, 1.6, 1.7"/>
-            <moduleType types="jst.ear" versions="1.2, 1.3, 1.4, 5.0, 6.0, 7.0, 8.0"/>
-            <moduleType types="jst.utility"  versions="1.0"/>
-            <moduleType types="jst.appclient" versions="1.2, 1.3, 1.4, 5.0, 6.0, 7.0, 8.0"/>
-       </runtimeType>
-    </extension>
-    
-    <extension point="org.eclipse.wst.server.core.serverTypes">
-    	<serverType
-             id="glassfish.server"
-             class="org.eclipse.glassfish.tools.GlassFishServer"
-             behaviourClass="org.eclipse.glassfish.tools.GlassFishServerBehaviour"
-             name="%serverTypeNameglassfish"
-             description="%serverTypeDescriptionglassfish"
-             hasConfiguration="false"
-             launchConfigId="org.glassfish.jst.server.GlassfishServerLaunchConfigurationType"
-             launchModes="run,debug"
-             runtime="true"
-             runtimeTypeId="glassfish"
-             startBeforePublish="true"
-             supportsRemoteHosts="true">
-       </serverType>
-    </extension>
-    
-  <extension point="org.eclipse.wst.common.project.facet.core.runtimeBridges">
-    <bridge
-      id="org.eclipse.glassfish.tools.bridge"
-      class="org.eclipse.glassfish.tools.internal.GlassFishRuntimeBridge"/>
-  </extension>
-    
-    <extension  point="org.eclipse.wst.common.project.facet.core.facets">
+    <extension point="org.eclipse.wst.common.project.facet.core.facets">
     
         <project-facet id="glassfish.web">
             <label>%glassfish.web.facet</label>
@@ -652,10 +664,10 @@
 	    		</with>     
             </enablement>
             <action type="INSTALL">
-                <operation class="org.eclipse.glassfish.tools.InstallJAXRS"/>
+                <operation class="org.eclipse.glassfish.tools.internal.InstallJAXRS"/>
             </action>
             <action type="UNINSTALL">
-                <operation class="org.eclipse.glassfish.tools.InstallJAXRS"/>
+                <operation class="org.eclipse.glassfish.tools.internal.InstallJAXRS"/>
             </action>
             <label>JAX-RS GlassFish Library</label>
             <priority>10000</priority>
@@ -665,92 +677,74 @@
 
     <extension id="MyJAXRSLibraryProvider" point="org.eclipse.jst.ws.jaxrs.core.jaxrsLibraryProvider" >
         <jaxrsLibraryprovider
-        libraryProviderID="org.eclipse.glassfish.tools.jaxrsLibraryproviderID" 
-        showUpdateDD="true"
-		updateDDSelected="true" 
-		sevletClassName="com.sun.jersey.spi.container.servlet.ServletContainer"/>
-
+        		libraryProviderID="org.eclipse.glassfish.tools.jaxrsLibraryproviderID" 
+        		showUpdateDD="true"
+			updateDDSelected="true" 
+			sevletClassName="com.sun.jersey.spi.container.servlet.ServletContainer"/>
     </extension>
 
 
-  <extension
-        point="org.eclipse.core.expressions.definitions">
+  <extension point="org.eclipse.core.expressions.definitions">
      <definition
            id="org.eclipse.glassfish.tools.oneGlassfishSelected">
         <and>
-           <count
-                 value="1">
-           </count>
-           <iterate
-                 ifEmpty="false">
+           <count value="1"/>
+           <iterate ifEmpty="false">
                  <or>
            			<reference definitionId="org.eclipse.glassfish.tools.isGlassfish"/>
            		</or>
            	</iterate>
         </and>
      </definition>
-     <definition
-           id="org.eclipse.glassfish.tools.isGlassfish">
-              <adapt
-                    type="org.eclipse.wst.server.core.IServer">
+     
+     <definition id="org.eclipse.glassfish.tools.isGlassfish">
+              <adapt type="org.eclipse.wst.server.core.IServer">
                  <and>
                        <test
                              property="org.eclipse.wst.server.ui.serverType"
-                             value="glassfish.server">
+                             value="payara.server">
                        </test>
                  </and>
               </adapt>
      </definition>
-     <definition
-           id="org.eclipse.glassfish.tools.moreGlassfishSelected">
-           <iterate
-                 ifEmpty="false">
+     
+     <definition id="org.eclipse.glassfish.tools.moreGlassfishSelected">
+           <iterate ifEmpty="false">
              	<or>
            			<reference definitionId="org.eclipse.glassfish.tools.isGlassfish"/>
            		</or>
            </iterate>
      </definition>
-     <definition
-           id="org.eclipse.glassfish.tools.oneRunningGlassfishSelected">
+     
+     <definition id="org.eclipse.glassfish.tools.oneRunningGlassfishSelected">
            <and>
-           <count
-                 value="1">
-           </count>
-           <iterate
-                 ifEmpty="false">
-                 <and>
+           <count value="1"/>
+           <iterate ifEmpty="false">
+                <and>
              	<or>
            			<reference definitionId="org.eclipse.glassfish.tools.isGlassfish"/>
            		</or>
-           		<test
-                          property="org.eclipse.glassfish.tools.isRunning">
-                  </test>
+           		<test property="org.eclipse.glassfish.tools.isRunning"/>
                   </and>
            </iterate>     
          </and>
      </definition>
-     <definition
-           id="org.eclipse.glassfish.tools.isRemoteGlassfish">
+     
+     <definition id="org.eclipse.glassfish.tools.isRemoteGlassfish">
            <and>
-           <count
-                 value="1">
-           </count>
-           <iterate
-                 ifEmpty="false">
+           <count value="1"/>
+           <iterate ifEmpty="false">
                  <and>
 	             	<or>
 	           			<reference definitionId="org.eclipse.glassfish.tools.isGlassfish"/>
 	           		</or>
-	           		<test
-	                          property="org.eclipse.glassfish.tools.isRemote">
-	                </test>
+	           		<test property="org.eclipse.glassfish.tools.isRemote"/>
                 </and>
            </iterate>     
          </and>
      </definition>
-     
-     
   </extension>
+  
   <extension
         point="org.eclipse.core.expressions.propertyTesters">
      <propertyTester

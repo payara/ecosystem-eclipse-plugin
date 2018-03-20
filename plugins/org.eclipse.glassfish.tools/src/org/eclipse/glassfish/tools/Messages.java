@@ -9,11 +9,14 @@
 
 package org.eclipse.glassfish.tools;
 
+import org.eclipse.osgi.util.NLS;
 
-public class Messages extends org.eclipse.osgi.util.NLS {
-    static {
-        org.eclipse.osgi.util.NLS.initializeMessages(
-                "org.eclipse.glassfish.tools.Messages", Messages.class);
+public class Messages extends NLS {
+    
+	static {
+        initializeMessages(
+           "org.eclipse.glassfish.tools.Messages", 
+           Messages.class);
     }
     
     public static String serverHome;

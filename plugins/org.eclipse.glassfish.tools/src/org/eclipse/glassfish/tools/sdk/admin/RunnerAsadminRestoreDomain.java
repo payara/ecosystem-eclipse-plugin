@@ -9,9 +9,9 @@
 
 package org.eclipse.glassfish.tools.sdk.admin;
 
-import org.eclipse.glassfish.tools.GlassFishServer;
 import org.eclipse.glassfish.tools.sdk.logging.Logger;
 import org.eclipse.glassfish.tools.sdk.utils.OsUtils;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
 
 /**
  *

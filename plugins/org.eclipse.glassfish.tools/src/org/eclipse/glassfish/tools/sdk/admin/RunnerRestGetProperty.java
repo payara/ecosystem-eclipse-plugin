@@ -18,9 +18,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 
-import org.eclipse.glassfish.tools.GlassFishServer;
 import org.eclipse.glassfish.tools.sdk.admin.response.MessagePart;
 import org.eclipse.glassfish.tools.sdk.logging.Logger;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
 
 /**
  * Command runner that executes get property command.

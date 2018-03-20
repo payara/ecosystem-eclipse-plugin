@@ -33,7 +33,8 @@ Require-Bundle: org.apache.xerces,
  org.eclipse.sapphire.workspace,
  org.eclipse.jst.j2ee.core,
  org.eclipse.jst.server.generic.core,
- org.eclipse.sapphire.platform
+ org.eclipse.sapphire.platform,
+ org.eclipse.jem.util;bundle-version="2.1.200"
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.glassfish.tools;
   uses:="org.eclipse.debug.core,
@@ -64,13 +65,8 @@ Export-Package: org.eclipse.glassfish.tools;
    org.eclipse.core.commands,
    org.eclipse.wst.server.core,
    org.eclipse.swt.widgets",
- org.eclipse.glassfish.tools.serverview,
- org.eclipse.glassfish.tools.utils;
-  uses:="org.eclipse.glassfish.tools.sdk.server.parser,
-   org.eclipse.glassfish.tools.sdk.data,
-   org.eclipse.jface.resource,
-   org.eclipse.core.resources,
-   org.eclipse.glassfish.tools",
+ org.eclipse.glassfish.tools.preferences,
+ org.eclipse.glassfish.tools.sapphire,
  org.eclipse.glassfish.tools.sdk,
  org.eclipse.glassfish.tools.sdk.admin,
  org.eclipse.glassfish.tools.sdk.admin.cloud,
@@ -81,7 +77,16 @@ Export-Package: org.eclipse.glassfish.tools;
  org.eclipse.glassfish.tools.sdk.server,
  org.eclipse.glassfish.tools.sdk.server.config,
  org.eclipse.glassfish.tools.sdk.server.parser,
- org.eclipse.glassfish.tools.sdk.utils
+ org.eclipse.glassfish.tools.sdk.utils,
+ org.eclipse.glassfish.tools.server,
+ org.eclipse.glassfish.tools.server.deploying,
+ org.eclipse.glassfish.tools.serverview,
+ org.eclipse.glassfish.tools.utils;
+  uses:="org.eclipse.glassfish.tools.sdk.server.parser,
+   org.eclipse.glassfish.tools.sdk.data,
+   org.eclipse.jface.resource,
+   org.eclipse.core.resources,
+   org.eclipse.glassfish.tools"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ClassPath: .
 

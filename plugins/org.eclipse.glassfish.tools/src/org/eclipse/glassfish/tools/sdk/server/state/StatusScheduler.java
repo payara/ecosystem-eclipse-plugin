@@ -17,12 +17,12 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import org.eclipse.glassfish.tools.GlassFishServer;
 import org.eclipse.glassfish.tools.sdk.GlassFishStatus;
 import org.eclipse.glassfish.tools.sdk.GlassFishStatusListener;
 import org.eclipse.glassfish.tools.sdk.data.GlassFishServerStatus;
 import org.eclipse.glassfish.tools.sdk.data.GlassFishStatusCheck;
 import org.eclipse.glassfish.tools.sdk.logging.Logger;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
 
 /**
  * Thread responsible for processing all server status checks and updating

@@ -19,9 +19,9 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.util.logging.Level;
 
-import org.eclipse.glassfish.tools.GlassFishServer;
 import org.eclipse.glassfish.tools.sdk.GlassFishIdeException;
 import org.eclipse.glassfish.tools.sdk.logging.Logger;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
 
 /**
  * Command runner for deploying directory or file.

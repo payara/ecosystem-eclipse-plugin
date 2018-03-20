@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.eclipse.glassfish.tools.GlassFishServer;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
 
 /**
  * Command runner for retrieving list of web services from server.

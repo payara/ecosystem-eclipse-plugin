@@ -19,7 +19,6 @@ import java.net.HttpURLConnection;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
-import org.eclipse.glassfish.tools.GlassFishServer;
 import org.eclipse.glassfish.tools.sdk.TaskEvent;
 import org.eclipse.glassfish.tools.sdk.TaskState;
 import org.eclipse.glassfish.tools.sdk.data.ToolConfig;
@@ -27,6 +26,7 @@ import org.eclipse.glassfish.tools.sdk.data.ToolsConfig;
 import org.eclipse.glassfish.tools.sdk.logging.Logger;
 import org.eclipse.glassfish.tools.sdk.utils.OsUtils;
 import org.eclipse.glassfish.tools.sdk.utils.ServerUtils;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
 
 /**
  * GlassFish server administration command execution using local

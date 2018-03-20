@@ -13,8 +13,8 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import org.eclipse.glassfish.tools.GlassFishServer;
 import org.eclipse.glassfish.tools.sdk.GlassFishIdeException;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
 
 /**
  * GlassFish Server Stop Instance Command Entity.

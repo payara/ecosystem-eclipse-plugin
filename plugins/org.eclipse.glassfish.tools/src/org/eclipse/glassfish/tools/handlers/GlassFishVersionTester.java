@@ -9,21 +9,21 @@
 
 package org.eclipse.glassfish.tools.handlers;
 
+import static org.eclipse.glassfish.tools.utils.WtpUtil.load;
+
 import java.io.File;
 
 import org.eclipse.core.expressions.PropertyTester;
-import org.eclipse.glassfish.tools.GlassFishServer;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
 import org.eclipse.wst.server.core.IServer;
 
 public class GlassFishVersionTester extends PropertyTester {
 
 	@Override
-	public boolean test(Object receiver, String property, Object[] args,
-			Object expectedValue) {
+	public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
 		IServer server = (IServer) receiver;
-		GlassFishServer serverAdapter = (GlassFishServer) server
-				.loadAdapter(GlassFishServer.class, null);
-		return new File(serverAdapter.getServerInstallationDirectory() + "/modules").exists();
+		
+		return new File(load(server, GlassFishServer.class).getServerInstallationDirectory() + "/modules").exists();
 	}
 
 }

@@ -9,9 +9,9 @@
 
 package org.eclipse.glassfish.tools.sdk.admin.cloud;
 
-import org.eclipse.glassfish.tools.GlassFishServer;
 import org.eclipse.glassfish.tools.sdk.admin.Command;
 import org.eclipse.glassfish.tools.sdk.admin.RunnerRest;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
 
 /**
  * GlassFish cloud administration command execution using REST interface.

@@ -25,9 +25,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 
-import org.eclipse.glassfish.tools.GlassFishServer;
 import org.eclipse.glassfish.tools.sdk.logging.Logger;
 import org.eclipse.glassfish.tools.sdk.utils.OsUtils;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
 
 /**
  * Support for <code>asadmin</code> <code>--passwordfile</code> file format.

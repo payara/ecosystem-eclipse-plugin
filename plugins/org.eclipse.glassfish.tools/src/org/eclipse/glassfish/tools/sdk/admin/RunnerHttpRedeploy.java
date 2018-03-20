@@ -9,8 +9,8 @@
 
 package org.eclipse.glassfish.tools.sdk.admin;
 
-import org.eclipse.glassfish.tools.GlassFishServer;
 import org.eclipse.glassfish.tools.sdk.utils.Utils;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
 
 /**
  * GlassFish Server <code>redeploy</code> Admin Command Execution

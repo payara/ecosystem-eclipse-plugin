@@ -13,8 +13,9 @@ package org.eclipse.glassfish.tools.ui.wizards;
 public class GlassfishWizardResources extends org.eclipse.osgi.util.NLS {
     
 	static {
-        org.eclipse.osgi.util.NLS.initializeMessages(
-                "org.eclipse.glassfish.tools.ui.wizards.GlassfishWizardResources", GlassfishWizardResources.class);
+        initializeMessages(
+            "org.eclipse.glassfish.tools.ui.wizards.GlassfishWizardResources", 
+            GlassfishWizardResources.class);
     }
 	
 	public static String wzdRuntimeDescription;

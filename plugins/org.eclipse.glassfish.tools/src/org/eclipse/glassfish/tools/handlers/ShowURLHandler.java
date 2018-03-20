@@ -9,37 +9,37 @@
 
 package org.eclipse.glassfish.tools.handlers;
 
+import static org.eclipse.glassfish.tools.GlassfishToolsPlugin.logMessage;
+import static org.eclipse.ui.browser.IWorkbenchBrowserSupport.LOCATION_BAR;
+import static org.eclipse.ui.browser.IWorkbenchBrowserSupport.NAVIGATION_BAR;
+
 import java.net.URL;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.glassfish.tools.GlassfishToolsPlugin;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.browser.IWebBrowser;
-import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 
 public class ShowURLHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		String url = event.getParameter("org.eclipse.glassfish.tools.commands.urlParam");
-		// this should not happen
-		if (url == null)
+		
+		// This should not happen
+		if (url == null) {
 			return null;
-		try {
-			IWorkbenchBrowserSupport browserSupport = PlatformUI.getWorkbench()
-					.getBrowserSupport();
-			IWebBrowser browser = browserSupport.createBrowser(
-					IWorkbenchBrowserSupport.LOCATION_BAR
-							| IWorkbenchBrowserSupport.NAVIGATION_BAR, null,
-					null, null);
-			browser.openURL(new URL(url));
-		} catch (Exception e) {
-			GlassfishToolsPlugin.logMessage("Error opening browser: "
-					+ e.getMessage());
-
 		}
+		
+		try {
+			PlatformUI.getWorkbench()
+					  .getBrowserSupport()
+					  .createBrowser(LOCATION_BAR | NAVIGATION_BAR, null, null, null)
+					  .openURL(new URL(url));
+		} catch (Exception e) {
+			logMessage("Error opening browser: " + e.getMessage());
+		}
+		
 		return null;
 	}
 

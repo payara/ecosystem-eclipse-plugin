@@ -12,8 +12,8 @@ package org.eclipse.glassfish.tools.sdk.admin;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.glassfish.tools.GlassFishServer;
 import org.eclipse.glassfish.tools.sdk.admin.response.MessagePart;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
 
 /**
  * Command runner for commands that retrieve some kind of list.

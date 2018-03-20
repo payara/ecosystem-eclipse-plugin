@@ -17,30 +17,23 @@ import org.eclipse.ui.part.IPageBookViewPage;
 
 public class GlassFishLogPageParticipant implements IConsolePageParticipant {
 
-	public void activated() {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void deactivated() {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void dispose() {
-		// TODO Auto-generated method stub
-
-	}
-
 	public void init(IPageBookViewPage page, IConsole console) {
-		if(page.getControl() instanceof StyledText) {
-			StyledText viewer = (StyledText)(page.getControl());
-			viewer.addLineStyleListener(new LogStyle(((TextConsole)console).getDocument()));
+		if (page.getControl() instanceof StyledText) {
+			StyledText viewer = (StyledText) (page.getControl());
+			viewer.addLineStyleListener(new LogStyle(((TextConsole) console).getDocument()));
 		}
 	}
 
+	public void activated() {
+	}
+
+	public void deactivated() {
+	}
+
+	public void dispose() {
+	}
+
 	public <T> T getAdapter(Class<T> adapter) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

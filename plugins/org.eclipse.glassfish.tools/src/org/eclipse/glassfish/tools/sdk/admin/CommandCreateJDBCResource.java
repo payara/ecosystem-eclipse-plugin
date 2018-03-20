@@ -16,8 +16,8 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import org.eclipse.glassfish.tools.GlassFishServer;
 import org.eclipse.glassfish.tools.sdk.GlassFishIdeException;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
 
 /**
  * Command that creates JDBC resource on server.

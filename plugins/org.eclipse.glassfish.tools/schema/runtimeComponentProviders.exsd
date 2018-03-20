@@ -55,7 +55,7 @@
                   
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn="org.eclipse.glassfish.tools.RuntimeComponentProvider"/>
+                  <meta.attribute kind="java" basedOn="org.eclipse.glassfish.tools.internal.RuntimeComponentProvider"/>
                </appInfo>
             </annotation>
          </attribute>

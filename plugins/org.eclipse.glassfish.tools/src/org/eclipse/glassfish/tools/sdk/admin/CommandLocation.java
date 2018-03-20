@@ -12,8 +12,8 @@ package org.eclipse.glassfish.tools.sdk.admin;
 import java.io.File;
 import java.net.URI;
 
-import org.eclipse.glassfish.tools.GlassFishServer;
 import org.eclipse.glassfish.tools.sdk.utils.ServerUtils;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
 
 /**
  * Locations command used to determine locations (installation, domain etc.)

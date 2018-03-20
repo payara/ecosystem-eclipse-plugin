@@ -9,7 +9,7 @@
 
 package org.eclipse.glassfish.tools.log;
 
-import org.eclipse.glassfish.tools.GlassFishServer;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
 
 /**
  * Common base class for log filters.

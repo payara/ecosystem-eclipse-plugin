@@ -9,7 +9,7 @@
 
 package org.eclipse.glassfish.tools.internal;
 
-import org.eclipse.glassfish.tools.ServerStatus;
+import org.eclipse.glassfish.tools.server.ServerStatus;
 
 public interface ServerStateListener {
 	

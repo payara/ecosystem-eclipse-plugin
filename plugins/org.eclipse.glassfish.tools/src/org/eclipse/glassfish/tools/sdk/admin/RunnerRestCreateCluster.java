@@ -15,7 +15,7 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import org.eclipse.glassfish.tools.GlassFishServer;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
 
 /**
  * Command runner for creating a cluster.

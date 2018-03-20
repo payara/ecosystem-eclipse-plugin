@@ -31,8 +31,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWizard;
 import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
 import org.eclipse.wst.server.core.IRuntime;
-
-import org.eclipse.glassfish.tools.GlassFishRuntime;
+import org.eclipse.glassfish.tools.server.GlassFishRuntime;
 import org.eclipse.glassfish.tools.utils.ResourceUtils;
 
 /**

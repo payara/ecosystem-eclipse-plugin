@@ -9,10 +9,10 @@
 
 package org.eclipse.glassfish.tools.sdk.server.state;
 
-import org.eclipse.glassfish.tools.GlassFishServer;
 import org.eclipse.glassfish.tools.sdk.GlassFishStatus;
 import org.eclipse.glassfish.tools.sdk.data.GlassFishServerStatus;
 import org.eclipse.glassfish.tools.sdk.logging.Logger;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
 
 /**
  * GlassFish server status entity.

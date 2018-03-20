@@ -15,9 +15,9 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import org.eclipse.glassfish.tools.GlassFishServer;
 import org.eclipse.glassfish.tools.sdk.GlassFishIdeException;
 import org.eclipse.glassfish.tools.sdk.logging.Logger;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
 
 /**
  * Command that retrieves property (properties) from server.

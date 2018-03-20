@@ -11,7 +11,6 @@ package org.eclipse.glassfish.tools.preferences;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.glassfish.tools.GlassfishToolsPlugin;
-import org.eclipse.glassfish.tools.PreferenceConstants;
 import org.eclipse.jface.preference.IPreferenceStore;
 
 /**

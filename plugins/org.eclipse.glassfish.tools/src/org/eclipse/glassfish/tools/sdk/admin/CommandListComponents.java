@@ -14,8 +14,8 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import org.eclipse.glassfish.tools.GlassFishServer;
 import org.eclipse.glassfish.tools.sdk.GlassFishIdeException;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
 
 /**
  * Command that retrieves list of components defined on server.

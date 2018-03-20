@@ -9,28 +9,23 @@
 
 package org.eclipse.glassfish.tools.handlers;
 
-import org.eclipse.glassfish.tools.GlassFishServer;
-import org.eclipse.glassfish.tools.GlassFishServerBehaviour;
-import org.eclipse.glassfish.tools.GlassfishToolsPlugin;
-import org.eclipse.jface.viewers.IStructuredSelection;
+import static org.eclipse.glassfish.tools.GlassfishToolsPlugin.logMessage;
+import static org.eclipse.glassfish.tools.utils.URIHelper.getServerHomeURI;
+import static org.eclipse.glassfish.tools.utils.URIHelper.showURI;
+import static org.eclipse.glassfish.tools.utils.WtpUtil.load;
+
+import org.eclipse.glassfish.tools.server.deploying.GlassFishServerBehaviour;
 import org.eclipse.wst.server.core.IServer;
 
 public class OpenServerHomeHandler extends AbstractGlassfishSelectionHandler {
 
 	@Override
-	public void processSelection(IStructuredSelection selection) {
-		IServer server = (IServer) selection.getFirstElement();
-		if (server != null){
-			GlassFishServerBehaviour sab = (GlassFishServerBehaviour)server.loadAdapter(
-					GlassFishServerBehaviour.class, null);
-			GlassFishServer sunserver = sab.getGlassfishServerDelegate();
-			try {
-				//showPageInDefaultBrowser(AdminURLHelper.getURL("", server));
-				URIHelper.showURI(URIHelper.getServerHomeURI(sunserver));
-			} catch (Exception e) {
-		           GlassfishToolsPlugin.logMessage("Error opening browser: "+e.getMessage());
-			}
-	    }
+	public void processSelection(IServer server) {
+		try {
+			showURI(getServerHomeURI(load(server, GlassFishServerBehaviour.class).getGlassfishServerDelegate()));
+		} catch (Exception e) {
+			logMessage("Error opening folder in desktop " + e.getMessage());
+		}
 	}
 
 }

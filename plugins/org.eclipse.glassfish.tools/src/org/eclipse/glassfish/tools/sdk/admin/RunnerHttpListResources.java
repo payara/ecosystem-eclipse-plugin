@@ -14,8 +14,8 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.jar.Attributes;
 
-import org.eclipse.glassfish.tools.GlassFishServer;
 import org.eclipse.glassfish.tools.sdk.utils.ServerUtils;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
 
 /**
  * Command runner for retrieving resources from server.

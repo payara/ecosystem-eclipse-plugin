@@ -9,13 +9,14 @@
 
 package org.eclipse.glassfish.tools.log;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import org.eclipse.glassfish.tools.GlassfishToolsPlugin;
 import org.eclipse.glassfish.tools.sdk.server.FetchLog;
@@ -24,8 +25,6 @@ import org.eclipse.glassfish.tools.sdk.server.FetchLog;
 public class GlassfishConsole extends AbstractGlassfishConsole implements IGlassFishConsole {
 
 	private static ScheduledExecutorService stopService = Executors.newSingleThreadScheduledExecutor();
-	
-	private StopJob job = new StopJob();
 	
 	GlassfishConsole(String name, ILogFilter filter) {
 		super(name, 
@@ -59,9 +58,7 @@ public class GlassfishConsole extends AbstractGlassfishConsole implements IGlass
 	public synchronized void startLogging(FetchLog... logFetchers) {
 		if (stopJobResult != null) {
 			try {
-				//System.out.println("stop job result get started");
 				stopJobResult.get();
-				//System.out.println("stop job result get finished");
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			} catch (ExecutionException e) {
@@ -101,9 +98,9 @@ public class GlassfishConsole extends AbstractGlassfishConsole implements IGlass
 	
 	@Override
 	public synchronized void stopLogging(int afterSeconds) {
-		if (isLogging())
-			stopJobResult = stopService.schedule(job, afterSeconds, TimeUnit.SECONDS);
-		//System.out.println("stop job scheduled");
+		if (isLogging()) {
+			stopJobResult = stopService.schedule(() -> stopLoggingImpl(), afterSeconds, SECONDS);
+		}
 	}
 
 	@Override
@@ -111,11 +108,11 @@ public class GlassfishConsole extends AbstractGlassfishConsole implements IGlass
 		super.dispose();
 		stopLogging();
 		try {
-			latch.await();
+			if (latch != null) {
+				latch.await();
+			}
 			out.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
+		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
@@ -123,23 +120,12 @@ public class GlassfishConsole extends AbstractGlassfishConsole implements IGlass
 	@Override
 	public synchronized boolean isLogging() {
 		boolean isLogging = (readers != null) && (readers.size() > 0) && (stopJobResult == null);
-		//System.out.println("isLogging " + isLogging);
 		return isLogging;
 	}
 
 	@Override
 	public synchronized void setLogFilter(ILogFilter filter) {
 		this.filter = filter;
-	}
-	
-	class StopJob implements Runnable {
-
-		@Override
-		public void run() {
-			//System.out.println("cleanup job");
-			stopLoggingImpl();
-		}
-		
 	}
 	
 }

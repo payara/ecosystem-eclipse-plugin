@@ -9,12 +9,28 @@
 
 package org.eclipse.glassfish.tools.ui.serverview.actions;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.eclipse.glassfish.tools.GlassfishToolsPlugin.logError;
+import static org.eclipse.glassfish.tools.ui.serverview.dynamicnodes.NodeTypes.ADMINOBJECT_RESOURCE;
+import static org.eclipse.glassfish.tools.ui.serverview.dynamicnodes.NodeTypes.CONN_CONNECTION_POOL;
+import static org.eclipse.glassfish.tools.ui.serverview.dynamicnodes.NodeTypes.CONN_RESOURCE;
+import static org.eclipse.glassfish.tools.ui.serverview.dynamicnodes.NodeTypes.JAVAMAIL_RESOURCE;
+import static org.eclipse.glassfish.tools.ui.serverview.dynamicnodes.NodeTypes.JDBC_CONNECTION_POOL;
+import static org.eclipse.glassfish.tools.ui.serverview.dynamicnodes.NodeTypes.JDBC_RESOURCE;
+
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.glassfish.tools.GlassfishToolsPlugin;
+import org.eclipse.glassfish.tools.sdk.TaskState;
+import org.eclipse.glassfish.tools.sdk.admin.CommandDeleteResource;
+import org.eclipse.glassfish.tools.sdk.admin.ResultString;
+import org.eclipse.glassfish.tools.sdk.admin.ServerAdmin;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
+import org.eclipse.glassfish.tools.server.deploying.GlassFishServerBehaviour;
+import org.eclipse.glassfish.tools.ui.serverview.dynamicnodes.ResourcesNode;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -28,31 +44,16 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.navigator.ICommonActionExtensionSite;
 import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
-import org.eclipse.glassfish.tools.sdk.TaskState;
-import org.eclipse.glassfish.tools.sdk.admin.CommandDeleteResource;
-import org.eclipse.glassfish.tools.sdk.admin.ResultString;
-import org.eclipse.glassfish.tools.sdk.admin.ServerAdmin;
-import org.eclipse.glassfish.tools.sdk.data.IdeContext;
-
-import org.eclipse.glassfish.tools.GlassFishServer;
-import org.eclipse.glassfish.tools.GlassFishServerBehaviour;
-import org.eclipse.glassfish.tools.GlassfishToolsPlugin;
-import org.eclipse.glassfish.tools.ui.serverview.NodeTypes;
-import org.eclipse.glassfish.tools.ui.serverview.ResourcesNode;
 
 public class UnregisterResourceAction extends Action {
 	ISelection selection;
 	ICommonActionExtensionSite actionSite;
 
-	public UnregisterResourceAction(ISelection selection,
-			ICommonActionExtensionSite actionSite) {
+	public UnregisterResourceAction(ISelection selection, ICommonActionExtensionSite actionSite) {
 		setText("Unregister");
-		ISharedImages sharedImages = PlatformUI.getWorkbench()
-				.getSharedImages();
-		setImageDescriptor(sharedImages
-				.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE));
-		setDisabledImageDescriptor(sharedImages
-				.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE_DISABLED));
+		ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
+		setImageDescriptor(sharedImages.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE));
+		setDisabledImageDescriptor(sharedImages.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE_DISABLED));
 		setActionDefinitionId(IWorkbenchActionDefinitionIds.DELETE);
 
 		this.selection = selection;
@@ -70,75 +71,51 @@ public class UnregisterResourceAction extends Action {
 				}
 
 				try {
-					final GlassFishServerBehaviour be = currentResource
-							.getServer().getServerBehaviourAdapter();
+					final GlassFishServerBehaviour be = currentResource.getServer().getServerBehaviourAdapter();
 					IRunnableWithProgress op = new IRunnableWithProgress() {
 						public void run(IProgressMonitor monitor) {
-							GlassFishServer server = be
-									.getGlassfishServerDelegate();
+							GlassFishServer server = be.getGlassfishServerDelegate();
 
 							String propName = "";
 							boolean cascadeDelete = false;
 							String type = currentResource.getType();
-							if (type.equals(NodeTypes.JDBC_RESOURCE)) {
+							if (type.equals(JDBC_RESOURCE)) {
 								propName = "jdbc_resource_name";
-							} else if (type
-									.equals(NodeTypes.JDBC_CONNECTION_POOL)) {
+							} else if (type.equals(JDBC_CONNECTION_POOL)) {
 								propName = "jdbc_connection_pool_id";
 								cascadeDelete = true;
 							}
 
-							else if (type.equals(NodeTypes.CONN_RESOURCE)) {
+							else if (type.equals(CONN_RESOURCE)) {
 								propName = "connector_resource_pool_id";
 							}
 
-							else if (type
-									.equals(NodeTypes.CONN_CONNECTION_POOL)) {
+							else if (type.equals(CONN_CONNECTION_POOL)) {
 								propName = "poolname";
 							}
 
-							else if (type
-									.equals(NodeTypes.ADMINOBJECT_RESOURCE)) {
+							else if (type.equals(ADMINOBJECT_RESOURCE)) {
 								propName = "jndi_name";
 							}
 
-							else if (type.equals(NodeTypes.JAVAMAIL_RESOURCE)) {
+							else if (type.equals(JAVAMAIL_RESOURCE)) {
 								propName = "jndi_name";
 							}
 
-							String resourceName = currentResource.getResource()
-									.getName();
-							CommandDeleteResource command = new CommandDeleteResource(
-									resourceName, currentResource.getResource()
-											.getCommandSuffix(), propName,
-									cascadeDelete);
-							Future<ResultString> future = ServerAdmin
-									.<ResultString> exec(server, command,
-											new IdeContext());
+							String resourceName = currentResource.getResource().getName();
+							CommandDeleteResource command = new CommandDeleteResource(resourceName,
+									currentResource.getResource().getCommandSuffix(), propName, cascadeDelete);
+							Future<ResultString> future = ServerAdmin.<ResultString>exec(server, command);
 							ResultString result;
 							try {
-								result = future.get(30, TimeUnit.SECONDS);
-								if (!TaskState.COMPLETED.equals(result
-										.getState())) {
-									GlassfishToolsPlugin
-											.logMessage("Unable to delete resource "
-													+ resourceName
-													+ ". Message: "
-													+ result.getValue());
+								result = future.get(30, SECONDS);
+								if (!TaskState.COMPLETED.equals(result.getState())) {
+									GlassfishToolsPlugin.logMessage("Unable to delete resource " + resourceName
+											+ ". Message: " + result.getValue());
 								}
-							} catch (InterruptedException e) {
-								GlassfishToolsPlugin.logError(
-										"Unable to delete resource "
-												+ resourceName, e);
-							} catch (ExecutionException e) {
-								GlassfishToolsPlugin.logError(
-										"Unable to delete resource "
-												+ resourceName, e);
-							} catch (TimeoutException e) {
-								GlassfishToolsPlugin.logError(
-										"Unable to delete resource "
-												+ resourceName, e);
-							}
+							} catch (InterruptedException | ExecutionException | TimeoutException e) {
+								logError("Unable to delete resource " + resourceName, e);
+							} 
 
 						}
 					};
@@ -146,7 +123,7 @@ public class UnregisterResourceAction extends Action {
 					if (shell != null) {
 						new ProgressMonitorDialog(shell).run(true, false, op);
 					}
-					// //?? currentResource.getParent().refresh();
+					
 					StructuredViewer view = actionSite.getStructuredViewer();
 					view.refresh(currentResource.getParent());
 

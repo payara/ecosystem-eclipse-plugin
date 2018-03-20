@@ -9,19 +9,26 @@
 
 package org.eclipse.glassfish.tools.ui.properties;
 
+import static org.eclipse.core.runtime.Status.OK_STATUS;
+import static org.eclipse.swt.SWT.FILL;
+import static org.eclipse.wst.server.core.IServer.PUBLISH_CLEAN;
+import static org.eclipse.wst.server.core.IServer.STATE_STOPPED;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.glassfish.tools.sapphire.IGlassfishServerModel;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
+import org.eclipse.glassfish.tools.server.deploying.GlassFishServerBehaviour;
+import org.eclipse.glassfish.tools.ui.wizards.BaseWizardFragment;
 import org.eclipse.sapphire.FilteredListener;
 import org.eclipse.sapphire.PropertyValidationEvent;
 import org.eclipse.sapphire.modeling.Status;
 import org.eclipse.sapphire.modeling.Status.Severity;
 import org.eclipse.sapphire.ui.def.DefinitionLoader;
 import org.eclipse.sapphire.ui.forms.swt.SapphireForm;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -30,25 +37,24 @@ import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.core.internal.Server;
 
-import org.eclipse.glassfish.tools.GlassFishServer;
-import org.eclipse.glassfish.tools.GlassFishServerBehaviour;
-import org.eclipse.glassfish.tools.IGlassfishServerModel;
-import org.eclipse.glassfish.tools.ui.wizards.GlassfishSapphireWizardFragment;
-
+/**
+ * Properties that are being shown for the Payara / GlassFish server when e.g. the server is right clicked
+ * in the Servers view and "Properties" is chosen from the context menu. 
+ *
+ */
 @SuppressWarnings("restriction")
 public class ServerPropertyPage extends PropertyPage {
 
-	IServerWorkingCopy serverWC = null;
+	IServerWorkingCopy serverWC;
 	GlassFishServer sunserver;
 	IGlassfishServerModel model;
-	
+
 	FilteredListener<PropertyValidationEvent> listener = new FilteredListener<PropertyValidationEvent>() {
 		@Override
-		protected void handleTypedEvent(final PropertyValidationEvent event) {
+		protected void handleTypedEvent(PropertyValidationEvent event) {
 			refreshStatus();
 		}
 	};
-
 
 	@Override
 	protected Control createContents(Composite parent) {
@@ -59,50 +65,49 @@ public class ServerPropertyPage extends PropertyPage {
 		else
 			serverWC = server.createWorkingCopy();
 
-		sunserver = (GlassFishServer) serverWC.loadAdapter(GlassFishServer.class,
-				new NullProgressMonitor());
+		sunserver = (GlassFishServer) serverWC.loadAdapter(GlassFishServer.class, new NullProgressMonitor());
 		model = sunserver.getModel();
 
 		model.attach(listener, "*");
 
-		final SapphireForm control = new SapphireForm(parent, model, DefinitionLoader
-				.context(GlassfishSapphireWizardFragment.class).sdef("org.eclipse.glassfish.tools.ui.GlassfishUI").form("glassfish.server"));
+		final SapphireForm control = new SapphireForm(parent, model,
+				DefinitionLoader.context(BaseWizardFragment.class)
+						.sdef("org.eclipse.glassfish.tools.ui.GlassfishUI")
+						.form("payara.server"));
 
-		control.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		
+		control.setLayoutData(new GridData(FILL, FILL, true, true));
+
 		refreshStatus();
-		
+
 		return control;
 
 	}
 
 	private void refreshStatus() {
-		final Status status = model.validation();
+		Status status = model.validation();
 
 		if (status.severity() == Severity.ERROR) {
-			setMessage(status.message(), IMessageProvider.ERROR);
+			setMessage(status.message(), ERROR);
 			setValid(false);
 		} else if (status.severity() == Severity.WARNING) {
-			setMessage(status.message(), IMessageProvider.WARNING);
+			setMessage(status.message(), WARNING);
 			setValid(true);
 		} else {
-			setMessage(null, IMessageProvider.NONE);
+			setMessage(null, NONE);
 			setValid(true);
 		}
 
 	}
 
-	
-
 	// note that this is currently not working due to issue 140
-//	public void propertyChange(PropertyChangeEvent evt) {
-//		if (AbstractGlassfishServer.DOMAINUPDATE == evt.getPropertyName()) {
-//			username.setText(sunserver.getAdminUser());
-//			password.setText(sunserver.getAdminPassword());
-//			adminServerPortNumber.setText(Integer.toString(sunserver.getAdminPort()));
-//			serverPortNumber.setText(Integer.toString(sunserver.getPort()));
-//		}
-//	}
+	// public void propertyChange(PropertyChangeEvent evt) {
+	// if (AbstractGlassfishServer.DOMAINUPDATE == evt.getPropertyName()) {
+	// username.setText(sunserver.getAdminUser());
+	// password.setText(sunserver.getAdminPassword());
+	// adminServerPortNumber.setText(Integer.toString(sunserver.getAdminPort()));
+	// serverPortNumber.setText(Integer.toString(sunserver.getPort()));
+	// }
+	// }
 
 	@Override
 	public boolean isValid() {
@@ -120,8 +125,7 @@ public class ServerPropertyPage extends PropertyPage {
 		IProgressMonitor monitor = new NullProgressMonitor();
 		try {
 			final IServer server = serverWC.save(true, monitor);
-			// sunserver.saveConfiguration(monitor);
-			// oldProps = new HashMap<String, String>(sunserver.getProps());
+
 			Job job = new Job("Update Glassfish server state") { //$NON-NLS-1$
 				@Override
 				protected IStatus run(IProgressMonitor monitor) {
@@ -129,14 +133,14 @@ public class ServerPropertyPage extends PropertyPage {
 						GlassFishServerBehaviour serverBehavior = (GlassFishServerBehaviour) serverWC
 								.loadAdapter(GlassFishServerBehaviour.class, monitor);
 						serverBehavior.updateServerStatus();
-						
-						Server gfServer = (Server)server;
-						gfServer.setServerPublishState(IServer.PUBLISH_CLEAN);
-						
+
+						Server gfServer = (Server) server;
+						gfServer.setServerPublishState(PUBLISH_CLEAN);
+
 					} catch (Exception e) {
-						((Server) server).setServerState(IServer.STATE_STOPPED);
+						((Server) server).setServerState(STATE_STOPPED);
 					}
-					return org.eclipse.core.runtime.Status.OK_STATUS;
+					return OK_STATUS;
 				}
 			};
 
@@ -153,14 +157,14 @@ public class ServerPropertyPage extends PropertyPage {
 		performApply();
 		return true;
 	}
-	
+
 	@Override
 	protected void performDefaults() {
 		super.performDefaults();
 		serverWC.setAttribute(GlassFishServer.ATTR_ADMIN, "");
 		serverWC.setAttribute(GlassFishServer.ATTR_ADMINPASS, "");
-		serverWC.setAttribute(GlassFishServer.ATTR_DOMAINPATH, GlassFishServer.getDefaultDomainDir(
-				serverWC.getRuntime().getLocation()).toString());
+		serverWC.setAttribute(GlassFishServer.ATTR_DOMAINPATH,
+				GlassFishServer.getDefaultDomainDir(serverWC.getRuntime().getLocation()).toString());
 		serverWC.setAttribute(GlassFishServer.ATTR_ADMINPORT, "");
 		serverWC.setAttribute(GlassFishServer.ATTR_DEBUG_PORT, "");
 		model.refresh();

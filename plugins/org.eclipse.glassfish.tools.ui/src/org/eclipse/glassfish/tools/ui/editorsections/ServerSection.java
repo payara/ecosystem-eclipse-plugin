@@ -9,39 +9,49 @@
 
 package org.eclipse.glassfish.tools.ui.editorsections;
 
+import static org.eclipse.glassfish.tools.Messages.wizardSectionTitle;
+import static org.eclipse.swt.SWT.DEFAULT;
+import static org.eclipse.swt.SWT.FILL;
+import static org.eclipse.swt.SWT.UNDERLINE_LINK;
+import static org.eclipse.ui.forms.widgets.ExpandableComposite.EXPANDED;
+import static org.eclipse.ui.forms.widgets.ExpandableComposite.FOCUS_TITLE;
+import static org.eclipse.ui.forms.widgets.ExpandableComposite.TITLE_BAR;
+import static org.eclipse.ui.forms.widgets.ExpandableComposite.TWISTIE;
+import static org.eclipse.ui.forms.widgets.Section.DESCRIPTION;
+import static org.eclipse.ui.internal.dialogs.PropertyDialog.createDialogOn;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import org.eclipse.glassfish.tools.Messages;
+import org.eclipse.glassfish.tools.ui.properties.ServerPropertyPage;
 import org.eclipse.jface.layout.GridDataFactory;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.forms.events.HyperlinkEvent;
 import org.eclipse.ui.forms.events.IHyperlinkListener;
-import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
-import org.eclipse.ui.internal.dialogs.PropertyDialog;
 import org.eclipse.wst.server.ui.editor.ServerEditorSection;
 
-import org.eclipse.glassfish.tools.Messages;
-
 /**
+ * This class contributes content to the "Server Editor", which is the editor that opens when you double click
+ * the Payara / GlassFish server in the Servers views.
+ * 
+ * <p>
+ * This is the editor that shows the "Runtime Environment", "Open Launch Configuration" links and has the "Publishing"
+ * and "Timeouts' preferences. This class adds a link to the properties page (see {@link ServerPropertyPage}) that that
+ * editor.
+ * </p>
  * 
  * @author ludo
  */
 @SuppressWarnings("restriction")
-public class ServerSection extends ServerEditorSection implements
-		PropertyChangeListener {
+public class ServerSection extends ServerEditorSection implements PropertyChangeListener {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.wst.server.ui.editor.ServerEditorSection#dispose()
-	 */
 	@Override
 	public void dispose() {
 		server.removePropertyChangeListener(this);
@@ -53,50 +63,48 @@ public class ServerSection extends ServerEditorSection implements
 
 		FormToolkit toolkit = getFormToolkit(parent.getDisplay());
 
-		Section section = toolkit.createSection(parent,
-				ExpandableComposite.TITLE_BAR | Section.DESCRIPTION
-						| ExpandableComposite.TWISTIE
-						| ExpandableComposite.EXPANDED
-						| ExpandableComposite.FOCUS_TITLE);
-
-		section.setText(Messages.wizardSectionTitle);
-
+		Section section = toolkit.createSection(parent, TITLE_BAR | DESCRIPTION | TWISTIE | EXPANDED | FOCUS_TITLE);
+		section.setText(wizardSectionTitle);
 		section.setDescription(Messages.wizardSectionDescription);
-		section.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
+		section.setLayoutData(new GridData(FILL, FILL, false, false));
 
-		Composite comp = toolkit.createComposite(section);
-		GridLayout gl = new GridLayout();
-		gl.numColumns = 3;
-		gl.verticalSpacing = 5;
-		gl.marginWidth = 10;
-		gl.marginHeight = 5;
-		comp.setLayout(gl);
-		comp.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
-		section.setClient(comp);
+		Composite composite = toolkit.createComposite(section);
+		GridLayout gridLayout = new GridLayout();
+		gridLayout.numColumns = 3;
+		gridLayout.verticalSpacing = 5;
+		gridLayout.marginWidth = 10;
+		gridLayout.marginHeight = 5;
+		composite.setLayout(gridLayout);
+		composite.setLayoutData(new GridData(FILL, FILL, false, false));
 		
-		Hyperlink link = toolkit.createHyperlink(comp, "Open server properties page...", SWT.UNDERLINE_LINK);
+		section.setClient(composite);
+
+		Hyperlink link = toolkit.createHyperlink(composite, "Open server properties page...", UNDERLINE_LINK);
 		link.addHyperlinkListener(new IHyperlinkListener() {
+
+			@Override
+			public void linkActivated(HyperlinkEvent e) {
+				createDialogOn(
+					Display.getDefault().getActiveShell(), 
+					"org.eclipse.wst.server.ui.properties", //$NON-NLS-1$
+					server) 
+				.open(); 
+			}
 			
 			@Override
 			public void linkExited(HyperlinkEvent e) {
 			}
-			
+
 			@Override
 			public void linkEntered(HyperlinkEvent e) {
 			}
-			
-			@Override
-			public void linkActivated(HyperlinkEvent e) {
-				String id = "org.eclipse.wst.server.ui.properties";//$NON-NLS-1$
-				PropertyDialog dialog = PropertyDialog.createDialogOn(Display.getDefault().getActiveShell(), id, server);
-				dialog.open();
-			}
 		});
-		
-		GridDataFactory txtGDF = GridDataFactory.fillDefaults()
-				.grab(true, false).span(3, 1).hint(50, SWT.DEFAULT);
 
-		txtGDF.applyTo(link);
+		GridDataFactory.fillDefaults()
+						.grab(true, false)
+						.span(3, 1)
+						.hint(50, DEFAULT)
+						.applyTo(link);
 
 	}
 

@@ -13,10 +13,10 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import org.eclipse.glassfish.tools.GlassFishServer;
 import org.eclipse.glassfish.tools.sdk.GlassFishIdeException;
 import org.eclipse.glassfish.tools.sdk.logging.Logger;
 import org.eclipse.glassfish.tools.sdk.utils.ServerUtils;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
 import org.eclipse.sapphire.Version;
 
 /**

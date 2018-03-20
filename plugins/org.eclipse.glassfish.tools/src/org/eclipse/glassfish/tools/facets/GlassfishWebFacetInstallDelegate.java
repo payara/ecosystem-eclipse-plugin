@@ -21,16 +21,14 @@ import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 public class GlassfishWebFacetInstallDelegate implements IDelegate {
 
 	@Override
-	public void execute(IProject project, IProjectFacetVersion fv,
-			Object config, IProgressMonitor monitor) throws CoreException {
+	public void execute(IProject project, IProjectFacetVersion fv, Object config, IProgressMonitor monitor) throws CoreException {
 		IGlassfishWebDeploymentDescriptor webDescriptor = GlassfishDeploymentDescriptorFactory
 				.getWebDeploymentDescriptor(project);
 
 		if (webDescriptor != null) {
 			IVirtualComponent comp = ComponentCore.createComponent(project);
 
-			String contextRoot = (String) comp.getMetaProperties().get(
-					"context-root");
+			String contextRoot = (String) comp.getMetaProperties().get("context-root");
 			webDescriptor.setContext("/" + contextRoot);
 
 			webDescriptor.store(monitor);

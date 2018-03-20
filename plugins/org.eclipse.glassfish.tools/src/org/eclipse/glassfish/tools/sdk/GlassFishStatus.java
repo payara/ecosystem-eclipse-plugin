@@ -13,13 +13,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
-import org.eclipse.glassfish.tools.GlassFishServer;
 import org.eclipse.glassfish.tools.sdk.data.DataException;
 import org.eclipse.glassfish.tools.sdk.data.GlassFishServerStatus;
 import org.eclipse.glassfish.tools.sdk.logging.Logger;
 import org.eclipse.glassfish.tools.sdk.server.state.GlassFishStatusEntity;
 import org.eclipse.glassfish.tools.sdk.server.state.StatusJob;
 import org.eclipse.glassfish.tools.sdk.server.state.StatusScheduler;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
 
 /**
  * GlassFish server status.

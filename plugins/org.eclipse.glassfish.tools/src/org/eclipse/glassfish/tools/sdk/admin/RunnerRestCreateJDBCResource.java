@@ -13,8 +13,8 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 
-import org.eclipse.glassfish.tools.GlassFishServer;
 import org.eclipse.glassfish.tools.sdk.admin.response.ActionReport.ExitCode;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
 
 /**
  * Runner for create JDBC resource command via REST interface.

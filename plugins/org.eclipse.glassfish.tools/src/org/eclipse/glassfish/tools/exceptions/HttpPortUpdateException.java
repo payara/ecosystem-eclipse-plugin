@@ -32,5 +32,4 @@ public class HttpPortUpdateException extends Exception {
 		super(cause);
 	}
 
-	
 }

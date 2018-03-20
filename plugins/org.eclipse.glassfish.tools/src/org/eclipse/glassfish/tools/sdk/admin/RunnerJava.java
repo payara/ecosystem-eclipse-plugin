@@ -16,7 +16,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
-import org.eclipse.glassfish.tools.GlassFishServer;
 import org.eclipse.glassfish.tools.sdk.data.GlassFishConfig;
 import org.eclipse.glassfish.tools.sdk.logging.Logger;
 import org.eclipse.glassfish.tools.sdk.server.config.ConfigBuilderProvider;
@@ -25,6 +24,7 @@ import org.eclipse.glassfish.tools.sdk.server.config.JavaSEPlatform;
 import org.eclipse.glassfish.tools.sdk.server.config.JavaSESet;
 import org.eclipse.glassfish.tools.sdk.utils.JavaUtils;
 import org.eclipse.glassfish.tools.sdk.utils.ServerUtils;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
 
 /**
  * GlassFish server administration command execution using local Java VM.

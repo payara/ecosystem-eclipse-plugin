@@ -378,6 +378,10 @@ public class Utils {
         }
         return context;
     }
+	
+	public static boolean isEmpty(String string) {
+		return string == null || string.isEmpty();
+	}
 
 	/**
 	 * This is the test query used to ping the server in an attempt to determine

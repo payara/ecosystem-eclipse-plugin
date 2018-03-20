@@ -21,9 +21,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.zip.GZIPInputStream;
 
-import org.eclipse.glassfish.tools.GlassFishServer;
 import org.eclipse.glassfish.tools.sdk.admin.response.ResponseContentType;
 import org.eclipse.glassfish.tools.sdk.logging.Logger;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
 
 /**
  * GlassFish Server <code>view-log</code> Administration Command Execution

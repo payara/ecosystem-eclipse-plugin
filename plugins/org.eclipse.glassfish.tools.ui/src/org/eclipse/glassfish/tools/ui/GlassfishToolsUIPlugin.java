@@ -9,17 +9,22 @@
 
 package org.eclipse.glassfish.tools.ui;
 
+import static org.eclipse.jface.resource.ImageDescriptor.createFromURL;
+import static org.eclipse.wst.server.core.IServer.STATE_UNKNOWN;
+
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
 import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerLifecycleListener;
 import org.eclipse.wst.server.core.internal.ResourceManager;
 import org.eclipse.wst.server.core.internal.UpdateServerJob;
 
-import org.eclipse.glassfish.tools.GlassFishServer;
-
+/**
+ * This is used as the OSGi bundle activator, as well as the central place to get images from.
+ */
 @SuppressWarnings("restriction")
 public class GlassfishToolsUIPlugin extends AbstractUIPlugin {
 
@@ -49,8 +54,8 @@ public class GlassfishToolsUIPlugin extends AbstractUIPlugin {
 
 		IServerLifecycleListener serverLifecycleListener = new IServerLifecycleListener() {
 			public void serverAdded(IServer server) {
-				if (server.loadAdapter(GlassFishServer.class, new NullProgressMonitor())!=null) {
-					if (server.getServerState() == IServer.STATE_UNKNOWN) {
+				if (server.loadAdapter(GlassFishServer.class, new NullProgressMonitor()) != null) {
+					if (server.getServerState() == STATE_UNKNOWN) {
 						UpdateServerJob job = new UpdateServerJob(new IServer[] { server });
 						job.schedule();
 					}
@@ -64,28 +69,30 @@ public class GlassfishToolsUIPlugin extends AbstractUIPlugin {
 			}
 		};
 
-		ResourceManager.getInstance().addServerLifecycleListener(
-				serverLifecycleListener);
+		ResourceManager.getInstance().addServerLifecycleListener(serverLifecycleListener);
 	}
 
 	public static final GlassfishToolsUIPlugin getInstance() {
 		return instance;
 	}
 	
+	public static Image getImg(String key) {
+		return getInstance().getImageRegistry().get(key);
+	}
+	
 	@Override
 	protected void initializeImageRegistry(ImageRegistry reg) {
 		super.initializeImageRegistry(reg);
 		
-		reg.put(EAR_MODULE_IMG, ImageDescriptor.createFromURL(getBundle().getEntry("icons/obj16/ear.gif")));
-		reg.put(EJB_MODULE_IMG, ImageDescriptor.createFromURL(getBundle().getEntry("icons/obj16/ejb_module.gif")));
-		reg.put(GF_SERVER_IMG, ImageDescriptor.createFromURL(getBundle().getEntry("icons/obj16/glassfishserver.gif")));
-		reg.put(LOG_FILE_IMG, ImageDescriptor.createFromURL(getBundle().getEntry("icons/obj16/logfile.gif")));
-		reg.put(UPDATE_CENTER_IMG, ImageDescriptor.createFromURL(getBundle().getEntry("icons/obj16/updateCenter.png")));
-		reg.put(WEB_MODULE_IMG, ImageDescriptor.createFromURL(getBundle().getEntry("icons/obj16/web_module.gif")));
-		reg.put(WEBSERVICE_IMG, ImageDescriptor.createFromURL(getBundle().getEntry("icons/obj16/webservice.png")));
-		reg.put(RESOURCES_IMG, ImageDescriptor.createFromURL(getBundle().getEntry("icons/obj16/resources.gif")));
-		reg.put(GF_WIZARD, ImageDescriptor.createFromURL(getBundle().getEntry("icons/wizard75x66.png")));
+		reg.put(EAR_MODULE_IMG, createFromURL(getBundle().getEntry("icons/obj16/ear.gif")));
+		reg.put(EJB_MODULE_IMG, createFromURL(getBundle().getEntry("icons/obj16/ejb_module.gif")));
+		reg.put(GF_SERVER_IMG, createFromURL(getBundle().getEntry("icons/obj16/glassfishserver.gif")));
+		reg.put(LOG_FILE_IMG, createFromURL(getBundle().getEntry("icons/obj16/logfile.gif")));
+		reg.put(UPDATE_CENTER_IMG, createFromURL(getBundle().getEntry("icons/obj16/updateCenter.png")));
+		reg.put(WEB_MODULE_IMG, createFromURL(getBundle().getEntry("icons/obj16/web_module.gif")));
+		reg.put(WEBSERVICE_IMG, createFromURL(getBundle().getEntry("icons/obj16/webservice.png")));
+		reg.put(RESOURCES_IMG, createFromURL(getBundle().getEntry("icons/obj16/resources.gif")));
+		reg.put(GF_WIZARD, createFromURL(getBundle().getEntry("icons/wizard75x66.png")));
 	}
-	
 	
 }

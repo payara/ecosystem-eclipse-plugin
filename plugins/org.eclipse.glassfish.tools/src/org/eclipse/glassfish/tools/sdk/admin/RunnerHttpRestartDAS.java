@@ -9,7 +9,7 @@
 
 package org.eclipse.glassfish.tools.sdk.admin;
 
-import org.eclipse.glassfish.tools.GlassFishServer;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
 
 /**
  * GlassFish restart DAS administration command with 

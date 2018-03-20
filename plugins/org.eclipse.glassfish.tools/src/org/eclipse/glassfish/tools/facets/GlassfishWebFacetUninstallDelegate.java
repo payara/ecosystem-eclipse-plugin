@@ -18,9 +18,8 @@ import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 public class GlassfishWebFacetUninstallDelegate implements IDelegate {
 
 	@Override
-	public void execute(IProject project, IProjectFacetVersion fv,
-			Object config, IProgressMonitor monitor) throws CoreException {
-		
+	public void execute(IProject project, IProjectFacetVersion fv, Object config, IProgressMonitor monitor) throws CoreException {
+
 	}
 
 }

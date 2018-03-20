@@ -20,7 +20,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.glassfish.tools.GlassFishRuntime;
+import org.eclipse.glassfish.tools.server.GlassFishRuntime;
 import org.eclipse.jst.common.project.facet.core.StandardJreRuntimeComponent;
 import org.eclipse.sapphire.Version;
 import org.eclipse.sapphire.util.SetFactory;

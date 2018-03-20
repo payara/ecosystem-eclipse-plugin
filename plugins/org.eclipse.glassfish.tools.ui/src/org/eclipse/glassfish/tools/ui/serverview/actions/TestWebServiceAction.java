@@ -18,12 +18,11 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.browser.IWebBrowser;
 import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
-
-import org.eclipse.glassfish.tools.GlassFishServer;
-import org.eclipse.glassfish.tools.GlassFishServerBehaviour;
 import org.eclipse.glassfish.tools.GlassfishToolsPlugin;
-import org.eclipse.glassfish.tools.ui.serverview.DeployedWebServicesNode;
-import org.eclipse.glassfish.tools.ui.serverview.WebServiceNode;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
+import org.eclipse.glassfish.tools.server.deploying.GlassFishServerBehaviour;
+import org.eclipse.glassfish.tools.ui.serverview.dynamicnodes.DeployedWebServicesNode;
+import org.eclipse.glassfish.tools.ui.serverview.dynamicnodes.WebServiceNode;
 import org.eclipse.glassfish.tools.utils.Utils;
 
 public 	class TestWebServiceAction extends Action {

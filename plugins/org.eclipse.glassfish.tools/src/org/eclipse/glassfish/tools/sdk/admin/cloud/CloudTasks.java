@@ -13,12 +13,12 @@ import java.io.File;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import org.eclipse.glassfish.tools.GlassFishServer;
 import org.eclipse.glassfish.tools.sdk.GlassFishIdeException;
 import org.eclipse.glassfish.tools.sdk.TaskStateListener;
 import org.eclipse.glassfish.tools.sdk.admin.Command;
 import org.eclipse.glassfish.tools.sdk.admin.ResultString;
 import org.eclipse.glassfish.tools.sdk.admin.ServerAdmin;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
 
 /**
  * This class provides convenience methods for working with cloud (CPAS server).

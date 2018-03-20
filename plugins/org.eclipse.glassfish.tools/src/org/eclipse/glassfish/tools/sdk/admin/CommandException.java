@@ -25,7 +25,9 @@ public class CommandException extends GlassFishIdeException {
     // Class attributes                                                       //
     ////////////////////////////////////////////////////////////////////////////
 
-    /** Exception message for unsupported GlassFish version. */
+	private static final long serialVersionUID = 1L;
+
+	/** Exception message for unsupported GlassFish version. */
     static final String UNSUPPORTED_VERSION = "Unsupported GlassFish version";
  
     /** Exception message for unknown GlassFish administration interface

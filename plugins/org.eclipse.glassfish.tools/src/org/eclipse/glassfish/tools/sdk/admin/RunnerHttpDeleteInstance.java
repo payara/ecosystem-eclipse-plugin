@@ -11,8 +11,8 @@ package org.eclipse.glassfish.tools.sdk.admin;
 
 import java.util.logging.Level;
 
-import org.eclipse.glassfish.tools.GlassFishServer;
 import org.eclipse.glassfish.tools.sdk.logging.Logger;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
 
 /**
  * GlassFish instance and cluster admin command with 

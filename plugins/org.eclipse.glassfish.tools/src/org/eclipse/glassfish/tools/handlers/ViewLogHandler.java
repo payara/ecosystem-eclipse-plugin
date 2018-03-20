@@ -9,41 +9,43 @@
 
 package org.eclipse.glassfish.tools.handlers;
 
-import org.eclipse.glassfish.tools.GlassFishServer;
-import org.eclipse.glassfish.tools.GlassfishToolsPlugin;
-import org.eclipse.glassfish.tools.ServerStatus;
-import org.eclipse.glassfish.tools.log.GlassfishConsoleManager;
+import static org.eclipse.glassfish.tools.GlassfishToolsPlugin.logMessage;
+import static org.eclipse.glassfish.tools.log.GlassfishConsoleManager.getServerLogFileConsole;
+import static org.eclipse.glassfish.tools.log.GlassfishConsoleManager.removeServerLogFileConsole;
+import static org.eclipse.glassfish.tools.log.GlassfishConsoleManager.showConsole;
+import static org.eclipse.glassfish.tools.utils.WtpUtil.load;
+
 import org.eclipse.glassfish.tools.log.IGlassFishConsole;
 import org.eclipse.glassfish.tools.sdk.server.FetchLogPiped;
-import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
+import org.eclipse.glassfish.tools.server.ServerStatus;
 import org.eclipse.wst.server.core.IServer;
 
 public class ViewLogHandler extends AbstractGlassfishSelectionHandler {
 
 	@Override
-	public void processSelection(IStructuredSelection selection) {
-		IServer server = (IServer) selection.getFirstElement();
+	public void processSelection(IServer server) {
 		try {
-			GlassFishServer serverAdapter = (GlassFishServer) server.loadAdapter(
-					GlassFishServer.class, null);
+			GlassFishServer serverAdapter = load(server, GlassFishServer.class);
 						
 			if (serverAdapter.isRemote()) {
-				if (!serverAdapter.getServerBehaviourAdapter().getServerStatus(true)
-						.equals(ServerStatus.RUNNING_DOMAIN_MATCHING)) {
+				if (!serverAdapter.getServerBehaviourAdapter().getServerStatus(true)	.equals(ServerStatus.RUNNING_DOMAIN_MATCHING)) {
 					showMessageDialog();
 					return;
-				} else {
-					GlassfishConsoleManager.removeServerLogFileConsole(serverAdapter);
-				}
+				} 
+				
+				removeServerLogFileConsole(serverAdapter);
 			}
 			
-			IGlassFishConsole console = GlassfishConsoleManager.getServerLogFileConsole(serverAdapter);
-			GlassfishConsoleManager.showConsole(console);
-			if (!console.isLogging())
+			IGlassFishConsole console = getServerLogFileConsole(serverAdapter);
+			showConsole(getServerLogFileConsole(serverAdapter));
+			
+			if (!console.isLogging()) {
 				console.startLogging(FetchLogPiped.create(serverAdapter, false));
+			}
 
 		} catch (Exception e) {
-			GlassfishToolsPlugin.logMessage("Error opening log: " + e.getMessage());
+			logMessage("Error opening log: " + e.getMessage());
 
 		}
 	}

@@ -17,8 +17,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-import org.eclipse.glassfish.tools.GlassFishServer;
-import org.eclipse.glassfish.tools.ServerStatus;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
+import org.eclipse.glassfish.tools.server.ServerStatus;
 import org.eclipse.glassfish.tools.utils.ServerStatusHelper;
 
 public class ServerStatusMonitor implements Runnable {

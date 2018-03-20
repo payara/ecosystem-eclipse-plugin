@@ -9,8 +9,7 @@
 
 package org.eclipse.glassfish.tools.facets;
 
-public interface IGlassfishEjbDeploymentDescriptor extends
-		IGlassfishDeploymentDescriptor {
+public interface IGlassfishEjbDeploymentDescriptor extends IGlassfishDeploymentDescriptor {
 
 	static final String SUN_EJB_DEPLOYMENT_DESCRIPTOR_NAME = "sun-ejb-jar.xml";
 

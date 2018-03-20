@@ -9,6 +9,8 @@
 
 package org.eclipse.glassfish.tools.sdk.data;
 
+import static org.eclipse.glassfish.tools.sdk.data.DataException.INVALID_CONTAINER;
+
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,8 +28,6 @@ public enum GlassFishContainer implements Comparator<GlassFishContainer> {
 
     /** EAR application. */
     EAR,
-    /** jRuby application. */
-    JRUBY,
     /** Web application. */
     WEB,
     /** EJB application. */
@@ -45,9 +45,6 @@ public enum GlassFishContainer implements Comparator<GlassFishContainer> {
 
     /**  A <code>String</code> representation of EAR value. */
     static final String EAR_STR = "ear";
-
-    /**  A <code>String</code> representation of JRUBY value. */
-    static final String JRUBY_STR = "jruby";
 
     /**  A <code>String</code> representation of WEB value. */
     static final String WEB_STR = "web";
@@ -115,7 +112,6 @@ public enum GlassFishContainer implements Comparator<GlassFishContainer> {
     public String toString() {
         switch (this) {
             case EAR:       return EAR_STR;
-            case JRUBY:     return JRUBY_STR;
             case WEB:       return WEB_STR;
             case EJB:       return EJB_STR;
             case APPCLIENT: return APPCLIENT_STR;
@@ -123,8 +119,7 @@ public enum GlassFishContainer implements Comparator<GlassFishContainer> {
             case UNKNOWN:   return UNKNOWN_STR;
             // This is unrecheable. Being here means this class does not handle
             // all possible values correctly.
-            default: throw new DataException(
-                        DataException.INVALID_CONTAINER);
+            default: throw new DataException(INVALID_CONTAINER);
         }
     }
 

@@ -9,8 +9,8 @@
 
 package org.eclipse.glassfish.tools.sdk;
 
-import org.eclipse.glassfish.tools.GlassFishServer;
 import org.eclipse.glassfish.tools.sdk.data.GlassFishStatusTask;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
 
 /**
  * GlassFish server status listener.

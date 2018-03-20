@@ -9,44 +9,34 @@
 
 package org.eclipse.glassfish.tools.handlers;
 
-import java.net.URI;
+import static org.eclipse.glassfish.tools.GlassfishToolsPlugin.logMessage;
+import static org.eclipse.glassfish.tools.utils.URIHelper.getServerAdminURI;
+import static org.eclipse.glassfish.tools.utils.WtpUtil.load;
+import static org.eclipse.ui.browser.IWorkbenchBrowserSupport.LOCATION_BAR;
+import static org.eclipse.ui.browser.IWorkbenchBrowserSupport.NAVIGATION_BAR;
 
-import org.eclipse.glassfish.tools.GlassFishServer;
-import org.eclipse.glassfish.tools.GlassFishServerBehaviour;
-import org.eclipse.glassfish.tools.GlassfishToolsPlugin;
-import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.glassfish.tools.server.deploying.GlassFishServerBehaviour;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.browser.IWebBrowser;
-import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 import org.eclipse.wst.server.core.IServer;
 
 public class ViewAdminConsoleHandler extends AbstractGlassfishSelectionHandler {
 
 	@Override
-	public void processSelection(IStructuredSelection selection) {
-		IServer server = (IServer) selection.getFirstElement();
-		if (server != null){
-			GlassFishServerBehaviour sab = (GlassFishServerBehaviour)server.loadAdapter(
-					GlassFishServerBehaviour.class, null);
-			GlassFishServer sunserver = sab.getGlassfishServerDelegate();
-			try {
-				//showPageInDefaultBrowser(AdminURLHelper.getURL("", server));
-				//URIHelper.showURI(URIHelper.getServerAdminURI(sunserver));
-				IWorkbenchBrowserSupport browserSupport = PlatformUI
-						.getWorkbench().getBrowserSupport();
-				IWebBrowser browser = browserSupport
-						.createBrowser(
-								IWorkbenchBrowserSupport.LOCATION_BAR
-										| IWorkbenchBrowserSupport.NAVIGATION_BAR,
-								null, null, null);
-				URI uri = URIHelper.getServerAdminURI(sunserver);
-				browser.openURL(uri.toURL());
-				
-			} catch (Exception e) {
-		           GlassfishToolsPlugin.logMessage("Error opening browser: "+e.getMessage());
-			}
-	    }
-		
+	public void processSelection(IServer server) {
+		try {
+			PlatformUI.getWorkbench()
+					  .getBrowserSupport()
+					  .createBrowser(
+						  LOCATION_BAR | NAVIGATION_BAR, 
+						  null, null,	null)
+					  .openURL(
+						  getServerAdminURI(
+							  load(server, GlassFishServerBehaviour.class).getGlassfishServerDelegate())
+						  .toURL());
+
+		} catch (Exception e) {
+			logMessage("Error opening browser: " + e.getMessage());
+		}
 	}
 
 }

@@ -24,7 +24,6 @@ import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.eclipse.glassfish.tools.GlassFishServer;
 import org.eclipse.glassfish.tools.sdk.TaskEvent;
 import org.eclipse.glassfish.tools.sdk.TaskState;
 import org.eclipse.glassfish.tools.sdk.TaskStateListener;
@@ -34,6 +33,7 @@ import org.eclipse.glassfish.tools.sdk.admin.ResultMap;
 import org.eclipse.glassfish.tools.sdk.admin.ResultString;
 import org.eclipse.glassfish.tools.sdk.admin.ServerAdmin;
 import org.eclipse.glassfish.tools.sdk.logging.Logger;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
 import org.eclipse.sapphire.Version;
 
 /**

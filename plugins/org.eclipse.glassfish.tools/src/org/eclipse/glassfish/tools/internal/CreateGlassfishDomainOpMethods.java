@@ -22,7 +22,7 @@ import org.eclipse.debug.core.Launch;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.IStreamMonitor;
 import org.eclipse.glassfish.tools.GlassfishToolsPlugin;
-import org.eclipse.glassfish.tools.ICreateGlassfishDomainOp;
+import org.eclipse.glassfish.tools.sapphire.ICreateGlassfishDomainOp;
 import org.eclipse.jdt.internal.launching.LaunchingPlugin;
 import org.eclipse.sapphire.modeling.Path;
 import org.eclipse.sapphire.modeling.ProgressMonitor;

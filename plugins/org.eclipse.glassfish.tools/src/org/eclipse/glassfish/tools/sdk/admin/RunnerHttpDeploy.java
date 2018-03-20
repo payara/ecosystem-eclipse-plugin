@@ -19,9 +19,9 @@ import java.util.logging.Level;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import org.eclipse.glassfish.tools.GlassFishServer;
 import org.eclipse.glassfish.tools.sdk.logging.Logger;
 import org.eclipse.glassfish.tools.sdk.utils.Utils;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
 
 /**
  * GlassFish Server <code>deploy</code> Administration Command Execution

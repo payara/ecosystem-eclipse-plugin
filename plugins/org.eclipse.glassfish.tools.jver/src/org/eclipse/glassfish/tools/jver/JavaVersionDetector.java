@@ -10,14 +10,12 @@
 package org.eclipse.glassfish.tools.jver;
 
 /**
- * @author <a href="mailto:konstantin.komissarchik@oracle.com">Konstantin Komissarchik</a>
+ * @author <a href="mailto:konstantin.komissarchik@oracle.com">Konstantin
+ *         Komissarchik</a>
  */
 
-public final class JavaVersionDetector
-{
-    public static void main( final String[] args )
-    {
-        System.err.println( System.getProperty( "java.version" ) );
-    }
-
+public final class JavaVersionDetector {
+	public static void main(final String[] args) {
+		System.err.println(System.getProperty("java.version"));
+	}
 }

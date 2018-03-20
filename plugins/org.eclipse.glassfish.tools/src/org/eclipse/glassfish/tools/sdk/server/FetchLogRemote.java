@@ -16,13 +16,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 
-import org.eclipse.glassfish.tools.GlassFishServer;
 import org.eclipse.glassfish.tools.sdk.TaskState;
 import org.eclipse.glassfish.tools.sdk.admin.CommandFetchLogData;
 import org.eclipse.glassfish.tools.sdk.admin.ResultLog;
 import org.eclipse.glassfish.tools.sdk.admin.ServerAdmin;
 import org.eclipse.glassfish.tools.sdk.logging.Logger;
 import org.eclipse.glassfish.tools.sdk.utils.OsUtils;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
 
 /**
  * Fetch GlassFish log from remote server.

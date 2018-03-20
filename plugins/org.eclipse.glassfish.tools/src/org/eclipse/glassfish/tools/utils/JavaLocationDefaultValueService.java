@@ -20,119 +20,98 @@ import org.eclipse.jdt.launching.PropertyChangeEvent;
 import org.eclipse.sapphire.DefaultValueService;
 
 /**
- * @author <a href="mailto:konstantin.komissarchik@oracle.com">Konstantin Komissarchik</a>
+ * @author <a href="mailto:konstantin.komissarchik@oracle.com">Konstantin
+ *         Komissarchik</a>
  */
 
-public abstract class JavaLocationDefaultValueService extends DefaultValueService
-{
-    private IVMInstallChangedListener listener;
-    private boolean computing;
-    
-    @Override
-    
-    protected void initDefaultValueService()
-    {
-        this.listener = new IVMInstallChangedListener()
-        {
-            @Override
-            
-            public void vmRemoved( final IVMInstall vm )
-            {
-                update();
-            }
-            
-            @Override
-            
-            public void vmChanged( final PropertyChangeEvent event )
-            {
-                update();
-            }
-            
-            @Override
-            
-            public void vmAdded( final IVMInstall vm )
-            {
-                update();
-            }
-            
-            @Override
-            
-            public void defaultVMInstallChanged( final IVMInstall previous, final IVMInstall current )
-            {
-                // Not relevant
-            }
-        };
-        
-        JavaRuntime.addVMInstallChangedListener( this.listener );
-    }
-    
-    private synchronized void update()
-    {
-        if( ! this.computing )
-        {
-            new Thread()
-            {
-                public void run()
-                {
-                    refresh();
-                }
-            }.start();
-        }
-    }
+public abstract class JavaLocationDefaultValueService extends DefaultValueService {
+	private IVMInstallChangedListener listener;
+	private boolean computing;
 
-    @Override
-    
-    protected synchronized String compute()
-    {
-        this.computing = true;
-        
-        try
-        {
-            IVMInstall jvm = null;
-            
-            for( final IVMInstallType vmInstallType : JavaRuntime.getVMInstallTypes() )
-            {
-                for( final IVMInstall vmInstall : vmInstallType.getVMInstalls() )
-                {
-                    if( ! internal( vmInstall ) && acceptable( vmInstall ) )
-                    {
-                        jvm = newer( jvm, vmInstall );
-                    }
-                }
-            }
-            
-            return ( jvm == null ? null : jvm.getInstallLocation().getAbsolutePath() );
-        }
-        finally
-        {
-            this.computing = false;
-        }
-    }
-    
-    private static boolean internal( final IVMInstall jvm )
-    {
-        if( jvm instanceof AbstractVMInstall )
-        {
-            final String internal = ( (AbstractVMInstall) jvm ).getAttribute( "internal" );
-            return "true".equals( internal );
-        }
-        
-        return false;
-    }
-    
-    protected abstract boolean acceptable( IVMInstall vminstall );
+	@Override
 
-    @Override
-    
-    public void dispose()
-    {
-        super.dispose();
-        
-        if( this.listener != null )
-        {
-            JavaRuntime.removeVMInstallChangedListener( this.listener );
-            this.listener = null;
-        }
-    }
-    
+	protected void initDefaultValueService() {
+		this.listener = new IVMInstallChangedListener() {
+			@Override
+
+			public void vmRemoved(final IVMInstall vm) {
+				update();
+			}
+
+			@Override
+
+			public void vmChanged(final PropertyChangeEvent event) {
+				update();
+			}
+
+			@Override
+
+			public void vmAdded(final IVMInstall vm) {
+				update();
+			}
+
+			@Override
+
+			public void defaultVMInstallChanged(final IVMInstall previous, final IVMInstall current) {
+				// Not relevant
+			}
+		};
+
+		JavaRuntime.addVMInstallChangedListener(this.listener);
+	}
+
+	private synchronized void update() {
+		if (!this.computing) {
+			new Thread() {
+				public void run() {
+					refresh();
+				}
+			}.start();
+		}
+	}
+
+	@Override
+
+	protected synchronized String compute() {
+		this.computing = true;
+
+		try {
+			IVMInstall jvm = null;
+
+			for (final IVMInstallType vmInstallType : JavaRuntime.getVMInstallTypes()) {
+				for (final IVMInstall vmInstall : vmInstallType.getVMInstalls()) {
+					if (!internal(vmInstall) && acceptable(vmInstall)) {
+						jvm = newer(jvm, vmInstall);
+					}
+				}
+			}
+
+			return (jvm == null ? null : jvm.getInstallLocation().getAbsolutePath());
+		} finally {
+			this.computing = false;
+		}
+	}
+
+	private static boolean internal(final IVMInstall jvm) {
+		if (jvm instanceof AbstractVMInstall) {
+			final String internal = ((AbstractVMInstall) jvm).getAttribute("internal");
+			return "true".equals(internal);
+		}
+
+		return false;
+	}
+
+	protected abstract boolean acceptable(IVMInstall vminstall);
+
+	@Override
+
+	public void dispose() {
+		super.dispose();
+
+		if (this.listener != null) {
+			JavaRuntime.removeVMInstallChangedListener(this.listener);
+			this.listener = null;
+		}
+	}
+
 }

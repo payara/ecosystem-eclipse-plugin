@@ -14,22 +14,19 @@ import org.eclipse.wst.common.project.facet.core.runtime.IRuntimeComponent;
 import org.eclipse.wst.common.project.facet.ui.IRuntimeComponentLabelProvider;
 
 /**
- * @author <a href="mailto:konstantin.komissarchik@oracle.com">Konstantin Komissarchik</a>
+ * @author <a href="mailto:konstantin.komissarchik@oracle.com">Konstantin
+ *         Komissarchik</a>
  */
 
-public final class GlassFishRuntimeComponentLabelProviderFactory implements IAdapterFactory
-{
+public final class GlassFishRuntimeComponentLabelProviderFactory implements IAdapterFactory {
 	private static final Class<?>[] ADAPTER_TYPES = { IRuntimeComponentLabelProvider.class };
-	
-	public <T> T getAdapter( final Object adaptable, final Class<T> adapterType )
-	{
-		final IRuntimeComponent rc = (IRuntimeComponent) adaptable;
-		return adapterType.cast( new GlassFishRuntimeComponentLabelProvider( rc ) );
+
+	public <T> T getAdapter(Object adaptable, Class<T> adapterType) {
+		return adapterType.cast(new GlassFishRuntimeComponentLabelProvider((IRuntimeComponent) adaptable));
 	}
 
-	public Class<?>[] getAdapterList()
-	{
+	public Class<?>[] getAdapterList() {
 		return ADAPTER_TYPES;
 	}
-	
+
 }

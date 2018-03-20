@@ -11,7 +11,7 @@ package org.eclipse.glassfish.tools.sdk.admin;
 
 import java.text.MessageFormat;
 
-import org.eclipse.glassfish.tools.GlassFishServer;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
 
 /**
  *

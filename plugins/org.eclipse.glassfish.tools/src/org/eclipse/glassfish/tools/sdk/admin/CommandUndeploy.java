@@ -36,6 +36,15 @@ public class CommandUndeploy extends CommandTargetName {
      * <p/>
      * @param target Target GlassFish instance.
      */
+    public CommandUndeploy(String name) {
+        this(name, null);
+    }
+    
+    /**
+     * Constructs an instance of GlassFish server undeploy command entity.
+     * <p/>
+     * @param target Target GlassFish instance.
+     */
     public CommandUndeploy(String name, String target) {
         super(COMMAND, name, target);
     }

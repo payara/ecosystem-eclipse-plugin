@@ -17,12 +17,12 @@ import java.net.URISyntaxException;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.glassfish.tools.GlassFishServer;
 import org.eclipse.glassfish.tools.sdk.admin.response.ResponseContentType;
 import org.eclipse.glassfish.tools.sdk.admin.response.ResponseParserFactory;
 import org.eclipse.glassfish.tools.sdk.admin.response.RestActionReport;
 import org.eclipse.glassfish.tools.sdk.admin.response.RestResponseParser;
 import org.eclipse.glassfish.tools.sdk.utils.ServerUtils;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
 
 /**
  * GlassFish server administration command execution using REST interface.

@@ -9,7 +9,7 @@
 
 package org.eclipse.glassfish.tools.sdk.data.cloud;
 
-import org.eclipse.glassfish.tools.GlassFishServer;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
 
 /**
  * GlassFish Cloud Entity Interface.

@@ -12,7 +12,7 @@ package org.eclipse.glassfish.tools.sdk.admin;
 import java.util.HashMap;
 import java.util.Properties;
 
-import org.eclipse.glassfish.tools.GlassFishServer;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
 
 /**
  *

@@ -19,10 +19,10 @@ import org.eclipse.ui.console.TextConsole;
 public class GlassfishConsoleTracker implements IPatternMatchListenerDelegate {
 
 	/**
-	 * The console associated with this line tracker 
+	 * The console associated with this line tracker
 	 */
 	private TextConsole gfConsole;
-	
+
 	@Override
 	public void connect(TextConsole console) {
 		gfConsole = console;
@@ -36,12 +36,13 @@ public class GlassfishConsoleTracker implements IPatternMatchListenerDelegate {
 	@Override
 	public void matchFound(PatternMatchEvent event) {
 		try {
-            int offset = event.getOffset();
-            int length = event.getLength();
-            IHyperlink link = new JavaStackTraceHyperlink(gfConsole);
-            gfConsole.addHyperlink(link, offset+1, length-2);   
-        } catch (BadLocationException e) {
-        }
+			int offset = event.getOffset();
+			int length = event.getLength();
+			IHyperlink link = new JavaStackTraceHyperlink(gfConsole);
+			gfConsole.addHyperlink(link, offset + 1, length - 2);
+		} catch (BadLocationException e) {
+			// Ignore
+		}
 	}
 
 }

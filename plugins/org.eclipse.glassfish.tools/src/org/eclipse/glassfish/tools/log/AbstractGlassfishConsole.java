@@ -17,25 +17,18 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.console.MessageConsoleStream;
 
-public abstract class AbstractGlassfishConsole extends MessageConsole implements
-		IGlassFishConsole {
+public abstract class AbstractGlassfishConsole extends MessageConsole implements IGlassFishConsole {
 
 	protected List<LogReader> readers;
-	//private FetchLog[] logFetchers;
-	
 	protected MessageConsoleStream out;
-	
 	protected CountDownLatch latch;
-	
 	protected ILogFilter filter;
-	
-	protected ScheduledFuture<?> stopJobResult = null;
+	protected ScheduledFuture<?> stopJobResult;
 
-	public AbstractGlassfishConsole(String name,
-			ImageDescriptor imageDescriptor, ILogFilter filter) {
+	public AbstractGlassfishConsole(String name, ImageDescriptor imageDescriptor, ILogFilter filter) {
 		super(name, imageDescriptor);
 		this.filter = filter;
 		this.out = newMessageStream();
 	}
-	
+
 }

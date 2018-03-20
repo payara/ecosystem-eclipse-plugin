@@ -20,7 +20,6 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.glassfish.tools.GlassfishToolsPlugin;
-import org.eclipse.glassfish.tools.RuntimeComponentProvider;
 import org.eclipse.glassfish.tools.utils.PluginUtil.InvalidExtensionException;
 import org.eclipse.wst.common.project.facet.core.runtime.IRuntimeComponent;
 import org.eclipse.wst.server.core.IRuntime;

@@ -13,8 +13,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Level;
 
-import org.eclipse.glassfish.tools.GlassFishServer;
 import org.eclipse.glassfish.tools.sdk.logging.Logger;
+import org.eclipse.glassfish.tools.server.GlassFishServer;
 
 /**
  * Fetch GlassFish log from server.

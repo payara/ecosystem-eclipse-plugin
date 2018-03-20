@@ -1,44 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
-
-    <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
-       <launchConfigurationTabGroup
-             class="org.eclipse.glassfish.tools.ui.SunAppServerLaunchConfigurationTabGroup"
-             id="org.glassfish.jst.server.launchConfigurationTabGroup"
-             type="org.glassfish.jst.server.GlassfishServerLaunchConfigurationType">
-       </launchConfigurationTabGroup>
-    </extension>
-
-    <extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
-       <launchConfigurationTypeImage id="org.eclipse.glassfish.tools.ui.launchConfigurationTypeImage"
-             configTypeID="org.glassfish.jst.server.GlassfishServerLaunchConfigurationType"
-             icon="icons/obj16/glassfishserver.gif">
-       </launchConfigurationTypeImage>
-    </extension>
+ 
     
+    <!--
+        This wizard fragment plugs-in the wizard flow when Servers - New Server - Payara -> Payara
+        is selected and subsequently the next button is pressed when no runtime exists yet,  
+        or the add button next to Server runtime environment is pressed.
+     -->
     <extension point="org.eclipse.wst.server.ui.wizardFragments">
        <fragment
-             class="org.eclipse.glassfish.tools.ui.wizards.GlassfishSapphireRuntimeWizardFragment"
-             id="org.eclipse.glassfish.tools.runtime"
+             class="org.eclipse.glassfish.tools.ui.wizards.NewPayaraRuntimeWizardFragment"
              typeIds="glassfish">
        </fragment>
        <fragment
-             class="org.eclipse.glassfish.tools.ui.wizards.GlassfishSapphireServerWizardFragment"
-             id="org.eclipse.glassfish.tools.runtime"
-             typeIds="glassfish.server">
+             class="org.eclipse.glassfish.tools.ui.wizards.NewPayaraServerWizardFragment"
+             typeIds="payara.server">
        </fragment>
     </extension>
     
-    <extension
-          point="org.eclipse.wst.server.ui.serverImages">
+    
+    <!--
+        The images associated with the Payara runtime and server
+    -->
+    <extension point="org.eclipse.wst.server.ui.serverImages">
        <image
-       		 typeIds="glassfish,glassfish.server"
-             icon="icons/obj16/glassfishserver.gif"
-             id="org.eclipse.jst.server.glassfish.image">
+             id="org.eclipse.jst.server.glassfish.image"
+       		 typeIds="glassfish,payara.server"
+             icon="icons/obj16/glassfishserver.gif">
        </image>
     </extension>
     
+    <extension point="org.eclipse.wst.common.project.facet.ui.images">
+       <image
+             path="icons/obj16/glassfishserver.gif"
+             runtime-component-type="glassfish">
+       </image>
+    </extension>
+    
+    
+    <!--
+        The label associated with the Payara runtime, i.e. "Payara 5.181"
+    -->
     <extension point="org.eclipse.wst.common.project.facet.core.runtimes">
         <adapter>
             <runtime-component id="glassfish"/>
@@ -46,27 +49,295 @@
             <type class="org.eclipse.wst.common.project.facet.ui.IRuntimeComponentLabelProvider"/>
         </adapter>
     </extension>
-
-    <extension
-          point="org.eclipse.wst.common.project.facet.ui.images">
-       <image
-             path="icons/obj16/glassfishserver.gif"
-             runtime-component-type="glassfish">
-       </image>
+    
+    
+    
+    <!-- 
+        The global preferenes for all Payara server instances in Eclipse menu - preferences - Payara Preferences 
+    -->
+    <extension point="org.eclipse.ui.preferencePages">
+       <page
+             id="org.eclipse.glassfish.tools.preferences.GlassFishPreferencePage"
+             class="org.eclipse.glassfish.tools.ui.preferences.GlassFishPreferencePage"
+             name="GlassFish Preferences">
+       </page>
     </extension>
     
-    <extension
-          point="org.eclipse.wst.server.ui.editorPageSections">
+    
+    <!-- 
+        The launch configuration that's shown when the "Open Launch Configuration" is clicked on e.g. the "Server Editor",
+        which is the editor being opened when a server in the Servers view is double clicked. 
+    -->
+    <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+       <launchConfigurationTabGroup
+             id="org.glassfish.jst.server.launchConfigurationTabGroup"
+             class="org.eclipse.glassfish.tools.ui.editorsections.LaunchConfigurationTabGroup"
+             type="org.glassfish.jst.server.GlassfishServerLaunchConfigurationType">
+       </launchConfigurationTabGroup>
+    </extension>
+    <extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+       <launchConfigurationTypeImage 
+             id="org.eclipse.glassfish.tools.ui.launchConfigurationTypeImage"
+             configTypeID="org.glassfish.jst.server.GlassfishServerLaunchConfigurationType"
+             icon="icons/obj16/glassfishserver.gif">
+       </launchConfigurationTypeImage>
+    </extension>
+
+   
+    <!--
+        This contributes content to the "Server Editor", which is the editor that opens when you double click
+        the Payara / GlassFish server in the Servers views. The content itself is a link to the properties page.
+    -->
+    <extension point="org.eclipse.wst.server.ui.editorPageSections">
        <section
              class="org.eclipse.glassfish.tools.ui.editorsections.ServerSection"
-             id="com.sun.enterprise.jst.server.runtime.sunappsrv"
+             typeIds="payara.server"
              insertionId="org.eclipse.wst.server.editor.overview.left"
-             order="10"
-             typeIds="glassfish.server">
+             order="10">
        </section>
     </extension>
     
-    <extension
+    
+    <!-- 
+        Menu entries that are being shown for the Payara / GlassFish server when e.g. the server is right clicked
+        in the Servers view and "Payara" is chosen from the context menu  
+    -->
+    
+    <extension point="org.eclipse.ui.commands">
+        <category
+              id="org.eclipse.glassfish.tools.commands.category"
+              name="glassfish-commands">
+        </category>
+        
+        <command
+              id="org.eclipse.glassfish.tools.commands.ViewLogCommand"
+              name="%menu.viewlogfile"
+              description="%menu.viewlogfile">
+        </command>
+        <command
+              id="org.eclipse.glassfish.tools.commands.ViewAdminConsoleCommand"
+              name="%menu.viewadminconsole"
+              description="%menu.viewadminconsole">
+        </command>
+        <command
+              id="org.eclipse.glassfish.tools.commands.OpenUrlCommand"
+              name="OpenUrlCommand">
+           <commandParameter
+                 id="org.eclipse.glassfish.tools.commands.urlParam"
+                 name="url"
+                 optional="false">
+           </commandParameter>
+        </command>
+        <command
+              id="org.eclipse.glassfish.tools.commands.OpenServerHomeCommand"
+              name="OpenServerHomeCommand">
+        </command>
+        <command
+              id="org.eclipse.glassfish.tools.commands.OpenDomainHomeCommand"
+              name="OpenDomainHomeCommand">
+        </command>
+     </extension>
+    
+    
+     <extension point="org.eclipse.ui.menus">
+        <menuContribution
+           allPopups="false"
+           locationURI="popup:org.eclipse.wst.server.ui.ServersView?after=additions">
+        <menu
+              id="org.eclipse.glassfish.tools.actions.subMenu"
+              icon="icons/obj16/glassfishserver.gif"
+              label="%menu.payaratopmenu">
+           <separator name="group1"/>
+           <visibleWhen checkEnabled="false">
+              <reference definitionId="org.eclipse.glassfish.tools.moreGlassfishSelected"/>
+           </visibleWhen>
+           
+           <command
+                 commandId="org.eclipse.glassfish.tools.commands.ViewAdminConsoleCommand"
+                 icon="icons/obj16/glassfishserver.gif"
+                 style="push">
+           </command>
+           <command
+                 commandId="org.eclipse.glassfish.tools.commands.ViewLogCommand"
+                 icon="icons/obj16/logfile.gif"
+                 style="push">
+           </command>
+           <command
+                 commandId="org.eclipse.glassfish.tools.commands.OpenServerHomeCommand"
+                 icon="icons/obj16/folder_open.gif"
+                 label="%menu.openserverhome"
+                 style="push">
+              <visibleWhen checkEnabled="false">
+                 <reference definitionId="org.eclipse.glassfish.tools.oneGlassfishSelected"/>
+              </visibleWhen>
+           </command>
+           <command
+                 commandId="org.eclipse.glassfish.tools.commands.OpenDomainHomeCommand"
+                 icon="icons/obj16/folder_open.gif"
+                 label="%menu.opendomainhome"
+                 style="push">
+           </command>
+        </menu>
+     </menuContribution>
+    </extension>
+ 
+
+	<!-- Handlers corresponding to the commands defined above  -->
+ 
+	<extension point="org.eclipse.ui.handlers">
+     
+		<handler
+		      class="org.eclipse.glassfish.tools.handlers.ViewLogHandler"
+	          commandId="org.eclipse.glassfish.tools.commands.ViewLogCommand">
+	        <enabledWhen>
+				<or>
+					<not>
+						<reference definitionId="org.eclipse.glassfish.tools.isRemoteGlassfish"/>
+					</not>
+					<reference definitionId="org.eclipse.glassfish.tools.oneRunningGlassfishSelected"/>
+				</or>
+			</enabledWhen>
+		</handler>
+     
+		 <handler 
+		      class="org.eclipse.glassfish.tools.handlers.ViewAdminConsoleHandler"
+		      commandId="org.eclipse.glassfish.tools.commands.ViewAdminConsoleCommand">
+			  <enabledWhen>
+		   		<reference definitionId="org.eclipse.glassfish.tools.oneRunningGlassfishSelected"/>
+			  </enabledWhen>
+		 </handler>
+		   
+		<handler
+           class="org.eclipse.glassfish.tools.handlers.ShowURLHandler"
+           commandId="org.eclipse.glassfish.tools.commands.OpenUrlCommand">
+        </handler>
+		   
+		<handler
+		   class="org.eclipse.glassfish.tools.handlers.OpenServerHomeHandler"
+		   commandId="org.eclipse.glassfish.tools.commands.OpenServerHomeCommand">
+			 <enabledWhen>
+			 	<reference definitionId="org.eclipse.glassfish.tools.oneGlassfishSelected"/>
+			 </enabledWhen>  
+		 </handler>
+		 
+		 <handler class="org.eclipse.glassfish.tools.handlers.OpenDomainHomeHandler"
+		   commandId="org.eclipse.glassfish.tools.commands.OpenDomainHomeCommand">
+			<enabledWhen>
+        			<and>
+	 				<not>    
+	           			<reference definitionId="org.eclipse.glassfish.tools.isRemoteGlassfish"/>
+           			</not>
+           			<reference definitionId="org.eclipse.glassfish.tools.oneGlassfishSelected"/>
+           		</and>
+        		</enabledWhen>
+     	</handler>
+    </extension>
+  
+  
+    <!-- 
+        Properties that are being shown for the Payara / GlassFish server when e.g. the server is right clicked
+        in the Servers view and "Properties" is chosen from the context menu 
+    -->
+    <extension point="org.eclipse.ui.propertyPages">
+        <page
+           id="oorg.eclipse.glassfish.tools.ui.server.properties.glassfish"
+           name="GlassFish"
+           class="org.eclipse.glassfish.tools.ui.properties.ServerPropertyPage">
+           <enabledWhen>
+               <and>
+                    <adapt type="org.eclipse.wst.server.core.IServer" />
+                    <reference definitionId="org.eclipse.glassfish.tools.isGlassfish"/>
+               </and>
+           </enabledWhen>
+       </page>  
+    </extension>
+    
+    
+   <!--
+        This provides the dynamic nodes; the tree nodes that are inserted underneath 
+        a running Payara / GlassFish server node in the Servers view. 
+    -->
+    <extension point="org.eclipse.ui.navigator.viewer">
+       <viewerContentBinding viewerId="org.eclipse.wst.server.ui.ServersView">
+          <includes><contentExtension pattern="glassfish31.serverview.contentprovider"/></includes>
+       </viewerContentBinding>
+    </extension>
+    <extension point="org.eclipse.ui.navigator.navigatorContent">
+       <navigatorContent
+             id="glassfish31.serverview.contentprovider"
+             contentProvider="org.eclipse.glassfish.tools.ui.serverview.ServerViewDynamicNodeProvider"
+             name="Payara Management Nodes"
+             icon="icons/obj16/sunappsrv.gif"
+             labelProvider="org.eclipse.glassfish.tools.ui.serverview.ServerViewLabelProvider"
+             activeByDefault="true"
+             priority="highest">
+          <triggerPoints>
+                <instanceof value="org.eclipse.wst.server.core.IServer"/>
+          </triggerPoints>
+          <possibleChildren>
+                <instanceof value="org.eclipse.glassfish.tools.ui.serverview.dynamicnodes.TreeNode"/>
+          </possibleChildren>
+          <!-- This adds the "unregister" action when you right click on a resource such as a JDBC data source -->
+          <actionProvider
+                id="org.eclipse.glassfish.tools.ui.serverview.ServerViewActionProvider"
+                class="org.eclipse.glassfish.tools.ui.serverview.ServerViewActionProvider"
+                priority="highest">
+             <enablement>
+                <or>
+                   <instanceof value="org.eclipse.wst.server.core.IServer"/>
+                   <instanceof value="org.eclipse.glassfish.tools.ui.serverview.dynamicnodes.TreeNode"/>
+                   <adapt type="java.util.Collection"><count value="0"/></adapt>
+                </or>
+             </enablement>
+          </actionProvider>
+       </navigatorContent>
+       
+       <commonWizard
+             menuGroupId="org.eclipse.glassfish.tools.v3.wizards"
+             type="new"
+             wizardId="org.eclipse.glassfish.tools.v3.wizards.AddGenericResourceWizard">
+          <enablement>
+             <adapt type="org.eclipse.core.resources.IResource">
+                <test
+                      property="org.eclipse.wst.common.project.facet.core.projectFacet"
+                      value="glassfish.web">
+                </test>
+             </adapt>
+          </enablement>
+       </commonWizard>
+    </extension>
+  
+  
+    <!-- 
+        This adds hyper links to the console that shows Payara's server logging 
+    -->
+    <extension point="org.eclipse.ui.console.consolePageParticipants">
+       <consolePageParticipant
+             id="org.eclipse.glassfish.tools.log.GlassFishLogPageParticipant"
+             class="org.eclipse.glassfish.tools.ui.log.GlassFishLogPageParticipant">
+          <enablement>
+             <instanceof value="org.eclipse.glassfish.tools.log.GlassfishConsole"/>
+          </enablement>
+       </consolePageParticipant>
+    </extension>
+    
+    <extension point="org.eclipse.ui.console.consolePatternMatchListeners">
+        <consolePatternMatchListener
+           id="org.eclipse.glassfish.tools.ui.consolePatternMatchListener"
+           class="org.eclipse.glassfish.tools.ui.log.GlassfishConsoleTracker"
+           qualifier="${java_extensions_regex}"
+           regex="\(\S*${java_extensions_regex}\S*\)">
+        <enablement></enablement>
+        </consolePatternMatchListener>
+    </extension> 
+
+    <extension point="org.eclipse.ui.perspectiveExtensions">
+        <perspectiveExtension targetID="org.eclipse.jst.j2ee.J2EEPerspective">
+            <newWizardShortcut id="org.eclipse.glassfish.tools.v3.wizards.AddGenericResourceWizard"/>
+        </perspectiveExtension>
+    </extension>
+  
+      <extension
           point="org.eclipse.ui.newWizards">
        <category
              id="org.eclipse.glassfish.tools"
@@ -122,336 +393,18 @@
           </description>
        </wizard>
     </extension>
-    
-    <extension
-          point="org.eclipse.ui.preferencePages">
-       <page
-             class="org.eclipse.glassfish.tools.ui.preferences.GlassFishPreferencePage"
-             id="org.eclipse.glassfish.tools.preferences.GlassFishPreferencePage"
-             name="GlassFish Preferences">
-       </page>
-    </extension>
-    
-    <extension
-          point="org.eclipse.ui.console.consolePageParticipants">
-       <consolePageParticipant
-             class="org.eclipse.glassfish.tools.ui.log.GlassFishLogPageParticipant"
-             id="org.eclipse.glassfish.tools.log.GlassFishLogPageParticipant">
-          <enablement>
-             <instanceof
-                   value="org.eclipse.glassfish.tools.log.GlassfishConsole">
-             </instanceof>
-          </enablement>
-       </consolePageParticipant>
-    </extension>
-    
-    <extension
-          point="org.eclipse.jst.common.project.facet.ui.libraryProviderActionPanels">
+  
+ 
+  
+   <extension point="org.eclipse.jst.common.project.facet.ui.libraryProviderActionPanels">
        <panel
-             class="org.eclipse.glassfish.tools.ui.JAXRSActionPanels"
+             class="org.eclipse.glassfish.tools.ui.internal.JAXRSActionPanels"
              provider="org.eclipse.glassfish.tools.jaxrsLibraryproviderID">
        </panel>
     </extension>
     
-    <extension
-          point="org.eclipse.ui.navigator.viewer">
-       <viewerContentBinding
-             viewerId="org.eclipse.wst.server.ui.ServersView">
-          <includes>
-             <contentExtension
-                   pattern="glassfish31.serverview.contentprovider">
-             </contentExtension>
-          </includes>
-       </viewerContentBinding>
-    </extension>
-    
-    <extension
-          point="org.eclipse.ui.navigator.navigatorContent">
-       <navigatorContent
-             activeByDefault="true"
-             contentProvider="org.eclipse.glassfish.tools.ui.serverview.ServerViewContentProvider"
-             icon="icons/obj16/sunappsrv.gif"
-             id="glassfish31.serverview.contentprovider"
-             labelProvider="org.eclipse.glassfish.tools.ui.serverview.ServerViewLabelProvider"
-             name="GlassFish Management Nodes"
-             priority="highest">
-          <triggerPoints>
-             <or>
-                <instanceof
-                      value="org.eclipse.wst.server.core.IServer">
-                </instanceof>
-             </or>
-          </triggerPoints>
-          <possibleChildren>
-             <or>
-                <instanceof
-                      value="org.eclipse.glassfish.tools.ui.serverview.TreeNode">
-                </instanceof>
-             </or>
-          </possibleChildren>
-          <actionProvider
-                class="org.eclipse.glassfish.tools.ui.serverview.ServerViewActionProvider"
-                id="org.eclipse.glassfish.tools.ui.serverview.ServerViewActionProvider"
-                priority="highest">
-             <enablement>
-                <or>
-                   <instanceof
-                         value="org.eclipse.wst.server.core.IServer">
-                   </instanceof>
-                   <instanceof
-                         value="org.eclipse.glassfish.tools.ui.serverview.TreeNode">
-                   </instanceof>
-                   <adapt
-                         type="java.util.Collection">
-                      <count
-                            value="0">
-                      </count>
-                   </adapt>
-                </or>
-             </enablement>
-          </actionProvider>
-          <commonSorter
-                class="org.eclipse.glassfish.tools.ui.serverview.ServerViewViewerSorter">
-          </commonSorter>
-       </navigatorContent>
-       <commonWizard
-             menuGroupId="org.eclipse.glassfish.tools.v3.wizards"
-             type="new"
-             wizardId="org.eclipse.glassfish.tools.v3.wizards.AddGenericResourceWizard">
-          <enablement>
-             <adapt
-                   type="org.eclipse.core.resources.IResource">
-                <test
-                      property="org.eclipse.wst.common.project.facet.core.projectFacet"
-                      value="glassfish.web">
-                </test>
-             </adapt>
-          </enablement>
-       </commonWizard>
-    </extension>
-    
-    <extension
-       point="org.eclipse.ui.commands">
-    <category
-          id="org.eclipse.glassfish.tools.commands.category"
-          name="glassfish-commands">
-    </category>
-    <command
-          description="%menu.viewlogfile"
-          id="org.eclipse.glassfish.tools.commands.ViewLogCommand"
-          name="%menu.viewlogfile">
-    </command>
-    <command
-          description="%menu.viewadminconsole"
-          id="org.eclipse.glassfish.tools.commands.ViewAdminConsoleCommand"
-          name="%menu.viewadminconsole">
-    </command>
-    <command
-          description="%menu.updatecenter"
-          id="org.eclipse.glassfish.tools.commands.UpdateCenterCommand"
-          name="%menu.updatecenter">
-    </command>
-    <command
-          id="org.eclipse.glassfish.tools.commands.OpenUrlCommand"
-          name="OpenUrlCommand">
-       <commandParameter
-             id="org.eclipse.glassfish.tools.commands.urlParam"
-             name="url"
-             optional="false">
-       </commandParameter>
-    </command>
-    <command
-          id="org.eclipse.glassfish.tools.commands.OpenServerHomeCommand"
-          name="OpenServerHomeCommand">
-    </command>
-    <command
-          id="org.eclipse.glassfish.tools.commands.OpenDomainHomeCommand"
-          name="OpenDomainHomeCommand">
-    </command>
- </extension>
- 
-  <extension
-        point="org.eclipse.ui.handlers">
-     <handler
-           class="org.eclipse.glassfish.tools.handlers.UpdateCenterHandler"
-           commandId="org.eclipse.glassfish.tools.commands.UpdateCenterCommand">
-        <activeWhen>
-           <reference
-                 definitionId="org.eclipse.glassfish.tools.oneGlassfishSelected">
-           </reference>
-        </activeWhen>
-        <enabledWhen>
-           <reference
-                 definitionId="org.eclipse.glassfish.tools.oneGlassfishSelected">
-           </reference>
-        </enabledWhen>
-     </handler>
-     <handler
-           class="org.eclipse.glassfish.tools.handlers.ViewLogHandler"
-           commandId="org.eclipse.glassfish.tools.commands.ViewLogCommand">
-        <enabledWhen>
-           <or>
-           <not>
-	           <reference
-	                 definitionId="org.eclipse.glassfish.tools.isRemoteGlassfish">
-	           </reference>
-           </not>
-           <reference
-                 definitionId="org.eclipse.glassfish.tools.oneRunningGlassfishSelected">
-           </reference>
-           </or>
-        </enabledWhen>
-     </handler>
-     <handler
-           class="org.eclipse.glassfish.tools.handlers.ViewAdminConsoleHandler"
-           commandId="org.eclipse.glassfish.tools.commands.ViewAdminConsoleCommand">
-        <enabledWhen>
-           <reference
-                 definitionId="org.eclipse.glassfish.tools.oneRunningGlassfishSelected">
-           </reference>
-        </enabledWhen>
-     </handler>
-     <handler
-           class="org.eclipse.glassfish.tools.handlers.ShowURLHandler"
-           commandId="org.eclipse.glassfish.tools.commands.OpenUrlCommand">
-     </handler>
-     <handler
-           class="org.eclipse.glassfish.tools.handlers.OpenServerHomeHandler"
-           commandId="org.eclipse.glassfish.tools.commands.OpenServerHomeCommand">
-         <enabledWhen>
-           <reference
-	            definitionId="org.eclipse.glassfish.tools.oneGlassfishSelected">
-	       </reference>
-         </enabledWhen>  
-     </handler>
-     <handler
-           class="org.eclipse.glassfish.tools.handlers.OpenDomainHomeHandler"
-           commandId="org.eclipse.glassfish.tools.commands.OpenDomainHomeCommand">
-        <enabledWhen>
-        	<and>
-	 		<not>    
-	           	<reference
-	                 definitionId="org.eclipse.glassfish.tools.isRemoteGlassfish">
-	           	</reference>
-           </not>
-           		<reference
-	                 definitionId="org.eclipse.glassfish.tools.oneGlassfishSelected">
-	           	</reference>
-           </and>
-        </enabledWhen>
-     </handler>
-  </extension>
   
-  <extension
-        point="org.eclipse.ui.menus">
-     <!--menuContribution
-           allPopups="false"
-           locationURI="toolbar:org.eclipse.wst.server.ui.ServersView">
-        <command
-              commandId="org.eclipse.glassfish.tools.commands.UpdateCenterCommand"
-              icon="icons/obj16/updateCenter.png"
-              style="push">
-        </command>
-        <command
-              commandId="org.eclipse.glassfish.tools.commands.ViewAdminConsoleCommand"
-              icon="icons/obj16/glassfishserver.gif"
-              style="push">
-        </command>
-        <command
-              commandId="org.eclipse.glassfish.tools.commands.ViewLogCommand"
-              icon="icons/obj16/logfile.gif"
-              style="push">
-        </command>
-     </menuContribution-->
-     <menuContribution
-           allPopups="false"
-           locationURI="popup:org.eclipse.wst.server.ui.ServersView?after=additions">
-        <menu
-              icon="icons/obj16/glassfishserver.gif"
-              id="org.eclipse.glassfish.tools.actions.subMenu"
-              label="%menu.glassfishtopmenu">
-           <separator
-                 name="group1">
-           </separator>
-           <visibleWhen
-                 checkEnabled="false">
-              <reference
-                    definitionId="org.eclipse.glassfish.tools.moreGlassfishSelected">
-              </reference>
-           </visibleWhen>
-           <command
-                 commandId="org.eclipse.glassfish.tools.commands.UpdateCenterCommand"
-                 icon="icons/obj16/updateCenter.png"
-                 style="push">
-           </command>
-           <command
-                 commandId="org.eclipse.glassfish.tools.commands.ViewAdminConsoleCommand"
-                 icon="icons/obj16/glassfishserver.gif"
-                 style="push">
-           </command>
-           <command
-                 commandId="org.eclipse.glassfish.tools.commands.ViewLogCommand"
-                 icon="icons/obj16/logfile.gif"
-                 style="push">
-           </command>
-           <command
-                 commandId="org.eclipse.glassfish.tools.commands.OpenServerHomeCommand"
-                 icon="icons/obj16/folder_open.gif"
-                 label="%menu.openserverhome"
-                 style="push">
-              <visibleWhen
-                    checkEnabled="false">
-                 <reference
-                       definitionId="org.eclipse.glassfish.tools.oneGlassfishSelected">
-                 </reference>
-              </visibleWhen>
-           </command>
-           <command
-                 commandId="org.eclipse.glassfish.tools.commands.OpenDomainHomeCommand"
-                 icon="icons/obj16/folder_open.gif"
-                 label="%menu.opendomainhome"
-                 style="push">
-           </command>
-        </menu>
-     </menuContribution>
-  </extension>
   
-  <extension
-        point="org.eclipse.ui.perspectiveExtensions">
-     <perspectiveExtension
-           targetID="org.eclipse.jst.j2ee.J2EEPerspective">
-        <newWizardShortcut
-              id="org.eclipse.glassfish.tools.v3.wizards.AddGenericResourceWizard">
-        </newWizardShortcut>
-     </perspectiveExtension>
-  </extension>
-  
-  <extension point="org.eclipse.ui.propertyPages">
-	  <page
-	    id="oorg.eclipse.glassfish.tools.ui.server.properties.glassfish"
-	    name="GlassFish"
-	    class="org.eclipse.glassfish.tools.ui.properties.ServerPropertyPage">
-	     <enabledWhen>
-	       <and>
-		     	<adapt type="org.eclipse.wst.server.core.IServer" />
-				<!--systemTest property="org.eclipse.glassfish.tools.ui.IS_GLASSFISH_SERVER" value="true" /-->
-    <reference
-          definitionId="org.eclipse.glassfish.tools.isGlassfish">
-    </reference>
-	       </and>
-	     </enabledWhen>
-	  </page>  
-  </extension>
-  <extension
-        point="org.eclipse.ui.console.consolePatternMatchListeners">
-     <consolePatternMatchListener
-           class="org.eclipse.glassfish.tools.ui.log.GlassfishConsoleTracker"
-           id="org.eclipse.glassfish.tools.ui.consolePatternMatchListener"
-           qualifier="${java_extensions_regex}"
-           regex="\(\S*${java_extensions_regex}\S*\)">
-        <enablement></enablement>
-     </consolePatternMatchListener>
-  </extension> 
   
   <extension point="org.eclipse.wst.server.core.runtimeLocators">
     <runtimeLocator
