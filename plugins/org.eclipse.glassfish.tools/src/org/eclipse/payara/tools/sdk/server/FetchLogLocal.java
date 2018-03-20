@@ -26,69 +26,68 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 /**
  * Fetch GlassFish log from local server.
  * <p/>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class FetchLogLocal extends FetchLogPiped {
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Logger instance for this class. */
     private static final Logger LOGGER = new Logger(FetchLogLocal.class);
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Constructs an instance of GlassFish local server log fetcher.
      * <p/>
-     * Super class constructor will call <code>initInputStream</code> method
-     * which initializes <code>InputStream</code> as
-     * <code>FileInputStream</code> before this constructor code is being
+     * Super class constructor will call <code>initInputStream</code> method which initializes
+     * <code>InputStream</code> as <code>FileInputStream</code> before this constructor code is being
      * executed.
      * <p/>
-     * @param server GlassFish server for fetching local server log. Both
-     *               <code>getDomainsFolder</code>
-     *               and <code>getDomainName</code> should not return null.
-     * @param skip   Skip to the end of the log file.
+     * 
+     * @param server GlassFish server for fetching local server log. Both <code>getDomainsFolder</code>
+     * and <code>getDomainName</code> should not return null.
+     * @param skip Skip to the end of the log file.
      */
-    FetchLogLocal(final GlassFishServer server, final  boolean skip) {
+    FetchLogLocal(final GlassFishServer server, final boolean skip) {
         super(server, skip);
     }
 
     /**
-     * Constructs an instance of GlassFish local server log fetcher with
-     * external {@link ExecutorService}.
+     * Constructs an instance of GlassFish local server log fetcher with external
+     * {@link ExecutorService}.
      * <p/>
-     * Super class constructor will call <code>initInputStream</code> method
-     * which initializes <code>InputStream</code> as
-     * <code>FileInputStream</code> before this constructor code is being
+     * Super class constructor will call <code>initInputStream</code> method which initializes
+     * <code>InputStream</code> as <code>FileInputStream</code> before this constructor code is being
      * executed.
      * <p/>
+     * 
      * @param executor Executor service used to start task.
-     * @param server   GlassFish server for fetching local server log. Both
-     *                 <code>getDomainsFolder</code>
-     *                 and <code>getDomainName</code> should not return null.
-     * @param skip     Skip to the end of the log file.
+     * @param server GlassFish server for fetching local server log. Both <code>getDomainsFolder</code>
+     * and <code>getDomainName</code> should not return null.
+     * @param skip Skip to the end of the log file.
      */
     FetchLogLocal(final ExecutorService executor, final GlassFishServer server,
-           final boolean skip) {
+            final boolean skip) {
         super(executor, server, skip);
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Methods                                                                //
+    // Methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Initializes active log file <code>InputStream</code>
-     * as <code>FileInputStream</code> sending data from local server
-     * log file.
+     * Initializes active log file <code>InputStream</code> as <code>FileInputStream</code> sending data
+     * from local server log file.
      * <p/>
-     * @return <code>FileInputStream</code> where log lines from server
-     *         active log file will be available to read.
+     * 
+     * @return <code>FileInputStream</code> where log lines from server active log file will be
+     * available to read.
      */
     private InputStream initInputFile() {
         final String METHOD = "initInputFile";
@@ -121,18 +120,18 @@ public class FetchLogLocal extends FetchLogPiped {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Runnable call() Method                                                  //
+    // Runnable call() Method //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Remote server log lines reading task.
      * <p/>
-     * Reads new log lines from server using GlassFish remote administration API
-     * and sends them into pipe (<code>PipedInputStream</code>).
+     * Reads new log lines from server using GlassFish remote administration API and sends them into
+     * pipe (<code>PipedInputStream</code>).
      * <p/>
-     * @return <code>TaskState.COMPLETED</code> when remote administration API
-     *         stopped responding or <code>TaskState.FAILED</code> when
-     *         exception was caught.
+     * 
+     * @return <code>TaskState.COMPLETED</code> when remote administration API stopped responding or
+     * <code>TaskState.FAILED</code> when exception was caught.
      */
     @SuppressWarnings("SleepWhileInLoop")
     @Override
@@ -159,7 +158,7 @@ public class FetchLogLocal extends FetchLogPiped {
                         LOGGER.log(Level.FINER, METHOD, "rotation");
                         fIn.close();
                         out.flush();
-                        
+
                         fIn = initInputFile();
                     }
                 }
@@ -167,13 +166,13 @@ public class FetchLogLocal extends FetchLogPiped {
                     while (inCount > 0) {
                         int count = fIn.read(buff);
                         LOGGER.log(Level.FINEST, METHOD, "read",
-                                new Object[]{new Integer(count)});
+                                new Object[] { new Integer(count) });
                         if (count > 0) {
                             out.write(buff, 0, count);
                             inCount -= count;
-                        }else{
-                        	//Return -1: If log file is rotated, the original file handle is no longer valid
-                        	break;
+                        } else {
+                            // Return -1: If log file is rotated, the original file handle is no longer valid
+                            break;
                         }
                         if (inCount <= 0) {
                             inCount = fIn.available();

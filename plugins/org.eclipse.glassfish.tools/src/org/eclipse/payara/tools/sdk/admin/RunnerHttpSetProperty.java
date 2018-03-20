@@ -22,6 +22,7 @@ public class RunnerHttpSetProperty extends RunnerHttp {
     /**
      * Creates query string from command object properties.
      * <p/>
+     * 
      * @param command GlassFish server administration command entity.
      * @return Query string from command object properties.
      */
@@ -29,21 +30,20 @@ public class RunnerHttpSetProperty extends RunnerHttp {
         return MessageFormat.format(
                 command.format, command.property, command.value);
     }
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
     /**
-     * Constructs an instance of administration command executor using
-     * HTTP interface.
+     * Constructs an instance of administration command executor using HTTP interface.
      * <p/>
-     * @param server  GlassFish server entity object.
+     * 
+     * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
     public RunnerHttpSetProperty(final GlassFishServer server,
             final Command command) {
-        super(server, command, query((CommandSetProperty)command));
+        super(server, command, query((CommandSetProperty) command));
     }
 
-    
 }

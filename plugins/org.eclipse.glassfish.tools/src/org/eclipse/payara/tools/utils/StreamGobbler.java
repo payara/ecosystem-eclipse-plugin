@@ -18,52 +18,41 @@ import java.io.InputStreamReader;
  * @author <a href="mailto:konstantin.komissarchik@oracle.com">Konstantin Komissarchik</a>
  */
 
-public final class StreamGobbler extends Thread
-{
+public final class StreamGobbler extends Thread {
     private final InputStream stream;
     private final StringBuffer output;
 
-    public StreamGobbler( final InputStream stream )
-    {
-        if( stream == null )
-        {
+    public StreamGobbler(final InputStream stream) {
+        if (stream == null) {
             throw new IllegalArgumentException();
         }
-        
+
         this.stream = stream;
         this.output = new StringBuffer();
     }
 
     @Override
-    public void run()
-    {
-        try
-        {
-            final BufferedReader br = new BufferedReader( new InputStreamReader( this.stream ) );
-            
+    public void run() {
+        try {
+            final BufferedReader br = new BufferedReader(new InputStreamReader(this.stream));
+
             String line = null;
-            
-            while( ( line = br.readLine() ) != null )
-            {
-                read( line );
+
+            while ((line = br.readLine()) != null) {
+                read(line);
             }
-        }
-        catch( final IOException e )
-        {
-            e.printStackTrace();  
+        } catch (final IOException e) {
+            e.printStackTrace();
         }
     }
-    
-    protected void read( final String line )
-    {
-        this.output.append( line );
-        this.output.append( '\n' );
+
+    protected void read(final String line) {
+        this.output.append(line);
+        this.output.append('\n');
     }
-    
-    public final String output()
-    {
+
+    public final String output() {
         return this.output.toString();
     }
-    
-}
 
+}

@@ -16,17 +16,17 @@ import java.util.List;
 /**
  * OS related utilities
  * <p/>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class OsUtils {
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** System lines separator. */
-    public static final String LINES_SEPARATOR
-            = System.getProperty("line.separator");
+    public static final String LINES_SEPARATOR = System.getProperty("line.separator");
 
     /** System file separator length. */
     public static final int FILE_SEPARATOR_LENGTH = File.separator.length();
@@ -38,72 +38,68 @@ public class OsUtils {
     public static final String OS_NAME = System.getProperty(OS_NAME_PROPERTY);
 
     /** OS name from system properties converted to upper case. */
-    public static final String OS_NAME_UPCASE =
-            OS_NAME != null ? OS_NAME.toUpperCase() : OS_NAME;
+    public static final String OS_NAME_UPCASE = OS_NAME != null ? OS_NAME.toUpperCase() : OS_NAME;
 
     /**
-     * Windows OS name substring used to identify Windows in OS name converted
-     * to upper case.
+     * Windows OS name substring used to identify Windows in OS name converted to upper case.
      */
     private static final String OS_WIN_SUBSTR = "WINDOWS";
-    
+
     /**
      * Test if OS where this JDK is running windows.
      * <p/>
      * Internally cached value.
      */
-    private static final boolean IS_WIN = 
-            OS_NAME != null ? OS_NAME_UPCASE.contains(OS_WIN_SUBSTR) : false;
+    private static final boolean IS_WIN = OS_NAME != null ? OS_NAME_UPCASE.contains(OS_WIN_SUBSTR) : false;
 
     /** Executable file suffix (nothing on UNIX, .exe on windows, etc.). */
-    public static final String  EXEC_SUFFIX = IS_WIN ? ".exe" : "";
+    public static final String EXEC_SUFFIX = IS_WIN ? ".exe" : "";
 
     ////////////////////////////////////////////////////////////////////////////
-    // Static methods                                                         //
+    // Static methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Check if OS where this JDK is running is windows.
      * <p/>
-     * @return <code>true</code> when this JDK is running on Windows
-     *         or <code>false</code> otherwise.
+     * 
+     * @return <code>true</code> when this JDK is running on Windows or <code>false</code> otherwise.
      */
     public static boolean isWin() {
         return IS_WIN;
     }
 
     /**
-     * Parses parameters from a given string in shell-like manner and append
-     * them to executable file.
+     * Parses parameters from a given string in shell-like manner and append them to executable file.
      * <p/>
-     * Users of the Bourne shell (e.g. on Unix) will already be familiar with
-     * the behavior. For example you should be able to:
+     * Users of the Bourne shell (e.g. on Unix) will already be familiar with the behavior. For example
+     * you should be able to:
      * <ul>
      * <li/>Include command names with embedded spaces, such as
-     *     <code>c:\Program Files\jdk\bin\javac</code>.
+     * <code>c:\Program Files\jdk\bin\javac</code>.
      * <li/>Include extra command arguments, such as <code>-Dname=value</code>.
-     * <li/>Do anything else which might require unusual characters
-     *     or processing. For example:
-     * <p/><code><pre>
+     * <li/>Do anything else which might require unusual characters or processing. For example:
+     * <p/>
+     * <code><pre>
      * "c:\program files\jdk\bin\java" -Dmessage="Hello /\\/\\ there!" -Xmx128m
      * </pre></code>
-     * <p/>This example would create the following executable name and
-     * arguments:
-     * <ol>
-     * <li/> <code>c:\program files\jdk\bin\java</code>
-     * <li/> <code>-Dmessage=Hello /\/\ there!</code>
-     * <li/> <code>-Xmx128m</code>
-     * </ol>
-     * Note that the command string does not escape its backslashes--under
-     * the assumption that Windows users will not think to do this, meaningless
-     * escapes are just left as backslashes plus following character.
-     * </ul>
-     * <em>Caveat</em>: even after parsing, Windows programs (such as the
-     * Java launcher) may not fully honor certain characters, such as quotes,
-     * in command names or arguments. This is because programs under Windows
-     * frequently perform their own parsing and unescaping (since the shell
-     * cannot be relied on to do this). On Unix, this problem should not occur.
      * <p/>
+     * This example would create the following executable name and arguments:
+     * <ol>
+     * <li/><code>c:\program files\jdk\bin\java</code>
+     * <li/><code>-Dmessage=Hello /\/\ there!</code>
+     * <li/><code>-Xmx128m</code>
+     * </ol>
+     * Note that the command string does not escape its backslashes--under the assumption that Windows
+     * users will not think to do this, meaningless escapes are just left as backslashes plus following
+     * character.
+     * </ul>
+     * <em>Caveat</em>: even after parsing, Windows programs (such as the Java launcher) may not fully
+     * honor certain characters, such as quotes, in command names or arguments. This is because programs
+     * under Windows frequently perform their own parsing and unescaping (since the shell cannot be
+     * relied on to do this). On Unix, this problem should not occur.
+     * <p/>
+     * 
      * @param args A String to parse
      * @return An array of executable file and parameters to be passed to it.
      */
@@ -238,7 +234,9 @@ public class OsUtils {
         return retArgs;
     }
 
-    /** Complementary method to parseParameters
+    /**
+     * Complementary method to parseParameters
+     * 
      * @link #parseParameters
      */
     public static String escapeParameters(String[] params) {
@@ -261,7 +259,8 @@ public class OsUtils {
     /**
      * Escapes one string and appends it into provided {@link StringBuffer}.
      * <p/>
-     * @param s  String to be escaped.
+     * 
+     * @param s String to be escaped.
      * @param sb Target {@link StringBuffer}.
      * @link #escapeParameters
      */
@@ -300,6 +299,7 @@ public class OsUtils {
     /**
      * Escapes provided {@link String}.
      * <p/>
+     * 
      * @param s {@link String} to be escaped.
      * @return Escaped {@link String} value.
      */
@@ -310,14 +310,15 @@ public class OsUtils {
         // Count length of target String to avoid StringBuilder resizing
         for (int i = 0; i < sLen; i++) {
             char c = s.charAt(i);
-            switch(c) {
-                case '\\': case '"':
-                    tLen++;
-                    break;
-                default:
-                    if (Character.isWhitespace(c)) {
-                        quote = true;
-                    }
+            switch (c) {
+            case '\\':
+            case '"':
+                tLen++;
+                break;
+            default:
+                if (Character.isWhitespace(c)) {
+                    quote = true;
+                }
             }
         }
         if (quote) {
@@ -330,10 +331,11 @@ public class OsUtils {
         }
         for (int i = 0; i < sLen; i++) {
             char c = s.charAt(i);
-            switch(c) {
-                case '\\': case '"':
-                    sb.append('\\');
-                    break;
+            switch (c) {
+            case '\\':
+            case '"':
+                sb.append('\\');
+                break;
             }
             sb.append(c);
         }
@@ -346,9 +348,9 @@ public class OsUtils {
     /**
      * Recursive delete of internal files and directory structure.
      * <p/>
-     * Target directory is not removed. It's made empty.
-     * Think twice before using it.
+     * Target directory is not removed. It's made empty. Think twice before using it.
      * <p/>
+     * 
      * @param target File or directory which content will be deleted.
      */
     public static boolean rmDirContent(File target) {
@@ -373,9 +375,9 @@ public class OsUtils {
     /**
      * Recursive delete of directory structure.
      * <p/>
-     * Target directory is also removed.
-     * Think twice before using it.
+     * Target directory is also removed. Think twice before using it.
      * <p/>
+     * 
      * @param target File or directory to be deleted.
      */
     public static boolean rmDir(File target) {
@@ -384,9 +386,10 @@ public class OsUtils {
     }
 
     /**
-     * Join 2 path elements separating them with path separator if not present 
-     * at the end of first path element.
+     * Join 2 path elements separating them with path separator if not present at the end of first path
+     * element.
      * <p/>
+     * 
      * @param e1 1st path element.
      * @param e2 2nd path element.
      */

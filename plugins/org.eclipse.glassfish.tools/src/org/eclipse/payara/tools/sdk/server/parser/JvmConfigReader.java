@@ -20,20 +20,19 @@ import org.eclipse.payara.tools.sdk.server.parser.TreeParser.Path;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-
 public class JvmConfigReader extends NodeListener implements
         XMLReader {
 
     private static String JVM_OPTIONS_TAG = "jvm-options";
-    
+
     private String serverName;
     /**
      * Holds all values found in <jvm-options> tags
      */
     private ArrayList<String> optList = new ArrayList<>();
     /**
-     * Holds all key-value pairs representing attributes of jvm-config tag.
-     * These are used for computing the classpath.
+     * Holds all key-value pairs representing attributes of jvm-config tag. These are used for computing
+     * the classpath.
      */
     private HashMap<String, String> propMap = new HashMap<>();
     private boolean isMonitoringEnabled = false;
@@ -50,11 +49,12 @@ public class JvmConfigReader extends NodeListener implements
 
             @Override
             public void readAttributes(String qname, Attributes attributes) throws SAXException {
-//                <server lb-weight="100" name="server" config-ref="server-config">
+                // <server lb-weight="100" name="server" config-ref="server-config">
                 if (serverConfigName == null || serverConfigName.length() == 0) {
-                    if (serverName.equals(attributes.getValue("name"))) {        // NOI18N
-                        serverConfigName = attributes.getValue("config-ref");   // NOI18N
-                        //Logger.getLogger("glassfish").finer("DOMAIN.XML: Server profile defined by " + serverConfigName); // NOI18N
+                    if (serverName.equals(attributes.getValue("name"))) { // NOI18N
+                        serverConfigName = attributes.getValue("config-ref"); // NOI18N
+                        // Logger.getLogger("glassfish").finer("DOMAIN.XML: Server profile defined by " + serverConfigName);
+                        // // NOI18N
                     }
                 }
             }
@@ -66,10 +66,11 @@ public class JvmConfigReader extends NodeListener implements
 
             @Override
             public void readAttributes(String qname, Attributes attributes) throws SAXException {
-//                <config name="server-config" dynamic-reconfiguration-enabled="true">
+                // <config name="server-config" dynamic-reconfiguration-enabled="true">
                 if (serverConfigName != null && serverConfigName.equals(attributes.getValue("name"))) { // NOI18N
                     readConfig = true;
-                    //Logger.getLogger("glassfish").finer("DOMAIN.XML: Reading JVM options from server profile " + serverConfigName); // NOI18N
+                    // Logger.getLogger("glassfish").finer("DOMAIN.XML: Reading JVM options from server profile " +
+                    // serverConfigName); // NOI18N
                 }
             }
 
@@ -84,19 +85,19 @@ public class JvmConfigReader extends NodeListener implements
 
     @Override
     public void readAttributes(String qname, Attributes attributes) throws SAXException {
-//        <java-config
-//            classpath-prefix="CP-PREFIX"
-//            classpath-suffix="CP-SUFFIX"
-//            debug-enabled="false"
-//            debug-options="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=9009"
-//            env-classpath-ignored="false"
-//            java-home="${com.sun.aas.javaRoot}"
-//            javac-options="-g"
-//            native-library-path-prefix="NATIVE-LIB-PREFIX"
-//            native-library-path-suffix="NATIVE-LIB-SUFFIX"
-//            rmic-options="-iiop -poa -alwaysgenerate -keepgenerated -g"
-//            server-classpath="SERVER-CLASSPATH"
-//            system-classpath="SYSTEM-CLASSPATH">
+        // <java-config
+        // classpath-prefix="CP-PREFIX"
+        // classpath-suffix="CP-SUFFIX"
+        // debug-enabled="false"
+        // debug-options="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=9009"
+        // env-classpath-ignored="false"
+        // java-home="${com.sun.aas.javaRoot}"
+        // javac-options="-g"
+        // native-library-path-prefix="NATIVE-LIB-PREFIX"
+        // native-library-path-suffix="NATIVE-LIB-SUFFIX"
+        // rmic-options="-iiop -poa -alwaysgenerate -keepgenerated -g"
+        // server-classpath="SERVER-CLASSPATH"
+        // system-classpath="SYSTEM-CLASSPATH">
         if (readConfig) {
             int attrLen = attributes.getLength();
             for (int i = 0; i < attrLen; i++) {
@@ -113,12 +114,11 @@ public class JvmConfigReader extends NodeListener implements
             }
         }
     }
-    
 
     @Override
     public void readCData(String qname, char[] ch, int start, int length) throws SAXException {
-//        <jvm-options>-client</jvm-options>
-//        <jvm-options>-Djava.endorsed.dirs=${com.sun.aas.installRoot}/lib/endorsed</jvm-options>
+        // <jvm-options>-client</jvm-options>
+        // <jvm-options>-Djava.endorsed.dirs=${com.sun.aas.installRoot}/lib/endorsed</jvm-options>
         if (readConfig && JVM_OPTIONS_TAG.equals(qname)) {
             b.append(ch, start, length);
         }
@@ -131,43 +131,42 @@ public class JvmConfigReader extends NodeListener implements
             b.delete(0, b.length());
         }
     }
-    
-    
 
     public TreeParser.NodeListener getMonitoringFinder() {
         return new TreeParser.NodeListener() {
 
             @Override
             public void readAttributes(String qname, Attributes attributes) throws SAXException {
-                //                <monitoring-service [monitoring-enabled="false"] 
+                // <monitoring-service [monitoring-enabled="false"]
                 if (readConfig) {
                     isMonitoringEnabled = !"false".equals(attributes.getValue("monitoring-enabled"));
-//    				if (monitoringAgent.exists()) {
-//    					if (!"false".equals(attributes.getValue("monitoring-enabled"))) {  // NOI18N
-//    						//optList.add("-javaagent:"+Utils.quote(monitoringAgent.getAbsolutePath())+"=unsafe=true,noServer=true"); // NOI18N
-//    						isMonitoringEnabled = true;
-//    					}
-//    				}
+                    // if (monitoringAgent.exists()) {
+                    // if (!"false".equals(attributes.getValue("monitoring-enabled"))) { // NOI18N
+                    // //optList.add("-javaagent:"+Utils.quote(monitoringAgent.getAbsolutePath())+"=unsafe=true,noServer=true");
+                    // // NOI18N
+                    // isMonitoringEnabled = true;
+                    // }
+                    // }
                 }
             }
         };
     }
 
-//    private NodeListener getOptionsReader() {
-//        return new NodeListener() {
-//
-//            
-//            @Override
-//            public void endNode(String qname) throws SAXException {
-//                if (readJvmConfig) {
-//                    optList.add(b.toString());
-//                    b.delete(0, b.length());
-//                }
-//            }
-//
-//        };
-//    }
-//    
+    // private NodeListener getOptionsReader() {
+    // return new NodeListener() {
+    //
+    //
+    // @Override
+    // public void endNode(String qname) throws SAXException {
+    // if (readJvmConfig) {
+    // optList.add(b.toString());
+    // b.delete(0, b.length());
+    // }
+    // }
+    //
+    // };
+    // }
+    //
     @Override
     public List<TreeParser.Path> getPathsToListen() {
         LinkedList<TreeParser.Path> paths = new LinkedList<>();
@@ -177,7 +176,7 @@ public class JvmConfigReader extends NodeListener implements
         paths.add(new Path("/domain/configs/config/monitoring-service", getMonitoringFinder()));
         return paths;
     }
-    
+
     public List<String> getOptList() {
         return optList;
     }

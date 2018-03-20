@@ -21,40 +21,40 @@ import org.eclipse.payara.tools.server.GlassFishServer;
  * <p/>
  * Holds data for command. Objects of this class are created by API user.
  * <p/>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
-@RunnerHttpClass(runner=RunnerHttpTarget.class)
-@RunnerRestClass(runner=RunnerRestStopCluster.class)
+@RunnerHttpClass(runner = RunnerHttpTarget.class)
+@RunnerRestClass(runner = RunnerRestStopCluster.class)
 public class CommandStopCluster extends CommandTarget {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Command string for stop-cluster command. */
     private static final String COMMAND = "stop-cluster";
 
-    /** Error message for administration command execution exception .*/
+    /** Error message for administration command execution exception . */
     private static final String ERROR_MESSAGE = "Cluster stop failed.";
 
     ////////////////////////////////////////////////////////////////////////////
-    // Static methods                                                         //
+    // Static methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Stops cluster.
      * <p/>
+     * 
      * @param server GlassFish server entity.
      * @param target Cluster name.
      * @return Stop cluster task response.
-     * @throws GlassFishIdeException When error occurred during administration
-     *         command execution.
+     * @throws GlassFishIdeException When error occurred during administration command execution.
      */
     public static ResultString stopCluster(GlassFishServer server,
             String target) throws GlassFishIdeException {
         Command command = new CommandStopCluster(target);
-        Future<ResultString> future
-                = ServerAdmin.<ResultString>exec(server, command);
+        Future<ResultString> future = ServerAdmin.<ResultString>exec(server, command);
         try {
             return future.get();
         } catch (InterruptedException | ExecutionException
@@ -64,12 +64,13 @@ public class CommandStopCluster extends CommandTarget {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Constructs an instance of GlassFish server stop-cluster command entity.
      * <p/>
+     * 
      * @param target Target GlassFish cluster.
      */
     public CommandStopCluster(String target) {

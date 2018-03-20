@@ -12,17 +12,19 @@ package org.eclipse.payara.tools.sdk.data;
 /**
  * GlassFish tool.
  * <p/>
+ * 
  * @author Peter Benedikovic, Tomas Kraus
  */
 public interface ToolConfig {
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Getters and setters                                                    //
+    // Getters and setters //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Get tool JAR path (relative under GlassFish home).
      * <p/>
+     * 
      * @return ToolConfig JAR path (relative under GlassFish home)
      */
     public String getJar();

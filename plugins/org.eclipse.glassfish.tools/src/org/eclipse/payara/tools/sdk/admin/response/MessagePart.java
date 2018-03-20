@@ -15,21 +15,21 @@ import java.util.Properties;
 /**
  * Class represents one part of REST server message.
  * <p>
- * This part can be repeated in server response.
- * It includes string message and can have other properties.
- * It can be nesting also other message parts.
+ * This part can be repeated in server response. It includes string message and can have other
+ * properties. It can be nesting also other message parts.
  * <p>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class MessagePart {
 
-    /** Message properties.*/
+    /** Message properties. */
     Properties props;
 
-    /** Message.*/
+    /** Message. */
     String message;
 
-    /** Nested messages.*/
+    /** Nested messages. */
     List<MessagePart> children;
 
     public List<MessagePart> getChildren() {

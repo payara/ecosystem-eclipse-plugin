@@ -19,29 +19,30 @@ import java.io.File;
 @RunnerHttpClass(runner = RunnerAsadminRestoreDomain.class)
 @RunnerRestClass(runner = RunnerAsadminRestoreDomain.class)
 public class CommandRestoreDomain extends CommandJava {
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Command string for change administrator's password command. */
     private static final String COMMAND = "restore-domain";
 
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
-    
+
     /** Domain backup archive. */
     final File domainBackup;
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Constructs an instance of GlassFish server administration command entity
-     * with specified server command, Java SE home and class path.
+     * Constructs an instance of GlassFish server administration command entity with specified server
+     * command, Java SE home and class path.
      * <p/>
+     * 
      * @param javaHome Java SE home used to select JRE for GlassFish server.
      * @param domainBackup archive that contains domain restore.
      */

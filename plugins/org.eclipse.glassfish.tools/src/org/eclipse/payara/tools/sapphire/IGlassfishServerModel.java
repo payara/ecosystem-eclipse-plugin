@@ -34,154 +34,154 @@ import org.eclipse.sapphire.modeling.xml.annotations.XmlBinding;
 
 public interface IGlassfishServerModel extends Element {
 
-	ElementType TYPE = new ElementType(IGlassfishServerModel.class);
+    ElementType TYPE = new ElementType(IGlassfishServerModel.class);
 
-	// *** Name ***
+    // *** Name ***
 
-	@Label(standard = "na&me")
-	@Required
-	@Service(impl = GlassfishServerConfigServices.UniqueServerNameValidationService.class)
-	ValueProperty PROP_NAME = new ValueProperty(TYPE, "Name");
+    @Label(standard = "na&me")
+    @Required
+    @Service(impl = GlassfishServerConfigServices.UniqueServerNameValidationService.class)
+    ValueProperty PROP_NAME = new ValueProperty(TYPE, "Name");
 
-	Value<String> getName();
-	void setName(String value);
+    Value<String> getName();
 
-	
-	// *** HostName ***
+    void setName(String value);
 
-	@Label(standard = "&host name")
-	@Required
-	ValueProperty PROP_HOST_NAME = new ValueProperty(TYPE, "HostName");
+    // *** HostName ***
 
-	Value<String> getHostName();
-	void setHostName(String value);
+    @Label(standard = "&host name")
+    @Required
+    ValueProperty PROP_HOST_NAME = new ValueProperty(TYPE, "HostName");
 
-	
-	// *** Remote ***
+    Value<String> getHostName();
 
-	@Type(base = Boolean.class)
-	@Derived(text = "${ HostName != 'localhost' }")
-	ValueProperty PROP_REMOTE = new ValueProperty(TYPE, "Remote");
-	
-	Value<Boolean> getRemote();
+    void setHostName(String value);
 
-	
-	// *** Domain path ***
+    // *** Remote ***
 
-	@XmlBinding(path = "domain-path")
-	@Label(standard = "domain &path")
-	@Required
-	@Type(base = Path.class)
-	@MustExist
-	@AbsolutePath
-	@ValidFileSystemResourceType(FOLDER)
-	@Service(impl = GlassfishServerConfigServices.DomainLocationValidationService.class)
-	@Listeners(GlassfishServerConfigServices.DomainLocationListener.class)
-	@Enablement(expr = "${ ! Remote }")
-	ValueProperty PROP_DOMAIN_PATH = new ValueProperty(TYPE, "DomainPath");
+    @Type(base = Boolean.class)
+    @Derived(text = "${ HostName != 'localhost' }")
+    ValueProperty PROP_REMOTE = new ValueProperty(TYPE, "Remote");
 
-	Value<Path> getDomainPath();
-	void setDomainPath(Path value);
+    Value<Boolean> getRemote();
 
-	
-	// *** Admin ***
+    // *** Domain path ***
 
-	@XmlBinding(path = "admin-name")
-	@Label(standard = "admin nam&e")
-	@Required
-	@DefaultValue(text = "admin")
-	ValueProperty PROP_ADMIN_NAME = new ValueProperty(TYPE, "AdminName");
+    @XmlBinding(path = "domain-path")
+    @Label(standard = "domain &path")
+    @Required
+    @Type(base = Path.class)
+    @MustExist
+    @AbsolutePath
+    @ValidFileSystemResourceType(FOLDER)
+    @Service(impl = GlassfishServerConfigServices.DomainLocationValidationService.class)
+    @Listeners(GlassfishServerConfigServices.DomainLocationListener.class)
+    @Enablement(expr = "${ ! Remote }")
+    ValueProperty PROP_DOMAIN_PATH = new ValueProperty(TYPE, "DomainPath");
 
-	Value<String> getAdminName();
-	void setAdminName(String value);
+    Value<Path> getDomainPath();
 
-	
-	// *** Admin pass ***
+    void setDomainPath(Path value);
 
-	@XmlBinding(path = "admin-password")
-	@Label(standard = "admin pass&word")
-	@SensitiveData
-	ValueProperty PROP_ADMIN_PASSWORD = new ValueProperty(TYPE, "AdminPassword");
+    // *** Admin ***
 
-	Value<String> getAdminPassword();
-	void setAdminPassword(String value);
-	
-	
-	// *** Admin port ***
+    @XmlBinding(path = "admin-name")
+    @Label(standard = "admin nam&e")
+    @Required
+    @DefaultValue(text = "admin")
+    ValueProperty PROP_ADMIN_NAME = new ValueProperty(TYPE, "AdminName");
 
-	@Type(base = Integer.class)
-	@XmlBinding(path = "admin-port")
-	@Label(standard = "admin p&ort")
-	@Required
-	@NumericRange(min = "1025", max = "65535")
-	@Enablement(expr = "${ Remote }")
-	ValueProperty PROP_ADMIN_PORT = new ValueProperty(TYPE, "AdminPort");
+    Value<String> getAdminName();
 
-	Value<Integer> getAdminPort();
-	void setAdminPort(Integer value);
+    void setAdminName(String value);
 
-	
-	// *** Debug port ***
+    // *** Admin pass ***
 
-	@Type(base = Integer.class)
-	@XmlBinding(path = "debug-port")
-	@Label(standard = "deb&ug port")
-	@NumericRange(min = "1034", max = "65535")
-	@DefaultValue(text = "8009")
-	@Documentation(content = "For local server you can specify the port on which the server will be debugged. If empty, the current value"
-			+ " from domain.xml will be used.\n For remote servers you may want to specify the debug port to be able to debug your"
-			+ " applications running on the server.")
-	ValueProperty PROP_DEBUG_PORT = new ValueProperty(TYPE, "DebugPort");
+    @XmlBinding(path = "admin-password")
+    @Label(standard = "admin pass&word")
+    @SensitiveData
+    ValueProperty PROP_ADMIN_PASSWORD = new ValueProperty(TYPE, "AdminPassword");
 
-	Value<Integer> getDebugPort();
-	void setDebugPort(Integer value);
+    Value<String> getAdminPassword();
 
-	
-	// *** Server port ***
+    void setAdminPassword(String value);
 
-	@Type(base = Integer.class)
-	@XmlBinding(path = "server-port")
-	@Label(standard = "server port")
-	@Enablement(expr = "false")
-	ValueProperty PROP_SERVER_PORT = new ValueProperty(TYPE, "ServerPort");
+    // *** Admin port ***
 
-	Value<Integer> getServerPort();
-	void setServerPort(Integer value);
+    @Type(base = Integer.class)
+    @XmlBinding(path = "admin-port")
+    @Label(standard = "admin p&ort")
+    @Required
+    @NumericRange(min = "1025", max = "65535")
+    @Enablement(expr = "${ Remote }")
+    ValueProperty PROP_ADMIN_PORT = new ValueProperty(TYPE, "AdminPort");
 
-	
-	// *** Preserve sessions ***
-	
-	@Type(base = Boolean.class)
-	@XmlBinding(path = "preserve-sessions")
-	@DefaultValue(text = "false")
-	@Label(standard = "preser&ve sessions across redeployment")
-	ValueProperty PROP_PRESERVE_SESSIONS = new ValueProperty(TYPE, "PreserveSessions");
+    Value<Integer> getAdminPort();
 
-	Value<Boolean> getPreserveSessions();
-	void setPreserveSessions(Boolean value);
+    void setAdminPort(Integer value);
 
-	
-	// *** Use anonymous connections for admin commands ***
-	
-	@Type(base = Boolean.class)
-	@XmlBinding(path = "use-anonymous-connections")
-	@DefaultValue(text = "true")
-	@Label(standard = "use anon&ymous connections for admin commands")
-	ValueProperty PROP_USE_ANONYMOUS_CONNECTIONS = new ValueProperty(TYPE, "UseAnonymousConnections");
+    // *** Debug port ***
 
-	Value<Boolean> getUseAnonymousConnections();
-	void setUseAnonymousConnections(Boolean value);
+    @Type(base = Integer.class)
+    @XmlBinding(path = "debug-port")
+    @Label(standard = "deb&ug port")
+    @NumericRange(min = "1034", max = "65535")
+    @DefaultValue(text = "8009")
+    @Documentation(content = "For local server you can specify the port on which the server will be debugged. If empty, the current value"
+            + " from domain.xml will be used.\n For remote servers you may want to specify the debug port to be able to debug your"
+            + " applications running on the server.")
+    ValueProperty PROP_DEBUG_PORT = new ValueProperty(TYPE, "DebugPort");
 
-	
-	// *** Use JAR archives for deployment ***
-	
-	@Type(base = Boolean.class)
-	@XmlBinding(path = "use-jar-deployment")
-	@DefaultValue(text = "false")
-	@Label(standard = "use &JAR archives for deployment")
-	@Enablement(expr = "${ ! Remote }")
-	ValueProperty PROP_USE_JAR_DEPLOYMENT = new ValueProperty(TYPE, "UseJarDeployment");
+    Value<Integer> getDebugPort();
 
-	Value<Boolean> getUseJarDeployment();
-	void setUseJarDeployment(Boolean value);
+    void setDebugPort(Integer value);
+
+    // *** Server port ***
+
+    @Type(base = Integer.class)
+    @XmlBinding(path = "server-port")
+    @Label(standard = "server port")
+    @Enablement(expr = "false")
+    ValueProperty PROP_SERVER_PORT = new ValueProperty(TYPE, "ServerPort");
+
+    Value<Integer> getServerPort();
+
+    void setServerPort(Integer value);
+
+    // *** Preserve sessions ***
+
+    @Type(base = Boolean.class)
+    @XmlBinding(path = "preserve-sessions")
+    @DefaultValue(text = "false")
+    @Label(standard = "preser&ve sessions across redeployment")
+    ValueProperty PROP_PRESERVE_SESSIONS = new ValueProperty(TYPE, "PreserveSessions");
+
+    Value<Boolean> getPreserveSessions();
+
+    void setPreserveSessions(Boolean value);
+
+    // *** Use anonymous connections for admin commands ***
+
+    @Type(base = Boolean.class)
+    @XmlBinding(path = "use-anonymous-connections")
+    @DefaultValue(text = "true")
+    @Label(standard = "use anon&ymous connections for admin commands")
+    ValueProperty PROP_USE_ANONYMOUS_CONNECTIONS = new ValueProperty(TYPE, "UseAnonymousConnections");
+
+    Value<Boolean> getUseAnonymousConnections();
+
+    void setUseAnonymousConnections(Boolean value);
+
+    // *** Use JAR archives for deployment ***
+
+    @Type(base = Boolean.class)
+    @XmlBinding(path = "use-jar-deployment")
+    @DefaultValue(text = "false")
+    @Label(standard = "use &JAR archives for deployment")
+    @Enablement(expr = "${ ! Remote }")
+    ValueProperty PROP_USE_JAR_DEPLOYMENT = new ValueProperty(TYPE, "UseJarDeployment");
+
+    Value<Boolean> getUseJarDeployment();
+
+    void setUseJarDeployment(Boolean value);
 }

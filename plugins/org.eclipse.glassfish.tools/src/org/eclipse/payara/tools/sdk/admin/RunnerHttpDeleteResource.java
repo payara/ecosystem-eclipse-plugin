@@ -19,12 +19,11 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 public class RunnerHttpDeleteResource extends RunnerHttp {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Logger instance for this class. */
-    private static final Logger LOGGER
-            = new Logger(RunnerHttpDeleteResource.class);
+    private static final Logger LOGGER = new Logger(RunnerHttpDeleteResource.class);
 
     /** Deploy command <code>DEFAULT</code> parameter name. */
     private static final String DEFAULT_PARAM = "DEFAULT";
@@ -32,6 +31,7 @@ public class RunnerHttpDeleteResource extends RunnerHttp {
     /**
      * Creates query string from command object properties.
      * <p/>
+     * 
      * @param command GlassFish server administration command entity.
      * @return Query string from command object properties.
      */
@@ -49,17 +49,17 @@ public class RunnerHttpDeleteResource extends RunnerHttp {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
     /**
-     * Constructs an instance of administration command executor using
-     * HTTP interface.
+     * Constructs an instance of administration command executor using HTTP interface.
      * <p/>
-     * @param server  GlassFish server entity object.
+     * 
+     * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
     public RunnerHttpDeleteResource(final GlassFishServer server,
             final Command command) {
-        super(server, command, query((CommandDeleteResource)command));
+        super(server, command, query((CommandDeleteResource) command));
     }
 }

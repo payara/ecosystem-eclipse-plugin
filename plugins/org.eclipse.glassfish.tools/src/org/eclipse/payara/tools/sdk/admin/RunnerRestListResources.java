@@ -12,27 +12,27 @@ package org.eclipse.payara.tools.sdk.admin;
 import org.eclipse.payara.tools.server.GlassFishServer;
 
 /**
- * Command runner for commands that retrieve list of resources
- * of certain kind.
+ * Command runner for commands that retrieve list of resources of certain kind.
  * <p>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RunnerRestListResources extends RunnerRestList {
-    
-     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Constructs an instance of administration command executor using
-     * REST interface.
+     * Constructs an instance of administration command executor using REST interface.
      * <p/>
-     * @param server  GlassFish server entity object.
+     * 
+     * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
     public RunnerRestListResources(final GlassFishServer server,
             final Command command) {
         super(server, command);
     }
-    
+
 }

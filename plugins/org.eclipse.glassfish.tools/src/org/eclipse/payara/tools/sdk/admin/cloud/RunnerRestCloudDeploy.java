@@ -24,51 +24,49 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 /**
  * GlassFish cloud administration command execution using REST interface.
  * <p/>
- * Class implements GlassFish cloud administration functionality trough REST
- * interface.
+ * Class implements GlassFish cloud administration functionality trough REST interface.
  * <p/>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RunnerRestCloudDeploy extends RunnerRestCloud {
 
     private static final String NEWLINE = "\r\n";
 
-    private String multipartBoundary = Long.toHexString(System.
-            currentTimeMillis());
+    private String multipartBoundary = Long.toHexString(System.currentTimeMillis());
 
     /** Holding data for command execution. */
     @SuppressWarnings("FieldNameHidesFieldInSuperclass")
     final CommandCloudDeploy command;
 
     /**
-     * Constructs an instance of administration command executor using
-     * REST interface for deploy command.
+     * Constructs an instance of administration command executor using REST interface for deploy
+     * command.
      * <p/>
-     * @param server  GlassFish server entity object.
+     * 
+     * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
     public RunnerRestCloudDeploy(final GlassFishServer server,
             final Command command) {
         super(server, command);
-        this.command = (CommandCloudDeploy)command;
+        this.command = (CommandCloudDeploy) command;
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Implemented Abstract Methods                                           //
+    // Implemented Abstract Methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Handle sending data to server using HTTP command interface.
      * <p/>
-     * This is based on reading the code of
-     * <code>CLIRemoteCommand.java</code>
-     * from the server's code repository. Since some asadmin commands
-     * need to send multiple files, the server assumes the input is a ZIP
-     * stream.
+     * This is based on reading the code of <code>CLIRemoteCommand.java</code> from the server's code
+     * repository. Since some asadmin commands need to send multiple files, the server assumes the input
+     * is a ZIP stream.
      */
     @Override
     protected void handleSend(HttpURLConnection hconn) throws IOException {
-        //InputStream istream = getInputStream();
+        // InputStream istream = getInputStream();
         if (command.path == null) {
             throw new GlassFishIdeException("The path attribute of deploy command"
                     + " has to be non-empty!");
@@ -82,7 +80,7 @@ public class RunnerRestCloudDeploy extends RunnerRestCloud {
         wr.append("--" + multipartBoundary + "--").append(NEWLINE);
         wr.close();
     }
-    
+
     private void writeParam(OutputStreamWriter writer, String paramName,
             String paramValue) throws IOException {
         writer.append("--" + multipartBoundary).append(NEWLINE);
@@ -96,8 +94,7 @@ public class RunnerRestCloudDeploy extends RunnerRestCloud {
     private void writeBinaryFile(OutputStreamWriter writer, OutputStream output,
             File file) throws IOException {
         writer.append("--" + multipartBoundary).append(NEWLINE);
-        writer.
-                append("Content-Disposition: form-data; name=\"warFile\"; filename=\""
+        writer.append("Content-Disposition: form-data; name=\"warFile\"; filename=\""
                 + file.getAbsolutePath() + "\"").append(NEWLINE);
         writer.append("Content-Type: application/octet-stream").append(NEWLINE);
         writer.append("Content-Transfer-Encoding: binary").append(NEWLINE);
@@ -107,7 +104,7 @@ public class RunnerRestCloudDeploy extends RunnerRestCloud {
         try {
             input = new FileInputStream(file);
             byte[] buffer = new byte[1024 * 1024];
-            for (int length = 0 ; (length = input.read(buffer)) > 0 ;) {
+            for (int length = 0; (length = input.read(buffer)) > 0;) {
                 output.write(buffer, 0, length);
             }
             output.flush(); // Important! Output cannot be closed. Close of writer will close output as well.

@@ -16,26 +16,26 @@ import org.eclipse.payara.tools.log.AbstractLogFilter.ILogFormatter;
 
 public class LogFormatterSimple implements ILogFormatter {
 
-	private GlassfishLogFields[] fields;
-	private String format;
-	StringBuilder s = new StringBuilder(1024);
-	
-	public LogFormatterSimple() {
-		format = "%s|%s: %s";
-		fields = new GlassfishLogFields[] {GlassfishLogFields.DATETIME, GlassfishLogFields.LEVEL, GlassfishLogFields.MESSAGE};
-	}
-	
-	public LogFormatterSimple(String delimeter, GlassfishLogFields[] fields) {
-		this.fields = fields;
-	}
-	 
-	@Override
-	public String formatLogRecord(LogRecord record) {
-		s.setLength(0);
-		Formatter f = new Formatter(s);
-		f.format(format, record.getRecordFieldValues(fields));
-		f.close();
-		return s.toString();
-	}
+    private GlassfishLogFields[] fields;
+    private String format;
+    StringBuilder s = new StringBuilder(1024);
+
+    public LogFormatterSimple() {
+        format = "%s|%s: %s";
+        fields = new GlassfishLogFields[] { GlassfishLogFields.DATETIME, GlassfishLogFields.LEVEL, GlassfishLogFields.MESSAGE };
+    }
+
+    public LogFormatterSimple(String delimeter, GlassfishLogFields[] fields) {
+        this.fields = fields;
+    }
+
+    @Override
+    public String formatLogRecord(LogRecord record) {
+        s.setLength(0);
+        Formatter f = new Formatter(s);
+        f.format(format, record.getRecordFieldValues(fields));
+        f.close();
+        return s.toString();
+    }
 
 }

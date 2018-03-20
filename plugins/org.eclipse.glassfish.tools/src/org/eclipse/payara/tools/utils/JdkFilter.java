@@ -19,24 +19,21 @@ import org.eclipse.sapphire.VersionConstraint;
  * @author <a href="mailto:konstantin.komissarchik@oracle.com">Konstantin Komissarchik</a>
  */
 
-public final class JdkFilter implements Filter<IVMInstall>
-{
+public final class JdkFilter implements Filter<IVMInstall> {
     private final VersionConstraint versionConstraint;
-    
-    public JdkFilter( final VersionConstraint versionConstraint )
-    {
-        if( versionConstraint == null )
-        {
+
+    public JdkFilter(final VersionConstraint versionConstraint) {
+        if (versionConstraint == null) {
             throw new IllegalArgumentException();
         }
-        
+
         this.versionConstraint = versionConstraint;
     }
+
     @Override
-    
-    public boolean allows( final IVMInstall jvm )
-    {
-        return validateJvm( jvm ).jdk().version( this.versionConstraint ).result().ok();
+
+    public boolean allows(final IVMInstall jvm) {
+        return validateJvm(jvm).jdk().version(this.versionConstraint).result().ok();
     }
-    
+
 }

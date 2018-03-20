@@ -26,34 +26,33 @@ import org.eclipse.sapphire.Version;
 /**
  * Provides GlassFish library information from XML configuration files.
  * <p/>
- * Instance of library builder for single version of GlassFish server.
- * Version of GlassFish server is supplied with first configuration getter call.
- * Each subsequent configuration getter call on the same instance must be used
- * with the same GlassFish version.
+ * Instance of library builder for single version of GlassFish server. Version of GlassFish server
+ * is supplied with first configuration getter call. Each subsequent configuration getter call on
+ * the same instance must be used with the same GlassFish version.
  * <p/>
- * XML configuration file is read just once with first configuration getter
- * call. Returned values are cached for subsequent getter calls which
- * are very fast.
+ * XML configuration file is read just once with first configuration getter call. Returned values
+ * are cached for subsequent getter calls which are very fast.
  * <p/>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class ConfigBuilder {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Static methods                                                         //
+    // Static methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Build <code>List</code> of <code>GlassFishLibrary</code> objects
-     * representing libraries found in particular GlassFish server installation.
+     * Build <code>List</code> of <code>GlassFishLibrary</code> objects representing libraries found in
+     * particular GlassFish server installation.
      * <p/>
-     * @param libConfigs    List of libraries configuration nodes.
+     * 
+     * @param libConfigs List of libraries configuration nodes.
      * @param classpathHome Directory tree to search for class path elements.
-     * @param javadocsHome  Directory tree to search for java doc.
-     * @param srcHome       Directory tree to search for source files.
-     * @return <code>List</code> of <code>GlassFishLibrary</code> objects
-     *         representing libraries found in particular GlassFish server
-     *         installation.
+     * @param javadocsHome Directory tree to search for java doc.
+     * @param srcHome Directory tree to search for source files.
+     * @return <code>List</code> of <code>GlassFishLibrary</code> objects representing libraries found
+     * in particular GlassFish server installation.
      */
     private static List<GlassFishLibrary> getLibraries(
             final List<LibraryNode> libConfigs, final File classpathHome,
@@ -63,13 +62,12 @@ public class ConfigBuilder {
 
         try {
             for (LibraryNode libConfig : libConfigs) {
-               
+
                 List<File> classpath = ConfigUtils.processFileset(
                         libConfig.classpath, classpathHome.getAbsolutePath());
                 List<File> javadocs = ConfigUtils.processFileset(
                         libConfig.javadocs, javadocsHome.getAbsolutePath());
-                List<URL>  javadocUrls
-                        = ConfigUtils.processLinks(libConfig.javadocs);
+                List<URL> javadocUrls = ConfigUtils.processLinks(libConfig.javadocs);
                 List<File> sources = ConfigUtils.processFileset(
                         libConfig.sources, srcHome.getAbsolutePath());
                 result.add(new GlassFishLibrary(libConfig.libraryID,
@@ -87,13 +85,13 @@ public class ConfigBuilder {
     }
 
     /**
-     * Converts provided list of files to <code>URL</code> objects and appends
-     * supplied <code>URL</code> objects to this list.
+     * Converts provided list of files to <code>URL</code> objects and appends supplied <code>URL</code>
+     * objects to this list.
      * <p/>
+     * 
      * @param files List of files to convert to <code>URL</code> objects.
-     * @param urls  <code>URL</code> objects to append to this list.
-     * @return List of <code>URL</code> objects containing content of both
-     *         supplied lists.
+     * @param urls <code>URL</code> objects to append to this list.
+     * @return List of <code>URL</code> objects containing content of both supplied lists.
      */
     private static List<URL> buildUrls(
             final List<File> files, final List<URL> urls) {
@@ -102,12 +100,12 @@ public class ConfigBuilder {
         return result;
     }
 
-   /**
+    /**
      * Converts provided list of files to <code>URL</code> objects.
      * <p/>
+     * 
      * @param files List of files to convert to <code>URL</code> objects.
-     * @return List of <code>URL</code> objects containing files from
-     *         supplied list.
+     * @return List of <code>URL</code> objects containing files from supplied list.
      */
     private static List<URL> buildUrls(final List<File> files) {
         ArrayList<URL> result = new ArrayList<>(files.size());
@@ -121,7 +119,7 @@ public class ConfigBuilder {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Classpath search prefix. */
@@ -149,19 +147,19 @@ public class ConfigBuilder {
     private Version version;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
-    
+
     /**
      * Creates an instance of GlassFish library builder.
      * <p/>
      * Stores provided GlassFish version to configuration file mapping.
      * <p/>
-     * @param config         Library builder configuration. Should not
-     *                       be <code>null</code>.
-     * @param classpathHome  Classpath search prefix.
-     * @param javadocsHome   Javadoc search prefix.
-     * @param srcHome        Source code search prefix.
+     * 
+     * @param config Library builder configuration. Should not be <code>null</code>.
+     * @param classpathHome Classpath search prefix.
+     * @param javadocsHome Javadoc search prefix.
+     * @param srcHome Source code search prefix.
      */
     ConfigBuilder(final String classpathHome,
             final String javadocsHome, final String srcHome) {
@@ -176,11 +174,11 @@ public class ConfigBuilder {
      * <p/>
      * Stores provided GlassFish version to configuration file mapping.
      * <p/>
-     * @param config         Library builder configuration. Should not
-     *                       be <code>null</code>.
-     * @param classpathHome  Classpath search prefix.
-     * @param javadocsHome   Javadoc search prefix.
-     * @param srcHome        Source code search prefix.
+     * 
+     * @param config Library builder configuration. Should not be <code>null</code>.
+     * @param classpathHome Classpath search prefix.
+     * @param javadocsHome Javadoc search prefix.
+     * @param srcHome Source code search prefix.
      */
     ConfigBuilder(final File classpathHome,
             File javadocsHome, File srcHome) {
@@ -191,12 +189,12 @@ public class ConfigBuilder {
     }
 
     /**
-     * Internal version check to avoid usage of a single builder instance
-     * for multiple GlassFish versions.
+     * Internal version check to avoid usage of a single builder instance for multiple GlassFish
+     * versions.
      * <p/>
+     * 
      * @param version GlassFish version being checked.
-     * @throws ServerConfigException when builder is used with multiple
-     *         GlassFish versions.
+     * @throws ServerConfigException when builder is used with multiple GlassFish versions.
      */
     private void versionCheck(final Version version)
             throws ServerConfigException {
@@ -205,41 +203,40 @@ public class ConfigBuilder {
         } else if (this.version != version) {
             throw new ServerConfigException(
                     "Library builder was already used for GlassFish "
-                    + this.version + " use new instance for GlassFish"
-                    + version);
+                            + this.version + " use new instance for GlassFish"
+                            + version);
         }
     }
 
     private void fetch(final Version version) {
         synchronized (this) {
             if (!fetchDone) {
-                GlassFishConfig configAdapter
-                        = GlassFishConfigManager.getConfig(
+                GlassFishConfig configAdapter = GlassFishConfigManager.getConfig(
                         ConfigBuilderProvider.getBuilderConfig(version));
-                List<LibraryNode> libConfigs
-                        = configAdapter.getLibrary();
+                List<LibraryNode> libConfigs = configAdapter.getLibrary();
                 libraryCache = getLibraries(
                         libConfigs, classpathHome, javadocsHome, srcHome);
                 javaEEConfigCache = new GlassFishJavaEEConfig(
                         configAdapter.getJavaEE(), classpathHome);
                 javaSEConfigCache = new GlassFishJavaSEConfig(
                         configAdapter.getJavaSE());
-                
+
                 fetchDone = true;
             }
         }
 
     }
+
     /**
      * Get GlassFish libraries configured for provided GlassFish version.
      * <p/>
-     * This method shall not be used with multiple GlassFish versions
-     * for the same instance of {@link ConfigBuilder} class.
+     * This method shall not be used with multiple GlassFish versions for the same instance of
+     * {@link ConfigBuilder} class.
      * <p/>
+     * 
      * @param version GlassFish version.
      * @return List of libraries configured for GlassFish of given version.
-     * @throws ServerConfigException when builder instance is used with multiple
-     *         GlassFish versions.
+     * @throws ServerConfigException when builder instance is used with multiple GlassFish versions.
      */
     public List<GlassFishLibrary> getLibraries(
             final Version version) throws ServerConfigException {
@@ -253,14 +250,13 @@ public class ConfigBuilder {
     /**
      * Get GlassFish JavaEE configuration for provided GlassFish version.
      * <p/>
-     * This method shall not be used with multiple GlassFish versions
-     * for the same instance of {@link ConfigBuilder} class.
+     * This method shall not be used with multiple GlassFish versions for the same instance of
+     * {@link ConfigBuilder} class.
      * <p/>
+     * 
      * @param version GlassFish version.
-     * @return GlassFish JavaEE configuration for provided GlassFish
-     *         of given version.
-     * @throws ServerConfigException when builder instance is used with multiple
-     *         GlassFish versions.
+     * @return GlassFish JavaEE configuration for provided GlassFish of given version.
+     * @throws ServerConfigException when builder instance is used with multiple GlassFish versions.
      */
     public GlassFishJavaEEConfig getJavaEEConfig(
             final Version version) throws ServerConfigException {
@@ -274,14 +270,13 @@ public class ConfigBuilder {
     /**
      * Get GlassFish JavaSE configuration for provided GlassFish version.
      * <p/>
-     * This method shall not be used with multiple GlassFish versions
-     * for the same instance of {@link ConfigBuilder} class.
+     * This method shall not be used with multiple GlassFish versions for the same instance of
+     * {@link ConfigBuilder} class.
      * <p/>
+     * 
      * @param version GlassFish version.
-     * @return GlassFish JavaSE configuration for provided GlassFish
-     *         of given version.
-     * @throws ServerConfigException when builder instance is used with multiple
-     *         GlassFish versions.
+     * @return GlassFish JavaSE configuration for provided GlassFish of given version.
+     * @throws ServerConfigException when builder instance is used with multiple GlassFish versions.
      */
     public GlassFishJavaSEConfig getJavaSEConfig(
             final Version version) throws ServerConfigException {

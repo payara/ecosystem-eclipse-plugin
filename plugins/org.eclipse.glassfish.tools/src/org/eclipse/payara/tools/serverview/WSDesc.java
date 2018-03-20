@@ -9,17 +9,16 @@
 
 package org.eclipse.payara.tools.serverview;
 
-
 /**
  *
  * @author Peter Williams
  */
 public class WSDesc {
-    
+
     private final String testUrl;
     private final String wsdlUrl;
     private final String name;
-    
+
     public WSDesc(final String name, final String wsdlUrl, final String testUrl) {
         this.name = name;
         this.testUrl = testUrl;
@@ -29,11 +28,11 @@ public class WSDesc {
     public String getName() {
         return name;
     }
-    
+
     public String getTestURL() {
         return testUrl;
     }
-    
+
     public String getWsdlUrl() {
         return wsdlUrl;
     }

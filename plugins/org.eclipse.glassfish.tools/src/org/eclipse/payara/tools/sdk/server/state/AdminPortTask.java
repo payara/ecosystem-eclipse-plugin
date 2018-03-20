@@ -21,15 +21,15 @@ import org.eclipse.payara.tools.sdk.data.GlassFishStatusCheckResult;
 import org.eclipse.payara.tools.sdk.logging.Logger;
 
 /**
- * Individual server status check task to verify if server administration
- * port is alive.
+ * Individual server status check task to verify if server administration port is alive.
  * <p/>
+ * 
  * @author Tomas Kraus
  */
 class AdminPortTask extends AbstractTask {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Logger instance for this class. */
@@ -42,17 +42,16 @@ class AdminPortTask extends AbstractTask {
     private final String TASK_NAME = "port-check";
 
     ////////////////////////////////////////////////////////////////////////////
-    // Static methods                                                         //
+    // Static methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Format time value in miliseconds to be printed as value in seconds
-     * and miliseconds
+     * Format time value in miliseconds to be printed as value in seconds and miliseconds
      * <code>s.ms<code>.
      * <p/>
+     * 
      * @param tm Time value in miliseconds
-     * @return Time string formated as econds and miliseconds
-     *         <code>s.ms<code>.
+     * @return Time string formated as econds and miliseconds <code>s.ms<code>.
      */
     static String tm(final long tm) {
         StringBuilder sb = new StringBuilder(8);
@@ -63,7 +62,7 @@ class AdminPortTask extends AbstractTask {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Socked connecting timeout [ms]. */
@@ -72,18 +71,21 @@ class AdminPortTask extends AbstractTask {
     /** Server administration port status check result. */
     private StatusResult result;
 
-    /** Task start time. Used for logging purposes. Value of <code>-1</code>
-      *  means that start time was not set.*/
+    /**
+     * Task start time. Used for logging purposes. Value of <code>-1</code> means that start time was
+     * not set.
+     */
     private long tmStart;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Creates an instance of administration port status check.
      * <p/>
-     * @param job  Server status check job internal data.
+     * 
+     * @param job Server status check job internal data.
      * @param task Individual status check task data.
      * @param timeout Socked connecting timeout.
      */
@@ -96,12 +98,13 @@ class AdminPortTask extends AbstractTask {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Getters                                                                //
+    // Getters //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Get last command task execution result.
      * <p/>
+     * 
      * @return Last command task execution result.
      */
     StatusResult getResult() {
@@ -109,31 +112,30 @@ class AdminPortTask extends AbstractTask {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Methods                                                                //
+    // Methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Build arguments for operationStateChanged method listening for state
-     * changes.
+     * Build arguments for operationStateChanged method listening for state changes.
      * <p/>
-     * Send <code>false</code> display argument to operationStateChanged method
-     * to not display GUI message about this event.
+     * Send <code>false</code> display argument to operationStateChanged method to not display GUI
+     * message about this event.
      * <p/>
+     * 
      * @param exMessage Exception message.
-     * @return Arguments for operationStateChanged method listening for state
-     * changes.
+     * @return Arguments for operationStateChanged method listening for state changes.
      */
     String[] stateChangeArgs(final String exMessage) {
         return new String[] {
-            job.getStatus().getServer().getHost(), TASK_NAME,
-            exMessage, Boolean.toString(false)
+                job.getStatus().getServer().getHost(), TASK_NAME,
+                exMessage, Boolean.toString(false)
         };
     }
 
     /**
-     * Close socket and handle <code>IOException</code> that could
-     * be thrown.
+     * Close socket and handle <code>IOException</code> that could be thrown.
      * <p/>
+     * 
      * @param socket Socket to be closed.
      */
     private void closeSocket(final Socket socket) {
@@ -148,14 +150,14 @@ class AdminPortTask extends AbstractTask {
     }
 
     /**
-     * Handle IO Exception caught in server administration port verification
-     * task.
+     * Handle IO Exception caught in server administration port verification task.
      * <p/>
      * Set task result and call registered listeners.
      * <p/>
-     * @param ioe     <code>IOException</code> caught.
-     * @param host    Server administration host.
-     * @param port    Server administration port.
+     * 
+     * @param ioe <code>IOException</code> caught.
+     * @param host Server administration host.
+     * @param port Server administration port.
      * @param message Message to be logged. Shall not be <code>null</code>.
      */
     private void handleIOException(final IOException ioe,
@@ -167,11 +169,11 @@ class AdminPortTask extends AbstractTask {
             sb.append(message).append(TM_SUFFIX);
             long tm = System.currentTimeMillis() - tmStart;
             LOGGER.log(Level.FINEST, method, sb.toString(), new Object[] {
-                    tm(tm), host, Integer.toString(port), ioe.getMessage()});
+                    tm(tm), host, Integer.toString(port), ioe.getMessage() });
 
         } else {
             LOGGER.log(Level.FINEST, method, message, new Object[] {
-                    host, Integer.toString(port), ioe.getMessage()});
+                    host, Integer.toString(port), ioe.getMessage() });
         }
         result = new StatusResult(
                 GlassFishStatusCheckResult.FAILED, TaskEvent.EXCEPTION);
@@ -180,7 +182,7 @@ class AdminPortTask extends AbstractTask {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Runnable run() method                                                  //
+    // Runnable run() method //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
@@ -196,7 +198,7 @@ class AdminPortTask extends AbstractTask {
             throw new IllegalStateException(LOGGER.excMsg(METHOD, "cancelled"));
         }
         LOGGER.log(Level.FINER, METHOD, "started", new String[] {
-            job.getStatus().getServer().getName(), jobState.toString()});
+                job.getStatus().getServer().getName(), jobState.toString() });
         String host = job.getStatus().getServer().getHost();
         int port = job.getStatus().getServer().getAdminPort();
         if (port < 0 || host == null) {
@@ -225,8 +227,8 @@ class AdminPortTask extends AbstractTask {
         if (tmStart >= 0 && LOGGER.isLoggable(Level.FINEST)) {
             long tm = System.currentTimeMillis() - tmStart;
             LOGGER.log(Level.FINEST, METHOD, "success",
-                    new Object[] {tm(tm), jobState.toString(),
-                        host, Integer.toString(port)});
+                    new Object[] { tm(tm), jobState.toString(),
+                            host, Integer.toString(port) });
         }
         result = new StatusResult(
                 GlassFishStatusCheckResult.SUCCESS, TaskEvent.CMD_COMPLETED);

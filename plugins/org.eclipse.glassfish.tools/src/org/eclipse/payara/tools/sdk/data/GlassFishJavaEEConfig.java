@@ -19,12 +19,13 @@ import org.eclipse.payara.tools.sdk.server.config.ModuleType;
 /**
  * GlassFish JavaEE configuration entity.
  * <p/>
+ * 
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class GlassFishJavaEEConfig {
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Supported module types. */
@@ -37,15 +38,15 @@ public class GlassFishJavaEEConfig {
     private final String version;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Creates an instance of avaEE configuration entity using JavaEE set
-     * for GlassFish features configuration as source of instance content.
+     * Creates an instance of avaEE configuration entity using JavaEE set for GlassFish features
+     * configuration as source of instance content.
      * <p/>
-     * @param javaEEconfig  Container of GlassFish JavaEE
-     *                      features configuration.
+     * 
+     * @param javaEEconfig Container of GlassFish JavaEE features configuration.
      * @param classpathHome Classpath search prefix.
      */
     public GlassFishJavaEEConfig(
@@ -57,12 +58,13 @@ public class GlassFishJavaEEConfig {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Getters and setters                                                    //
+    // Getters and setters //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Get highest JavaEE specification version implemented.
      * <p/>
+     * 
      * @return Highest JavaEE specification version implemented.
      */
     public String getVersion() {
@@ -72,6 +74,7 @@ public class GlassFishJavaEEConfig {
     /**
      * Get supported JavaEE profiles.
      * <p/>
+     * 
      * @return Supported JavaEE profiles.
      */
     public Set<JavaEEProfile> getProfiles() {
@@ -81,6 +84,7 @@ public class GlassFishJavaEEConfig {
     /**
      * Get supported module types.
      * <p/>
+     * 
      * @return Supported module types.
      */
     public Set<ModuleType> getModuleTypes() {

@@ -19,13 +19,13 @@ import org.eclipse.wst.server.core.IServer;
 
 public class OpenDomainHomeHandler extends AbstractGlassfishSelectionHandler {
 
-	@Override
-	public void processSelection(IServer server) {
-		try {
-			showURI(getDomainHomeURI(load(server, GlassFishServerBehaviour.class).getGlassfishServerDelegate()));
-		} catch (Exception e) {
-			logMessage("Error opening browser: " + e.getMessage());
-		}
-	}
+    @Override
+    public void processSelection(IServer server) {
+        try {
+            showURI(getDomainHomeURI(load(server, GlassFishServerBehaviour.class).getGlassfishServerDelegate()));
+        } catch (Exception e) {
+            logMessage("Error opening browser: " + e.getMessage());
+        }
+    }
 
 }

@@ -37,18 +37,18 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 import org.eclipse.sapphire.Version;
 
 /**
- * Check server status using administration commands <code>__locations</code>
- * and <code>version</code> and also verify if server is at least listening
- * on its administration port.
+ * Check server status using administration commands <code>__locations</code> and
+ * <code>version</code> and also verify if server is at least listening on its administration port.
  * <p/>
  * Administration commands and port check are run in parallel to reduce delay.
  * <p/>
+ * 
  * @author Tomas Kraus
  */
 public class ServerStatus implements Closeable {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Inner classes                                                          //
+    // Inner classes //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
@@ -74,26 +74,32 @@ public class ServerStatus implements Closeable {
         FATAL;
 
         ////////////////////////////////////////////////////////////////////////
-        // Methods                                                            //
+        // Methods //
         ////////////////////////////////////////////////////////////////////////
 
         /**
          * Convert <code>Status</code> value to <code>String</code>.
          * <p/>
-         * @return A <code>String</code> representation of the value
-         *         of this object.
+         * 
+         * @return A <code>String</code> representation of the value of this object.
          */
         @Override
         public String toString() {
-            switch(this) {
-                case SUCCESS:   return "SUCCESS";
-                case FAILED:    return "FAILED";
-                case TIMEOUT:   return "TIMEOUT";
-                case EXCEPTION: return "EXCEPTION";
-                case INVALID:   return "INVALID";
-                case FATAL:     return "FATAL";
-                default:
-                    throw new IllegalStateException("Unknown Status value");
+            switch (this) {
+            case SUCCESS:
+                return "SUCCESS";
+            case FAILED:
+                return "FAILED";
+            case TIMEOUT:
+                return "TIMEOUT";
+            case EXCEPTION:
+                return "EXCEPTION";
+            case INVALID:
+                return "INVALID";
+            case FATAL:
+                return "FATAL";
+            default:
+                throw new IllegalStateException("Unknown Status value");
             }
         }
 
@@ -105,7 +111,7 @@ public class ServerStatus implements Closeable {
     public static class Result {
 
         ////////////////////////////////////////////////////////////////////////
-        // Instance attributes                                                //
+        // Instance attributes //
         ////////////////////////////////////////////////////////////////////////
 
         /** Individual server status returned. */
@@ -127,7 +133,7 @@ public class ServerStatus implements Closeable {
         private final String exceptionMeasage;
 
         ////////////////////////////////////////////////////////////////////////
-        // Constructors                                                       //
+        // Constructors //
         ////////////////////////////////////////////////////////////////////////
 
         /**
@@ -135,10 +141,11 @@ public class ServerStatus implements Closeable {
          * <p/>
          * IO Exception caught in asynchronous task is stored.
          * <p/>
+         * 
          * @param status Individual server status returned.
-         * @param ioe    IO Exception caught in asynchronous task.
-         * @param failureEvent     Failure cause.
-         * @param serverName       Target GlassFish server name.
+         * @param ioe IO Exception caught in asynchronous task.
+         * @param failureEvent Failure cause.
+         * @param serverName Target GlassFish server name.
          * @param exceptionMeasage Exception message from command task.
          */
         Result(final Status status, final IOException ioe,
@@ -157,10 +164,11 @@ public class ServerStatus implements Closeable {
          * <p/>
          * Common Exception caught is stored.
          * <p/>
+         * 
          * @param status Individual server status returned.
-         * @param ex     Common Exception caught.
-         * @param failureEvent     Failure cause.
-         * @param serverName       Target GlassFish server name.
+         * @param ex Common Exception caught.
+         * @param failureEvent Failure cause.
+         * @param serverName Target GlassFish server name.
          * @param exceptionMeasage Exception message from command task.
          */
         Result(final Status status, final Exception ex,
@@ -179,9 +187,10 @@ public class ServerStatus implements Closeable {
          * <p/>
          * No additional value except result is stored.
          * <p/>
+         * 
          * @param status Individual server status returned.
-         * @param failureEvent     Failure cause.
-         * @param serverName       Target GlassFish server name.
+         * @param failureEvent Failure cause.
+         * @param serverName Target GlassFish server name.
          * @param exceptionMeasage Exception message from command task.
          */
         Result(final Status status, final TaskEvent failureEvent,
@@ -199,8 +208,9 @@ public class ServerStatus implements Closeable {
          * <p/>
          * IO Exception caught in asynchronous task is stored.
          * <p/>
+         * 
          * @param status Individual server status returned.
-         * @param ioe    IO Exception caught in asynchronous task.
+         * @param ioe IO Exception caught in asynchronous task.
          */
         Result(final Status status, final IOException ioe) {
             this(status, ioe, null, null, null);
@@ -211,8 +221,9 @@ public class ServerStatus implements Closeable {
          * <p/>
          * Common Exception caught is stored.
          * <p/>
+         * 
          * @param status Individual server status returned.
-         * @param ex     Common Exception caught.
+         * @param ex Common Exception caught.
          */
         Result(final Status status, final Exception ex) {
             this(status, ex, null, null, null);
@@ -223,6 +234,7 @@ public class ServerStatus implements Closeable {
          * <p/>
          * No additional value except result is stored.
          * <p/>
+         * 
          * @param status Individual server status returned.
          */
         Result(final Status status) {
@@ -230,12 +242,13 @@ public class ServerStatus implements Closeable {
         }
 
         ////////////////////////////////////////////////////////////////////////
-        // Getters                                                            //
+        // Getters //
         ////////////////////////////////////////////////////////////////////////
 
         /**
          * Get individual check task status.
          * <p/>
+         * 
          * @return Individual check task status.
          */
         public Status getStatus() {
@@ -245,6 +258,7 @@ public class ServerStatus implements Closeable {
         /**
          * Get task failure event.
          * <p/>
+         * 
          * @return Task failure event.
          */
         public TaskEvent getFailureEvent() {
@@ -254,6 +268,7 @@ public class ServerStatus implements Closeable {
         /**
          * Get server name.
          * <p/>
+         * 
          * @return Server name.
          */
         public String getServerName() {
@@ -263,6 +278,7 @@ public class ServerStatus implements Closeable {
         /**
          * Get exception message.
          * <p/>
+         * 
          * @return Exception message.
          */
         public String getExceptionMeasage() {
@@ -271,39 +287,37 @@ public class ServerStatus implements Closeable {
     }
 
     /**
-     * Server status task execution result for <code>__locations</code> command 
-     * including additional information.
+     * Server status task execution result for <code>__locations</code> command including additional
+     * information.
      * <p/>
-     * This class stores task execution result only. Value <code>SUCCESS</code>
-     * means that Locations command task execution finished successfully but it
-     * does not mean that administration command itself returned with
-     * <code>COMPLETED</code> status.
-     * When <code>SUCCESS</code> status is set, stored <code>result</code> value
-     * shall be examined too to see real administration command execution
-     * result.
+     * This class stores task execution result only. Value <code>SUCCESS</code> means that Locations
+     * command task execution finished successfully but it does not mean that administration command
+     * itself returned with <code>COMPLETED</code> status. When <code>SUCCESS</code> status is set,
+     * stored <code>result</code> value shall be examined too to see real administration command
+     * execution result.
      */
     public static class ResultLocations extends Result {
 
         ////////////////////////////////////////////////////////////////////////
-        // Instance attributes                                                //
+        // Instance attributes //
         ////////////////////////////////////////////////////////////////////////
 
         /** Command <code>__locations</code> execution result. */
         final ResultMap<String, String> result;
 
         ////////////////////////////////////////////////////////////////////////
-        // Constructors                                                       //
+        // Constructors //
         ////////////////////////////////////////////////////////////////////////
 
         /**
-         * Creates an instance of individual server status result
-         * for <code>__locations</code> command.
+         * Creates an instance of individual server status result for <code>__locations</code> command.
          * <p/>
          * Command <code>__locations</code> result is stored.
          * <p/>
+         * 
          * @param status Individual server status returned.
-         * @param failureEvent     Failure cause.
-         * @param serverName       Target GlassFish server name.
+         * @param failureEvent Failure cause.
+         * @param serverName Target GlassFish server name.
          * @param exceptionMeasage Exception message from command task.
          */
         ResultLocations(final ResultMap<String, String> result,
@@ -314,18 +328,18 @@ public class ServerStatus implements Closeable {
         }
 
         /**
-         * Creates an instance of individual server status result
-         * for <code>__locations</code> command.
+         * Creates an instance of individual server status result for <code>__locations</code> command.
          * <p/>
          * Common Exception caught is stored.
          * <p/>
+         * 
          * @param status Individual server status returned.
-         * @param ex     Common Exception caught.
-         * @param failureEvent     Failure cause.
-         * @param serverName       Target GlassFish server name.
+         * @param ex Common Exception caught.
+         * @param failureEvent Failure cause.
+         * @param serverName Target GlassFish server name.
          * @param exceptionMeasage Exception message from command task.
          */
-        ResultLocations(final  Status status, final Exception ex,
+        ResultLocations(final Status status, final Exception ex,
                 final TaskEvent failureEvent, final String serverName,
                 final String exceptionMeasage) {
             super(status, ex, failureEvent, serverName, exceptionMeasage);
@@ -333,14 +347,14 @@ public class ServerStatus implements Closeable {
         }
 
         /**
-         * Creates an instance of individual server status result
-         * for <code>__locations</code> command.
+         * Creates an instance of individual server status result for <code>__locations</code> command.
          * <p/>
          * No additional value except result is stored.
          * <p/>
+         * 
          * @param status Individual server status returned.
-         * @param failureEvent     Failure cause.
-         * @param serverName       Target GlassFish server name.
+         * @param failureEvent Failure cause.
+         * @param serverName Target GlassFish server name.
          * @param exceptionMeasage Exception message from command task.
          */
         ResultLocations(final Status status, final TaskEvent failureEvent,
@@ -350,12 +364,13 @@ public class ServerStatus implements Closeable {
         }
 
         ////////////////////////////////////////////////////////////////////////
-        // Getters                                                            //
+        // Getters //
         ////////////////////////////////////////////////////////////////////////
 
         /**
          * Get <code>__locations</code> command execution result.
          * <p/>
+         * 
          * @return <code>__locations</code> command execution result.
          */
         public ResultMap<String, String> getResult() {
@@ -365,39 +380,37 @@ public class ServerStatus implements Closeable {
     }
 
     /**
-     * Individual server status result for <code>version</code> command 
-     * including additional information.
+     * Individual server status result for <code>version</code> command including additional
+     * information.
      * <p/>
-     * This class stores task execution result only. Value <code>SUCCESS</code>
-     * means that Locations command task execution finished successfully but it
-     * does not mean that administration command itself returned with
-     * <code>COMPLETED</code> status.
-     * When <code>SUCCESS</code> status is set, stored <code>result</code> value
-     * shall be examined too to see real administration command execution
-     * result.
+     * This class stores task execution result only. Value <code>SUCCESS</code> means that Locations
+     * command task execution finished successfully but it does not mean that administration command
+     * itself returned with <code>COMPLETED</code> status. When <code>SUCCESS</code> status is set,
+     * stored <code>result</code> value shall be examined too to see real administration command
+     * execution result.
      */
     public static class ResultVersion extends Result {
 
         ////////////////////////////////////////////////////////////////////////
-        // Instance attributes                                                //
+        // Instance attributes //
         ////////////////////////////////////////////////////////////////////////
 
         /** Command <code>version</code> execution result. */
         final ResultString result;
 
         ////////////////////////////////////////////////////////////////////////
-        // Constructors                                                       //
+        // Constructors //
         ////////////////////////////////////////////////////////////////////////
 
         /**
-         * Creates an instance of individual server status result
-         * for <code>version</code> command.
+         * Creates an instance of individual server status result for <code>version</code> command.
          * <p/>
          * Command <code>version</code> result is stored.
          * <p/>
+         * 
          * @param status Individual server status returned.
-         * @param failureEvent     Failure cause.
-         * @param serverName       Target GlassFish server name.
+         * @param failureEvent Failure cause.
+         * @param serverName Target GlassFish server name.
          * @param exceptionMeasage Exception message from command task.
          */
         ResultVersion(final ResultString result, final Status status,
@@ -408,15 +421,15 @@ public class ServerStatus implements Closeable {
         }
 
         /**
-         * Creates an instance of individual server status result
-         * for <code>version</code> command.
+         * Creates an instance of individual server status result for <code>version</code> command.
          * <p/>
          * Common Exception caught is stored.
          * <p/>
+         * 
          * @param status Individual server status returned.
-         * @param ex     Common Exception caught.
-         * @param failureEvent     Failure cause.
-         * @param serverName       Target GlassFish server name.
+         * @param ex Common Exception caught.
+         * @param failureEvent Failure cause.
+         * @param serverName Target GlassFish server name.
          * @param exceptionMeasage Exception message from command task.
          */
         ResultVersion(final Status status, final Exception ex,
@@ -427,29 +440,30 @@ public class ServerStatus implements Closeable {
         }
 
         /**
-         * Creates an instance of individual server status result
-         * for <code>version</code> command.
+         * Creates an instance of individual server status result for <code>version</code> command.
          * <p/>
          * No additional value except result is stored.
          * <p/>
+         * 
          * @param status Individual server status returned.
-         * @param failureEvent     Failure cause.
-         * @param serverName       Target GlassFish server name.
+         * @param failureEvent Failure cause.
+         * @param serverName Target GlassFish server name.
          * @param exceptionMeasage Exception message from command task.
          */
-        ResultVersion(final  Status status, final TaskEvent failureEvent,
+        ResultVersion(final Status status, final TaskEvent failureEvent,
                 final String serverName, final String exceptionMeasage) {
             super(status, failureEvent, serverName, exceptionMeasage);
             this.result = null;
         }
 
         ////////////////////////////////////////////////////////////////////////
-        // Getters                                                            //
+        // Getters //
         ////////////////////////////////////////////////////////////////////////
 
         /**
          * Get <code>version</code> command execution result.
          * <p/>
+         * 
          * @return <code>version</code> command execution result.
          */
         public ResultString getResult() {
@@ -464,34 +478,36 @@ public class ServerStatus implements Closeable {
     private static abstract class Task implements TaskStateListener {
 
         ////////////////////////////////////////////////////////////////////////
-        // Static methods                                                     //
+        // Static methods //
         ////////////////////////////////////////////////////////////////////////
 
         /**
-         * Format time value in miliseconds to be printed as value in seconds
-         * and miliseconds <code>s.ms<code>.
+         * Format time value in miliseconds to be printed as value in seconds and miliseconds
+         * <code>s.ms<code>.
          * <p/>
+         * 
          * @param tm Time value in miliseconds
-         * @return Time string formated as econds and miliseconds
-         *         <code>s.ms<code>.
+         * @return Time string formated as econds and miliseconds <code>s.ms<code>.
          */
         static String tm(final long tm) {
             StringBuilder sb = new StringBuilder(8);
-            sb.append(Long.toString(tm/1000));
+            sb.append(Long.toString(tm / 1000));
             sb.append('.');
-            sb.append(Long.toString(tm%1000));
+            sb.append(Long.toString(tm % 1000));
             return sb.toString();
         }
 
         ////////////////////////////////////////////////////////////////////////
-        // Instance attributes                                                //
+        // Instance attributes //
         ////////////////////////////////////////////////////////////////////////
 
         /** GlassFish server to be tested. */
         final GlassFishServer server;
 
-        /** Task start time. Used for logging purposes. Value of <code>-1</code>
-         *  means that start time was not set.*/
+        /**
+         * Task start time. Used for logging purposes. Value of <code>-1</code> means that start time was
+         * not set.
+         */
         long tmStart;
 
         /** Task failure event filled by last state change. */
@@ -504,12 +520,13 @@ public class ServerStatus implements Closeable {
         String exceptionMeasage;
 
         ////////////////////////////////////////////////////////////////////////
-        // Constructors                                                       //
+        // Constructors //
         ////////////////////////////////////////////////////////////////////////
 
         /**
          * Creates an instance of common individual server status check.
          * <p/>
+         * 
          * @param server GlassFish server to be checked.
          */
         Task(final GlassFishServer server) {
@@ -518,17 +535,18 @@ public class ServerStatus implements Closeable {
         }
 
         ////////////////////////////////////////////////////////////////////////
-        // Getters and setters                                                //
+        // Getters and setters //
         ////////////////////////////////////////////////////////////////////////
 
         ////////////////////////////////////////////////////////////////////////
-        // Methods                                                            //
+        // Methods //
         ////////////////////////////////////////////////////////////////////////
 
         /**
-         * Compute task result waiting timeout based on task start time, actual
-         * time and minimal timeout limit.
+         * Compute task result waiting timeout based on task start time, actual time and minimal timeout
+         * limit.
          * <p/>
+         * 
          * @param startup Startup mode to select longer timeout.
          * @return Task result waiting timeout.
          */
@@ -545,9 +563,10 @@ public class ServerStatus implements Closeable {
         /**
          * Store event that caused task failure.
          * <p/>
+         * 
          * @param newState Current task state.
-         * @param event    Event that caused task change.
-         * @param args     Unused interface parameter.
+         * @param event Event that caused task change.
+         * @param args Unused interface parameter.
          */
         @Override
         public void operationStateChanged(
@@ -559,37 +578,35 @@ public class ServerStatus implements Closeable {
             } else {
                 serverName = exceptionMeasage = null;
             }
-            switch(newState) {
-                case FAILED:
-                    failureEvent = event;
+            switch (newState) {
+            case FAILED:
+                failureEvent = event;
             }
         }
 
     }
 
     /**
-     * Individual server status check task to verify if server administration
-     * port is alive.
+     * Individual server status check task to verify if server administration port is alive.
      * <p/>
-     * This task does not run in a separate thread but uses existing main thread
-     * instead.
+     * This task does not run in a separate thread but uses existing main thread instead.
      */
     private static class AdminPortTask extends Task {
 
         ////////////////////////////////////////////////////////////////////////
-        // Class attributes                                                   //
+        // Class attributes //
         ////////////////////////////////////////////////////////////////////////
 
         /** Logger instance for this class. */
         private static final Logger LOGGER = new Logger(AdminPortTask.class);
 
         ////////////////////////////////////////////////////////////////////////
-        // Instance attributes                                                //
+        // Instance attributes //
         ////////////////////////////////////////////////////////////////////////
 
         /** Server administration interface host. */
         String host;
-        
+
         /** Server administration interface port. */
         int port;
 
@@ -600,13 +617,14 @@ public class ServerStatus implements Closeable {
         private Result result;
 
         ////////////////////////////////////////////////////////////////////////
-        // Constructors                                                       //
+        // Constructors //
         ////////////////////////////////////////////////////////////////////////
 
         /**
          * Creates an instance of administration port status check.
          * <p/>
-         * @param server  GlassFish server to be checked.
+         * 
+         * @param server GlassFish server to be checked.
          * @param timeout Socked connecting timeout.
          */
         AdminPortTask(final GlassFishServer server, final int timeout) {
@@ -617,12 +635,13 @@ public class ServerStatus implements Closeable {
         }
 
         ////////////////////////////////////////////////////////////////////////
-        // Getters                                                            //
+        // Getters //
         ////////////////////////////////////////////////////////////////////////
 
         /**
          * Get server administration port status check result.
          * <p/>
+         * 
          * @return Server administration port status check result.
          */
         Result getResult() {
@@ -630,13 +649,13 @@ public class ServerStatus implements Closeable {
         }
 
         ////////////////////////////////////////////////////////////////////////
-        // Methods                                                            //
+        // Methods //
         ////////////////////////////////////////////////////////////////////////
 
         /**
-         * Close socket and handle <code>IOException</code> that could
-         * be thrown.
+         * Close socket and handle <code>IOException</code> that could be thrown.
          * <p/>
+         * 
          * @param socket Socket to be closed.
          */
         private void closeSocket(final Socket socket) {
@@ -649,37 +668,38 @@ public class ServerStatus implements Closeable {
         }
 
         /**
-         * Handle IO Exception caught in server administration port verification
-         * task.
+         * Handle IO Exception caught in server administration port verification task.
          * <p/>
-         * @param ioe     <code>IOException</code> caught.
-         * @param host    Server administration host.
-         * @param port    Server administration port.
+         * 
+         * @param ioe <code>IOException</code> caught.
+         * @param host Server administration host.
+         * @param port Server administration port.
          * @param message Message to be logged. Shall not be <code>null</code>.
          */
         private void handleIOException(final IOException ioe,
                 final String host, final int port, final String message) {
             final String METHOD = "handleIOException";
             String logMsg = MessageFormat.format(message, new Object[] {
-                server.getName(), host, Integer.toString(port),
-                ioe.getMessage()});
+                    server.getName(), host, Integer.toString(port),
+                    ioe.getMessage() });
             if (tmStart >= 0 && LOGGER.isLoggable(Level.FINE)) {
                 long tm = System.currentTimeMillis() - tmStart;
                 LOGGER.log(Level.FINE, METHOD, "messageTm",
-                        new Object[] {logMsg, tm(tm)});
+                        new Object[] { logMsg, tm(tm) });
 
             } else {
                 LOGGER.log(Level.INFO, METHOD, "message", logMsg);
             }
-        } 
+        }
 
         // Based on original code from
         // org.netbeans.modules.glassfish.common.CommonServerSupport.isRunning(...)
         /**
          * Parent thread task to verify if server administration port is alive.
          * <p/>
-         * @return Returns <code>true</code> when server administration port
-         *         is alive or <code>false</code> otherwise.
+         * 
+         * @return Returns <code>true</code> when server administration port is alive or <code>false</code>
+         * otherwise.
          */
         Result check() {
             final String METHOD = "check";
@@ -701,12 +721,12 @@ public class ServerStatus implements Closeable {
             } catch (java.net.SocketTimeoutException ste) {
                 handleIOException(ste, host, port,
                         "[{0}] Port check timeout when connecting to {1}:{2}: {3}");
-                result =  new Result(Status.TIMEOUT, ste);
+                result = new Result(Status.TIMEOUT, ste);
                 return result;
             } catch (IOException ioe) {
                 handleIOException(ioe, host, port,
                         "[{0}] Port check caught IO exception when connecting to {1}:{2}: {3}");
-                result =  new Result(Status.EXCEPTION, ioe);
+                result = new Result(Status.EXCEPTION, ioe);
                 return result;
             } finally {
                 closeSocket(socket);
@@ -714,7 +734,7 @@ public class ServerStatus implements Closeable {
             if (tmStart >= 0 && LOGGER.isLoggable(Level.FINE)) {
                 long tm = System.currentTimeMillis() - tmStart;
                 LOGGER.log(Level.FINE, METHOD, "success",
-                        new Object[] {tm(tm), server.getName()});
+                        new Object[] { tm(tm), server.getName() });
             }
             result = new Result(Status.SUCCESS);
             return result;
@@ -723,20 +743,20 @@ public class ServerStatus implements Closeable {
     }
 
     /**
-     * Individual server status check task with <code>__locations</code>
-     * administration command execution.
+     * Individual server status check task with <code>__locations</code> administration command
+     * execution.
      */
     private static class LocationsTask extends Task {
 
         ////////////////////////////////////////////////////////////////////////
-        // Class attributes                                                   //
+        // Class attributes //
         ////////////////////////////////////////////////////////////////////////
 
         /** Logger instance for this class. */
         private static final Logger LOGGER = new Logger(LocationsTask.class);
 
         ////////////////////////////////////////////////////////////////////////
-        // Instance attributes                                                //
+        // Instance attributes //
         ////////////////////////////////////////////////////////////////////////
 
         /** Locations command. */
@@ -751,34 +771,37 @@ public class ServerStatus implements Closeable {
         /** Locations command status check result. */
         private ResultLocations result;
 
-        /** Startup mode. Triggers longer administration commands execution
-         *  timeouts when <code>true</code>. */
+        /**
+         * Startup mode. Triggers longer administration commands execution timeouts when <code>true</code>.
+         */
         private final boolean startup;
 
         ////////////////////////////////////////////////////////////////////////
-        // Constructors                                                       //
+        // Constructors //
         ////////////////////////////////////////////////////////////////////////
 
         /**
          * Creates an instance of <code>__locations</code> server status check.
          * <p/>
+         * 
          * @param server GlassFish server to be checked.
-         * @param startup Trigger startup mode. Triggers longer administration
-         *                commands execution timeouts when <code>true</code>.
+         * @param startup Trigger startup mode. Triggers longer administration commands execution timeouts
+         * when <code>true</code>.
          */
-        LocationsTask(final GlassFishServer server, final boolean startup) {           
+        LocationsTask(final GlassFishServer server, final boolean startup) {
             super(server);
             this.command = new CommandLocation();
             this.startup = startup;
         }
 
         ////////////////////////////////////////////////////////////////////////
-        // Getters                                                            //
+        // Getters //
         ////////////////////////////////////////////////////////////////////////
 
         /**
          * Get <code>__locations</code> command status check result.
          * <p/>
+         * 
          * @return <code>__locations</code> command status check result.
          */
         ResultLocations getResult() {
@@ -786,7 +809,7 @@ public class ServerStatus implements Closeable {
         }
 
         ////////////////////////////////////////////////////////////////////////
-        // Methods                                                            //
+        // Methods //
         ////////////////////////////////////////////////////////////////////////
 
         /**
@@ -795,9 +818,8 @@ public class ServerStatus implements Closeable {
         void start(final ExecutorService executor) {
             final String METHOD = "start";
             this.tmStart = System.currentTimeMillis();
-            future = ServerAdmin.<ResultMap<String, String>>
-                    exec(executor, server, command, this);
-            if (tmStart >=0 && LOGGER.isLoggable(Level.FINE)) {
+            future = ServerAdmin.<ResultMap<String, String>>exec(executor, server, command, this);
+            if (tmStart >= 0 && LOGGER.isLoggable(Level.FINE)) {
                 long tm = System.currentTimeMillis() - tmStart;
                 LOGGER.log(Level.FINE, METHOD, "started", tm(tm));
             }
@@ -806,14 +828,15 @@ public class ServerStatus implements Closeable {
         /**
          * Log Exception caught on task join.
          * <p/>
+         * 
          * @param ex Exception caught.
          */
         private void logExceptionOnJoin(final Exception ex) {
             final String METHOD = "logExceptionOnJoin";
             LOGGER.log(Level.FINE, METHOD, "failed",
-                    new Object[] {tm(System.currentTimeMillis() - tmStart),
-                        ex.getClass().getName(),
-                        ex.getMessage() != null ? ex.getMessage() : ""});
+                    new Object[] { tm(System.currentTimeMillis() - tmStart),
+                            ex.getClass().getName(),
+                            ex.getMessage() != null ? ex.getMessage() : "" });
         }
 
         /**
@@ -828,23 +851,23 @@ public class ServerStatus implements Closeable {
                         failureEvent, serverName, exceptionMeasage);
                 LOGGER.log(Level.FINE, METHOD, "completed",
                         tm(System.currentTimeMillis() - tmStart));
-            // This means administration port is not responding.
+                // This means administration port is not responding.
             } catch (TimeoutException te) {
                 result = new ResultLocations(Status.TIMEOUT,
                         failureEvent, serverName, exceptionMeasage);
                 logExceptionOnJoin(te);
-            // Expected exceptions are handled in call() method so this
-            // is something serious.
+                // Expected exceptions are handled in call() method so this
+                // is something serious.
             } catch (ExecutionException ee) {
                 result = new ResultLocations(Status.FATAL, ee,
                         failureEvent, serverName, exceptionMeasage);
                 logExceptionOnJoin(ee);
-            // Interrupted after administration port check failed.
+                // Interrupted after administration port check failed.
             } catch (InterruptedException ie) {
                 result = new ResultLocations(Status.FAILED, ie,
                         failureEvent, serverName, exceptionMeasage);
                 logExceptionOnJoin(ie);
-            // Cancelled after administration port check failed.
+                // Cancelled after administration port check failed.
             } catch (CancellationException ce) {
                 result = new ResultLocations(Status.FAILED, ce,
                         failureEvent, serverName, exceptionMeasage);
@@ -864,20 +887,19 @@ public class ServerStatus implements Closeable {
     }
 
     /**
-     * Individual server status check task with <code>version</code>
-     * administration command execution.
+     * Individual server status check task with <code>version</code> administration command execution.
      */
     private static class VersionTask extends Task {
 
         ////////////////////////////////////////////////////////////////////////
-        // Class attributes                                                   //
+        // Class attributes //
         ////////////////////////////////////////////////////////////////////////
 
         /** Logger instance for this class. */
         private static final Logger LOGGER = new Logger(VersionTask.class);
 
         ////////////////////////////////////////////////////////////////////////
-        // Instance attributes                                                //
+        // Instance attributes //
         ////////////////////////////////////////////////////////////////////////
 
         /** Version command. */
@@ -892,35 +914,37 @@ public class ServerStatus implements Closeable {
         /** Version command status check result. */
         private ResultVersion result;
 
-        /** Startup mode. Triggers longer administration commands execution
-         *  timeouts when <code>true</code>. */
+        /**
+         * Startup mode. Triggers longer administration commands execution timeouts when <code>true</code>.
+         */
         private final boolean startup;
 
         ////////////////////////////////////////////////////////////////////////
-        // Constructors                                                       //
+        // Constructors //
         ////////////////////////////////////////////////////////////////////////
 
         /**
          * Creates an instance of <code>version</code> server status check.
          * <p/>
+         * 
          * @param server GlassFish server to be checked.
-         * @param startup Trigger startup mode. Triggers longer administration
-         *                commands execution timeouts when <code>true</code>.
+         * @param startup Trigger startup mode. Triggers longer administration commands execution timeouts
+         * when <code>true</code>.
          */
-        VersionTask(final GlassFishServer server, final boolean startup) {           
+        VersionTask(final GlassFishServer server, final boolean startup) {
             super(server);
             this.command = new CommandVersion();
             this.startup = startup;
         }
 
-
         ////////////////////////////////////////////////////////////////////////
-        // Getters                                                            //
+        // Getters //
         ////////////////////////////////////////////////////////////////////////
 
         /**
          * Get <code>version</code> command status check result.
          * <p/>
+         * 
          * @return <code>version</code> command status check result.
          */
         ResultVersion getResult() {
@@ -928,7 +952,7 @@ public class ServerStatus implements Closeable {
         }
 
         ////////////////////////////////////////////////////////////////////////
-        // Methods                                                            //
+        // Methods //
         ////////////////////////////////////////////////////////////////////////
 
         /**
@@ -937,9 +961,8 @@ public class ServerStatus implements Closeable {
         void start(final ExecutorService executor) {
             final String METHOD = "start";
             this.tmStart = System.currentTimeMillis();
-            future = ServerAdmin.<ResultString>
-                    exec(executor, server, command, this);
-            if (tmStart >=0 && LOGGER.isLoggable(Level.FINE)) {
+            future = ServerAdmin.<ResultString>exec(executor, server, command, this);
+            if (tmStart >= 0 && LOGGER.isLoggable(Level.FINE)) {
                 long tm = System.currentTimeMillis() - tmStart;
                 LOGGER.log(Level.FINE, METHOD, "started", tm(tm));
             }
@@ -948,14 +971,15 @@ public class ServerStatus implements Closeable {
         /**
          * Log Exception caught on task join.
          * <p/>
+         * 
          * @param ex Exception caught.
          */
         private void logExceptionOnJoin(final Exception ex) {
             final String METHOD = "logExceptionOnJoin";
             LOGGER.log(Level.FINE, METHOD, "failed",
-                    new Object[] {tm(System.currentTimeMillis() - tmStart),
-                        ex.getClass().getName(),
-                        ex.getMessage() != null ? ex.getMessage() : ""});
+                    new Object[] { tm(System.currentTimeMillis() - tmStart),
+                            ex.getClass().getName(),
+                            ex.getMessage() != null ? ex.getMessage() : "" });
         }
 
         /**
@@ -970,23 +994,23 @@ public class ServerStatus implements Closeable {
                         failureEvent, serverName, exceptionMeasage);
                 LOGGER.log(Level.FINE, "completed",
                         tm(System.currentTimeMillis() - tmStart));
-            // This means administration port is not responding.
+                // This means administration port is not responding.
             } catch (TimeoutException te) {
                 result = new ResultVersion(Status.TIMEOUT,
                         failureEvent, serverName, exceptionMeasage);
                 logExceptionOnJoin(te);
-            // Expected exceptions are handled in call() method so this
-            // is something serious.
+                // Expected exceptions are handled in call() method so this
+                // is something serious.
             } catch (ExecutionException ee) {
                 result = new ResultVersion(Status.FATAL, ee,
                         failureEvent, serverName, exceptionMeasage);
                 logExceptionOnJoin(ee);
-            // Interrupted after administration port check failed.
+                // Interrupted after administration port check failed.
             } catch (InterruptedException ie) {
                 result = new ResultVersion(Status.FAILED, ie,
                         failureEvent, serverName, exceptionMeasage);
                 logExceptionOnJoin(ie);
-            // Cancelled after administration port check failed.
+                // Cancelled after administration port check failed.
             } catch (CancellationException ce) {
                 result = new ResultVersion(Status.FAILED, ce,
                         failureEvent, serverName, exceptionMeasage);
@@ -1005,7 +1029,7 @@ public class ServerStatus implements Closeable {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Logger instance for this class. */
@@ -1022,45 +1046,50 @@ public class ServerStatus implements Closeable {
 
     /** Administration command execution timeout [ms]. */
     private static final int COMAND_TIMEOUT = 30000;
-    
+
     /** Administration command execution timeout [ms] in startup mode. */
     private static final int COMAND_STARTUP_TIMEOUT = 600000;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Executor used to run asynchronous server status checks in parallel. */
     private final ExecutorService executor;
 
-    /** Server status check task to verify if server administration
-     *  port is alive. */
+    /**
+     * Server status check task to verify if server administration port is alive.
+     */
     private final AdminPortTask adminPortTask;
 
-    /** Server status check task with <code>version</code> administration
-     *  command. */
+    /**
+     * Server status check task with <code>version</code> administration command.
+     */
     private final VersionTask versionTask;
 
-    /** Server status check task with <code>__locations</code> administration
-     *  command. */
+    /**
+     * Server status check task with <code>__locations</code> administration command.
+     */
     private final LocationsTask locationsTask;
 
-    /** Asynchronous server status checks start time. Used for logging
-     *  purposes. Value of <code>-1</code> means that start time was not set. */
+    /**
+     * Asynchronous server status checks start time. Used for logging purposes. Value of <code>-1</code>
+     * means that start time was not set.
+     */
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Creates an instance of server status check.
      * <p/>
-     * Method {@link #close()} must be called at the end to release
-     * system resources.
+     * Method {@link #close()} must be called at the end to release system resources.
      * <p/>
-     * @param server  GlassFish server to be checked.
-     * @param startup Trigger startup mode. Triggers longer administration
-     *                commands execution timeouts when <code>true</code>.
+     * 
+     * @param server GlassFish server to be checked.
+     * @param startup Trigger startup mode. Triggers longer administration commands execution timeouts
+     * when <code>true</code>.
      */
     public ServerStatus(final GlassFishServer server, final boolean startup) {
         this.executor = ServerAdmin.executor(EXECUTOR_POOL_SIZE);
@@ -1070,12 +1099,13 @@ public class ServerStatus implements Closeable {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Getters                                                                //
+    // Getters //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Get server administration port status check result.
      * <p/>
+     * 
      * @return Server administration port status check result.
      */
     public Result getAdminPortResult() {
@@ -1085,6 +1115,7 @@ public class ServerStatus implements Closeable {
     /**
      * Get <code>version</code> command status check result.
      * <p/>
+     * 
      * @return <code>version</code> command status check result.
      */
     public ResultVersion getVersionResult() {
@@ -1094,6 +1125,7 @@ public class ServerStatus implements Closeable {
     /**
      * Get <code>__locations</code> command status check result.
      * <p/>
+     * 
      * @return <code>__locations</code> command status check result.
      */
     public ResultLocations getLocationsResult() {
@@ -1101,15 +1133,16 @@ public class ServerStatus implements Closeable {
     }
 
     /**
-     * Retrieve GlassFish version from version string retrieved from
-     * <code>version</code> command.
+     * Retrieve GlassFish version from version string retrieved from <code>version</code> command.
      * <p/>
+     * 
      * @return Version string retrieved from <code>version</code> command.
      */
     public Version getVersion() {
         String versionStr = versionTask.result != null
-                && versionTask.result.result !=  null
-                ? versionTask.result.result.getValue() : null;
+                && versionTask.result.result != null
+                        ? versionTask.result.result.getValue()
+                        : null;
         if (versionStr != null) {
             Pattern p = Pattern.compile("[0-9]+(\\.[0-9]+){1,3}");
             Matcher m = p.matcher(versionStr);
@@ -1122,15 +1155,14 @@ public class ServerStatus implements Closeable {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Methods                                                                //
+    // Methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Run asynchronous server status checks.
      * <p/>
-     * Server administration port status check is run in parent thread. When
-     * administration port has not been available, remaining command tasks
-     * are canceled.
+     * Server administration port status check is run in parent thread. When administration port has not
+     * been available, remaining command tasks are canceled.
      */
     public void check() {
         versionTask.start(executor);
@@ -1147,8 +1179,8 @@ public class ServerStatus implements Closeable {
     /**
      * Clean up all resources.
      * <p/>
-     * Removes internal thread pool. 
-     * 
+     * Removes internal thread pool.
+     *
      */
     @Override
     public void close() {

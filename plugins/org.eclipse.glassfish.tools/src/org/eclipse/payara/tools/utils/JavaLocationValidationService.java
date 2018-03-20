@@ -19,27 +19,23 @@ import org.eclipse.sapphire.services.ValidationService;
  * @author <a href="mailto:konstantin.komissarchik@oracle.com">Konstantin Komissarchik</a>
  */
 
-public abstract class JavaLocationValidationService extends ValidationService
-{
+public abstract class JavaLocationValidationService extends ValidationService {
     @Override
-    
-    protected Status compute()
-    {
-        final String location = context( Value.class ).text();
-        
-        if( location != null )
-        {
-            final File locationFile = new File( location );
-            
-            if( locationFile.exists() && locationFile.isDirectory() )
-            {
-                return validate( locationFile );
+
+    protected Status compute() {
+        final String location = context(Value.class).text();
+
+        if (location != null) {
+            final File locationFile = new File(location);
+
+            if (locationFile.exists() && locationFile.isDirectory()) {
+                return validate(locationFile);
             }
         }
-        
+
         return Status.createOkStatus();
     }
-    
-    protected abstract Status validate( File location );
-    
+
+    protected abstract Status validate(File location);
+
 }

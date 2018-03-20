@@ -11,25 +11,25 @@ package org.eclipse.payara.tools.exceptions;
 
 public class HttpPortUpdateException extends Exception {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 7714377871660146294L;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 7714377871660146294L;
 
-	public HttpPortUpdateException() {
-		super();
-	}
+    public HttpPortUpdateException() {
+        super();
+    }
 
-	public HttpPortUpdateException(String message, Throwable cause) {
-		super(message, cause);
-	}
+    public HttpPortUpdateException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-	public HttpPortUpdateException(String message) {
-		super(message);
-	}
+    public HttpPortUpdateException(String message) {
+        super(message);
+    }
 
-	public HttpPortUpdateException(Throwable cause) {
-		super(cause);
-	}
+    public HttpPortUpdateException(Throwable cause) {
+        super(cause);
+    }
 
 }

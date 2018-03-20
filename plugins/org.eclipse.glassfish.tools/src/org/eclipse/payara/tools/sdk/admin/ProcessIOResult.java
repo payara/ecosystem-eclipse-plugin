@@ -14,12 +14,13 @@ package org.eclipse.payara.tools.sdk.admin;
  * <p/>
  * Order of values defines values priority.
  * <p/>
+ * 
  * @author Tomas Kraus
  */
 public enum ProcessIOResult {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Enum values                                                            //
+    // Enum values //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Unknown response. */

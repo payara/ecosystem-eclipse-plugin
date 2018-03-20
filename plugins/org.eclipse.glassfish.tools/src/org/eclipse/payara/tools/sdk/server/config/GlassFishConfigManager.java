@@ -16,6 +16,7 @@ import org.eclipse.payara.tools.sdk.data.GlassFishConfig;
 /**
  * GlassFish configuration manager.
  * <p/>
+ * 
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class GlassFishConfigManager {
@@ -23,6 +24,7 @@ public class GlassFishConfigManager {
     /**
      * Get GlassFish configuration access object.
      * <p/>
+     * 
      * @param configFile GlassFish configuration XML file.
      * @return GlassFish configuration API.
      */

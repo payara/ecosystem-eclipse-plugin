@@ -24,14 +24,15 @@ import org.eclipse.sapphire.Version;
  * <p/>
  * Holds data for command. Objects of this class are created by API user.
  * <p/>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 @RunnerHttpClass
 @RunnerRestClass
 public class CommandVersion extends Command {
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Logger instance for this class. */
@@ -41,23 +42,21 @@ public class CommandVersion extends Command {
     private static final String COMMAND = "version";
 
     ////////////////////////////////////////////////////////////////////////////
-    // Static methods                                                         //
+    // Static methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Retrieve version from server.
      * <p/>
+     * 
      * @param server GlassFish server entity.
-     * @return GlassFish command result containing version string returned
-     *         by server.
-     * @throws GlassFishIdeException When error occurred during administration
-     *         command execution.
+     * @return GlassFish command result containing version string returned by server.
+     * @throws GlassFishIdeException When error occurred during administration command execution.
      */
     public static ResultString getVersion(final GlassFishServer server)
             throws GlassFishIdeException {
         final String METHOD = "getVersion";
-        Future<ResultString> future =
-                ServerAdmin.<ResultString>exec(server, new CommandVersion());
+        Future<ResultString> future = ServerAdmin.<ResultString>exec(server, new CommandVersion());
         try {
             return future.get();
         } catch (ExecutionException | InterruptedException
@@ -70,12 +69,11 @@ public class CommandVersion extends Command {
     /**
      * Retrieve version from server.
      * <p/>
+     * 
      * @param server GlassFish server entity.
-     * @return GlassFish command result containing {@link GlassFishVersion}
-     *         object retrieved from server or <code>null</code> if no
-     *         version was returned.
-     * @throws GlassFishIdeException When error occurred during administration
-     *         command execution.
+     * @return GlassFish command result containing {@link GlassFishVersion} object retrieved from server
+     * or <code>null</code> if no version was returned.
+     * @throws GlassFishIdeException When error occurred during administration command execution.
      */
     public static Version getGlassFishVersion(
             final GlassFishServer server) {
@@ -86,23 +84,25 @@ public class CommandVersion extends Command {
             return null;
         }
         String value = result != null
-                ? ServerUtils.getVersionString(result.getValue()) : null;
+                ? ServerUtils.getVersionString(result.getValue())
+                : null;
         if (value != null) {
-            return new Version( value );
+            return new Version(value);
         } else {
             return null;
         }
     }
 
     /**
-     * Verifies if domain directory returned by version command result matches
-     * domain directory of provided GlassFish server entity.
+     * Verifies if domain directory returned by version command result matches domain directory of
+     * provided GlassFish server entity.
      * <p/>
+     * 
      * @param result Version command result.
      * @param server GlassFish server entity.
-     * @return For local server value of <code>true</code> means that server
-     *         major and minor version value matches values returned by version
-     *         command and value of <code>false</code> that they differs.
+     * @return For local server value of <code>true</code> means that server major and minor version
+     * value matches values returned by version command and value of <code>false</code> that they
+     * differs.
      */
     public static boolean verifyResult(
             final ResultString result, final GlassFishServer server) {
@@ -119,7 +119,7 @@ public class CommandVersion extends Command {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**

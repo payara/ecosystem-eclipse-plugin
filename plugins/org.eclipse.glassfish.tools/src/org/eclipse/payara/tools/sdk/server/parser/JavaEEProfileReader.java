@@ -19,12 +19,13 @@ import org.xml.sax.SAXException;
 /**
  * <code>profile</code> Java EE configuration XML element reader.
  * <p/>
+ * 
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class JavaEEProfileReader extends AbstractReader {
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Inner classes                                                          //
+    // Inner classes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Java EE profile values from XML element. */
@@ -42,9 +43,10 @@ public class JavaEEProfileReader extends AbstractReader {
         /**
          * Creates an instance of Java EE profile values from XML element.
          * <p/>
+         * 
          * @param version Java EE profile version.
-         * @param type    Java EE profile type.
-         * @param check   Java EE profile check reference.
+         * @param type Java EE profile type.
+         * @param check Java EE profile check reference.
          */
         Profile(final String version, final String type, final String check) {
             this.version = version;
@@ -55,6 +57,7 @@ public class JavaEEProfileReader extends AbstractReader {
         /**
          * Get Java EE profile version.
          * <p/>
+         * 
          * @return Java EE profile version.
          */
         public String getVersion() {
@@ -64,6 +67,7 @@ public class JavaEEProfileReader extends AbstractReader {
         /**
          * Get Java EE profile type.
          * <p/>
+         * 
          * @return Java EE profile type.
          */
         public String getType() {
@@ -73,6 +77,7 @@ public class JavaEEProfileReader extends AbstractReader {
         /**
          * Get Java EE profile check reference.
          * <p/>
+         * 
          * @return Java EE profile check reference.
          */
         public String getCheck() {
@@ -81,7 +86,7 @@ public class JavaEEProfileReader extends AbstractReader {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** <code>javaee</code> XML element name. */
@@ -97,23 +102,21 @@ public class JavaEEProfileReader extends AbstractReader {
     private static final String CHECK_ATTR = "check";
 
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Profiles retrieved from XML elements. */
     private List<Profile> profiles;
 
-
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Creates an instance of <code>profile</code> Java EE configuration
-     * XML element reader.
+     * Creates an instance of <code>profile</code> Java EE configuration XML element reader.
      * <p/>
-     * @param pathPrefix Tree parser path prefix to be prepended before
-     *        current XML element.
+     * 
+     * @param pathPrefix Tree parser path prefix to be prepended before current XML element.
      */
     JavaEEProfileReader(final String pathPrefix) throws ServerConfigException {
         super(pathPrefix, NODE);
@@ -121,13 +124,14 @@ public class JavaEEProfileReader extends AbstractReader {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Tree parser methods                                                    //
+    // Tree parser methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Process attributes from current XML element.
      * <p/>
-     * @param qname      Not used.
+     * 
+     * @param qname Not used.
      * @param attributes List of XML attributes.
      * @throws SAXException When any problem occurs.
      */
@@ -140,12 +144,13 @@ public class JavaEEProfileReader extends AbstractReader {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Getters and setters                                                    //
+    // Getters and setters //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Get profiles retrieved from XML elements.
      * <p/>
+     * 
      * @return Profiles retrieved from XML elements.
      */
     public List<Profile> getProfiles() {
@@ -153,7 +158,7 @@ public class JavaEEProfileReader extends AbstractReader {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Methods                                                                //
+    // Methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**

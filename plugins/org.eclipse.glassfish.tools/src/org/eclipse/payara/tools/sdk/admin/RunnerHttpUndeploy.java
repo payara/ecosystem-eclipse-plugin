@@ -13,21 +13,19 @@ import org.eclipse.payara.tools.sdk.utils.Utils;
 import org.eclipse.payara.tools.server.GlassFishServer;
 
 /**
- * GlassFish Server <code>undeploy</code> Admin Command Execution
- * using HTTP interface.
+ * GlassFish Server <code>undeploy</code> Admin Command Execution using HTTP interface.
  * <p/>
- * Contains common code for commands that are called with
- * <code>DEFAULT=&lt;target&gt;</code> query string. Individual child classes
- * are not needed at this stage.
- * Class implements GlassFish server administration functionality trough HTTP
- * interface.
+ * Contains common code for commands that are called with <code>DEFAULT=&lt;target&gt;</code> query
+ * string. Individual child classes are not needed at this stage. Class implements GlassFish server
+ * administration functionality trough HTTP interface.
  * <p/>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RunnerHttpUndeploy extends RunnerHttp {
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Enable/Disable command <code>DEFAULT</code> param name. */
@@ -37,7 +35,7 @@ public class RunnerHttpUndeploy extends RunnerHttp {
     private static final String TARGET_PARAM = "target";
 
     ////////////////////////////////////////////////////////////////////////////
-    // Static methods                                                         //
+    // Static methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
@@ -46,30 +44,28 @@ public class RunnerHttpUndeploy extends RunnerHttp {
      * <code>QUERY :: "DEFAULT" '=' &lt;name&gt;
      *                ['&' "target" '=' &lt;target&gt; ]</code>
      * <p/>
-     * @param command GlassFish Server Admin Command Entity.
-     *                <code>CommandDisable</code> instance is expected.
+     * 
+     * @param command GlassFish Server Admin Command Entity. <code>CommandDisable</code> instance is
+     * expected.
      * @return Enable/Disable query string for given command.
      */
     private static String query(Command command) {
         String target;
         String name;
         if (command instanceof CommandTargetName) {
-            target = Utils.sanitizeName(((CommandTargetName)command).target);
-            if (((CommandTargetName)command).name == null) {
+            target = Utils.sanitizeName(((CommandTargetName) command).target);
+            if (((CommandTargetName) command).name == null) {
                 throw new CommandException(CommandException.ILLEGAL_NULL_VALUE);
             }
-            name = Utils.sanitizeName(((CommandTargetName)command).name);
-        }
-        else {
+            name = Utils.sanitizeName(((CommandTargetName) command).name);
+        } else {
             throw new CommandException(
                     CommandException.ILLEGAL_COMAND_INSTANCE);
         }
         StringBuilder sb = new StringBuilder(
-                DEFAULT_PARAM.length() + 1 + name.length() + (
-                    target != null
+                DEFAULT_PARAM.length() + 1 + name.length() + (target != null
                         ? 1 + TARGET_PARAM.length() + 1 + target.length()
-                        : 0
-                ));
+                        : 0));
         sb.append(DEFAULT_PARAM);
         sb.append(PARAM_ASSIGN_VALUE);
         sb.append(name);
@@ -83,14 +79,14 @@ public class RunnerHttpUndeploy extends RunnerHttp {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Constructs an instance of administration command executor using
-     * HTTP interface.
+     * Constructs an instance of administration command executor using HTTP interface.
      * <p/>
-     * @param server  GlassFish server entity object.
+     * 
+     * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
     public RunnerHttpUndeploy(final GlassFishServer server,

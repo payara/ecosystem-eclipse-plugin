@@ -25,19 +25,20 @@ import org.eclipse.payara.tools.sdk.server.config.JavaSEPlatform;
 /**
  * Java related utilities
  * <p/>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class JavaUtils {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Java executables directory underJava home. */
-    private static final String  JAVA_BIN_DIR = "bin";
+    private static final String JAVA_BIN_DIR = "bin";
 
     /** Java VM executable file name (without path). */
-    private static final String  JAVA_VM_EXE = "java";
+    private static final String JAVA_VM_EXE = "java";
 
     /** Java VM command line option to retrieve version. */
     private static final String VM_VERSION_OPT = "-version";
@@ -62,34 +63,32 @@ public class JavaUtils {
     /**
      * Java VM version output regular expression pattern.
      * <p/>
-     * Regular expression contains tokens to read individual version number
-     * components. Expected input is string like
-     * <code>java version "1.6.0_30"</code>.
+     * Regular expression contains tokens to read individual version number components. Expected input
+     * is string like <code>java version "1.6.0_30"</code>.
      */
-//    private static final String VM_VERSION_PATTERN =
-//            " *[jJ][aA][vV][aA] +[vV][eE][rR][sS][iI][oO][nN] +" +
-//            "\"{0,1}([0-9]+).([0-9]+).([0-9]+)_([0-9]+)\"{0,1} *";
-    private static final String VM_VERSION_PATTERN =
-            "[^0-9]*([0-9]+)\\.([0-9]+)(?:\\.([0-9]+)(?:[-_\\.]([0-9]+)){0,1}){0,1}[^0-9]*";
+    // private static final String VM_VERSION_PATTERN =
+    // " *[jJ][aA][vV][aA] +[vV][eE][rR][sS][iI][oO][nN] +" +
+    // "\"{0,1}([0-9]+).([0-9]+).([0-9]+)_([0-9]+)\"{0,1} *";
+    private static final String VM_VERSION_PATTERN = "[^0-9]*([0-9]+)\\.([0-9]+)(?:\\.([0-9]+)(?:[-_\\.]([0-9]+)){0,1}){0,1}[^0-9]*";
 
-    /** Number of <code>Matcher</code> groups (REGEX tokens) expected in Java VM
-     *  version output. */
+    /**
+     * Number of <code>Matcher</code> groups (REGEX tokens) expected in Java VM version output.
+     */
     private static final int VM_MIN_VERSION_TOKENS = 2;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Static classes                                                         //
+    // Static classes //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Java VM version storage class.
      * <p/>
-     * Stored version is in
-     * <code>&lt;major&gt;.&lt;minor&lt;.&lt;revision&lt;_&lt;update&lt;></code>
+     * Stored version is in <code>&lt;major&gt;.&lt;minor&lt;.&lt;revision&lt;_&lt;update&lt;></code>
      */
     public static class JavaVersion {
 
         ////////////////////////////////////////////////////////////////////////
-        // Instance attributes                                                //
+        // Instance attributes //
         ////////////////////////////////////////////////////////////////////////
 
         /** Major version number. */
@@ -105,13 +104,14 @@ public class JavaUtils {
         final int patch;
 
         ////////////////////////////////////////////////////////////////////////
-        // Constructors                                                       //
+        // Constructors //
         ////////////////////////////////////////////////////////////////////////
 
         /**
          * Constructs an instance of Java VM version number.
          * <p/>
-         * @param major 
+         * 
+         * @param major
          */
         public JavaVersion(int major, int minor, int revision, int patch) {
             this.major = major;
@@ -121,37 +121,38 @@ public class JavaUtils {
         }
 
         ////////////////////////////////////////////////////////////////////////
-        // Methods                                                            //
+        // Methods //
         ////////////////////////////////////////////////////////////////////////
 
         /**
          * Compares this <code>JavaVersion</code> object against another one.
          * <p/>
-         * @param version <code>JavaVersion</code> object to compare with
-         *                <code>this</code> object.
-         * @return Compare result:<ul>
-         *         <li/>Value <code>1</code> if <code>this</code> value
-         *         is greater than supplied <code>version</code> value.
-         *         <li/>Value <code>-1</code> if <code>this</code> value
-         *         is lesser than supplied <code>version</code> value.
-         *         <li/>Value <code>0</code> if both <code>this</code> value
-         *         and supplied <code>version</code> values are equal.
-         *         </ul>
+         * 
+         * @param version <code>JavaVersion</code> object to compare with <code>this</code> object.
+         * @return Compare result:
+         * <ul>
+         * <li/>Value <code>1</code> if <code>this</code> value is greater than supplied
+         * <code>version</code> value.
+         * <li/>Value <code>-1</code> if <code>this</code> value is lesser than supplied
+         * <code>version</code> value.
+         * <li/>Value <code>0</code> if both <code>this</code> value and supplied <code>version</code>
+         * values are equal.
+         * </ul>
          */
         public int comapreTo(JavaVersion version) {
-            return this.major > version.major ? 1 :
-                    this.major < version.major ? -1 :
-                    this.minor > version.minor ? 1 :
-                    this.minor < version.minor ? -1 : 
-                    this.revision > version.revision ? 1 :
-                    this.revision < version.revision ? -1 :
-                    this.patch > version.patch ? 1 :
-                    this.patch < version.patch ? -1 : 0;
+            return this.major > version.major ? 1
+                    : this.major < version.major ? -1
+                            : this.minor > version.minor ? 1
+                                    : this.minor < version.minor ? -1
+                                            : this.revision > version.revision ? 1
+                                                    : this.revision < version.revision ? -1
+                                                            : this.patch > version.patch ? 1 : this.patch < version.patch ? -1 : 0;
         }
 
         /**
          * Return <code>String</code> representation of Java VM version object.
          * <p/>
+         * 
          * @return Java VM version string.
          */
         @Override
@@ -170,6 +171,7 @@ public class JavaUtils {
         /**
          * Return {@link JavaSEPlatform} matching this Java SE version.
          * <p/>
+         * 
          * @return {@link JavaSEPlatform} matching this Java SE version.
          */
         public JavaSEPlatform toPlatform() {
@@ -183,18 +185,20 @@ public class JavaUtils {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Static methods                                                         //
+    // Static methods //
     ////////////////////////////////////////////////////////////////////////////
 
     // TODO: This test should be rewritten to use probe class to retrieve
-    //       system properties from JRE.
+    // system properties from JRE.
     /**
      * Java VM version detector.
      * <p/>
-     * Executes java -version and tries to find output line containing<ul>
+     * Executes java -version and tries to find output line containing
+     * <ul>
      * <li/><code>java version "MA.MI.RE_PA"</code>
      * </ul>
-     * Where<ul>
+     * Where
+     * <ul>
      * <li/>MA is major version number,
      * <li/>MI is minor version number,
      * <li/>RE is revision number and
@@ -210,12 +214,12 @@ public class JavaUtils {
         pb.redirectErrorStream(true);
         try {
             process = pb.start();
-        // Handle I/O errors.
+            // Handle I/O errors.
         } catch (IOException ioe) {
             Logger.log(Level.WARNING,
                     "Caught IOException while executing Java VM.", ioe);
             return null;
-        // Handle security issues.
+            // Handle security issues.
         } catch (SecurityException se) {
             Logger.log(Level.WARNING,
                     "Caught SecurityException while executing Java VM.", se);
@@ -238,14 +242,16 @@ public class JavaUtils {
                         major = Integer.parseInt(matcher.group(1));
                         minor = Integer.parseInt(matcher.group(2));
                         revision = groupCount > 2 && matcher.group(3) != null
-                                ? Integer.parseInt(matcher.group(3)) : 0;
+                                ? Integer.parseInt(matcher.group(3))
+                                : 0;
                         patch = groupCount > 3 && matcher.group(4) != null
-                                ? Integer.parseInt(matcher.group(4)) : 0;
+                                ? Integer.parseInt(matcher.group(4))
+                                : 0;
                         break;
                     }
                 }
             }
-        // Handle I/O errors.
+            // Handle I/O errors.
         } catch (IOException ioe) {
             Logger.log(Level.WARNING,
                     "Caught IOException while reading Java VM output.", ioe);
@@ -253,26 +259,25 @@ public class JavaUtils {
         }
         return new JavaVersion(major, minor, revision, patch);
     }
-    
+
     /**
      * Build Java VM executable full path from Java Home directory.
      * <p/>
+     * 
      * @param javaHome Full path to Java Home directory.
      * @return Java VM executable full path.
      */
     public static String javaVmExecutableFullPath(String javaHome) {
         int javaHomeLen = javaHome.length();
         int execSuffixLen = OsUtils.EXEC_SUFFIX.length();
-        boolean javaHomeEndsWithPathSep =
-                javaHome.charAt(javaHomeLen - 1) ==
-                File.separatorChar;
+        boolean javaHomeEndsWithPathSep = javaHome.charAt(javaHomeLen - 1) == File.separatorChar;
         boolean isExecSuffix = execSuffixLen > 0;
         // Count full size to avoid resizing.
         StringBuilder javaExecStr = new StringBuilder(
                 javaHomeLen +
-                (javaHomeEndsWithPathSep ? 0 : 1) +
-                JAVA_BIN_DIR.length() + 1 + JAVA_VM_EXE.length() +
-                (isExecSuffix ? execSuffixLen + 1 : 0));
+                        (javaHomeEndsWithPathSep ? 0 : 1) +
+                        JAVA_BIN_DIR.length() + 1 + JAVA_VM_EXE.length() +
+                        (isExecSuffix ? execSuffixLen + 1 : 0));
         // Build string.
         javaExecStr.append(javaHome);
         if (!javaHomeEndsWithPathSep) {
@@ -288,9 +293,10 @@ public class JavaUtils {
     }
 
     /**
-     * Build quoted Java VM system property name by prefixing property name
-     * with <code>-D</code> as <code>-D"&lt;name&gt;"</code>.
+     * Build quoted Java VM system property name by prefixing property name with <code>-D</code> as
+     * <code>-D"&lt;name&gt;"</code>.
      * <p/>
+     * 
      * @param name Java VM system property name to be prefixed.
      */
     public static String systemPropertyName(String name) {
@@ -300,12 +306,11 @@ public class JavaUtils {
     }
 
     /**
-     * Build quoted Java VM system property name by prefixing property name
-     * with <code>-D</code> as <code>-D"&lt;name&gt;"</code> into
-     * {@link StringBuilder} instance.
+     * Build quoted Java VM system property name by prefixing property name with <code>-D</code> as
+     * <code>-D"&lt;name&gt;"</code> into {@link StringBuilder} instance.
      * <p/>
-     * @param sb   {@link StringBuilder} instance where to append Java VM
-     *             system property.
+     * 
+     * @param sb {@link StringBuilder} instance where to append Java VM system property.
      * @param name Java VM system property name to be prefixed.
      */
     public static String systemPropertyName(StringBuilder sb, String name) {
@@ -317,10 +322,10 @@ public class JavaUtils {
     }
 
     /**
-     * Build quoted Java VM system property
-     * <code>-D"&lt;name&gt;=&lt;value&gt;"</code>.
+     * Build quoted Java VM system property <code>-D"&lt;name&gt;=&lt;value&gt;"</code>.
      * <p/>
-     * @param name  Java VM system property name.
+     * 
+     * @param name Java VM system property name.
      * @param value Java VM system property value.
      */
     public static String systemProperty(String name, String value) {
@@ -330,13 +335,12 @@ public class JavaUtils {
     }
 
     /**
-     * Append quoted Java VM system property
-     * <code>-D"&lt;name&gt;=&lt;value&gt;"</code> into {@link StringBuilder}
-     * instance.
+     * Append quoted Java VM system property <code>-D"&lt;name&gt;=&lt;value&gt;"</code> into
+     * {@link StringBuilder} instance.
      * <p/>
-     * @param sb   {@link StringBuilder} instance where to append Java VM
-     *             system property.
-     * @param name  Java VM system property name.
+     * 
+     * @param sb {@link StringBuilder} instance where to append Java VM system property.
+     * @param name Java VM system property name.
      * @param value Java VM system property value.
      */
     public static String systemProperty(
@@ -353,7 +357,8 @@ public class JavaUtils {
     /**
      * Get URL to access properties file in the same package as given class.
      * <p/>
-     * @param c    Class to determine package.
+     * 
+     * @param c Class to determine package.
      * @param file Properties file name (e.g. <code>Messages.properties</code>).
      * @return URL to access properties file.
      */

@@ -23,8 +23,8 @@ import org.eclipse.wst.common.project.facet.core.runtime.RuntimeManager;
  * @author <a href="mailto:konstantin.komissarchik@oracle.com">Konstantin Komissarchik</a>
  */
 
-public final class ContainsRuntimeComponentType extends PropertyTester{
-    
+public final class ContainsRuntimeComponentType extends PropertyTester {
+
     private static final String PROP_CONTAINS_RUNTIME_COMPONENT_TYPE = "containsRuntimeComponentType"; //$NON-NLS-1$
 
     @Override
@@ -87,7 +87,8 @@ public final class ContainsRuntimeComponentType extends PropertyTester{
         }
     }
 
-    private static final boolean match(final IRuntimeComponent component, final IRuntimeComponentType type, final String vexpr) throws CoreException {
+    private static final boolean match(final IRuntimeComponent component, final IRuntimeComponentType type, final String vexpr)
+            throws CoreException {
         if (component.getRuntimeComponentType() == type) {
             if (vexpr != null) {
                 return type.getVersions(vexpr).contains(component.getRuntimeComponentVersion());

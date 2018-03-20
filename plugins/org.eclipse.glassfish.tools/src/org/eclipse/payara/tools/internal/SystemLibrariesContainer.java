@@ -41,341 +41,339 @@ import org.eclipse.wst.server.core.IRuntimeLifecycleListener;
 import org.eclipse.wst.server.core.ServerCore;
 
 /**
- * @author <a href="mailto:konstantin.komissarchik@oracle.com">Konstantin
- *         Komissarchik</a>
+ * @author <a href="mailto:konstantin.komissarchik@oracle.com">Konstantin Komissarchik</a>
  */
 
 public final class SystemLibrariesContainer implements IClasspathContainer {
-	public static final String ID = "org.eclipse.payara.tools.lib.system";
-	private static final IPath PATH = new Path(ID);
+    public static final String ID = "org.eclipse.payara.tools.lib.system";
+    private static final IPath PATH = new Path(ID);
 
-	private static final String FPROJ_METADATA_FILE = ".settings/org.eclipse.wst.common.project.facet.core.xml";
+    private static final String FPROJ_METADATA_FILE = ".settings/org.eclipse.wst.common.project.facet.core.xml";
 
-	private static boolean initialized;
-	private static ContainersRefresherThread containersRefresherThread;
+    private static boolean initialized;
+    private static ContainersRefresherThread containersRefresherThread;
 
-	private final List<IClasspathEntry> entries;
+    private final List<IClasspathEntry> entries;
 
-	private static synchronized void initialize() {
-		if (!initialized) {
-			initialized = true;
+    private static synchronized void initialize() {
+        if (!initialized) {
+            initialized = true;
 
-			RuntimeLifecycleListener.register();
-			ResourceChangeListener.register();
+            RuntimeLifecycleListener.register();
+            ResourceChangeListener.register();
 
-			containersRefresherThread = new ContainersRefresherThread();
-			containersRefresherThread.start();
-		}
-	}
+            containersRefresherThread = new ContainersRefresherThread();
+            containersRefresherThread.start();
+        }
+    }
 
-	private SystemLibrariesContainer(final IJavaProject project) {
-		final GlassFishLocationUtils gf = GlassFishLocationUtils.find(project);
-		this.entries = (gf == null ? Collections.<IClasspathEntry>emptyList() : gf.classpath(project.getProject()));
-	}
+    private SystemLibrariesContainer(final IJavaProject project) {
+        final GlassFishLocationUtils gf = GlassFishLocationUtils.find(project);
+        this.entries = (gf == null ? Collections.<IClasspathEntry>emptyList() : gf.classpath(project.getProject()));
+    }
 
-	@Override
+    @Override
     public IClasspathEntry[] getClasspathEntries() {
-		return this.entries.toArray(new IClasspathEntry[this.entries.size()]);
-	}
+        return this.entries.toArray(new IClasspathEntry[this.entries.size()]);
+    }
 
-	@Override
+    @Override
     public String getDescription() {
-		return Resources.containerLabel;
-	}
+        return Resources.containerLabel;
+    }
 
-	@Override
+    @Override
     public int getKind() {
-		return K_APPLICATION;
-	}
+        return K_APPLICATION;
+    }
 
-	@Override
+    @Override
     public IPath getPath() {
-		return PATH;
-	}
+        return PATH;
+    }
 
-	private static boolean isOnClasspath(final IProject project) throws CoreException {
-		if (isJavaProject(project)) {
-			return isOnClasspath(JavaCore.create(project));
-		}
+    private static boolean isOnClasspath(final IProject project) throws CoreException {
+        if (isJavaProject(project)) {
+            return isOnClasspath(JavaCore.create(project));
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	private static boolean isOnClasspath(final IJavaProject project) throws CoreException {
-		final IClasspathEntry[] cp = project.getRawClasspath();
+    private static boolean isOnClasspath(final IJavaProject project) throws CoreException {
+        final IClasspathEntry[] cp = project.getRawClasspath();
 
-		for (IClasspathEntry cpe : cp) {
-			if (isSystemLibrariesContainer(cpe)) {
-				return true;
-			}
-		}
+        for (IClasspathEntry cpe : cp) {
+            if (isSystemLibrariesContainer(cpe)) {
+                return true;
+            }
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	private static boolean isSystemLibrariesContainer(final IClasspathEntry cpe) {
-		return cpe.getPath().equals(PATH);
-	}
+    private static boolean isSystemLibrariesContainer(final IClasspathEntry cpe) {
+        return cpe.getPath().equals(PATH);
+    }
 
-	private static void refresh(final IProject project) throws CoreException {
-		if (isJavaProject(project)) {
-			refresh(JavaCore.create(project));
-		}
-	}
+    private static void refresh(final IProject project) throws CoreException {
+        if (isJavaProject(project)) {
+            refresh(JavaCore.create(project));
+        }
+    }
 
-	private static void refresh(final IJavaProject project) throws CoreException {
-		final IClasspathEntry[] cp = project.getRawClasspath();
-		IPath containerPath = null;
+    private static void refresh(final IJavaProject project) throws CoreException {
+        final IClasspathEntry[] cp = project.getRawClasspath();
+        IPath containerPath = null;
 
-		for (IClasspathEntry cpe : cp) {
-			if (isSystemLibrariesContainer(cpe)) {
-				containerPath = cpe.getPath();
-				break;
-			}
-		}
+        for (IClasspathEntry cpe : cp) {
+            if (isSystemLibrariesContainer(cpe)) {
+                containerPath = cpe.getPath();
+                break;
+            }
+        }
 
-		if (containerPath != null) {
-			final IClasspathContainer cont = JavaCore.getClasspathContainer(containerPath, project);
-			final SystemLibrariesContainer existingContainer = (SystemLibrariesContainer) cont;
-			final SystemLibrariesContainer newContainer = new SystemLibrariesContainer(project);
+        if (containerPath != null) {
+            final IClasspathContainer cont = JavaCore.getClasspathContainer(containerPath, project);
+            final SystemLibrariesContainer existingContainer = (SystemLibrariesContainer) cont;
+            final SystemLibrariesContainer newContainer = new SystemLibrariesContainer(project);
 
-			if (!existingContainer.equals(newContainer)) {
-				final IJavaProject[] projectsArray = { project };
-				final IClasspathContainer[] containersArray = { newContainer };
+            if (!existingContainer.equals(newContainer)) {
+                final IJavaProject[] projectsArray = { project };
+                final IClasspathContainer[] containersArray = { newContainer };
 
-				JavaCore.setClasspathContainer(containerPath, projectsArray, containersArray, null);
-			}
-		}
-	}
+                JavaCore.setClasspathContainer(containerPath, projectsArray, containersArray, null);
+            }
+        }
+    }
 
-	/**
-	 * Checks whether the specified project is a Java project.
-	 * 
-	 * @param pj
-	 *            the project to check
-	 * @return <code>true</code> if the project is a Java project
-	 */
+    /**
+     * Checks whether the specified project is a Java project.
+     * 
+     * @param pj the project to check
+     * @return <code>true</code> if the project is a Java project
+     */
 
-	private static boolean isJavaProject(final IProject project) {
-		try {
-			return project.getNature(JavaCore.NATURE_ID) != null;
-		} catch (CoreException e) {
-		}
+    private static boolean isJavaProject(final IProject project) {
+        try {
+            return project.getNature(JavaCore.NATURE_ID) != null;
+        } catch (CoreException e) {
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	public static final class Initializer extends ClasspathContainerInitializer {
-		@Override
-		public void initialize(final IPath containerPath, final IJavaProject project) throws CoreException {
-			SystemLibrariesContainer.initialize();
+    public static final class Initializer extends ClasspathContainerInitializer {
+        @Override
+        public void initialize(final IPath containerPath, final IJavaProject project) throws CoreException {
+            SystemLibrariesContainer.initialize();
 
-			JavaCore.setClasspathContainer(containerPath, new IJavaProject[] { project },
-					new IClasspathContainer[] { new SystemLibrariesContainer(project) }, null);
-		}
+            JavaCore.setClasspathContainer(containerPath, new IJavaProject[] { project },
+                    new IClasspathContainer[] { new SystemLibrariesContainer(project) }, null);
+        }
 
-		@Override
-		public boolean canUpdateClasspathContainer(IPath containerPath, IJavaProject project) {
-			return true;
-		}
+        @Override
+        public boolean canUpdateClasspathContainer(IPath containerPath, IJavaProject project) {
+            return true;
+        }
 
-		@Override
-		public void requestClasspathContainerUpdate(IPath containerPath, IJavaProject project,
-				IClasspathContainer containerSuggestion) throws CoreException {
-			super.requestClasspathContainerUpdate(containerPath, project, containerSuggestion);
+        @Override
+        public void requestClasspathContainerUpdate(IPath containerPath, IJavaProject project,
+                IClasspathContainer containerSuggestion) throws CoreException {
+            super.requestClasspathContainerUpdate(containerPath, project, containerSuggestion);
 
-			// save source path in meta data file
-			IProject proj = project.getProject();
-			SystemLibrariesSetting settings = SystemLibrariesSetting.load(proj);
-			if (settings == null) {
-				settings = new SystemLibrariesSetting();
-			}
-			ArrayList<Library> libsList = settings.getLibraryList();
+            // save source path in meta data file
+            IProject proj = project.getProject();
+            SystemLibrariesSetting settings = SystemLibrariesSetting.load(proj);
+            if (settings == null) {
+                settings = new SystemLibrariesSetting();
+            }
+            ArrayList<Library> libsList = settings.getLibraryList();
 
-			boolean needUpdate = false;
-			for (IClasspathEntry cpe : containerSuggestion.getClasspathEntries()) {
-				// IClasspathEntry cpe = findClasspathEntry(containerPath.toString(),
-				// containerSuggestion );
-				IPath srcPath = cpe.getSourceAttachmentPath();
+            boolean needUpdate = false;
+            for (IClasspathEntry cpe : containerSuggestion.getClasspathEntries()) {
+                // IClasspathEntry cpe = findClasspathEntry(containerPath.toString(),
+                // containerSuggestion );
+                IPath srcPath = cpe.getSourceAttachmentPath();
 
-				if (srcPath != null) {
-					needUpdate = true;
+                if (srcPath != null) {
+                    needUpdate = true;
 
-					boolean foudEntry = false;
-					for (Library lib : libsList) {
-						String cpePath = cpe.getPath().toString();
-						if (lib.getPath().equals(cpePath)) {
-							// update source path
-							lib.setSource(srcPath.toPortableString());
-							foudEntry = true;
-							break;
-						}
-					}
-					if (!foudEntry) {
-						Library newLib = new Library();
-						newLib.setPath(cpe.getPath().toString());
-						newLib.setSource(srcPath.toString());
-						libsList.add(newLib);
-					}
-				} else {
-					// remove enty from settings file,
-					Iterator<Library> it = libsList.iterator();
-					while (it.hasNext()) {
-						Library lib = it.next();
-						String cpePath = cpe.getPath().toString();
-						if (lib.getPath().equals(cpePath)) {
-							it.remove();
-							needUpdate = true;
-							break;
-						}
-					}
+                    boolean foudEntry = false;
+                    for (Library lib : libsList) {
+                        String cpePath = cpe.getPath().toString();
+                        if (lib.getPath().equals(cpePath)) {
+                            // update source path
+                            lib.setSource(srcPath.toPortableString());
+                            foudEntry = true;
+                            break;
+                        }
+                    }
+                    if (!foudEntry) {
+                        Library newLib = new Library();
+                        newLib.setPath(cpe.getPath().toString());
+                        newLib.setSource(srcPath.toString());
+                        libsList.add(newLib);
+                    }
+                } else {
+                    // remove enty from settings file,
+                    Iterator<Library> it = libsList.iterator();
+                    while (it.hasNext()) {
+                        Library lib = it.next();
+                        String cpePath = cpe.getPath().toString();
+                        if (lib.getPath().equals(cpePath)) {
+                            it.remove();
+                            needUpdate = true;
+                            break;
+                        }
+                    }
 
-				}
-			}
-			if (needUpdate) {
-				SystemLibrariesSetting.save(proj, settings);
-				// update the classpath container to reflect the changes
-				initialize(containerPath, project);
-			}
-		}
-	}
+                }
+            }
+            if (needUpdate) {
+                SystemLibrariesSetting.save(proj, settings);
+                // update the classpath container to reflect the changes
+                initialize(containerPath, project);
+            }
+        }
+    }
 
-	private static final class RuntimeLifecycleListener implements IRuntimeLifecycleListener {
-		public static void register() {
-			ServerCore.addRuntimeLifecycleListener(new RuntimeLifecycleListener());
-		}
+    private static final class RuntimeLifecycleListener implements IRuntimeLifecycleListener {
+        public static void register() {
+            ServerCore.addRuntimeLifecycleListener(new RuntimeLifecycleListener());
+        }
 
-		@Override
+        @Override
         public void runtimeAdded(final IRuntime runtime) {
-			handleEvent(runtime);
-		}
+            handleEvent(runtime);
+        }
 
-		@Override
+        @Override
         public void runtimeChanged(final IRuntime runtime) {
-			handleEvent(runtime);
-		}
+            handleEvent(runtime);
+        }
 
-		@Override
+        @Override
         public void runtimeRemoved(final IRuntime runtime) {
-			handleEvent(runtime);
-		}
+            handleEvent(runtime);
+        }
 
-		private void handleEvent(final IRuntime runtime) {
-			if (isGlassFish(runtime)) {
-				for (IProject project : ResourcesPlugin.getWorkspace().getRoot().getProjects()) {
-					try {
-						if (isOnClasspath(project)) {
-							containersRefresherThread.addProjectToQueue(project);
-						}
-					} catch (CoreException e) {
-						GlassfishToolsPlugin.log(e);
-					}
-				}
-			}
-		}
-	}
+        private void handleEvent(final IRuntime runtime) {
+            if (isGlassFish(runtime)) {
+                for (IProject project : ResourcesPlugin.getWorkspace().getRoot().getProjects()) {
+                    try {
+                        if (isOnClasspath(project)) {
+                            containersRefresherThread.addProjectToQueue(project);
+                        }
+                    } catch (CoreException e) {
+                        GlassfishToolsPlugin.log(e);
+                    }
+                }
+            }
+        }
+    }
 
-	private static final class ResourceChangeListener implements IResourceChangeListener {
-		private final List<IPath> triggerFiles;
+    private static final class ResourceChangeListener implements IResourceChangeListener {
+        private final List<IPath> triggerFiles;
 
-		public static void register() {
-			final IWorkspace ws = ResourcesPlugin.getWorkspace();
+        public static void register() {
+            final IWorkspace ws = ResourcesPlugin.getWorkspace();
 
-			ws.addResourceChangeListener(new ResourceChangeListener(), IResourceChangeEvent.POST_CHANGE);
-		}
+            ws.addResourceChangeListener(new ResourceChangeListener(), IResourceChangeEvent.POST_CHANGE);
+        }
 
-		private ResourceChangeListener() {
-			this.triggerFiles = new ArrayList<>();
-			this.triggerFiles.add(new Path(FPROJ_METADATA_FILE));
-		}
+        private ResourceChangeListener() {
+            this.triggerFiles = new ArrayList<>();
+            this.triggerFiles.add(new Path(FPROJ_METADATA_FILE));
+        }
 
-		@Override
+        @Override
         public void resourceChanged(IResourceChangeEvent event) {
-			for (IResourceDelta subdelta : event.getDelta().getAffectedChildren()) {
-				final IProject project = (IProject) subdelta.getResource();
-				boolean relevant = false;
+            for (IResourceDelta subdelta : event.getDelta().getAffectedChildren()) {
+                final IProject project = (IProject) subdelta.getResource();
+                boolean relevant = false;
 
-				for (IPath p : this.triggerFiles) {
-					if (subdelta.findMember(p) != null) {
-						try {
-							if (SystemLibrariesContainer.isOnClasspath(project)) {
-								relevant = true;
-							}
-						} catch (CoreException e) {
-							GlassfishToolsPlugin.log(e);
-						}
+                for (IPath p : this.triggerFiles) {
+                    if (subdelta.findMember(p) != null) {
+                        try {
+                            if (SystemLibrariesContainer.isOnClasspath(project)) {
+                                relevant = true;
+                            }
+                        } catch (CoreException e) {
+                            GlassfishToolsPlugin.log(e);
+                        }
 
-						break;
-					}
-				}
+                        break;
+                    }
+                }
 
-				if (relevant) {
-					containersRefresherThread.addProjectToQueue(project);
-				}
-			}
-		}
-	}
+                if (relevant) {
+                    containersRefresherThread.addProjectToQueue(project);
+                }
+            }
+        }
+    }
 
-	private static final class ContainersRefresherThread extends Thread {
-		private final LinkedList<IProject> projects;
+    private static final class ContainersRefresherThread extends Thread {
+        private final LinkedList<IProject> projects;
 
-		public ContainersRefresherThread() {
-			this.projects = new LinkedList<>();
-		}
+        public ContainersRefresherThread() {
+            this.projects = new LinkedList<>();
+        }
 
-		public IProject getProjectFromQueue() {
-			synchronized (this.projects) {
-				if (this.projects.isEmpty()) {
-					try {
-						this.projects.wait();
-					} catch (InterruptedException e) {
-						return null;
-					}
-				}
+        public IProject getProjectFromQueue() {
+            synchronized (this.projects) {
+                if (this.projects.isEmpty()) {
+                    try {
+                        this.projects.wait();
+                    } catch (InterruptedException e) {
+                        return null;
+                    }
+                }
 
-				return this.projects.removeFirst();
-			}
-		}
+                return this.projects.removeFirst();
+            }
+        }
 
-		public void addProjectToQueue(final IProject project) {
-			synchronized (this.projects) {
-				this.projects.addLast(project);
-				this.projects.notify();
-			}
-		}
+        public void addProjectToQueue(final IProject project) {
+            synchronized (this.projects) {
+                this.projects.addLast(project);
+                this.projects.notify();
+            }
+        }
 
-		@Override
+        @Override
         public void run() {
-			while (true) {
-				final IProject project = getProjectFromQueue();
+            while (true) {
+                final IProject project = getProjectFromQueue();
 
-				if (project == null) {
-					return;
-				}
+                if (project == null) {
+                    return;
+                }
 
-				try {
-					final IWorkspaceRunnable wsr = new IWorkspaceRunnable() {
-						@Override
+                try {
+                    final IWorkspaceRunnable wsr = new IWorkspaceRunnable() {
+                        @Override
                         public void run(final IProgressMonitor monitor) throws CoreException {
-							refresh(project);
-						}
-					};
+                            refresh(project);
+                        }
+                    };
 
-					final IWorkspace ws = ResourcesPlugin.getWorkspace();
-					ws.run(wsr, ws.getRoot(), 0, null);
-				} catch (CoreException e) {
-					GlassfishToolsPlugin.log(e);
-				}
-			}
-		}
-	}
+                    final IWorkspace ws = ResourcesPlugin.getWorkspace();
+                    ws.run(wsr, ws.getRoot(), 0, null);
+                } catch (CoreException e) {
+                    GlassfishToolsPlugin.log(e);
+                }
+            }
+        }
+    }
 
-	private static final class Resources extends NLS {
-		public static String containerLabel;
+    private static final class Resources extends NLS {
+        public static String containerLabel;
 
-		static {
-			initializeMessages(SystemLibrariesContainer.class.getName(), Resources.class);
-		}
-	}
+        static {
+            initializeMessages(SystemLibrariesContainer.class.getName(), Resources.class);
+        }
+    }
 
 }

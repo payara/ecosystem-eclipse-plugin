@@ -14,34 +14,35 @@ package org.eclipse.payara.tools.sdk.admin;
  * <p/>
  * Holds data for command. Objects of this class are created by API user.
  * <p/>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
-@RunnerHttpClass(runner=RunnerRestFetchLogData.class)
-@RunnerRestClass(runner=RunnerRestFetchLogData.class)
+@RunnerHttpClass(runner = RunnerRestFetchLogData.class)
+@RunnerRestClass(runner = RunnerRestFetchLogData.class)
 public class CommandFetchLogData extends Command {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Command string for view log command. */
     private static final String COMMAND = "view-log";
 
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Query parameters to be used to read only log entries added in particular
-     * interval starting from previous call that returned this value of
-     * <code>paramsAppendNext</code> stored in returned <code>ValueLog</code>.
+     * Query parameters to be used to read only log entries added in particular interval starting from
+     * previous call that returned this value of <code>paramsAppendNext</code> stored in returned
+     * <code>ValueLog</code>.
      * <p/>
      * Content of HTTP header <code>X-Text-Append-Next</code>.
      */
     final String paramsAppendNext;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
@@ -57,12 +58,11 @@ public class CommandFetchLogData extends Command {
     /**
      * Constructs an instance of GlassFish server view log command entity.
      * <p/>
-     * Only log entries added in particular interval starting from previous
-     * call that returned this value of <code>paramsAppendNext</code> will
-     * be returned.
+     * Only log entries added in particular interval starting from previous call that returned this
+     * value of <code>paramsAppendNext</code> will be returned.
      * <p/>
-     * @param paramsAppendNext Interval query parameters from Last View Log
-     *        command execution.
+     * 
+     * @param paramsAppendNext Interval query parameters from Last View Log command execution.
      */
     public CommandFetchLogData(String paramsAppendNext) {
         super(COMMAND);

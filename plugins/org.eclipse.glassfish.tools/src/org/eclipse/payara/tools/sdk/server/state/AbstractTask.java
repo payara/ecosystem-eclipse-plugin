@@ -18,19 +18,20 @@ import org.eclipse.payara.tools.sdk.logging.Logger;
 /**
  * Abstract task for server status verification.
  * <p/>
+ * 
  * @author Tomas Kraus
  */
 public abstract class AbstractTask implements Runnable {
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Logger instance for this class. */
     private static final Logger LOGGER = new Logger(AbstractTask.class);
 
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Server status check job internal data. */
@@ -41,7 +42,7 @@ public abstract class AbstractTask implements Runnable {
 
     /** Internal job status when this task was created. */
     final StatusJobState jobState;
-    
+
     /** Server status check type. */
     final GlassFishStatusCheck type;
 
@@ -54,7 +55,8 @@ public abstract class AbstractTask implements Runnable {
     /**
      * Creates an instance of abstract task for server status verification.
      * <p/>
-     * @param job  Server status check job internal data.
+     * 
+     * @param job Server status check job internal data.
      * @param task Individual status check task data.
      * @param type Server status check type.
      */
@@ -69,29 +71,28 @@ public abstract class AbstractTask implements Runnable {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Methods                                                                //
+    // Methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Mark this task as canceled.
      * <p/>
-     * Listeners won't be notified about server status verification task state
-     * change after task was canceled.
+     * Listeners won't be notified about server status verification task state change after task was
+     * canceled.
      */
     void cancel() {
         cancelled = true;
     }
 
     /**
-     * Notify all registered task state listeners server status verification
-     * task state change.
+     * Notify all registered task state listeners server status verification task state change.
      * <p/>
-     * This method should be used after task is submitted into
-     * <code>ExecutorService</code>.
+     * This method should be used after task is submitted into <code>ExecutorService</code>.
      * <p/>
+     * 
      * @param taskState New task execution state.
      * @param taskEvent Event related to execution state change.
-     * @param args      Additional arguments.
+     * @param args Additional arguments.
      */
     void handleStateChange(final TaskState taskState,
             final TaskEvent taskEvent, final String... args) {

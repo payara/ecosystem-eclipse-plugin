@@ -16,25 +16,28 @@ import org.eclipse.payara.tools.sdk.TaskState;
  * <p/>
  * Stores administration command result values and command execution state.
  * <p/>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public abstract class Result<T> {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** State of GlassFish server administration command execution. */
     TaskState state;
 
-    /** Authorization status.
-     *  <p/>
-     *  Value of <code>true</code> means that there was no authorization issue.
-     *  Value of <code>false</code> means that authorization failed. */
+    /**
+     * Authorization status.
+     * <p/>
+     * Value of <code>true</code> means that there was no authorization issue. Value of
+     * <code>false</code> means that authorization failed.
+     */
     boolean auth;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
@@ -46,12 +49,13 @@ public abstract class Result<T> {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Getters and Setters                                                    //
+    // Getters and Setters //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Get state of GlassFish server administration command execution.
      * <p/>
+     * 
      * @return State of GlassFish server administration command execution.
      */
     public TaskState getState() {
@@ -61,17 +65,17 @@ public abstract class Result<T> {
     /**
      * Get value returned by administration command execution.
      * <p/>
+     * 
      * @return Value returned by administration command execution.
      */
     public abstract T getValue();
 
-
     /**
      * Get administration command execution authorization status.
      * <p/>
-     * @return Value of <code>true</code> means that there was no authorization
-     *         issue. Value of <code>false</code> means that authorization
-     *         failed.
+     * 
+     * @return Value of <code>true</code> means that there was no authorization issue. Value of
+     * <code>false</code> means that authorization failed.
      */
     public boolean isAuth() {
         return auth;
@@ -82,9 +86,9 @@ public abstract class Result<T> {
      * <p/>
      * Use only in administration command runners to set result value.
      * <p/>
-     * @param auth Authorization status: Value of <code>true</code> means that
-     *             there was no authorization issue. Value of <code>false</code>
-     *             means that authorization failed.
+     * 
+     * @param auth Authorization status: Value of <code>true</code> means that there was no
+     * authorization issue. Value of <code>false</code> means that authorization failed.
      */
     public void setAuth(final boolean auth) {
         this.auth = auth;

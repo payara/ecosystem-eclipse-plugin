@@ -8,13 +8,13 @@
  ******************************************************************************/
 
 package org.eclipse.payara.tools.sdk.data;
- 
+
 /**
  * Individual server check status returned.
  * <p/>
- * There is also minimal algebra defined to support <code>AND</code>
- * and <code>OR</code>.
+ * There is also minimal algebra defined to support <code>AND</code> and <code>OR</code>.
  * <p/>
+ * 
  * @author Tomas Kraus
  */
 public enum GlassFishStatusCheckResult {
@@ -26,30 +26,31 @@ public enum GlassFishStatusCheckResult {
     FAILED;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
-    /** Full <code>AND</code> operator state space. */ 
+    /** Full <code>AND</code> operator state space. */
     private static final GlassFishStatusCheckResult[][] and = {
-      // SUCCESS  FAILED
-        {SUCCESS, FAILED}, // SUCCESS
-        { FAILED, FAILED}  // FAILED
+            // SUCCESS FAILED
+            { SUCCESS, FAILED }, // SUCCESS
+            { FAILED, FAILED } // FAILED
     };
 
-    /** Full <code>OR</code> operator state space. */ 
+    /** Full <code>OR</code> operator state space. */
     private static final GlassFishStatusCheckResult[][] or = {
-      // SUCCESS   FAILED
-        {SUCCESS, SUCCESS}, // SUCCESS
-        {SUCCESS,  FAILED}  // FAILED
+            // SUCCESS FAILED
+            { SUCCESS, SUCCESS }, // SUCCESS
+            { SUCCESS, FAILED } // FAILED
     };
 
     ////////////////////////////////////////////////////////////////////////////
-    // Static methods                                                         //
+    // Static methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Compute logical <code>AND</code> of two status values.
      * <p/>
+     * 
      * @param s1 First operand.
      * @param s2 Second operand.
      */
@@ -62,10 +63,11 @@ public enum GlassFishStatusCheckResult {
     /**
      * Compute logical <code>OR</code> of two status values.
      * <p/>
+     * 
      * @param s1 First operand.
      * @param s2 Second operand.
      */
-    public static  GlassFishStatusCheckResult or(
+    public static GlassFishStatusCheckResult or(
             final GlassFishStatusCheckResult s1,
             final GlassFishStatusCheckResult s2) {
         return or[s1.ordinal()][s2.ordinal()];
@@ -74,6 +76,7 @@ public enum GlassFishStatusCheckResult {
     /**
      * Compute logical <code>AND</code> of three status values.
      * <p/>
+     * 
      * @param s1 First operand.
      * @param s2 Second operand.
      * @param s3 Third operand.
@@ -88,6 +91,7 @@ public enum GlassFishStatusCheckResult {
     /**
      * Compute logical <code>OR</code> of three status values.
      * <p/>
+     * 
      * @param s1 First operand.
      * @param s2 Second operand.
      * @param s3 Third operand.
@@ -100,25 +104,25 @@ public enum GlassFishStatusCheckResult {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Methods                                                                //
+    // Methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Convert <code>GlassFishStatusCheckResult</code> value
-     * to <code>String</code>.
+     * Convert <code>GlassFishStatusCheckResult</code> value to <code>String</code>.
      * <p/>
-     * @return A <code>String</code> representation of the value
-     *         of this object.
+     * 
+     * @return A <code>String</code> representation of the value of this object.
      */
     @Override
     public String toString() {
-        switch(this) {
-            case SUCCESS:   return "SUCCESS";
-            case FAILED:    return "FAILED";
-            default:
-                throw new IllegalStateException("Unknown Status value");
+        switch (this) {
+        case SUCCESS:
+            return "SUCCESS";
+        case FAILED:
+            return "FAILED";
+        default:
+            throw new IllegalStateException("Unknown Status value");
         }
     }
 
 }
-

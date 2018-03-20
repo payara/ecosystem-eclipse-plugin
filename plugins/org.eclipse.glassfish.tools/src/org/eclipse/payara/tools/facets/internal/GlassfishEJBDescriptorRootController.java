@@ -15,11 +15,11 @@ import org.w3c.dom.Document;
 
 public class GlassfishEJBDescriptorRootController extends GlassfishDescriptorRootController {
 
-	@Override
-	protected void createRootElement(Document document) {
-		super.createRootElement(document);
-		XmlElement root = new XmlElement(resource().adapt(RootXmlResource.class).store(), document.getDocumentElement());
-		root.addChildElement("enterprise-beans");
-	}
+    @Override
+    protected void createRootElement(Document document) {
+        super.createRootElement(document);
+        XmlElement root = new XmlElement(resource().adapt(RootXmlResource.class).store(), document.getDocumentElement());
+        root.addChildElement("enterprise-beans");
+    }
 
 }

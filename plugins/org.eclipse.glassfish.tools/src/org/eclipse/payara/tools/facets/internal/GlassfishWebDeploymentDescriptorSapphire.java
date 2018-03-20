@@ -19,52 +19,54 @@ import org.eclipse.sapphire.modeling.xml.XmlResourceStore;
 import org.eclipse.sapphire.workspace.WorkspaceFileResourceStore;
 
 class GlassfishWebDeploymentDescriptorSapphire extends
-		AbstractGlassfishDeploymentDescriptor implements IGlassfishWebDeploymentDescriptor {
+        AbstractGlassfishDeploymentDescriptor implements IGlassfishWebDeploymentDescriptor {
 
-	private IGlassfishDeploymentDescriptorModel model;
-	
-	private IFile file;
-	
-	GlassfishWebDeploymentDescriptorSapphire(IFile file) throws ResourceStoreException {
-		this.file = file;
-		this.model = IGlassfishDeploymentDescriptorModel.TYPE.instantiate(new RootXmlResource(new XmlResourceStore(new WorkspaceFileResourceStore( file ))));
-	}
+    private IGlassfishDeploymentDescriptorModel model;
 
-	@Override
-	protected void prepareDescriptor() {
+    private IFile file;
 
-	}
+    GlassfishWebDeploymentDescriptorSapphire(IFile file) throws ResourceStoreException {
+        this.file = file;
+        this.model = IGlassfishDeploymentDescriptorModel.TYPE
+                .instantiate(new RootXmlResource(new XmlResourceStore(new WorkspaceFileResourceStore(file))));
+    }
 
-	@Override
-	protected boolean isPossibleToCreate() {
-		// check for existence of older sun descriptor
-		IPath sunDescriptor = file.getLocation().removeLastSegments(1).append(IGlassfishWebDeploymentDescriptor.SUN_WEB_DEPLOYMENT_DESCRIPTOR_NAME);
-		if (sunDescriptor.toFile().exists()) {
+    @Override
+    protected void prepareDescriptor() {
+
+    }
+
+    @Override
+    protected boolean isPossibleToCreate() {
+        // check for existence of older sun descriptor
+        IPath sunDescriptor = file.getLocation().removeLastSegments(1)
+                .append(IGlassfishWebDeploymentDescriptor.SUN_WEB_DEPLOYMENT_DESCRIPTOR_NAME);
+        if (sunDescriptor.toFile().exists()) {
             return false;
         }
-		return true;
-	}
+        return true;
+    }
 
-	@Override
-	protected void save() {
-		if (model != null) {
-			try {
-				model.resource().save();
-			} catch (ResourceStoreException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
+    @Override
+    protected void save() {
+        if (model != null) {
+            try {
+                model.resource().save();
+            } catch (ResourceStoreException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+    }
 
-	@Override
-	public void setContext(String context) {
-		model.setContextRoot(context);
-	}
+    @Override
+    public void setContext(String context) {
+        model.setContextRoot(context);
+    }
 
-	@Override
-	public String getContext() {
-		return model.getContextRoot().content();
-	}
-	
+    @Override
+    public String getContext() {
+        return model.getContextRoot().content();
+    }
+
 }

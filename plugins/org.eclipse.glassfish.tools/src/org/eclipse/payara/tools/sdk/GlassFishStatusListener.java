@@ -15,20 +15,21 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 /**
  * GlassFish server status listener.
  * <p/>
- * Receives notifications about every GlassFish server status check result
- * or about GlassFish server status changes.
+ * Receives notifications about every GlassFish server status check result or about GlassFish server
+ * status changes.
  * <p/>
+ * 
  * @author Tomas Kraus
  */
 public interface GlassFishStatusListener {
 
     /**
-     * Callback to notify about current server status after every check
-     * when enabled.
+     * Callback to notify about current server status after every check when enabled.
      * <p/>
+     * 
      * @param server GlassFish server instance being monitored.
      * @param status Current server status.
-     * @param task   Last GlassFish server status check task details.
+     * @param task Last GlassFish server status check task details.
      */
     public void currentState(final GlassFishServer server,
             final GlassFishStatus status, final GlassFishStatusTask task);
@@ -36,18 +37,20 @@ public interface GlassFishStatusListener {
     /**
      * Callback to notify about server status change when enabled.
      * <p/>
+     * 
      * @param server GlassFish server instance being monitored.
      * @param status Current server status.
-     * @param task   Last GlassFish server status check task details.
-     */    
+     * @param task Last GlassFish server status check task details.
+     */
     public void newState(final GlassFishServer server,
             final GlassFishStatus status, final GlassFishStatusTask task);
 
     /**
      * Callback to notify about server status check failures.
      * <p/>
+     * 
      * @param server GlassFish server instance being monitored.
-     * @param task   GlassFish server status check task details.
+     * @param task GlassFish server status check task details.
      */
     public void error(final GlassFishServer server,
             final GlassFishStatusTask task);
@@ -55,16 +58,15 @@ public interface GlassFishStatusListener {
     /**
      * Callback to notify about status listener being registered.
      * <p/>
-     * May be called multiple times for individual event sets during
-     * registration phase.
+     * May be called multiple times for individual event sets during registration phase.
      */
     public void added();
 
     /**
      * Callback to notify about status listener being unregistered.
      * <p/>
-     * Will be called once during listener removal phase when was found
-     * registered for at least one event set.
+     * Will be called once during listener removal phase when was found registered for at least one
+     * event set.
      */
     public void removed();
 

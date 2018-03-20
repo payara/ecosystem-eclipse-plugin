@@ -19,50 +19,46 @@ import org.eclipse.payara.tools.sdk.server.FetchLog;
 import org.eclipse.ui.console.MessageConsoleStream;
 
 public class LogReader implements Runnable {
-	
-	private FetchLog logFetcher;
-	private MessageConsoleStream output;
-	private CountDownLatch latch;
-	private ILogFilter filter;
 
-	LogReader(FetchLog logFetcher, MessageConsoleStream outputStream, CountDownLatch latch, ILogFilter filter) {
-		this.logFetcher = logFetcher;
-		this.output = outputStream;
-		this.latch = latch;
-		this.filter = filter;
-	}
+    private FetchLog logFetcher;
+    private MessageConsoleStream output;
+    private CountDownLatch latch;
+    private ILogFilter filter;
 
-	@Override
-	public void run()
-	{
-		try
-		{
-		    BufferedReader reader = new BufferedReader( new InputStreamReader( logFetcher.getInputStream(), StandardCharsets.UTF_8 ) );
-		    
-			for( String line = null; (line = reader.readLine()) != null; )
-			{
-				//System.out.println(line);
-				line = filter.process(line);
-				if (line != null) {
-					//output.println("line:");
-					output.println(line);
-				}
-			}
-			output.flush();
-		} catch (IOException e) {
-			//this happens when input stream is closed, no need to print
-			//e.printStackTrace();
-		} finally {
-			//System.out.println("end, closing streams...");
-			logFetcher.close();
-			latch.countDown();
-		}
-	}
+    LogReader(FetchLog logFetcher, MessageConsoleStream outputStream, CountDownLatch latch, ILogFilter filter) {
+        this.logFetcher = logFetcher;
+        this.output = outputStream;
+        this.latch = latch;
+        this.filter = filter;
+    }
 
-	public void stop() {
-		//System.out.println("stop called...");
-		logFetcher.close();
-	}
+    @Override
+    public void run() {
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(logFetcher.getInputStream(), StandardCharsets.UTF_8));
+
+            for (String line = null; (line = reader.readLine()) != null;) {
+                // System.out.println(line);
+                line = filter.process(line);
+                if (line != null) {
+                    // output.println("line:");
+                    output.println(line);
+                }
+            }
+            output.flush();
+        } catch (IOException e) {
+            // this happens when input stream is closed, no need to print
+            // e.printStackTrace();
+        } finally {
+            // System.out.println("end, closing streams...");
+            logFetcher.close();
+            latch.countDown();
+        }
+    }
+
+    public void stop() {
+        // System.out.println("stop called...");
+        logFetcher.close();
+    }
 
 }
-

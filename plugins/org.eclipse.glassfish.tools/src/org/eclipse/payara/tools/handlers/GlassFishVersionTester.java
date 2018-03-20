@@ -19,11 +19,11 @@ import org.eclipse.wst.server.core.IServer;
 
 public class GlassFishVersionTester extends PropertyTester {
 
-	@Override
-	public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
-		IServer server = (IServer) receiver;
-		
-		return new File(load(server, GlassFishServer.class).getServerInstallationDirectory() + "/modules").exists();
-	}
+    @Override
+    public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
+        IServer server = (IServer) receiver;
+
+        return new File(load(server, GlassFishServer.class).getServerInstallationDirectory() + "/modules").exists();
+    }
 
 }

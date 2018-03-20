@@ -45,282 +45,280 @@ import org.eclipse.wst.server.core.internal.RuntimeWorkingCopy;
 import org.eclipse.wst.server.core.model.RuntimeDelegate;
 
 /**
- * This class represents the specific type of runtime associated with the server that we implement; Payara / GlassFish.
- * 
+ * This class represents the specific type of runtime associated with the server that we implement;
+ * Payara / GlassFish.
+ *
  * <p>
- * A few methods from RuntimeDelegate are overridden here, while a whole slew of central runtime like functionality
- * is put here as well.
+ * A few methods from RuntimeDelegate are overridden here, while a whole slew of central runtime
+ * like functionality is put here as well.
  * </p>
- * 
+ *
  * <p>
- * This class is registered in <code>plug-in.xml</code> in the <code>org.eclipse.wst.server.core.runtimeTypes</code>
- * extension point.
+ * This class is registered in <code>plug-in.xml</code> in the
+ * <code>org.eclipse.wst.server.core.runtimeTypes</code> extension point.
  * </p>
  *
  */
 @SuppressWarnings("restriction")
 public final class GlassFishRuntime extends RuntimeDelegate implements IJavaRuntime {
 
-	public static final String TYPE_ID = "payara.runtime";
-	public static final IRuntimeType TYPE = ServerCore.findRuntimeType(TYPE_ID);
-	public static final String ATTR_SERVER_ROOT = "server.root"; //$NON-NLS-1$
-	public static final String ATTR_SERVER_JDK = "server.jdk";
+    public static final String TYPE_ID = "payara.runtime";
+    public static final IRuntimeType TYPE = ServerCore.findRuntimeType(TYPE_ID);
+    public static final String ATTR_SERVER_ROOT = "server.root"; //$NON-NLS-1$
+    public static final String ATTR_SERVER_JDK = "server.jdk";
 
-	public static final boolean IS_MACOSX = Platform.OS_MACOSX.equals(Platform.getOS());
-	public static final String DEFAULT_JRE_KEY = "###DefaultJREForGlassFishCode###";
+    public static final boolean IS_MACOSX = Platform.OS_MACOSX.equals(Platform.getOS());
+    public static final String DEFAULT_JRE_KEY = "###DefaultJREForGlassFishCode###";
 
-	private static final VersionConstraint VERSION_CONSTRAINT_3_1 = new VersionConstraint("[1.6-1.7]");
-	private static final VersionConstraint VERSION_CONSTRAINT_4 = new VersionConstraint("[1.7");
-	private static final VersionConstraint VERSION_CONSTRAINT_5 = new VersionConstraint("[1.8");
+    private static final VersionConstraint VERSION_CONSTRAINT_3_1 = new VersionConstraint("[1.6-1.7]");
+    private static final VersionConstraint VERSION_CONSTRAINT_4 = new VersionConstraint("[1.7");
+    private static final VersionConstraint VERSION_CONSTRAINT_5 = new VersionConstraint("[1.8");
 
-	private IGlassfishRuntimeModel model;
-	
-	
-	// #### RuntimeDelegate overridden methods
-	
-	@Override
-	public IStatus validate() {
-		IStatus status = super.validate();
+    private IGlassfishRuntimeModel model;
 
-		if (status.isOK()) {
-			status = StatusBridge.create(getModel().validation());
-		}
+    // #### RuntimeDelegate overridden methods
 
-		return status;
-	}
+    @Override
+    public IStatus validate() {
+        IStatus status = super.validate();
 
-	@Override
-	public void dispose() {
-		super.dispose();
+        if (status.isOK()) {
+            status = StatusBridge.create(getModel().validation());
+        }
 
-		synchronized (this) {
-			if (this.model != null) {
-				this.model.dispose();
-				this.model = null;
-			}
-		}
-	}
-	
-	
-	// #### RuntimeDelegate overridden methods
-	
-	@Override
-	public IVMInstall getVMInstall() {
-		return findOrCreateJvm(getModel().getJavaRuntimeEnvironment().text());
-	}
+        return status;
+    }
 
-	@Override
-	public boolean isUsingDefaultJRE() {
-		return false;
-	}
-	
+    @Override
+    public void dispose() {
+        super.dispose();
 
-	public static String createDefaultRuntimeName(final Version version) {
-		String baseName = "GlassFish";
+        synchronized (this) {
+            if (this.model != null) {
+                this.model.dispose();
+                this.model = null;
+            }
+        }
+    }
 
-		if (version != null) {
-			if (version.matches("[5-6)")) {
-				baseName += " 5";
-			} else if (version.matches("[4-5)")) {
-				baseName += " 4";
-			} else if (version.matches("[3.1-4)")) {
-				baseName += " 3.1";
-			}
-		}
+    // #### RuntimeDelegate overridden methods
 
-		int counter = 1;
+    @Override
+    public IVMInstall getVMInstall() {
+        return findOrCreateJvm(getModel().getJavaRuntimeEnvironment().text());
+    }
 
-		while (true) {
-			final String name = createDefaultRuntimeName(baseName, counter);
+    @Override
+    public boolean isUsingDefaultJRE() {
+        return false;
+    }
 
-			if (ServerCore.findRuntime(name) == null) {
-				return name;
-			}
+    public static String createDefaultRuntimeName(final Version version) {
+        String baseName = "GlassFish";
 
-			counter++;
-		}
-	}
+        if (version != null) {
+            if (version.matches("[5-6)")) {
+                baseName += " 5";
+            } else if (version.matches("[4-5)")) {
+                baseName += " 4";
+            } else if (version.matches("[3.1-4)")) {
+                baseName += " 3.1";
+            }
+        }
 
-	private static String createDefaultRuntimeName(final String baseName, final int counter) {
-		final StringBuilder buf = new StringBuilder();
+        int counter = 1;
 
-		buf.append(baseName);
+        while (true) {
+            final String name = createDefaultRuntimeName(baseName, counter);
 
-		if (counter != 1) {
-			buf.append(" (");
-			buf.append(counter);
-			buf.append(')');
-		}
+            if (ServerCore.findRuntime(name) == null) {
+                return name;
+            }
 
-		return buf.toString();
-	}
+            counter++;
+        }
+    }
 
-	public Version getVersion() {
-		final IPath location = getRuntime().getLocation();
+    private static String createDefaultRuntimeName(final String baseName, final int counter) {
+        final StringBuilder buf = new StringBuilder();
 
-		if (location != null) {
-			final GlassFishLocationUtils gfInstall = GlassFishLocationUtils.find(location.toFile());
+        buf.append(baseName);
 
-			if (gfInstall != null) {
-				return gfInstall.version();
-			}
-		}
+        if (counter != 1) {
+            buf.append(" (");
+            buf.append(counter);
+            buf.append(')');
+        }
 
-		return null;
-	}
+        return buf.toString();
+    }
 
-	public IStatus validateVersion() {
-		final Version version = getVersion();
+    public Version getVersion() {
+        final IPath location = getRuntime().getLocation();
 
-		if (version == null) {
-			// should not happen if called after validateServerLocation
-			return new Status(IStatus.ERROR, GlassfishToolsPlugin.SYMBOLIC_NAME, Messages.runtimeNotValid);
-		}
-		if (!version.matches("[3.1-6)")) {
-			return new Status(IStatus.ERROR, GlassfishToolsPlugin.SYMBOLIC_NAME, Messages.unsupportedVersion);
-		}
-		return Status.OK_STATUS;
-	}
+        if (location != null) {
+            final GlassFishLocationUtils gfInstall = GlassFishLocationUtils.find(location.toFile());
 
-	public VersionConstraint getJavaVersionConstraint() {
-		final Version version = getVersion();
+            if (gfInstall != null) {
+                return gfInstall.version();
+            }
+        }
 
-		if (version != null) {
-			if (version.matches("[5")) {
-				return VERSION_CONSTRAINT_5;
-			} else if (version.matches("[4")) {
-				return VERSION_CONSTRAINT_4;
-			} else {
-				return VERSION_CONSTRAINT_3_1;
-			}
-		}
+        return null;
+    }
 
-		return null;
-	}
+    public IStatus validateVersion() {
+        final Version version = getVersion();
 
-	public synchronized IGlassfishRuntimeModel getModel() {
-		if (this.model == null) {
-			this.model = IGlassfishRuntimeModel.TYPE.instantiate(new ConfigResource(getRuntime()));
-			this.model.initialize();
-		}
+        if (version == null) {
+            // should not happen if called after validateServerLocation
+            return new Status(IStatus.ERROR, GlassfishToolsPlugin.SYMBOLIC_NAME, Messages.runtimeNotValid);
+        }
+        if (!version.matches("[3.1-6)")) {
+            return new Status(IStatus.ERROR, GlassfishToolsPlugin.SYMBOLIC_NAME, Messages.unsupportedVersion);
+        }
+        return Status.OK_STATUS;
+    }
 
-		return this.model;
-	}
+    public VersionConstraint getJavaVersionConstraint() {
+        final Version version = getVersion();
 
-	public IStatus validateServerLocation() {
-		IPath location = getRuntime().getLocation();
-		
-		// This is maybe a redundant check to GUI annotation but
-		// needed in case where GUI is not involved
-		if (location == null || !location.toFile().exists()) {
-			return new Status(ERROR, SYMBOLIC_NAME, bind(pathDoesNotExist, "Specified path"));
-		}
-		
-		if (find(location.toFile()) == null) {
-			return new Status(ERROR, SYMBOLIC_NAME, notValidGlassfishInstall);
-		}
-		
-		return OK_STATUS;
-	}
+        if (version != null) {
+            if (version.matches("[5")) {
+                return VERSION_CONSTRAINT_5;
+            } else if (version.matches("[4")) {
+                return VERSION_CONSTRAINT_4;
+            } else {
+                return VERSION_CONSTRAINT_3_1;
+            }
+        }
 
-	private static final class ConfigResource extends Resource {
-		private final IRuntime runtime;
+        return null;
+    }
 
-		public ConfigResource(final IRuntime runtime) {
-			super(null);
+    public synchronized IGlassfishRuntimeModel getModel() {
+        if (this.model == null) {
+            this.model = IGlassfishRuntimeModel.TYPE.instantiate(new ConfigResource(getRuntime()));
+            this.model.initialize();
+        }
 
-			if (runtime == null) {
-				throw new IllegalArgumentException();
-			}
+        return this.model;
+    }
 
-			this.runtime = runtime;
-		}
+    public IStatus validateServerLocation() {
+        IPath location = getRuntime().getLocation();
 
-		@Override
-		protected PropertyBinding createBinding(Property property) {
-			final PropertyDef p = property.definition();
+        // This is maybe a redundant check to GUI annotation but
+        // needed in case where GUI is not involved
+        if (location == null || !location.toFile().exists()) {
+            return new Status(ERROR, SYMBOLIC_NAME, bind(pathDoesNotExist, "Specified path"));
+        }
 
-			if (p == IGlassfishRuntimeModel.PROP_NAME) {
-				return new ValuePropertyBinding() {
-					@Override
+        if (find(location.toFile()) == null) {
+            return new Status(ERROR, SYMBOLIC_NAME, notValidGlassfishInstall);
+        }
 
-					public String read() {
-						return ConfigResource.this.runtime.getName();
-					}
+        return OK_STATUS;
+    }
 
-					@Override
+    private static final class ConfigResource extends Resource {
+        private final IRuntime runtime;
 
-					public void write(final String value) {
-						if (ConfigResource.this.runtime instanceof RuntimeWorkingCopy) {
-							final RuntimeWorkingCopy wc = (RuntimeWorkingCopy) ConfigResource.this.runtime;
-							wc.setName(value);
-						} else {
-							throw new UnsupportedOperationException();
-						}
-					}
-				};
-			} else if (p == PROP_JAVA_RUNTIME_ENVIRONMENT) {
-				return new AttributeValueBinding(this.runtime, ATTR_SERVER_JDK);
-			} else if (p == IGlassfishRuntimeModel.PROP_SERVER_ROOT) {
-				return new ValuePropertyBinding() {
-					@Override
+        public ConfigResource(final IRuntime runtime) {
+            super(null);
 
-					public String read() {
-						final IPath path = ConfigResource.this.runtime.getLocation();
-						return path == null ? null : path.toOSString();
-					}
+            if (runtime == null) {
+                throw new IllegalArgumentException();
+            }
 
-					@Override
+            this.runtime = runtime;
+        }
 
-					public void write(final String value) {
-						if (ConfigResource.this.runtime instanceof RuntimeWorkingCopy) {
-							final RuntimeWorkingCopy wc = (RuntimeWorkingCopy) ConfigResource.this.runtime;
-							final IPath path = value == null ? Path.EMPTY : new Path(value);
-							wc.setLocation(path);
-						} else {
-							throw new UnsupportedOperationException();
-						}
-					}
-				};
-			}
+        @Override
+        protected PropertyBinding createBinding(Property property) {
+            final PropertyDef p = property.definition();
 
-			throw new IllegalStateException();
-		}
+            if (p == IGlassfishRuntimeModel.PROP_NAME) {
+                return new ValuePropertyBinding() {
+                    @Override
 
-		@Override
-		public <A> A adapt(final Class<A> adapterType) {
-			if (adapterType == IRuntime.class) {
-				return adapterType.cast(this.runtime);
-			}
+                    public String read() {
+                        return ConfigResource.this.runtime.getName();
+                    }
 
-			return super.adapt(adapterType);
-		}
-	}
+                    @Override
 
-	private static final class AttributeValueBinding extends ValuePropertyBinding {
-		private final IRuntime runtime;
-		private final String attribute;
+                    public void write(final String value) {
+                        if (ConfigResource.this.runtime instanceof RuntimeWorkingCopy) {
+                            final RuntimeWorkingCopy wc = (RuntimeWorkingCopy) ConfigResource.this.runtime;
+                            wc.setName(value);
+                        } else {
+                            throw new UnsupportedOperationException();
+                        }
+                    }
+                };
+            } else if (p == PROP_JAVA_RUNTIME_ENVIRONMENT) {
+                return new AttributeValueBinding(this.runtime, ATTR_SERVER_JDK);
+            } else if (p == IGlassfishRuntimeModel.PROP_SERVER_ROOT) {
+                return new ValuePropertyBinding() {
+                    @Override
 
-		public AttributeValueBinding(final IRuntime runtime, final String attribute) {
-			this.runtime = runtime;
-			this.attribute = attribute;
-		}
+                    public String read() {
+                        final IPath path = ConfigResource.this.runtime.getLocation();
+                        return path == null ? null : path.toOSString();
+                    }
 
-		@Override
-		public String read() {
-			return ((org.eclipse.wst.server.core.internal.Runtime) this.runtime).getAttribute(this.attribute,
-					(String) null);
-		}
+                    @Override
 
-		@Override
-		public void write(final String value) {
-			if (this.runtime instanceof RuntimeWorkingCopy) {
-				final RuntimeWorkingCopy wc = (RuntimeWorkingCopy) this.runtime;
-				wc.setAttribute(this.attribute, value);
-			} else {
-				throw new UnsupportedOperationException();
-			}
-		}
-	}
+                    public void write(final String value) {
+                        if (ConfigResource.this.runtime instanceof RuntimeWorkingCopy) {
+                            final RuntimeWorkingCopy wc = (RuntimeWorkingCopy) ConfigResource.this.runtime;
+                            final IPath path = value == null ? Path.EMPTY : new Path(value);
+                            wc.setLocation(path);
+                        } else {
+                            throw new UnsupportedOperationException();
+                        }
+                    }
+                };
+            }
+
+            throw new IllegalStateException();
+        }
+
+        @Override
+        public <A> A adapt(final Class<A> adapterType) {
+            if (adapterType == IRuntime.class) {
+                return adapterType.cast(this.runtime);
+            }
+
+            return super.adapt(adapterType);
+        }
+    }
+
+    private static final class AttributeValueBinding extends ValuePropertyBinding {
+        private final IRuntime runtime;
+        private final String attribute;
+
+        public AttributeValueBinding(final IRuntime runtime, final String attribute) {
+            this.runtime = runtime;
+            this.attribute = attribute;
+        }
+
+        @Override
+        public String read() {
+            return ((org.eclipse.wst.server.core.internal.Runtime) this.runtime).getAttribute(this.attribute,
+                    (String) null);
+        }
+
+        @Override
+        public void write(final String value) {
+            if (this.runtime instanceof RuntimeWorkingCopy) {
+                final RuntimeWorkingCopy wc = (RuntimeWorkingCopy) this.runtime;
+                wc.setAttribute(this.attribute, value);
+            } else {
+                throw new UnsupportedOperationException();
+            }
+        }
+    }
 
 }

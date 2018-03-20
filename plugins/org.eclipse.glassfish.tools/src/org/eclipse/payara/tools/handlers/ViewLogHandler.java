@@ -23,31 +23,31 @@ import org.eclipse.wst.server.core.IServer;
 
 public class ViewLogHandler extends AbstractGlassfishSelectionHandler {
 
-	@Override
-	public void processSelection(IServer server) {
-		try {
-			GlassFishServer serverAdapter = load(server, GlassFishServer.class);
-						
-			if (serverAdapter.isRemote()) {
-				if (!serverAdapter.getServerBehaviourAdapter().getServerStatus(true)	.equals(ServerStatus.RUNNING_DOMAIN_MATCHING)) {
-					showMessageDialog();
-					return;
-				} 
-				
-				removeServerLogFileConsole(serverAdapter);
-			}
-			
-			IGlassFishConsole console = getServerLogFileConsole(serverAdapter);
-			showConsole(getServerLogFileConsole(serverAdapter));
-			
-			if (!console.isLogging()) {
-				console.startLogging(FetchLogPiped.create(serverAdapter, false));
-			}
+    @Override
+    public void processSelection(IServer server) {
+        try {
+            GlassFishServer serverAdapter = load(server, GlassFishServer.class);
 
-		} catch (Exception e) {
-			logMessage("Error opening log: " + e.getMessage());
+            if (serverAdapter.isRemote()) {
+                if (!serverAdapter.getServerBehaviourAdapter().getServerStatus(true).equals(ServerStatus.RUNNING_DOMAIN_MATCHING)) {
+                    showMessageDialog();
+                    return;
+                }
 
-		}
-	}
+                removeServerLogFileConsole(serverAdapter);
+            }
+
+            IGlassFishConsole console = getServerLogFileConsole(serverAdapter);
+            showConsole(getServerLogFileConsole(serverAdapter));
+
+            if (!console.isLogging()) {
+                console.startLogging(FetchLogPiped.create(serverAdapter, false));
+            }
+
+        } catch (Exception e) {
+            logMessage("Error opening log: " + e.getMessage());
+
+        }
+    }
 
 }

@@ -12,96 +12,96 @@ package org.eclipse.payara.tools.log;
 import org.eclipse.payara.tools.log.AbstractLogFilter.GlassfishLogFields;
 
 class LogRecord {
-	
-	private String time;
+
+    private String time;
     private String level;
     private String version;
-	private String classinfo;
+    private String classinfo;
     private String threadinfo;
     private String message;
-    
+
     LogRecord() {
-    	 time = level = version = classinfo = threadinfo = message = "";
-	}
-    
-    public void reset() {
-    	time = level = version = classinfo = threadinfo = message = "";
+        time = level = version = classinfo = threadinfo = message = "";
     }
 
-	public String getTime() {
-		return time;
-	}
+    public void reset() {
+        time = level = version = classinfo = threadinfo = message = "";
+    }
 
-	public void setTime(String time) {
-		this.time = time;
-	}
+    public String getTime() {
+        return time;
+    }
 
-	public String getLevel() {
-		return level;
-	}
+    public void setTime(String time) {
+        this.time = time;
+    }
 
-	public void setLevel(String level) {
-		this.level = level;
-	}
+    public String getLevel() {
+        return level;
+    }
 
-	public String getClassInfo() {
-		return classinfo;
-	}
+    public void setLevel(String level) {
+        this.level = level;
+    }
 
-	public void setClassInfo(String classinfo) {
-		this.classinfo = classinfo;
-	}
+    public String getClassInfo() {
+        return classinfo;
+    }
 
-	public String getThreadInfo() {
-		return threadinfo;
-	}
+    public void setClassInfo(String classinfo) {
+        this.classinfo = classinfo;
+    }
 
-	public void setThreadInfo(String threadinfo) {
-		this.threadinfo = threadinfo;
-	}
+    public String getThreadInfo() {
+        return threadinfo;
+    }
 
-	public String getMessage() {
-		return message;
-	}
+    public void setThreadInfo(String threadinfo) {
+        this.threadinfo = threadinfo;
+    }
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
-	
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
     public String getVersion() {
-		return version;
-	}
+        return version;
+    }
 
-	public void setVersion(String version) {
-		this.version = version;
-	}
+    public void setVersion(String version) {
+        this.version = version;
+    }
 
-	public String getRecordFieldValue(GlassfishLogFields field) {
-		switch (field) {
-		case CLASSINFO:
-			return getClassInfo();
-		case VERSION:
-			return getVersion();
-		case THREADINFO:
-			return getThreadInfo();
-		case DATETIME:
-			return getTime();
-		case MESSAGE:
-			return getMessage();
-		case LEVEL:
-			return getLevel();
-			
-			default:
-				throw new IllegalArgumentException();
-		}
-	}
-	
-	public String[] getRecordFieldValues(GlassfishLogFields... fields) {
-		String[] res = new String[fields.length];
-		int i = 0;
-		for (GlassfishLogFields f : fields) {
-			res[i++] = getRecordFieldValue(f);
-		}
-		return res;
-	}
+    public String getRecordFieldValue(GlassfishLogFields field) {
+        switch (field) {
+        case CLASSINFO:
+            return getClassInfo();
+        case VERSION:
+            return getVersion();
+        case THREADINFO:
+            return getThreadInfo();
+        case DATETIME:
+            return getTime();
+        case MESSAGE:
+            return getMessage();
+        case LEVEL:
+            return getLevel();
+
+        default:
+            throw new IllegalArgumentException();
+        }
+    }
+
+    public String[] getRecordFieldValues(GlassfishLogFields... fields) {
+        String[] res = new String[fields.length];
+        int i = 0;
+        for (GlassfishLogFields f : fields) {
+            res[i++] = getRecordFieldValue(f);
+        }
+        return res;
+    }
 }

@@ -18,23 +18,23 @@ import org.eclipse.wst.server.core.IServer;
 
 public class GlassFishStateTester extends PropertyTester {
 
-	@Override
-	public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
-		IServer server = (IServer) receiver;
-		
-		if (property.equals("isRunning")) {
-			return (server.getServerState() == STATE_STARTED);
-		}
-		
-		if (property.equals("isRemote")) {
-			GlassFishServer gf = load(server, GlassFishServer.class);
-			
-			if (gf != null) {
-				return gf.isRemote();
-			}
-		}
+    @Override
+    public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
+        IServer server = (IServer) receiver;
 
-		return false;
-	}
+        if (property.equals("isRunning")) {
+            return (server.getServerState() == STATE_STARTED);
+        }
+
+        if (property.equals("isRemote")) {
+            GlassFishServer gf = load(server, GlassFishServer.class);
+
+            if (gf != null) {
+                return gf.isRemote();
+            }
+        }
+
+        return false;
+    }
 
 }

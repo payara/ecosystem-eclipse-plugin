@@ -18,15 +18,16 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 /**
  * Command runner for command that deletes the resource.
  * <p>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RunnerRestDeleteResource extends RunnerRest {
-    
+
     /**
-     * Constructs an instance of administration command executor using
-     * REST interface.
+     * Constructs an instance of administration command executor using REST interface.
      * <p/>
-     * @param server  GlassFish server entity object.
+     * 
+     * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
     public RunnerRestDeleteResource(final GlassFishServer server,
@@ -34,13 +35,12 @@ public class RunnerRestDeleteResource extends RunnerRest {
         super(server, command);
     }
 
-    
     @Override
     protected void handleSend(HttpURLConnection hconn) throws IOException {
-         CommandDeleteResource cmd = (CommandDeleteResource) command;
-         OutputStreamWriter wr = new OutputStreamWriter(hconn.getOutputStream());
-         wr.write(cmd.cmdPropertyName + "=" + cmd.name);
-         wr.flush();
-         wr.close();
+        CommandDeleteResource cmd = (CommandDeleteResource) command;
+        OutputStreamWriter wr = new OutputStreamWriter(hconn.getOutputStream());
+        wr.write(cmd.cmdPropertyName + "=" + cmd.name);
+        wr.flush();
+        wr.close();
     }
 }

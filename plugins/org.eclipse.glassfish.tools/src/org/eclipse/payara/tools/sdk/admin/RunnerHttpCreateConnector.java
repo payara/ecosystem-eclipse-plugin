@@ -12,36 +12,38 @@ package org.eclipse.payara.tools.sdk.admin;
 import org.eclipse.payara.tools.server.GlassFishServer;
 
 /**
- * GlassFish server create connector resource administration command execution
- * using HTTP interface.
+ * GlassFish server create connector resource administration command execution using HTTP interface.
  * <p/>
- * Contains code for create connector resource command.
- * Class implements GlassFish server administration functionality trough HTTP
- * interface.
+ * Contains code for create connector resource command. Class implements GlassFish server
+ * administration functionality trough HTTP interface.
  * <p/>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RunnerHttpCreateConnector extends RunnerHttp {
-    
 
-    /** Create connector resource command <code>jndi_name</code>
-     *  parameter name. */
+    /**
+     * Create connector resource command <code>jndi_name</code> parameter name.
+     */
     private static final String JNDI_NAME_PARAM = "jndi_name";
 
-    /** Create connector resource command <code>poolname</code>
-     *  parameter name. */
+    /**
+     * Create connector resource command <code>poolname</code> parameter name.
+     */
     private static final String POOL_NAME_PARAM = "poolname";
 
-    /** Create connector resource command <code>property</code>
-     *  parameter name. */
+    /**
+     * Create connector resource command <code>property</code> parameter name.
+     */
     private static final String PROPERTY_PARAM = "property";
 
-    /** Create connector resource command <code>enabled</code>
-     *  parameter name. */
+    /**
+     * Create connector resource command <code>enabled</code> parameter name.
+     */
     private static final String ENABLED_PARAM = "enabled";
 
     ////////////////////////////////////////////////////////////////////////////
-    // Static methods                                                         //
+    // Static methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
@@ -50,12 +52,12 @@ public class RunnerHttpCreateConnector extends RunnerHttp {
      * <code>QUERY :: "jndi_name" '=' &lt;jndiName&gt;<br/>
      * &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ['&' "poolname" '=' &lt;poolName&gt; ]<br/>
      * &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ['&' "properties" '=' &lt;pname&gt; '=' &lt;pvalue&gt;
-     * { ':' &lt;pname&gt; '=' &lt;pvalue&gt;} ]</code>
-     * &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ['&' "enabled" '=' true|false ]<br/>
+     * { ':' &lt;pname&gt; '=' &lt;pvalue&gt;} ]</code> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     * ['&' "enabled" '=' true|false ]<br/>
      * <p/>
+     * 
      * @param command GlassFish server administration command entity.
-     *                <code>CommandCreateConnector</code> instance
-     *                is expected.
+     * <code>CommandCreateConnector</code> instance is expected.
      * @return Create connector resource query string for given command.
      */
     private static String query(final Command command) {
@@ -63,9 +65,9 @@ public class RunnerHttpCreateConnector extends RunnerHttp {
         String poolName;
         boolean enabled;
         if (command instanceof CommandCreateConnector) {
-            jndiName = ((CommandCreateConnector)command).jndiName;
-            poolName = ((CommandCreateConnector)command).poolName;
-            enabled = ((CommandCreateConnector)command).enabled;
+            jndiName = ((CommandCreateConnector) command).jndiName;
+            poolName = ((CommandCreateConnector) command).poolName;
+            enabled = ((CommandCreateConnector) command).enabled;
         } else {
             throw new CommandException(
                     CommandException.ILLEGAL_COMAND_INSTANCE);
@@ -74,37 +76,37 @@ public class RunnerHttpCreateConnector extends RunnerHttp {
         // Calculate StringBuilder initial length to avoid resizing
         StringBuilder sb = new StringBuilder(
                 JNDI_NAME_PARAM.length() + 1 + jndiName.length()
-                + ENABLED_PARAM.length() + 1 + toString(enabled).length()
-                + ( isPoolName
-                        ? POOL_NAME_PARAM.length() + 1 + poolName.length()
-                        : 0)
-                + queryPropertiesLength(
-                        ((CommandCreateConnector)command).properties,
-                        PROPERTY_PARAM));
+                        + ENABLED_PARAM.length() + 1 + toString(enabled).length()
+                        + (isPoolName
+                                ? POOL_NAME_PARAM.length() + 1 + poolName.length()
+                                : 0)
+                        + queryPropertiesLength(
+                                ((CommandCreateConnector) command).properties,
+                                PROPERTY_PARAM));
         // Build query string
         sb.append(JNDI_NAME_PARAM).append(PARAM_ASSIGN_VALUE);
         sb.append(jndiName);
         sb.append(PARAM_SEPARATOR).append(ENABLED_PARAM);
         sb.append(PARAM_ASSIGN_VALUE).append(toString(enabled));
         if (isPoolName) {
-             sb.append(PARAM_SEPARATOR).append(POOL_NAME_PARAM);
-             sb.append(PARAM_ASSIGN_VALUE).append(poolName);
+            sb.append(PARAM_SEPARATOR).append(POOL_NAME_PARAM);
+            sb.append(PARAM_ASSIGN_VALUE).append(poolName);
         }
         queryPropertiesAppend(sb,
-                ((CommandCreateConnector)command).properties,
+                ((CommandCreateConnector) command).properties,
                 PROPERTY_PARAM, true);
         return sb.toString();
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Constructs an instance of administration command executor using
-     * HTTP interface.
+     * Constructs an instance of administration command executor using HTTP interface.
      * <p/>
-     * @param server  GlassFish server entity object.
+     * 
+     * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
     public RunnerHttpCreateConnector(final GlassFishServer server,

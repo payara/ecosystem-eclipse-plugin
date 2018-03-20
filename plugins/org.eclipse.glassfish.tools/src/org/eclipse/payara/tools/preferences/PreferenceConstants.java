@@ -11,13 +11,13 @@ package org.eclipse.payara.tools.preferences;
 
 /**
  * Constant definitions for plug-in preferences
- * 
+ *
  * @author Ludovic Champenois
  */
 public class PreferenceConstants {
 
-	public static final String ENABLE_LOG = "EnableLogPreference";
-	public static final String ENABLE_START_VERBOSE = "EnableStartVerboseModePreference";
-	public static final String ENABLE_COLORS_CONSOLE = "EnableColorsInConsolePreference";
+    public static final String ENABLE_LOG = "EnableLogPreference";
+    public static final String ENABLE_START_VERBOSE = "EnableStartVerboseModePreference";
+    public static final String ENABLE_COLORS_CONSOLE = "EnableColorsInConsolePreference";
 
 }

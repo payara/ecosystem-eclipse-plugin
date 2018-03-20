@@ -17,16 +17,17 @@ import java.util.Map;
  * <p/>
  * Local GlassFish Server entity instance which is used when not defined in IDE.
  * <p/>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class StartupArgsEntity implements StartupArgs {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Command line arguments passed to bootstrap jar. */
-    private List<String>glassfishArgs;
+    private List<String> glassfishArgs;
 
     /** Command line arguments passed to JVM. */
     private List<String> javaArgs;
@@ -38,7 +39,7 @@ public class StartupArgsEntity implements StartupArgs {
     private String javaHome;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
@@ -50,13 +51,13 @@ public class StartupArgsEntity implements StartupArgs {
     /**
      * Constructs class instance with all values supplied.
      * <p/>
-     * @param glassfishArgs   Command line arguments passed to bootstrap jar.
-     * @param javaArgs        Command line arguments passed to JVM.
+     * 
+     * @param glassfishArgs Command line arguments passed to bootstrap jar.
+     * @param javaArgs Command line arguments passed to JVM.
      * @param environmentVars Environment variables set before JVM execution.
-     * @param javaHome        Installation home of Java SDK used to
-     *                        run GlassFish.
+     * @param javaHome Installation home of Java SDK used to run GlassFish.
      */
-    public StartupArgsEntity(List<String>glassfishArgs, List<String> javaArgs,
+    public StartupArgsEntity(List<String> glassfishArgs, List<String> javaArgs,
             Map<String, String> environmentVars, String javaHome) {
         this.glassfishArgs = glassfishArgs;
         this.javaArgs = javaArgs;
@@ -65,12 +66,13 @@ public class StartupArgsEntity implements StartupArgs {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Getters and Setters                                                    //
+    // Getters and Setters //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Get command line arguments passed to bootstrap jar.
      * <p/>
+     * 
      * @return Command line arguments passed to bootstrap jar.
      */
     @Override
@@ -81,6 +83,7 @@ public class StartupArgsEntity implements StartupArgs {
     /**
      * Set command line arguments passed to bootstrap jar.
      * <p/>
+     * 
      * @param glassfishArgs Command line arguments passed to bootstrap jar.
      */
     public void setGlassfishArgs(List<String> glassfishArgs) {
@@ -90,6 +93,7 @@ public class StartupArgsEntity implements StartupArgs {
     /**
      * Get command line arguments passed to JVM.
      * <p/>
+     * 
      * @return Command line arguments passed to JVM.
      */
     @Override
@@ -100,6 +104,7 @@ public class StartupArgsEntity implements StartupArgs {
     /**
      * Set command line arguments passed to JVM.
      * <p/>
+     * 
      * @param javaArgs Command line arguments passed to JVM.
      */
     public void getJavaArgs(List<String> javaArgs) {
@@ -109,6 +114,7 @@ public class StartupArgsEntity implements StartupArgs {
     /**
      * Get environment variables set before JVM execution.
      * <p/>
+     * 
      * @return Environment variables set before JVM execution.
      */
     @Override
@@ -119,6 +125,7 @@ public class StartupArgsEntity implements StartupArgs {
     /**
      * Set environment variables set before JVM execution.
      * <p/>
+     * 
      * @param environmentVars Environment variables set before JVM execution.
      */
     public void setEnvironmentVars(Map<String, String> environmentVars) {
@@ -128,16 +135,18 @@ public class StartupArgsEntity implements StartupArgs {
     /**
      * Get installation home of Java SDK used to run GlassFish.
      * <p/>
+     * 
      * @return Installation home of Java SDK used to run GlassFish.
      */
     @Override
     public String getJavaHome() {
         return javaHome;
     }
-    
+
     /**
      * Set installation home of Java SDK used to run GlassFish.
      * <p/>
+     * 
      * @param javaHome Installation home of Java SDK used to run GlassFish.
      */
     public void getJavaHome(String javaHome) {

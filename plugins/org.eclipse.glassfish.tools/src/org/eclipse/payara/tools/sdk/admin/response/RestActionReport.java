@@ -15,17 +15,18 @@ import java.util.List;
 /**
  * Object representation of the response returned by REST administration service.
  * <p>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RestActionReport implements ActionReport {
 
-    /** Top part of the message, can be the only one.*/
+    /** Top part of the message, can be the only one. */
     MessagePart topMessagePart = new MessagePart();
-    /** Nested reports.*/
+    /** Nested reports. */
     List<? extends ActionReport> subActions = new ArrayList<>();
-    /** Exit code returned by server.*/
+    /** Exit code returned by server. */
     ExitCode exitCode = ActionReport.ExitCode.NA;
-    /** Description of command which is the report related to.*/
+    /** Description of command which is the report related to. */
     String actionDescription;
 
     public List<? extends ActionReport> getSubActionsReport() {
@@ -66,5 +67,5 @@ public class RestActionReport implements ActionReport {
     public MessagePart getTopMessagePart() {
         return topMessagePart;
     }
-    
+
 }

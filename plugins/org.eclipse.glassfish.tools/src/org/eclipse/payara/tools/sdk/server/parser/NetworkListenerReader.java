@@ -21,58 +21,57 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 /**
- * Reads configuration of network listeners.
- * For each listener returns one {@link HttpData} object that contains
- * port number, protocol and information whether this protocol is secured.
+ * Reads configuration of network listeners. For each listener returns one {@link HttpData} object
+ * that contains port number, protocol and information whether this protocol is secured.
  * <p/>
+ * 
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class NetworkListenerReader extends TargetConfigReader implements
         XMLReader {
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Logger instance for this class. */
-    private static final Logger LOGGER
-            = new Logger(NetworkListenerReader.class);
+    private static final Logger LOGGER = new Logger(NetworkListenerReader.class);
 
-    public static final String DEFAULT_PATH =
-            "/domain/configs/config/network-config/network-listeners/network-listener";
-    
+    public static final String DEFAULT_PATH = "/domain/configs/config/network-config/network-listeners/network-listener";
+
     private String path;
-    
+
     private Map<String, HttpData> result;
-    
+
     public NetworkListenerReader(String targetConfigName) {
         this(DEFAULT_PATH, targetConfigName);
     }
-    
+
     public NetworkListenerReader(String path, String targetConfigName) {
         super(targetConfigName);
         this.path = path;
         this.result = new HashMap<>();
     }
-    
+
     @Override
-    public void readAttributes(String qname, Attributes attributes) throws
-            SAXException {
+    public void readAttributes(String qname, Attributes attributes) throws SAXException {
         final String METHOD = "readAttributes";
         /*
-         <network-listeners>
-         <thread-pool max-thread-pool-size="20" min-thread-pool-size="2" thread-pool-id="http-thread-pool" max-queue-size="4096"></thread-pool>
-         <network-listener port="8080" protocol="http-listener-1" transport="tcp" name="http-listener-1" thread-pool="http-thread-pool"></network-listener>
-         <network-listener port="8181" enabled="false" protocol="http-listener-2" transport="tcp" name="http-listener-2" thread-pool="http-thread-pool"></network-listener>
-         <network-listener port="4848" protocol="admin-listener" transport="tcp" name="admin-listener" thread-pool="http-thread-pool"></network-listener>
-         </network-listeners>
+         * <network-listeners> <thread-pool max-thread-pool-size="20" min-thread-pool-size="2"
+         * thread-pool-id="http-thread-pool" max-queue-size="4096"></thread-pool> <network-listener
+         * port="8080" protocol="http-listener-1" transport="tcp" name="http-listener-1"
+         * thread-pool="http-thread-pool"></network-listener> <network-listener port="8181" enabled="false"
+         * protocol="http-listener-2" transport="tcp" name="http-listener-2"
+         * thread-pool="http-thread-pool"></network-listener> <network-listener port="4848"
+         * protocol="admin-listener" transport="tcp" name="admin-listener"
+         * thread-pool="http-thread-pool"></network-listener> </network-listeners>
          */
         if (readData) {
             try {
                 String id = attributes.getValue("name");
                 if (id != null && id.length() > 0) {
-                    
-                    if (attributes.getValue("port").startsWith("$")) {  //GlassFish v3.1 : ignore these template entries
+
+                    if (attributes.getValue("port").startsWith("$")) { // GlassFish v3.1 : ignore these template entries
                         return;
                     }
                     int port = Integer.parseInt(attributes.getValue("port"));
@@ -81,8 +80,8 @@ public class NetworkListenerReader extends TargetConfigReader implements
                     boolean enabled = !"false".equals(attributes.getValue(
                             "enabled"));
                     LOGGER.log(Level.INFO, METHOD, "port", new Object[] {
-                        Integer.toString(port), Boolean.toString(enabled),
-                        Boolean.toString(secure)});
+                            Integer.toString(port), Boolean.toString(enabled),
+                            Boolean.toString(secure) });
                     if (enabled) {
                         HttpData data = new HttpData(id, port, secure);
                         LOGGER.log(Level.INFO, METHOD, "add", data);
@@ -96,7 +95,7 @@ public class NetworkListenerReader extends TargetConfigReader implements
             }
         }
     }
-    
+
     @Override
     public List<TreeParser.Path> getPathsToListen() {
         LinkedList<TreeParser.Path> paths = new LinkedList<>();
@@ -104,7 +103,7 @@ public class NetworkListenerReader extends TargetConfigReader implements
         paths.add(new Path(CONFIG_PATH, new TargetConfigMarker()));
         return paths;
     }
-    
+
     public Map<String, HttpData> getResult() {
         return result;
     }

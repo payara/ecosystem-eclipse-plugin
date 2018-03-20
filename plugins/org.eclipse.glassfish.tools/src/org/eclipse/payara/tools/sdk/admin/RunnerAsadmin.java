@@ -29,18 +29,17 @@ import org.eclipse.payara.tools.sdk.utils.ServerUtils;
 import org.eclipse.payara.tools.server.GlassFishServer;
 
 /**
- * GlassFish server administration command execution using local
- * asadmin interface.
+ * GlassFish server administration command execution using local asadmin interface.
  * <p/>
- * Class implements GlassFish server administration functionality command line
- * asadmin interface.
+ * Class implements GlassFish server administration functionality command line asadmin interface.
  * <p/>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public abstract class RunnerAsadmin extends RunnerJava {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Logger instance for this class. */
@@ -49,17 +48,19 @@ public abstract class RunnerAsadmin extends RunnerJava {
     /** Specifies the administrator username. */
     private static final String USER_PARAM = "--user";
 
-    /** Specifies the name, including the full path, of a file that contains 
-     *  password entries. */
+    /**
+     * Specifies the name, including the full path, of a file that contains password entries.
+     */
     private static final String PASSWORD_FILE_PARAM = "--passwordfile";
 
     ////////////////////////////////////////////////////////////////////////////
-    // Static methods                                                         //
+    // Static methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Extracts asadmin JAR path from GlassFish server entity object.
      * <p/>
+     * 
      * @param server GlassFish server entity object.
      * @return Asadmin JAR path to execute.
      */
@@ -85,21 +86,20 @@ public abstract class RunnerAsadmin extends RunnerJava {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * GlassFish administration command result.
      * <p/>
-     * Result instance life cycle is started with submitting task into
-     * <code>ExecutorService</code>'s queue. Method <code>call()</code>
-     * is responsible for correct <code>TaskState</code> and receiveResult value
-     * handling.
+     * Result instance life cycle is started with submitting task into <code>ExecutorService</code>'s
+     * queue. Method <code>call()</code> is responsible for correct <code>TaskState</code> and
+     * receiveResult value handling.
      */
     @SuppressWarnings("FieldNameHidesFieldInSuperclass")
     protected ResultString result;
 
-    /** Asadmin JAR path  (relative under GlassFish home). */
+    /** Asadmin JAR path (relative under GlassFish home). */
     private final String asadminJar;
 
     /** Process standard input. */
@@ -114,31 +114,31 @@ public abstract class RunnerAsadmin extends RunnerJava {
     /** Process IO processing. */
     protected ProcessIOContent processIO;
 
-    /** Support for <code>asadmin</code> <code>--passwordfile</code>
-     *  file format. */
+    /**
+     * Support for <code>asadmin</code> <code>--passwordfile</code> file format.
+     */
     protected PasswordFile passwordFile;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Abstract methods                                                       //
+    // Abstract methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Create internal <code>ProcessIOContent</code> object corresponding
-     * to command execution IO.
+     * Create internal <code>ProcessIOContent</code> object corresponding to command execution IO.
      */
     protected abstract ProcessIOContent createProcessIOContent();
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Constructs an instance of administration command executor using
-     * command line asadmin interface.
+     * Constructs an instance of administration command executor using command line asadmin interface.
      * <p/>
-     * @param server  GlassFish server entity object.
+     * 
+     * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
-     * @param query   Query string for this command.
+     * @param query Query string for this command.
      */
     public RunnerAsadmin(final GlassFishServer server, final Command command,
             final String query) {
@@ -151,13 +151,14 @@ public abstract class RunnerAsadmin extends RunnerJava {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Implemented Abstract Methods                                           //
+    // Implemented Abstract Methods //
     ////////////////////////////////////////////////////////////////////////////
 
-   /**
-     * Create <code>ResultString</code> object corresponding
-     * to <code>String</code>command execution value to be returned.
+    /**
+     * Create <code>ResultString</code> object corresponding to <code>String</code>command execution
+     * value to be returned.
      * <p/>
+     * 
      * @return <code>String</code>command execution value to be returned.
      */
     @Override
@@ -168,6 +169,7 @@ public abstract class RunnerAsadmin extends RunnerJava {
     /**
      * Reads response from server and stores internally.
      * <p/>
+     * 
      * @param in Stream to read data from.
      * @return Always returns <code>false</code>.
      * @throws CommandException in case of stream error.
@@ -181,6 +183,7 @@ public abstract class RunnerAsadmin extends RunnerJava {
     /**
      * Extracts result value from internal storage.
      * <p/>
+     * 
      * @return Always returns <code>false</code>.
      */
     @Override
@@ -189,12 +192,13 @@ public abstract class RunnerAsadmin extends RunnerJava {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // ExecutorService call() method helpers                                  //
+    // ExecutorService call() method helpers //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Build process execution arguments.
      * <p/>
+     * 
      * @return Process execution arguments.
      */
     String buildProcessArgs() {
@@ -226,14 +230,14 @@ public abstract class RunnerAsadmin extends RunnerJava {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Methods                                                                //
+    // Methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Execute an arbitrary server command.
      * <p/>
-     * @return <code>Future</code> object to retrieve receiveResult of
-     * asynchronous execution.
+     * 
+     * @return <code>Future</code> object to retrieve receiveResult of asynchronous execution.
      */
     @Override
     Future<? extends Result> execute() {
@@ -244,8 +248,8 @@ public abstract class RunnerAsadmin extends RunnerJava {
     /**
      * Execute an arbitrary server command using provided executor.
      * <p/>
-     * @return <code>Future</code> object to retrieve receiveResult of
-     * asynchronous execution.
+     * 
+     * @return <code>Future</code> object to retrieve receiveResult of asynchronous execution.
      */
     @Override
     Future<? extends Result> execute(final ExecutorService executor) {
@@ -254,16 +258,16 @@ public abstract class RunnerAsadmin extends RunnerJava {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // ExecutorService call() method                                          //
+    // ExecutorService call() method //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * GlassFish server administration command execution call.
-     * This is an entry point from <code>executor<code>'s serialization queue.
+     * GlassFish server administration command execution call. This is an entry point from
+     * <code>executor<code>'s serialization queue.
      * <p/>
-     * Attempts to start local GalssFish DAS directly using <code>java</code>
-     * executable.
+     * Attempts to start local GalssFish DAS directly using <code>java</code> executable.
      * <p/>
+     * 
      * @return Task execution state.
      */
     @Override
@@ -301,14 +305,14 @@ public abstract class RunnerAsadmin extends RunnerJava {
                     server.getName());
         }
         switch (verifyResult) {
-            case SUCCESS:
-                return handleStateChange(TaskState.COMPLETED,
-                        TaskEvent.CMD_COMPLETED, command.getCommand(),
-                        server.getName());
-            default:
-                return handleStateChange(TaskState.FAILED,
-                        TaskEvent.CMD_FAILED, command.getCommand(),
-                        server.getName());
+        case SUCCESS:
+            return handleStateChange(TaskState.COMPLETED,
+                    TaskEvent.CMD_COMPLETED, command.getCommand(),
+                    server.getName());
+        default:
+            return handleStateChange(TaskState.FAILED,
+                    TaskEvent.CMD_FAILED, command.getCommand(),
+                    server.getName());
         }
     }
 

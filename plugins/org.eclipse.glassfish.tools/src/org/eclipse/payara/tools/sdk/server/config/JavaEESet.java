@@ -25,12 +25,13 @@ import org.eclipse.payara.tools.sdk.utils.ServerUtils;
 /**
  * Container of GlassFish JavaEE features configuration.
  * <p/>
+ * 
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class JavaEESet extends JavaSet {
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Modules retrieved from XML elements. */
@@ -46,16 +47,16 @@ public class JavaEESet extends JavaSet {
     private final Map<String, Boolean> checkResults;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Creates an instance of container of GlassFish JavaEE features
-     * configuration.
+     * Creates an instance of container of GlassFish JavaEE features configuration.
      * <p/>
-     * @param modules  Modules retrieved from XML elements.
+     * 
+     * @param modules Modules retrieved from XML elements.
      * @param profiles Profiles retrieved from XML elements.
-     * @param version  Highest JavaEE specification version implemented.
+     * @param version Highest JavaEE specification version implemented.
      */
     public JavaEESet(final List<JavaEEModuleReader.Module> modules,
             final List<JavaEEProfileReader.Profile> profiles,
@@ -64,8 +65,7 @@ public class JavaEESet extends JavaSet {
         super(version);
         this.modules = Collections.unmodifiableList(modules);
         this.profiles = Collections.unmodifiableList(profiles);
-        Map<String, List<String>> checksMap
-                = new HashMap<>(checks.size());
+        Map<String, List<String>> checksMap = new HashMap<>(checks.size());
         for (JavaEEProfileCheckReader.Check check : checks) {
             checksMap.put(check.getName(), check.getFiles());
         }
@@ -74,12 +74,13 @@ public class JavaEESet extends JavaSet {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Getters and setters                                                    //
+    // Getters and setters //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Get modules retrieved from XML elements.
      * <p/>
+     * 
      * @return Modules retrieved from XML elements.
      */
     public List<JavaEEModuleReader.Module> getModules() {
@@ -89,6 +90,7 @@ public class JavaEESet extends JavaSet {
     /**
      * Get profiles retrieved from XML elements.
      * <p/>
+     * 
      * @return Profiles retrieved from XML elements.
      */
     public List<JavaEEProfileReader.Profile> getProfiles() {
@@ -96,18 +98,17 @@ public class JavaEESet extends JavaSet {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Methods                                                                //
+    // Methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Get existing cached check result or run a new check if no such cached
-     * check result exists.
+     * Get existing cached check result or run a new check if no such cached check result exists.
      * <p/>
-     * Cached check results depends on provided <code>classpathHome</code>
-     * and they should be reset before <code>classpathHome</code> will
-     * be changed.
+     * Cached check results depends on provided <code>classpathHome</code> and they should be reset
+     * before <code>classpathHome</code> will be changed.
      * <p/>
-     * @param name          Name of check to be run.
+     * 
+     * @param name Name of check to be run.
      * @param classpathHome Classpath search prefix.
      */
     private boolean check(final String name, final File classpathHome) {
@@ -142,9 +143,9 @@ public class JavaEESet extends JavaSet {
     }
 
     /**
-     * Build {@link Set} of {@link ModuleType} for known module types retrieved
-     * from XML elements.
+     * Build {@link Set} of {@link ModuleType} for known module types retrieved from XML elements.
      * <p/>
+     * 
      * @param classpathHome Classpath search prefix.
      * @return {@link Set} of {@link ModuleType} for known module types.
      */
@@ -163,16 +164,15 @@ public class JavaEESet extends JavaSet {
     }
 
     /**
-     * Build {@link Set} of {@link JavaEEProfile} for known JavaEE profiles
-     * retrieved from XML elements.
+     * Build {@link Set} of {@link JavaEEProfile} for known JavaEE profiles retrieved from XML elements.
      * <p/>
+     * 
      * @param classpathHome Classpath search prefix.
      * @return {@link Set} of {@link ModuleType} for known profiles.
      */
     public Set<JavaEEProfile> profiles(final File classpathHome) {
         int size = profiles != null ? profiles.size() : 0;
-        EnumSet<JavaEEProfile> profilesSet
-                = EnumSet.noneOf(JavaEEProfile.class);
+        EnumSet<JavaEEProfile> profilesSet = EnumSet.noneOf(JavaEEProfile.class);
         if (size > 0) {
             for (JavaEEProfileReader.Profile profileFromXML : profiles) {
                 JavaEEProfile profile = JavaEEProfile.toValue(
@@ -187,4 +187,3 @@ public class JavaEESet extends JavaSet {
     }
 
 }
-

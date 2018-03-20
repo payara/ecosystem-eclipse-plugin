@@ -24,31 +24,29 @@ import org.w3c.dom.Element;
 
 public class GlassfishDescriptorRootController extends StandardRootElementController {
 
-	private GlassfishDescriptorType type;
-    
+    private GlassfishDescriptorType type;
+
     @Override
-    public void init( final XmlResource resource )
-    {
-        super.init( resource );
-        
-        this.type = GlassfishDescriptorType.getDescriptorType( resource.element().type() );
+    public void init(final XmlResource resource) {
+        super.init(resource);
+
+        this.type = GlassfishDescriptorType.getDescriptorType(resource.element().type());
     }
 
     @Override
-    public void createRootElement()
-    {
-    	Document document = ( (RootXmlResource) resource().root() ).getDomDocument();
+    public void createRootElement() {
+        Document document = ((RootXmlResource) resource().root()).getDomDocument();
         createRootElement(document);
     }
-    
+
     protected void createRootElement(Document document) {
-    	GlassfishRootElementInfo gfRootInfo = getGlassfishRootElementInfo();
-    	
+        GlassfishRootElementInfo gfRootInfo = getGlassfishRootElementInfo();
+
         final Element root = document.createElementNS(null,
                 gfRootInfo.getRootElementName());
         DocumentType doctype = null;
 
-        if (gfRootInfo.getPublicId() != null ) {
+        if (gfRootInfo.getPublicId() != null) {
             doctype = document.getImplementation().createDocumentType(
                     gfRootInfo.getRootElementName(), gfRootInfo.getPublicId(), gfRootInfo.getSystemId());
         } else {
@@ -61,42 +59,39 @@ public class GlassfishDescriptorRootController extends StandardRootElementContro
         }
         document.appendChild(root);
     }
-    
+
     @Override
-    public boolean checkRootElement() 
-    {
-        final Document document = ( (RootXmlResource) resource().root() ).getDomDocument();
+    public boolean checkRootElement() {
+        final Document document = ((RootXmlResource) resource().root()).getDomDocument();
         final Element root = document.getDocumentElement();
-        
+
         GlassfishRootElementInfo gfRootInfo = getGlassfishRootElementInfo();
-        
-        if( equal( root.getLocalName(), gfRootInfo.getRootElementName() ) )
-        {
+
+        if (equal(root.getLocalName(), gfRootInfo.getRootElementName())) {
             final DocumentType documentType = document.getDoctype();
-            
-            if( documentType != null &&
-                gfRootInfo.getSystemId().equals( documentType.getSystemId() ) &&
-                equal( gfRootInfo.getPublicId(), normalizeToNull( documentType.getPublicId() ) ) )
-            {
+
+            if (documentType != null &&
+                    gfRootInfo.getSystemId().equals(documentType.getSystemId()) &&
+                    equal(gfRootInfo.getPublicId(), normalizeToNull(documentType.getPublicId()))) {
                 return true;
             }
         }
-        
+
         return false;
     }
 
-	private GlassfishRootElementInfo getGlassfishRootElementInfo() {
-    	GlassfishRootElementInfo defaultInfo = GlassfishDescriptorType.getGlassfishRootElementInfo(type);
-    	GlassFishLocationUtils gfInstall = GlassFishLocationUtils.find(resource().adapt(IProject.class));
-    	if (gfInstall == null) {
+    private GlassfishRootElementInfo getGlassfishRootElementInfo() {
+        GlassfishRootElementInfo defaultInfo = GlassfishDescriptorType.getGlassfishRootElementInfo(type);
+        GlassFishLocationUtils gfInstall = GlassFishLocationUtils.find(resource().adapt(IProject.class));
+        if (gfInstall == null) {
             return defaultInfo;
         }
-    	Version v = gfInstall.version();
+        Version v = gfInstall.version();
         Version gfVersion = new Version(v.toString());
         if (gfVersion == null) {
             return defaultInfo;
         }
-        
+
         GlassfishRootElementInfo rootInfo = GlassfishDescriptorType.getGlassfishRootElementInfo(type);
         return rootInfo != null ? rootInfo : defaultInfo;
     }

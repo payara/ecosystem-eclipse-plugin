@@ -11,13 +11,13 @@ package org.eclipse.payara.tools.log;
 
 public class NoOpFilter implements ILogFilter {
 
-	@Override
-	public void reset() {
-	}
+    @Override
+    public void reset() {
+    }
 
-	@Override
-	public String process(String line) {
-		return line;
-	}
+    @Override
+    public String process(String line) {
+        return line;
+    }
 
 }

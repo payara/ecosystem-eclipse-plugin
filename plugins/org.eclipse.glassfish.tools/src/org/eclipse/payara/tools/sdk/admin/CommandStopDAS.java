@@ -21,39 +21,38 @@ import org.eclipse.payara.tools.server.GlassFishServer;
  * <p/>
  * Holds data for command. Objects of this class are created by API user.
  * <p/>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 @RunnerHttpClass
 @RunnerRestClass(runner = RunnerRestStopDAS.class)
 public class CommandStopDAS extends Command {
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Command string for version command. */
     private static final String COMMAND = "stop-domain";
 
-    /** Error message for administration command execution exception .*/
+    /** Error message for administration command execution exception . */
     private static final String ERROR_MESSAGE = "DAS stop failed.";
 
     ////////////////////////////////////////////////////////////////////////////
-    // Static methods                                                         //
+    // Static methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Stops running DAS server.
      * <p/>
+     * 
      * @param server GlassFish server entity.
      * @return Stop DAS task response.
-     * @throws GlassFishIdeException When error occurred during administration
-     *         command execution.
+     * @throws GlassFishIdeException When error occurred during administration command execution.
      */
-    public static ResultString stopDAS(final GlassFishServer server) throws
-            GlassFishIdeException {
+    public static ResultString stopDAS(final GlassFishServer server) throws GlassFishIdeException {
         Command command = new CommandStopDAS();
-        Future<ResultString> future =
-                ServerAdmin.<ResultString>exec(server, command);
+        Future<ResultString> future = ServerAdmin.<ResultString>exec(server, command);
         try {
             return future.get();
         } catch (InterruptedException | ExecutionException
@@ -63,7 +62,7 @@ public class CommandStopDAS extends Command {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**

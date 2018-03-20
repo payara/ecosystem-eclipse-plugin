@@ -28,43 +28,43 @@ import org.eclipse.wst.server.core.IServer;
 
 public abstract class AbstractGlassfishSelectionHandler extends AbstractHandler {
 
-	@Override
-	public Object execute(ExecutionEvent event) throws ExecutionException {
-		ISelection selection = HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().getSelection();
-		if (selection != null && !selection.isEmpty()) {
-			processSelection((IStructuredSelection) selection);
-		}
-		
-		return null;
-	}
+    @Override
+    public Object execute(ExecutionEvent event) throws ExecutionException {
+        ISelection selection = HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().getSelection();
+        if (selection != null && !selection.isEmpty()) {
+            processSelection((IStructuredSelection) selection);
+        }
 
-	public void processSelection(IStructuredSelection selection) {
-		IServer server = (IServer) selection.getFirstElement();
-		if (server != null) {
-			processSelection(server);
-		}
-	}
-	
-	public void processSelection(IServer server) {
-		
-	}
+        return null;
+    }
 
-	protected void showMessageDialog() {
-		showMessageDialog("Payara Server has to be up and running...\nPlease start the server.");
-	}
+    public void processSelection(IStructuredSelection selection) {
+        IServer server = (IServer) selection.getFirstElement();
+        if (server != null) {
+            processSelection(server);
+        }
+    }
 
-	protected void showMessageDialog(String msg) {
-		new MessageDialog(
-			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), 
-			"Cannot Execute this action", null, msg, 2, new String[] {"OK"}, 1)
-		.open();
-	}
+    public void processSelection(IServer server) {
 
-	protected void showPageInDefaultBrowser(String url) throws PartInitException, MalformedURLException {
-		PlatformUI.getWorkbench()
-				  .getBrowserSupport()
-				  .createBrowser(LOCATION_BAR | NAVIGATION_BAR, null, null, null)
-				  .openURL(new URL(url));
-	}
+    }
+
+    protected void showMessageDialog() {
+        showMessageDialog("Payara Server has to be up and running...\nPlease start the server.");
+    }
+
+    protected void showMessageDialog(String msg) {
+        new MessageDialog(
+                PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+                "Cannot Execute this action", null, msg, 2, new String[] { "OK" }, 1)
+                        .open();
+    }
+
+    protected void showPageInDefaultBrowser(String url) throws PartInitException, MalformedURLException {
+        PlatformUI.getWorkbench()
+                .getBrowserSupport()
+                .createBrowser(LOCATION_BAR | NAVIGATION_BAR, null, null, null)
+                .openURL(new URL(url));
+    }
 
 }

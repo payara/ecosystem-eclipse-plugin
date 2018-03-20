@@ -10,25 +10,25 @@
 package org.eclipse.payara.tools.utils;
 
 /**
- * 
+ *
  * @author vbk
  */
 public class PartialCompletionException extends Exception {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private String failedUpdates;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+    private String failedUpdates;
 
-	PartialCompletionException(String itemsNotUpdated) {
-		// throw new UnsupportedOperationException("Not yet implemented");
-		failedUpdates = itemsNotUpdated;
-	}
+    PartialCompletionException(String itemsNotUpdated) {
+        // throw new UnsupportedOperationException("Not yet implemented");
+        failedUpdates = itemsNotUpdated;
+    }
 
-	@Override
-	public String getMessage() {
-		return "Failed to update: " + failedUpdates;
-	}
+    @Override
+    public String getMessage() {
+        return "Failed to update: " + failedUpdates;
+    }
 
 }

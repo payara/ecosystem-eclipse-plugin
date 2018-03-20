@@ -22,25 +22,25 @@ import org.eclipse.ui.PlatformUI;
 
 public class ShowURLHandler extends AbstractHandler {
 
-	@Override
-	public Object execute(ExecutionEvent event) throws ExecutionException {
-		String url = event.getParameter("org.eclipse.payara.tools.commands.urlParam");
-		
-		// This should not happen
-		if (url == null) {
-			return null;
-		}
-		
-		try {
-			PlatformUI.getWorkbench()
-					  .getBrowserSupport()
-					  .createBrowser(LOCATION_BAR | NAVIGATION_BAR, null, null, null)
-					  .openURL(new URL(url));
-		} catch (Exception e) {
-			logMessage("Error opening browser: " + e.getMessage());
-		}
-		
-		return null;
-	}
+    @Override
+    public Object execute(ExecutionEvent event) throws ExecutionException {
+        String url = event.getParameter("org.eclipse.payara.tools.commands.urlParam");
+
+        // This should not happen
+        if (url == null) {
+            return null;
+        }
+
+        try {
+            PlatformUI.getWorkbench()
+                    .getBrowserSupport()
+                    .createBrowser(LOCATION_BAR | NAVIGATION_BAR, null, null, null)
+                    .openURL(new URL(url));
+        } catch (Exception e) {
+            logMessage("Error opening browser: " + e.getMessage());
+        }
+
+        return null;
+    }
 
 }

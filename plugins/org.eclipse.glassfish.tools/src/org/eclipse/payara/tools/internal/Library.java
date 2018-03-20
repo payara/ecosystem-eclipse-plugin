@@ -15,35 +15,35 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "library")
 public class Library {
 
-  private String path;
-  private String javadoc;
-  private String source;
+    private String path;
+    private String javadoc;
+    private String source;
 
-  @XmlAttribute( name = "path")
-  public String getPath() {
-    return path;
-  }
+    @XmlAttribute(name = "path")
+    public String getPath() {
+        return path;
+    }
 
-  public void setPath(String name) {
-    this.path = name;
-  }
+    public void setPath(String name) {
+        this.path = name;
+    }
 
-  @XmlAttribute( name = "javadoc")
-  public String getJavadoc() {
-    return javadoc;
-  }
+    @XmlAttribute(name = "javadoc")
+    public String getJavadoc() {
+        return javadoc;
+    }
 
-  public void setJavadoc(String doc) {
-    this.javadoc = doc;
-  }
+    public void setJavadoc(String doc) {
+        this.javadoc = doc;
+    }
 
-  @XmlAttribute( name = "source")
-  public String getSource() {
-    return source;
-  }
+    @XmlAttribute(name = "source")
+    public String getSource() {
+        return source;
+    }
 
-  public void setSource(String src) {
-    this.source = src;
-  }
+    public void setSource(String src) {
+        this.source = src;
+    }
 
-} 
+}

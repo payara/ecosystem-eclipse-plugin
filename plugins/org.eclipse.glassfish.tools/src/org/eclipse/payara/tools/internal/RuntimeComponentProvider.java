@@ -15,25 +15,21 @@ import org.eclipse.wst.common.project.facet.core.runtime.IRuntimeComponent;
 import org.eclipse.wst.server.core.IRuntime;
 
 /**
- * This abstract class is used in conjunction with
- * <code>runtimeComponentProviders</code> extension point to extend the list of
- * runtime components that make up a GlassFish Server runtime.
- * 
- * @author <a href="mailto:konstantin.komissarchik@oracle.com">Konstantin
- *         Komissarchik</a>
+ * This abstract class is used in conjunction with <code>runtimeComponentProviders</code> extension
+ * point to extend the list of runtime components that make up a GlassFish Server runtime.
+ *
+ * @author <a href="mailto:konstantin.komissarchik@oracle.com">Konstantin Komissarchik</a>
  */
 
 public abstract class RuntimeComponentProvider {
-	
-	/**
-	 * Returns additional components to add to the runtime that represents the
-	 * provided GlassFish Server installation.
-	 * 
-	 * @param runtime
-	 *            the WTP server tools runtime definition
-	 * @return list of additional components or <code>null</code> to not contribute
-	 *         anything
-	 */
-	public abstract List<IRuntimeComponent> getRuntimeComponents(IRuntime runtime);
+
+    /**
+     * Returns additional components to add to the runtime that represents the provided GlassFish Server
+     * installation.
+     * 
+     * @param runtime the WTP server tools runtime definition
+     * @return list of additional components or <code>null</code> to not contribute anything
+     */
+    public abstract List<IRuntimeComponent> getRuntimeComponents(IRuntime runtime);
 
 }

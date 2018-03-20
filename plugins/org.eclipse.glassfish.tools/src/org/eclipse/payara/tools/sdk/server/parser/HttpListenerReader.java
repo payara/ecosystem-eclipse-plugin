@@ -21,24 +21,23 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 /**
- * Reads configuration of http listeners from domain.xml.
- * For each http listener returns one {@link HttpData} object that
- * contains name of listener, port number and information whether
- * this listener is secured.
+ * Reads configuration of http listeners from domain.xml. For each http listener returns one
+ * {@link HttpData} object that contains name of listener, port number and information whether this
+ * listener is secured.
  * <p/>
+ * 
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class HttpListenerReader extends TargetConfigReader implements XMLReader {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Logger instance for this class. */
     private static final Logger LOGGER = new Logger(HttpListenerReader.class);
 
-    public static final String DEFAULT_PATH =
-            "/domain/configs/config/http-service/http-listener";
+    public static final String DEFAULT_PATH = "/domain/configs/config/http-service/http-listener";
 
     private String path;
 
@@ -47,7 +46,7 @@ public class HttpListenerReader extends TargetConfigReader implements XMLReader 
     public HttpListenerReader(String targetConfigName) {
         this(DEFAULT_PATH, targetConfigName);
     }
- 
+
     public HttpListenerReader(String path, String targetConfigName) {
         super(targetConfigName);
         this.path = path;
@@ -55,27 +54,23 @@ public class HttpListenerReader extends TargetConfigReader implements XMLReader 
     }
 
     @Override
-    public void readAttributes(String qname, Attributes attributes) throws
-            SAXException {
+    public void readAttributes(String qname, Attributes attributes) throws SAXException {
         final String METHOD = "readAttributes";
-        // <http-listener 
-        //   id="http-listener-1" port="8080" xpowered-by="true" 
-        //   enabled="true" address="0.0.0.0" security-enabled="false" 
-        //   family="inet" default-virtual-server="server" 
-        //   server-name="" blocking-enabled="false" acceptor-threads="1">
+        // <http-listener
+        // id="http-listener-1" port="8080" xpowered-by="true"
+        // enabled="true" address="0.0.0.0" security-enabled="false"
+        // family="inet" default-virtual-server="server"
+        // server-name="" blocking-enabled="false" acceptor-threads="1">
         if (readData) {
             try {
                 String id = attributes.getValue("id");
                 if (id != null && id.length() > 0) {
                     int port = Integer.parseInt(attributes.getValue("port"));
-                    boolean secure = Boolean.TRUE.toString().equals(attributes.
-                            getValue("security-enabled"));
-                    boolean enabled = !Boolean.FALSE.toString().
-                            equals(attributes.
-                            getValue("enabled"));
+                    boolean secure = Boolean.TRUE.toString().equals(attributes.getValue("security-enabled"));
+                    boolean enabled = !Boolean.FALSE.toString().equals(attributes.getValue("enabled"));
                     LOGGER.log(Level.INFO, METHOD, "port", new Object[] {
-                        Integer.toString(port), Boolean.toString(enabled),
-                        Boolean.toString(secure)});
+                            Integer.toString(port), Boolean.toString(enabled),
+                            Boolean.toString(secure) });
                     if (enabled) {
                         HttpData data = new HttpData(id, port, secure);
                         LOGGER.log(Level.INFO, METHOD, "add", data);

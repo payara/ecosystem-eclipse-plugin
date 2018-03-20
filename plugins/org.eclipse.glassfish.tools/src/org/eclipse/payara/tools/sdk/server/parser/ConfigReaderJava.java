@@ -15,35 +15,36 @@ import org.xml.sax.SAXException;
 /**
  * Abstract Java configuration XML element reader.
  * <p/>
+ * 
  * @author Peter Benedikovic, Tomas Kraus
  */
 public abstract class ConfigReaderJava
-extends AbstractReader implements XMLReader {
+        extends AbstractReader implements XMLReader {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** <code>version</code> XML element attribute name. */
     private static final String VERSION_ATTR = "version";
 
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Highest JavaEE specification version implemented. */
     private String version;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Creates an instance of Java EE configuration XML element reader.
      * <p/>
-     * @param pathPrefix Tree parser path prefix to be prepended before
-     *        current XML element.
-     * @param node       XML element name.
+     * 
+     * @param pathPrefix Tree parser path prefix to be prepended before current XML element.
+     * @param node XML element name.
      */
     ConfigReaderJava(final String pathPrefix, String node) {
         super(pathPrefix, node);
@@ -51,13 +52,14 @@ extends AbstractReader implements XMLReader {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Tree parser methods                                                    //
+    // Tree parser methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Process attributes from current XML element.
      * <p/>
-     * @param qname      Not used.
+     * 
+     * @param qname Not used.
      * @param attributes List of XML attributes.
      * @throws SAXException When any problem occurs.
      */
@@ -68,12 +70,13 @@ extends AbstractReader implements XMLReader {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Getters and setters                                                    //
+    // Getters and setters //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Get highest JavaEE specification version implemented.
      * <p/>
+     * 
      * @return Highest JavaEE specification version implemented.
      */
     String getVersion() {
@@ -81,7 +84,7 @@ extends AbstractReader implements XMLReader {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Methods                                                                //
+    // Methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**

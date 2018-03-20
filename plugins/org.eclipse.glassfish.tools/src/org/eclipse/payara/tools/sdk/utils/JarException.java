@@ -25,16 +25,17 @@ import org.eclipse.payara.tools.sdk.GlassFishIdeException;
  * <p>
  * All exceptions are logging themselves on WARNING level when created.
  * <p>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class JarException extends GlassFishIdeException {
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
 
@@ -45,21 +46,20 @@ public class JarException extends GlassFishIdeException {
     static final String CLOSE_ERROR = "Cannot close JAR file.";
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Constructs an instance of <code>JarException</code> without
-     * detail message.
+     * Constructs an instance of <code>JarException</code> without detail message.
      */
     public JarException() {
         super();
     }
 
     /**
-     * Constructs an instance of <code>JarException</code> with the
-     * specified detail message.
+     * Constructs an instance of <code>JarException</code> with the specified detail message.
      * <p>
+     * 
      * @param msg The detail message.
      */
     public JarException(String msg) {
@@ -67,11 +67,12 @@ public class JarException extends GlassFishIdeException {
     }
 
     /**
-     * Constructs an instance of <code>JarException</code> with the
-     * specified detail message and arguments.
+     * Constructs an instance of <code>JarException</code> with the specified detail message and
+     * arguments.
      * <p/>
      * Uses {@link java.text.MessageFormat} to format message.
      * <p/>
+     * 
      * @param msg The detail message.
      * @param arguments Arguments to be inserted into message.
      */
@@ -80,18 +81,17 @@ public class JarException extends GlassFishIdeException {
     }
 
     /**
-     * Constructs an instance of <code>JarException</code> with the
-     * specified detail message and cause. Exception is logged on WARN level.
+     * Constructs an instance of <code>JarException</code> with the specified detail message and cause.
+     * Exception is logged on WARN level.
      * <p>
-     * Note that the detail message associated with {@code cause} is <i>not</i>
-     * automatically incorporated in this runtime exception's detail message.
+     * Note that the detail message associated with {@code cause} is <i>not</i> automatically
+     * incorporated in this runtime exception's detail message.
      * <p>
-     * @param msg   the detail message (which is saved for later retrieval
-     *              by the {@link #getMessage()} method).
-     * @param cause the cause (which is saved for later retrieval by the
-     *              {@link #getCause()} method).  (A <code>null</code> value is
-     *              permitted, and indicates that the cause is nonexistent or
-     *              unknown.)
+     * 
+     * @param msg the detail message (which is saved for later retrieval by the {@link #getMessage()}
+     * method).
+     * @param cause the cause (which is saved for later retrieval by the {@link #getCause()} method). (A
+     * <code>null</code> value is permitted, and indicates that the cause is nonexistent or unknown.)
      */
     public JarException(String msg, Throwable cause) {
         super(msg, cause);

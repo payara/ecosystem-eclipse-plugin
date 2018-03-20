@@ -18,28 +18,27 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 
 /**
  * Runner for create JDBC resource command via REST interface.
- * 
+ *
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class RunnerRestCreateJDBCResource extends RunnerRest {
-    
+
     /**
-     * Constructs an instance of administration command executor using
-     * REST interface.
+     * Constructs an instance of administration command executor using REST interface.
      * <p/>
-     * @param server  GlassFish server entity object.
+     * 
+     * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
     public RunnerRestCreateJDBCResource(final GlassFishServer server,
             final Command command) {
         super(server, command);
     }
-    
+
     @Override
     protected void handleSend(HttpURLConnection hconn) throws IOException {
-        CommandCreateJDBCResource cmd = (CommandCreateJDBCResource)command;
-        OutputStreamWriter wr =
-                new OutputStreamWriter(hconn.getOutputStream());
+        CommandCreateJDBCResource cmd = (CommandCreateJDBCResource) command;
+        OutputStreamWriter wr = new OutputStreamWriter(hconn.getOutputStream());
         StringBuilder data = new StringBuilder();
         data.append("jndi_name=").append(cmd.jndiName);
         data.append("&connectionpoolid=").append(cmd.connectionPoolId);
@@ -48,7 +47,7 @@ public class RunnerRestCreateJDBCResource extends RunnerRest {
         wr.write(data.toString());
         wr.close();
     }
-    
+
     /**
      * Overridden because server returns WARNING even when it creates the resource.
      */

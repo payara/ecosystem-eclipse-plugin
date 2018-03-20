@@ -10,16 +10,14 @@
 package org.eclipse.payara.tools.sdk.admin.response;
 
 /**
- * Enum that represents possible content types that runners accept responses
- * in.
+ * Enum that represents possible content types that runners accept responses in.
  * <p>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public enum ResponseContentType {
 
-    APPLICATION_XML("application/xml"),
-    APPLICATION_JSON("application/json"),
-    TEXT_PLAIN("text/plain");
+    APPLICATION_XML("application/xml"), APPLICATION_JSON("application/json"), TEXT_PLAIN("text/plain");
 
     private String type;
 

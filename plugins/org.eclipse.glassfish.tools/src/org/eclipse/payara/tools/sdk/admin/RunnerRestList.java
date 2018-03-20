@@ -18,40 +18,41 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 /**
  * Command runner for commands that retrieve some kind of list.
  * <p>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RunnerRestList extends RunnerRest {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
-    /** Result object - contains list of JDBC resources names.*/
+    /** Result object - contains list of JDBC resources names. */
     @SuppressWarnings("FieldNameHidesFieldInSuperclass")
     ResultList<String> result;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Constructs an instance of administration command executor using
-     * REST interface.
+     * Constructs an instance of administration command executor using REST interface.
      * <p/>
-     * @param server  GlassFish server entity object.
+     * 
+     * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
     public RunnerRestList(final GlassFishServer server, final Command command) {
         super(server, command);
-    }   
+    }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Implemented Abstract Methods                                           //
+    // Implemented Abstract Methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Create <code>ResultList</code> object corresponding
-     * to server log command execution value to be returned.
+     * Create <code>ResultList</code> object corresponding to server log command execution value to be
+     * returned.
      */
     @Override
     protected ResultList<String> createResult() {
@@ -69,6 +70,5 @@ public class RunnerRestList extends RunnerRest {
         }
         return true;
     }
-
 
 }

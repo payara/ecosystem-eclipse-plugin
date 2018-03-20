@@ -21,20 +21,20 @@ import org.eclipse.payara.tools.sdk.utils.OsUtils;
 /**
  * Parse process IO and verify it against content verification data.
  * <p/>
+ * 
  * @author Tomas Kraus
  */
 public class ProcessIOParser {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Inner classes                                                          //
+    // Inner classes //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Parse process output.
      * <p/>
-     * Process output is being read as text lines separated by prompt string,
-     * CR or CRLF. Each finished line is searched for provided process
-     * IO content.
+     * Process output is being read as text lines separated by prompt string, CR or CRLF. Each finished
+     * line is searched for provided process IO content.
      */
     protected static class Parser {
 
@@ -53,11 +53,12 @@ public class ProcessIOParser {
 
             /** Enumeration length. */
             protected static final int length = Input.values().length;
-            
+
             /**
              * Get input class value for provided character.
              * <p/>
-             * @param c Character to check tor  input class.
+             * 
+             * @param c Character to check tor input class.
              * @return Input class of provided character.
              */
             protected static Input value(final char c, final String prompt,
@@ -66,12 +67,12 @@ public class ProcessIOParser {
                     return PROMPT;
                 }
                 switch (c) {
-                    case '\r':
-                        return CR;
-                    case '\n':
-                        return LF;
-                    default:
-                        return STRING;
+                case '\r':
+                    return CR;
+                case '\n':
+                    return LF;
+                default:
+                    return STRING;
                 }
             }
 
@@ -95,16 +96,17 @@ public class ProcessIOParser {
 
             /** Transition table for [State, Input]. */
             protected static final State transition[][] = {
-              // STRING  PROMPT    CR     LF
-                { LINE,  START,    CR, START}, // START
-                { LINE,  START,    CR, START}, // LINE
-                { LINE,  START,    CR, START}, // CR
-                {ERROR,  ERROR, ERROR, ERROR}  // ERROR
+                    // STRING PROMPT CR LF
+                    { LINE, START, CR, START }, // START
+                    { LINE, START, CR, START }, // LINE
+                    { LINE, START, CR, START }, // CR
+                    { ERROR, ERROR, ERROR, ERROR } // ERROR
             };
 
             /**
              * State machine transition.
              * <p/>
+             * 
              * @param s Current machine state.
              * @param i current input class.
              * @return Next machine state.
@@ -142,8 +144,8 @@ public class ProcessIOParser {
         /**
          * Creates an instance of process output parser.
          * <p/>
-         * @param content Content to verify on server administration command
-         *                execution IO.
+         * 
+         * @param content Content to verify on server administration command execution IO.
          */
         protected Parser(ProcessIOContent content) {
             this.content = content;
@@ -160,8 +162,9 @@ public class ProcessIOParser {
         /**
          * Parses content of process output.
          * <p/>
+         * 
          * @param buff Buffer with incoming process standard output data.
-         * @param len  Data length in process standard output buffer.
+         * @param len Data length in process standard output buffer.
          */
         protected void parse(final char[] buff, final short len) {
             for (int pos = 0; pos < len; pos++) {
@@ -179,6 +182,7 @@ public class ProcessIOParser {
         /**
          * Get content verification result.
          * <p/>
+         * 
          * @return Content verification result.
          */
         protected ProcessIOResult result() {
@@ -188,40 +192,46 @@ public class ProcessIOParser {
         /**
          * Run parser action based on current state and character class.
          * <p/>
+         * 
          * @param c Current character being processed from {@link Reader} buffer.
-         * @return Next state transition based on current state
-         *         and character class.
+         * @return Next state transition based on current state and character class.
          */
         protected State action(final char c) {
             Input cl = Input.value(c, content.getCurrentPrompt(), promptBuff);
             switch (state) {
-                case START: switch (cl) {
-                        case STRING:
-                            firstChar(c);
-                            break;
-                        case PROMPT:
-                            firstChar(c);
-                        case LF:
-                            endOfLine(c);
-                    } break;
-                case LINE: switch (cl) {
-                        case STRING:
-                            nextChar(c);
-                            break;
-                        case PROMPT:
-                            nextChar(c);
-                        case LF:
-                            endOfLine(c);
-                    } break;
-                case CR: switch (cl) {
-                        case STRING:
-                            nextCharWithCR(c);
-                            break;
-                        case PROMPT:
-                            nextCharWithCR(c);
-                        case LF:
-                            endOfLine(c);
-                    } break;
+            case START:
+                switch (cl) {
+                case STRING:
+                    firstChar(c);
+                    break;
+                case PROMPT:
+                    firstChar(c);
+                case LF:
+                    endOfLine(c);
+                }
+                break;
+            case LINE:
+                switch (cl) {
+                case STRING:
+                    nextChar(c);
+                    break;
+                case PROMPT:
+                    nextChar(c);
+                case LF:
+                    endOfLine(c);
+                }
+                break;
+            case CR:
+                switch (cl) {
+                case STRING:
+                    nextCharWithCR(c);
+                    break;
+                case PROMPT:
+                    nextCharWithCR(c);
+                case LF:
+                    endOfLine(c);
+                }
+                break;
             }
             return State.next(state, cl);
         }
@@ -229,6 +239,7 @@ public class ProcessIOParser {
         /**
          * Clear line content and append first character.
          * <p/>
+         * 
          * @param c Current character from buffer.
          */
         protected void firstChar(final char c) {
@@ -239,15 +250,17 @@ public class ProcessIOParser {
         /**
          * Append next character.
          * <p/>
+         * 
          * @param c Current character from buffer.
          */
         protected void nextChar(final char c) {
             line.append(c);
         }
 
-       /**
+        /**
          * Append next character after CR.
          * <p/>
+         * 
          * @param c Current character from buffer.
          */
         protected void nextCharWithCR(final char c) {
@@ -258,6 +271,7 @@ public class ProcessIOParser {
         /**
          * Handle end of line.
          * <p/>
+         * 
          * @param c Current character from buffer (not used).
          */
         protected void endOfLine(final char c) {
@@ -265,29 +279,27 @@ public class ProcessIOParser {
                 output.addLast(line.toString());
             }
             if (token != null) {
-                ProcessIOResult matchResult
-                        = ProcessIOResult.UNKNOWN;
-                for (int i = 0 ; i < line.length() ; i++) {
-                    if ((matchResult = token.match(line, i))
-                            != ProcessIOResult.UNKNOWN) {
+                ProcessIOResult matchResult = ProcessIOResult.UNKNOWN;
+                for (int i = 0; i < line.length(); i++) {
+                    if ((matchResult = token.match(line, i)) != ProcessIOResult.UNKNOWN) {
                         token = content.nextToken();
                         String prompt = content.getCurrentPrompt();
                         promptLen = prompt != null ? prompt.length() : 0;
                         promptBuff.resize(promptLen);
                         break;
-                    }                    
+                    }
                 }
-                switch(matchResult) {
-                    case SUCCESS:
-                        if (result == ProcessIOResult.UNKNOWN) {
-                            result = matchResult;
-                        }
-                        break;
-                    case ERROR:
-                        if (result != ProcessIOResult.ERROR) {
-                            result = matchResult;
-                        }
-                        break;
+                switch (matchResult) {
+                case SUCCESS:
+                    if (result == ProcessIOResult.UNKNOWN) {
+                        result = matchResult;
+                    }
+                    break;
+                case ERROR:
+                    if (result != ProcessIOResult.ERROR) {
+                        result = matchResult;
+                    }
+                    break;
                 }
             }
             line.setLength(0);
@@ -296,12 +308,13 @@ public class ProcessIOParser {
         /**
          * Build output string from stored process output lines.
          * <p/>
+         * 
          * @return Process output string.
          */
         protected String getOutputString() {
             int len = 0;
             boolean isElement = output.first();
-            while(isElement) {
+            while (isElement) {
                 len += output.getCurrent().length();
                 isElement = output.next();
                 if (isElement) {
@@ -310,7 +323,7 @@ public class ProcessIOParser {
             }
             StringBuilder sb = new StringBuilder(len);
             isElement = output.first();
-            while(isElement) {
+            while (isElement) {
                 sb.append(output.getCurrent());
                 isElement = output.next();
                 if (isElement) {
@@ -323,7 +336,7 @@ public class ProcessIOParser {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Logger instance for this class. */
@@ -333,7 +346,7 @@ public class ProcessIOParser {
     private static final short BUFF_SIZE = 128;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Process standard input. */
@@ -355,16 +368,16 @@ public class ProcessIOParser {
     private boolean verifydone;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Creates an instance of process IO verification parser.
      * <p/>
-     * @param stdIn     Process standard input.
-     * @param stdOut    Process standard output.
-     * @param ioContent Content to verify on server administration command
-     *                  execution IO.
+     * 
+     * @param stdIn Process standard input.
+     * @param stdOut Process standard output.
+     * @param ioContent Content to verify on server administration command execution IO.
      */
     public ProcessIOParser(final Writer stdIn, final Reader stdOut,
             final ProcessIOContent ioContent) {
@@ -377,20 +390,20 @@ public class ProcessIOParser {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Methods                                                                //
+    // Methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Verify process output streams against content verification data
-     * provided in constructor as <code>ioContent</code> argument.
+     * Verify process output streams against content verification data provided in constructor as
+     * <code>ioContent</code> argument.
      * <p/>
+     * 
      * @return Process output streams verification result.
-     * @throws IOException When there is an issue with reading process
-     *                     output streams.
+     * @throws IOException When there is an issue with reading process output streams.
      */
     public ProcessIOResult verify() throws IOException {
         while (outLen >= 0) {
-            outLen = (short)stdOut.read(outBuff);
+            outLen = (short) stdOut.read(outBuff);
             outParser.parse(outBuff, outLen);
         }
         outParser.finish();
@@ -401,6 +414,7 @@ public class ProcessIOParser {
     /**
      * Return process output as {@link String}.
      * <p/>
+     * 
      * @return Process output as {@link String}.
      */
     public String getOutput() {

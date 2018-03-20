@@ -22,28 +22,28 @@ import org.eclipse.wst.server.core.ServerCore;
  */
 public class NamingUtils {
 
-	public static String createUniqueRuntimeName(String runtimeName) throws UniqueNameNotFound {
-		IRuntime[] runtimes = ServerCore.getRuntimes();
-		HashSet<String> takenNames = new HashSet<>(runtimes.length);
-		for (IRuntime runtime : runtimes) {
-			takenNames.add(runtime.getName());
-		}
-		return createUniqueName(runtimeName, takenNames);
-	}
+    public static String createUniqueRuntimeName(String runtimeName) throws UniqueNameNotFound {
+        IRuntime[] runtimes = ServerCore.getRuntimes();
+        HashSet<String> takenNames = new HashSet<>(runtimes.length);
+        for (IRuntime runtime : runtimes) {
+            takenNames.add(runtime.getName());
+        }
+        return createUniqueName(runtimeName, takenNames);
+    }
 
-	private static String createUniqueName(String candidadeName, Set<String> takenNames) throws UniqueNameNotFound {
-		if (!takenNames.contains(candidadeName)) {
-			return candidadeName;
-		}
+    private static String createUniqueName(String candidadeName, Set<String> takenNames) throws UniqueNameNotFound {
+        if (!takenNames.contains(candidadeName)) {
+            return candidadeName;
+        }
 
-		for (int i = 2; i < Integer.MAX_VALUE; i++) {
-			String candidadeNameWithSuffix = candidadeName + " (" + i + ")";
-			if (!takenNames.contains(candidadeNameWithSuffix)) {
-				return candidadeNameWithSuffix;
-			}
-		}
+        for (int i = 2; i < Integer.MAX_VALUE; i++) {
+            String candidadeNameWithSuffix = candidadeName + " (" + i + ")";
+            if (!takenNames.contains(candidadeNameWithSuffix)) {
+                return candidadeNameWithSuffix;
+            }
+        }
 
-		throw new UniqueNameNotFound();
-	}
-	
+        throw new UniqueNameNotFound();
+    }
+
 }

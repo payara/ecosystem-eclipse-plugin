@@ -20,28 +20,26 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 public class RunnerAsadminRestoreDomain extends RunnerAsadmin {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Logger instance for this class. */
-    private static final Logger LOGGER
-            = new Logger(RunnerAsadminRestoreDomain.class);
+    private static final Logger LOGGER = new Logger(RunnerAsadminRestoreDomain.class);
 
     /** Specifies the domain dir. */
     private static final String DOMAIN_DIR_PARAM = "--domaindir";
-    
+
     /** Specifies the directory where the backup archive is stored. */
     private static final String BACKUP_DIR_PARAM = "--backupdir";
-    
+
     /** Specifies the name of the backup archive. */
     private static final String BACKUP_FILE_PARAM = "--filename";
-    
+
     /** Specifies the force param needed to restore from non-standard location. */
     private static final String FORCE_PARAM = "--force";
-   
 
     ////////////////////////////////////////////////////////////////////////////
-    // Static methods                                                         //
+    // Static methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
@@ -57,7 +55,7 @@ public class RunnerAsadminRestoreDomain extends RunnerAsadmin {
             throw new CommandException(LOGGER.excMsg(METHOD, "nullValue"));
         }
         if (command instanceof CommandRestoreDomain) {
-            restoreCommand = (CommandRestoreDomain)command;
+            restoreCommand = (CommandRestoreDomain) command;
         } else {
             throw new CommandException(
                     LOGGER.excMsg(METHOD, "illegalInstance"));
@@ -79,7 +77,7 @@ public class RunnerAsadminRestoreDomain extends RunnerAsadmin {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Holding data for command execution. */
@@ -87,14 +85,14 @@ public class RunnerAsadminRestoreDomain extends RunnerAsadmin {
     final CommandRestoreDomain command;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Constructs an instance of administration command executor using
-     * command line asadmin interface.
+     * Constructs an instance of administration command executor using command line asadmin interface.
      * <p/>
-     * @param server  GlassFish server entity object.
+     * 
+     * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
     public RunnerAsadminRestoreDomain(final GlassFishServer server,
@@ -102,27 +100,26 @@ public class RunnerAsadminRestoreDomain extends RunnerAsadmin {
         super(server, command, query(server, command));
         final String METHOD = "init";
         if (command instanceof CommandRestoreDomain) {
-            this.command = (CommandRestoreDomain)command;
+            this.command = (CommandRestoreDomain) command;
         } else {
             throw new CommandException(
                     LOGGER.excMsg(METHOD, "illegalInstance"));
         }
     }
- 
+
     ////////////////////////////////////////////////////////////////////////////
-    // Implemented Abstract Methods                                           //
+    // Implemented Abstract Methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Create internal <code>ProcessIOContent</code> object corresponding
-     * to command execution IO.
+     * Create internal <code>ProcessIOContent</code> object corresponding to command execution IO.
      */
     @Override
     protected ProcessIOContent createProcessIOContent() {
         ProcessIOContent processIOContent = new ProcessIOContent();
         processIOContent.addOutput(
-                new String[] {"Command", "executed successfully"},
-                new String[] {"Command restore-domain failed"});
+                new String[] { "Command", "executed successfully" },
+                new String[] { "Command restore-domain failed" });
         return processIOContent;
     }
 }

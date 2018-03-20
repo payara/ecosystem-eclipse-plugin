@@ -16,26 +16,24 @@ import org.eclipse.payara.tools.sdk.utils.Utils;
 import org.eclipse.payara.tools.server.GlassFishServer;
 
 /**
- * GlassFish instance and cluster administration command with 
- * <code>DEFAULT=&lt;target&gt;</code> query execution using HTTP interface.
+ * GlassFish instance and cluster administration command with <code>DEFAULT=&lt;target&gt;</code>
+ * query execution using HTTP interface.
  * <p/>
- * Contains common code for commands that are called with
- * <code>DEFAULT=&lt;target&gt;</code> query string. Individual child classes
- * are not needed at this stage.
- * Class implements GlassFish server administration functionality trough HTTP
- * interface.
+ * Contains common code for commands that are called with <code>DEFAULT=&lt;target&gt;</code> query
+ * string. Individual child classes are not needed at this stage. Class implements GlassFish server
+ * administration functionality trough HTTP interface.
  * <p/>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RunnerHttpCreateInstance extends RunnerHttp {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Logger instance for this class. */
-    private static final Logger LOGGER
-            = new Logger(RunnerHttpCreateInstance.class);
+    private static final Logger LOGGER = new Logger(RunnerHttpCreateInstance.class);
 
     /** Start/Stop command <code>DEFAULT</code> param name. */
     private static final String DEFAULT_PARAM = "DEFAULT";
@@ -47,7 +45,7 @@ public class RunnerHttpCreateInstance extends RunnerHttp {
     private static final String CLUSTER_PARAM = "cluster";
 
     ////////////////////////////////////////////////////////////////////////////
-    // Static methods                                                         //
+    // Static methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
@@ -56,8 +54,9 @@ public class RunnerHttpCreateInstance extends RunnerHttp {
      * <code>QUERY :: "DEFAULT" '=' &lt;name&gt; '&' "node" '=' &lt;node&gt;
      *                ['&' "cluster" '=' &lt;cluster&gt; ]</code>
      * <p/>
-     * @param command GlassFish Server Admin Command Entity.
-     *                <code>CommandDisable</code> instance is expected.
+     * 
+     * @param command GlassFish Server Admin Command Entity. <code>CommandDisable</code> instance is
+     * expected.
      * @return Enable/Disable query string for given command.
      */
     private static String query(Command command) {
@@ -67,25 +66,22 @@ public class RunnerHttpCreateInstance extends RunnerHttp {
         String node;
         if (command instanceof CommandCreateInstance) {
             cluster = Utils.sanitizeName(
-                    ((CommandCreateInstance)command).target);
-            if (((CommandTargetName)command).name == null
-                    || ((CommandCreateInstance)command).node == null) {
+                    ((CommandCreateInstance) command).target);
+            if (((CommandTargetName) command).name == null
+                    || ((CommandCreateInstance) command).node == null) {
                 throw new CommandException(LOGGER.excMsg(METHOD, "nullValue"));
             }
-            name = Utils.sanitizeName(((CommandCreateInstance)command).name);
-            node = Utils.sanitizeName(((CommandCreateInstance)command).node);
-        }
-        else {
+            name = Utils.sanitizeName(((CommandCreateInstance) command).name);
+            node = Utils.sanitizeName(((CommandCreateInstance) command).node);
+        } else {
             throw new CommandException(
                     LOGGER.excMsg(METHOD, "illegalInstance"));
         }
         StringBuilder sb = new StringBuilder(
                 DEFAULT_PARAM.length() + 1 + name.length()
-                + 1 + NODE_PARAM.length() + 1 + node.length() + (
-                    cluster != null
-                        ? 1 + CLUSTER_PARAM.length() + 1 + cluster.length()
-                        : 0
-                )                );
+                        + 1 + NODE_PARAM.length() + 1 + node.length() + (cluster != null
+                                ? 1 + CLUSTER_PARAM.length() + 1 + cluster.length()
+                                : 0));
         sb.append(DEFAULT_PARAM).append(PARAM_ASSIGN_VALUE).append(name);
         sb.append(PARAM_SEPARATOR);
         sb.append(NODE_PARAM).append(PARAM_ASSIGN_VALUE).append(node);
@@ -97,14 +93,14 @@ public class RunnerHttpCreateInstance extends RunnerHttp {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Constructs an instance of administration command executor using
-     * HTTP interface.
+     * Constructs an instance of administration command executor using HTTP interface.
      * <p/>
-     * @param server  GlassFish server entity object.
+     * 
+     * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
     public RunnerHttpCreateInstance(final GlassFishServer server,
@@ -113,16 +109,17 @@ public class RunnerHttpCreateInstance extends RunnerHttp {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Implemented Abstract Methods                                           //
+    // Implemented Abstract Methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Extracts result value from internal <code>Manifest</code> object.
-     * Value of <i>message</i> attribute in <code>Manifest</code> object is
-     * stored as <i>value</i> into <code>ResultString</code> result object.
+     * Extracts result value from internal <code>Manifest</code> object. Value of <i>message</i>
+     * attribute in <code>Manifest</code> object is stored as <i>value</i> into
+     * <code>ResultString</code> result object.
      * <p/>
-     * @return true if result was extracted correctly. <code>null</code>
-     *         <i>message</i>value is considered as failure.
+     * 
+     * @return true if result was extracted correctly. <code>null</code> <i>message</i>value is
+     * considered as failure.
      */
     @Override
     protected boolean processResponse() {

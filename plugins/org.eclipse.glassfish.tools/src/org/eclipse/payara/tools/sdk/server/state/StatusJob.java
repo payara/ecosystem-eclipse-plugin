@@ -44,12 +44,13 @@ import org.eclipse.payara.tools.sdk.utils.LinkedList;
 /**
  * Server status check internal data for individual GlassFish server instance.
  * <p/>
+ * 
  * @author Tomas Kraus
  */
 public class StatusJob {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Inner classes                                                          //
+    // Inner classes //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
@@ -60,20 +61,21 @@ public class StatusJob {
         /** Logger instance for this class. */
         private static final Logger LOGGER = new Logger(Listener.class);
 
-        /** Should contain {@link Runner} object when it's {@link Runner#call()}
-         *  method is executed. */
+        /**
+         * Should contain {@link Runner} object when it's {@link Runner#call()} method is executed.
+         */
         Runner runner;
 
-        /** Server status check internal data for individual GlassFish
-         *  server instance. */
+        /**
+         * Server status check internal data for individual GlassFish server instance.
+         */
         final StatusJob job;
 
         /**
-         * Constructs an instance of common command execution
-         * state listener.
+         * Constructs an instance of common command execution state listener.
          * <p/>
-         * @param job Server status check internal data for individual GlassFish
-         *            server instance. 
+         * 
+         * @param job Server status check internal data for individual GlassFish server instance.
          */
         private Listener(final StatusJob job) {
             this.runner = null;
@@ -81,9 +83,9 @@ public class StatusJob {
         }
 
         /**
-         * Set {@link Runner} object instance before it's {@link Runner#call()}
-         * method is executed.
+         * Set {@link Runner} object instance before it's {@link Runner#call()} method is executed.
          * <p/>
+         * 
          * @param runner GlassFish server command execution runner.
          */
         void setRunner(final Runner runner) {
@@ -91,48 +93,44 @@ public class StatusJob {
         }
 
         /**
-         * Clear {@link Runner} object instance after {@link Runner#call()}
-         * method is finished.
+         * Clear {@link Runner} object instance after {@link Runner#call()} method is finished.
          */
         void clearRunner() {
             this.runner = null;
         }
-        
+
     }
 
     /**
      * Locations command execution state listener.
      */
-     static class ListenerLocations extends Listener {
+    static class ListenerLocations extends Listener {
 
         /** Logger instance for this class. */
-        private static final Logger LOGGER
-                = new Logger(ListenerLocations.class);
+        private static final Logger LOGGER = new Logger(ListenerLocations.class);
 
         /**
-         * Constructs an instance of <code>__locations</code> command execution
-         * state listener.
+         * Constructs an instance of <code>__locations</code> command execution state listener.
          * <p/>
-         * @param job Server status check internal data for individual GlassFish
-         *            server instance. 
+         * 
+         * @param job Server status check internal data for individual GlassFish server instance.
          */
         private ListenerLocations(final StatusJob job) {
             super(job);
         }
 
         /**
-         * Evaluate <code>__locations</code> response to verify GlassFish server
-         * home and domain directories.
+         * Evaluate <code>__locations</code> response to verify GlassFish server home and domain
+         * directories.
          * <p/>
-         * @return Returns <code>true</code> when <code>__locations</code>
-         *         response matches domain directory in GlassFish server entity
-         *         or <code>false</code> otherwise.
+         * 
+         * @return Returns <code>true</code> when <code>__locations</code> response matches domain directory
+         * in GlassFish server entity or <code>false</code> otherwise.
          */
         private boolean verifyResult() {
             Result result = runner.getResult();
             if (result instanceof ResultMap) {
-                ResultMap<String, String> resultMap
-                        = (ResultMap<String, String>)result;
+                ResultMap<String, String> resultMap = (ResultMap<String, String>) result;
                 return CommandLocation.verifyResult(
                         resultMap, job.status.getServer());
             } else {
@@ -143,105 +141,104 @@ public class StatusJob {
         /**
          * Get notification about state change in {@link Runner} task.
          * <p/>
-         * This is being called in {@link Runner#call()} method execution
-         * context.
+         * This is being called in {@link Runner#call()} method execution context.
          * <p/>
          * <code>String</codce> arguments passed to state listener:<ul>
          *   <li><code>args[0]</code> server name</li>
-         *   <li><code>args[1]</code> administration command</li>
-         *   <li><code>args[2]</code> exception message</li>
-         *   <li><code>args[3]</code> display message in GUI</li></ul>
+         * <li><code>args[1]</code> administration command</li>
+         * <li><code>args[2]</code> exception message</li>
+         * <li><code>args[3]</code> display message in GUI</li>
+         * </ul>
          * <p/>
+         * 
          * @param newState New command execution state.
-         * @param event    Event related to execution state change.
-         * @param args     Additional String arguments.
+         * @param event Event related to execution state change.
+         * @param args Additional String arguments.
          */
         @Override
         public void operationStateChanged(final TaskState newState,
-        final TaskEvent event, final String... args) {
+                final TaskEvent event, final String... args) {
             final String METHOD = "operationStateChanged";
             switch (newState) {
-                case COMPLETED: case FAILED:
-                    String serverName;
-                    String exceptionMeasage;
-                    ResultMap<String, String> taskResult
-                            = (ResultMap<String, String>)runner.getResult();
-                    if (args != null && args.length >= 3) {
-                        serverName = args[0];
-                        exceptionMeasage = args[2];
-                    } else {
-                        serverName = null;
-                        exceptionMeasage = null;
-                    }
-                    // Store task result into job task object
-                    boolean notifyError = false;
-                    synchronized (job.locations) {
-                        switch (newState) {
-                            case COMPLETED:
-                                // Breaks only for true result. False result
-                                // is handeld by FAILED case.
-                                if (verifyResult()) {
-                                    job.locations.setResult(
-                                            new StatusResultLocations(
+            case COMPLETED:
+            case FAILED:
+                String serverName;
+                String exceptionMeasage;
+                ResultMap<String, String> taskResult = (ResultMap<String, String>) runner.getResult();
+                if (args != null && args.length >= 3) {
+                    serverName = args[0];
+                    exceptionMeasage = args[2];
+                } else {
+                    serverName = null;
+                    exceptionMeasage = null;
+                }
+                // Store task result into job task object
+                boolean notifyError = false;
+                synchronized (job.locations) {
+                    switch (newState) {
+                    case COMPLETED:
+                        // Breaks only for true result. False result
+                        // is handeld by FAILED case.
+                        if (verifyResult()) {
+                            job.locations.setResult(
+                                    new StatusResultLocations(
                                             taskResult,
                                             GlassFishStatusCheckResult.SUCCESS,
                                             event));
-                                    break;
-                                }
-                            case FAILED:
-                                job.locations.setResult(
-                                        new StatusResultLocations(taskResult,
+                            break;
+                        }
+                    case FAILED:
+                        job.locations.setResult(
+                                new StatusResultLocations(taskResult,
                                         GlassFishStatusCheckResult.FAILED,
                                         event));
-                                notifyError = true;
-                                break;
-                        }
+                        notifyError = true;
+                        break;
                     }
-                    LOGGER.log(Level.FINE, METHOD, "result",
-                            job.locations.getResult().status.toString());
-                    if (notifyError) {
-                        synchronized (job) {
-                            job.notifyErrorListeners(job.locations);
-                        }
+                }
+                LOGGER.log(Level.FINE, METHOD, "result",
+                        job.locations.getResult().status.toString());
+                if (notifyError) {
+                    synchronized (job) {
+                        job.notifyErrorListeners(job.locations);
                     }
-                    commandTransition(job, job.locations);
+                }
+                commandTransition(job, job.locations);
             }
 
         }
-        
+
     }
-   
+
     /**
      * Locations command execution state listener.
      */
-     static class ListenerVersion extends Listener {
+    static class ListenerVersion extends Listener {
 
         /** Logger instance for this class. */
         private static final Logger LOGGER = new Logger(ListenerVersion.class);
 
         /**
-         * Constructs an instance of <code>version</code> command execution
-         * state listener.
+         * Constructs an instance of <code>version</code> command execution state listener.
          * <p/>
-         * @param job Server status check internal data for individual GlassFish
-         *            server instance. 
+         * 
+         * @param job Server status check internal data for individual GlassFish server instance.
          */
         private ListenerVersion(final StatusJob job) {
             super(job);
         }
 
         /**
-         * Evaluate <code>version</code> response to verify GlassFish server
-         * version.
+         * Evaluate <code>version</code> response to verify GlassFish server version.
          * <p/>
-         * @return Returns <code>true</code> when <code>version</code>
-         *         response matches version in GlassFish server entity
-         *         or <code>false</code> otherwise.
+         * 
+         * @return Returns <code>true</code> when <code>version</code> response matches version in GlassFish
+         * server entity or <code>false</code> otherwise.
          */
         private boolean verifyResult() {
             Result result = runner.getResult();
             if (result instanceof ResultString) {
-                ResultString resultString = (ResultString)result;
+                ResultString resultString = (ResultString) result;
                 return CommandVersion.verifyResult(
                         resultString, job.status.getServer());
             } else {
@@ -252,87 +249,87 @@ public class StatusJob {
         /**
          * Get notification about state change in {@link Runner} task.
          * <p/>
-         * This is being called in {@link Runner#call()} method execution
-         * context.
+         * This is being called in {@link Runner#call()} method execution context.
          * <p/>
          * <code>String</codce> arguments passed to state listener:<ul>
          *   <li><code>args[0]</code> server name</li>
-         *   <li><code>args[1]</code> administration command</li>
-         *   <li><code>args[2]</code> exception message</li>
-         *   <li><code>args[3]</code> display message in GUI</li></ul>
+         * <li><code>args[1]</code> administration command</li>
+         * <li><code>args[2]</code> exception message</li>
+         * <li><code>args[3]</code> display message in GUI</li>
+         * </ul>
          * <p/>
+         * 
          * @param newState New command execution state.
-         * @param event    Event related to execution state change.
-         * @param args     Additional String arguments.
+         * @param event Event related to execution state change.
+         * @param args Additional String arguments.
          */
         @Override
         public void operationStateChanged(final TaskState newState,
-        final TaskEvent event, final String... args) {
+                final TaskEvent event, final String... args) {
             final String METHOD = "operationStateChanged";
             switch (newState) {
-                case COMPLETED: case FAILED:
-                    String serverName;
-                    String exceptionMeasage;
-                    ResultString taskResult = (ResultString)runner.getResult();
-                    if (args != null && args.length >= 3) {
-                        serverName = args[0];
-                        exceptionMeasage = args[2];
-                    } else {
-                        serverName = null;
-                        exceptionMeasage = null;
-                    }
-                    // Store task result into job task object
-                    boolean notifyError = false;
-                    synchronized (job.version) {
-                        switch (newState) {
-                            case COMPLETED:
-                                // Breaks only for true result. False result
-                                // is handeld by FAILED case.
-                                if (verifyResult()) {
-                                    job.version.setResult(
-                                            new StatusResultVersion(
+            case COMPLETED:
+            case FAILED:
+                String serverName;
+                String exceptionMeasage;
+                ResultString taskResult = (ResultString) runner.getResult();
+                if (args != null && args.length >= 3) {
+                    serverName = args[0];
+                    exceptionMeasage = args[2];
+                } else {
+                    serverName = null;
+                    exceptionMeasage = null;
+                }
+                // Store task result into job task object
+                boolean notifyError = false;
+                synchronized (job.version) {
+                    switch (newState) {
+                    case COMPLETED:
+                        // Breaks only for true result. False result
+                        // is handeld by FAILED case.
+                        if (verifyResult()) {
+                            job.version.setResult(
+                                    new StatusResultVersion(
                                             taskResult,
                                             GlassFishStatusCheckResult.SUCCESS,
                                             event));
-                                    break;
-                                }
-                            case FAILED:
-                                job.version.setResult(
-                                        new StatusResultVersion(taskResult,
+                            break;
+                        }
+                    case FAILED:
+                        job.version.setResult(
+                                new StatusResultVersion(taskResult,
                                         GlassFishStatusCheckResult.FAILED,
                                         event));
-                                notifyError = true;
-                                break;
-                        }
+                        notifyError = true;
+                        break;
                     }
-                    LOGGER.log(Level.FINE, METHOD, "result",
-                            job.version.getResult().status.toString());
-                    if (notifyError) {
-                        synchronized (job) {
-                            job.notifyErrorListeners(job.version);
-                        }
+                }
+                LOGGER.log(Level.FINE, METHOD, "result",
+                        job.version.getResult().status.toString());
+                if (notifyError) {
+                    synchronized (job) {
+                        job.notifyErrorListeners(job.version);
                     }
-                    commandTransition(job, job.version);
+                }
+                commandTransition(job, job.version);
             }
         }
-        
+
     }
 
-     /**
+    /**
      * Administrator port check task state listener.
      */
-     static class ListenerPortCheck extends Listener {
+    static class ListenerPortCheck extends Listener {
 
         /** Logger instance for this class. */
-        private static final Logger LOGGER
-                = new Logger(ListenerPortCheck.class);
+        private static final Logger LOGGER = new Logger(ListenerPortCheck.class);
 
         /**
-         * Constructs an instance of <code>version</code> command execution
-         * state listener.
+         * Constructs an instance of <code>version</code> command execution state listener.
          * <p/>
-         * @param job Server status check internal data for individual GlassFish
-         *            server instance. 
+         * 
+         * @param job Server status check internal data for individual GlassFish server instance.
          */
         private ListenerPortCheck(final StatusJob job) {
             super(job);
@@ -341,24 +338,24 @@ public class StatusJob {
         /**
          * Get notification about state change in running task.
          * <p/>
-         * This is being called in {@link Runnable#run()} method execution
-         * context.
+         * This is being called in {@link Runnable#run()} method execution context.
          * <p/>
          * <code>String</codce> arguments passed to state listener:<ul>
          *   <li><code>args[0]</code> host name</li>
-         *   <li><code>args[1]</code> port check task name</li>
-         *   <li><code>args[2]</code> exception message</li>
+         * <li><code>args[1]</code> port check task name</li>
+         * <li><code>args[2]</code> exception message</li>
          * <p/>
+         * 
          * @param newState New command execution state.
-         * @param event    Event related to execution state change.
-         * @param args     Additional String arguments.
+         * @param event Event related to execution state change.
+         * @param args Additional String arguments.
          */
         @Override
         public void operationStateChanged(final TaskState newState,
-        final TaskEvent event, final String... args) {
+                final TaskEvent event, final String... args) {
             final String METHOD = "operationStateChanged";
             // Store task result into job task object
-            AdminPortTask task = (AdminPortTask)job.portCheck.getTask();
+            AdminPortTask task = (AdminPortTask) job.portCheck.getTask();
             job.portCheck.setResult(task.getResult());
             LOGGER.log(Level.FINE, METHOD, "result",
                     job.portCheck.getResult().status.toString());
@@ -366,20 +363,21 @@ public class StatusJob {
             portCheckTransition(job, job.portCheck);
         }
 
-     }
+    }
 
-     /**
-      * Individual status check task data.
-      */
-     static class Task implements GlassFishStatusTask {
+    /**
+     * Individual status check task data.
+     */
+    static class Task implements GlassFishStatusTask {
 
-        /** Server status task execution listener for asynchronous
-         * command execution. */
+        /**
+         * Server status task execution listener for asynchronous command execution.
+         */
         private Listener listener;
 
         /** Last command task execution result. */
         StatusResult result;
-        
+
         /** Task thread currently being executed. */
         AbstractTask task;
 
@@ -395,9 +393,9 @@ public class StatusJob {
         /**
          * Constructs an instance of individual job task.
          * <p/>
-         * @param type     Server status check type.
-         * @param listener Server status task execution listener
-         *                 for asynchronous command execution.
+         * 
+         * @param type Server status check type.
+         * @param listener Server status task execution listener for asynchronous command execution.
          */
         private Task(final GlassFishStatusCheck type,
                 final Listener listener) {
@@ -406,26 +404,24 @@ public class StatusJob {
             this.result = null;
             this.task = null;
             this.future = null;
-            this.listeners = new TaskStateListener[] {listener};
+            this.listeners = new TaskStateListener[] { listener };
         }
 
         /**
-         * Get server status task execution listener for asynchronous
-         * command execution.
+         * Get server status task execution listener for asynchronous command execution.
          * <p/>
-         * @return Server status task execution listener
-         *         for asynchronous command execution.
+         * 
+         * @return Server status task execution listener for asynchronous command execution.
          */
         Listener getListener() {
             return listener;
         }
 
         /**
-         * Set server status task execution listener for asynchronous
-         * command execution.
+         * Set server status task execution listener for asynchronous command execution.
          * <p/>
-         * @param listener Server status task execution listener
-         *                 for asynchronous command execution.
+         * 
+         * @param listener Server status task execution listener for asynchronous command execution.
          */
         void setListener(final Listener listener) {
             this.listener = listener;
@@ -434,6 +430,7 @@ public class StatusJob {
         /**
          * Get server status check type.
          * <p/>
+         * 
          * @return Server status check type.
          */
         @Override
@@ -444,6 +441,7 @@ public class StatusJob {
         /**
          * Get last command task execution result.
          * <p/>
+         * 
          * @return Last command task execution result.
          */
         StatusResult getResult() {
@@ -453,6 +451,7 @@ public class StatusJob {
         /**
          * Set last command task execution result.
          * <p/>
+         * 
          * @param result Last command task execution result.
          */
         void setResult(final StatusResult result) {
@@ -462,6 +461,7 @@ public class StatusJob {
         /**
          * Get last command task execution status.
          * <p/>
+         * 
          * @return Last command task execution status.
          */
         @Override
@@ -472,6 +472,7 @@ public class StatusJob {
         /**
          * Get last command task execution status.
          * <p/>
+         * 
          * @return Last command task execution status.
          */
         @Override
@@ -482,6 +483,7 @@ public class StatusJob {
         /**
          * Get task thread currently being executed.
          * <p/>
+         * 
          * @return Task thread currently being executed.
          */
         AbstractTask getTask() {
@@ -491,6 +493,7 @@ public class StatusJob {
         /**
          * Set task thread currently being executed.
          * <p/>
+         * 
          * @param task Task thread currently being executed.
          */
         void setTask(final AbstractTask task) {
@@ -500,6 +503,7 @@ public class StatusJob {
         /**
          * Get all task listeners.
          * <p/>
+         * 
          * @return All task listeners.
          */
         TaskStateListener[] getListeners() {
@@ -509,6 +513,7 @@ public class StatusJob {
         /**
          * Get task execution handler.
          * <p/>
+         * 
          * @return Task execution handler.
          */
         ScheduledFuture getFuture() {
@@ -518,6 +523,7 @@ public class StatusJob {
         /**
          * Set task execution handler.
          * <p/>
+         * 
          * @param future Task execution handler.
          */
         void setFuture(final ScheduledFuture future) {
@@ -527,6 +533,7 @@ public class StatusJob {
         /**
          * Set task execution handler and thread currently being executed.
          * <p/>
+         * 
          * @param task Task thread currently being executed.
          * @param future Task execution handler.
          */
@@ -547,35 +554,37 @@ public class StatusJob {
         /**
          * Evaluate task execution result.
          * <p/>
-         * Task will fail only when task is scheduled for execution
-         * (<code>task</code> value is not null) and stored task result
-         * is <code>FAILED</code> or does not exist.
+         * Task will fail only when task is scheduled for execution (<code>task</code> value is not null)
+         * and stored task result is <code>FAILED</code> or does not exist.
          * <p/>
+         * 
          * @return Task execution result evaluation.
          */
         GlassFishStatusCheckResult evalResult() {
             return task == null
-                    ? GlassFishStatusCheckResult.SUCCESS : result == null
-                    ? GlassFishStatusCheckResult.FAILED : result.status;
+                    ? GlassFishStatusCheckResult.SUCCESS
+                    : result == null
+                            ? GlassFishStatusCheckResult.FAILED
+                            : result.status;
         }
 
-     }
+    }
 
-     /**
-      * Individual administrator command status check task data.
-      */
-     static class RunnerTask extends Task {
+    /**
+     * Individual administrator command status check task data.
+     */
+    static class RunnerTask extends Task {
 
-         /** Server administration command to be executed. */
-         private final Command command;
+        /** Server administration command to be executed. */
+        private final Command command;
 
         /**
          * Constructs an instance of individual job runner task.
          * <p/>
-         * @param type     Server status check type.
-         * @param cmd      Server administration command to be executed.
-         * @param listener Server status task execution listener
-         *                 for asynchronous command execution.
+         * 
+         * @param type Server status check type.
+         * @param cmd Server administration command to be executed.
+         * @param listener Server status task execution listener for asynchronous command execution.
          */
         private RunnerTask(final GlassFishStatusCheck type,
                 final Command cmd, final Listener listener) {
@@ -586,56 +595,53 @@ public class StatusJob {
         /**
          * Get server administration command to be executed.
          * <p/>
+         * 
          * @return Server administration command to be executed.
          */
         Command getCommand() {
             return command;
         }
 
-     }
+    }
 
-     /**
-      * Individual administrator command status check task data using
-      * <code>version</code> command.
-      */
-     static class RunnerTaskLocations extends RunnerTask {
+    /**
+     * Individual administrator command status check task data using <code>version</code> command.
+     */
+    static class RunnerTaskLocations extends RunnerTask {
 
         /**
-         * Constructs an instance of individual job runner task running
-         * <code>__locations</code> command.
+         * Constructs an instance of individual job runner task running <code>__locations</code> command.
          * <p/>
-         * @param listener Server status task execution listener
-         *                 for asynchronous command execution.
+         * 
+         * @param listener Server status task execution listener for asynchronous command execution.
          */
         private RunnerTaskLocations(final Listener listener) {
             super(GlassFishStatusCheck.LOCATIONS,
                     new CommandLocation(), listener);
         }
-         
-     }
 
-     /**
-      * Individual administrator command status check task data using
-      * <code>version</code> command.
-      */
-     static class RunnerTaskVersion extends RunnerTask {
+    }
+
+    /**
+     * Individual administrator command status check task data using <code>version</code> command.
+     */
+    static class RunnerTaskVersion extends RunnerTask {
 
         /**
-         * Constructs an instance of individual job runner task running
-         * <code>version</code> command.
+         * Constructs an instance of individual job runner task running <code>version</code> command.
          * <p/>
-         * @param listener Server status task execution listener
-         *                 for asynchronous command execution.
+         * 
+         * @param listener Server status task execution listener for asynchronous command execution.
          */
         private RunnerTaskVersion(final Listener listener) {
             super(GlassFishStatusCheck.VERSION,
                     new CommandVersion(), listener);
         }
-         
-     }
+
+    }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Logger instance for this class. */
@@ -643,41 +649,42 @@ public class StatusJob {
 
     /** State transition depending on administrator port check result . */
     private static final StatusJobState[][] portCheckTransition = {
-       //       SUCCESS   FAILED
-        {      NO_CHECK,      NO_CHECK }, // NO_CHECK
-        {  UNKNOWN_PORT,       OFFLINE }, // UNKNOWN
-        {  UNKNOWN_PORT,       OFFLINE }, // UNKNOWN_PORT
-        {  OFFLINE_PORT,       OFFLINE }, // OFFLINE
-        {  OFFLINE_PORT,       OFFLINE }, // OFFLINE_PORT
-        {  STARTUP_PORT,       STARTUP }, // STARTUP
-        {  STARTUP_PORT,       OFFLINE }, // STARTUP_PORT
-        {        ONLINE,  OFFLINE_PORT }, // ONLINE
-        {      SHUTDOWN, SHUTDOWN_PORT }, // SHUTDOWN
-        { SHUTDOWN_PORT,       OFFLINE }  // SHUTDOWN_PORT
+            // SUCCESS FAILED
+            { NO_CHECK, NO_CHECK }, // NO_CHECK
+            { UNKNOWN_PORT, OFFLINE }, // UNKNOWN
+            { UNKNOWN_PORT, OFFLINE }, // UNKNOWN_PORT
+            { OFFLINE_PORT, OFFLINE }, // OFFLINE
+            { OFFLINE_PORT, OFFLINE }, // OFFLINE_PORT
+            { STARTUP_PORT, STARTUP }, // STARTUP
+            { STARTUP_PORT, OFFLINE }, // STARTUP_PORT
+            { ONLINE, OFFLINE_PORT }, // ONLINE
+            { SHUTDOWN, SHUTDOWN_PORT }, // SHUTDOWN
+            { SHUTDOWN_PORT, OFFLINE } // SHUTDOWN_PORT
     };
 
     /** State transition depending on administrator command execution result. */
     private static final StatusJobState[][] commandTransition = {
-       //       SUCCESS   FAILED
-        {      NO_CHECK,      NO_CHECK }, // NO_CHECK
-        {        ONLINE,       UNKNOWN }, // UNKNOWN
-        {        ONLINE,       OFFLINE }, // UNKNOWN_PORT
-        {        ONLINE,       OFFLINE }, // OFFLINE
-        {        ONLINE,  OFFLINE_PORT }, // OFFLINE_PORT
-        {        ONLINE,       STARTUP }, // STARTUP
-        {        ONLINE,  STARTUP_PORT }, // STARTUP_PORT
-        {        ONLINE,  OFFLINE_PORT }, // ONLINE
-        {      SHUTDOWN, SHUTDOWN_PORT }, // SHUTDOWN
-        {      SHUTDOWN, SHUTDOWN_PORT }  // SHUTDOWN_PORT
+            // SUCCESS FAILED
+            { NO_CHECK, NO_CHECK }, // NO_CHECK
+            { ONLINE, UNKNOWN }, // UNKNOWN
+            { ONLINE, OFFLINE }, // UNKNOWN_PORT
+            { ONLINE, OFFLINE }, // OFFLINE
+            { ONLINE, OFFLINE_PORT }, // OFFLINE_PORT
+            { ONLINE, STARTUP }, // STARTUP
+            { ONLINE, STARTUP_PORT }, // STARTUP_PORT
+            { ONLINE, OFFLINE_PORT }, // ONLINE
+            { SHUTDOWN, SHUTDOWN_PORT }, // SHUTDOWN
+            { SHUTDOWN, SHUTDOWN_PORT } // SHUTDOWN_PORT
     };
-   
+
     ////////////////////////////////////////////////////////////////////////////
-    // Static methods                                                         //
+    // Static methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Evaluate check result depending on running tasks and their result.
      * <p/>
+     * 
      * @param job Server status job.
      * @return Check result depending on running tasks and their result.
      */
@@ -687,10 +694,11 @@ public class StatusJob {
     }
 
     /**
-     * Handles state transition and server status check tasks reschedule
-     * for administrator port check result evaluation.
+     * Handles state transition and server status check tasks reschedule for administrator port check
+     * result evaluation.
      * <p/>
-     * @param job  Server status job.
+     * 
+     * @param job Server status job.
      * @param task GlassFish server status check task details.
      */
     private static void portCheckTransition(
@@ -701,11 +709,10 @@ public class StatusJob {
         synchronized (job) {
             StatusJobState oldInternalState = job.state;
             oldState = job.status.getStatus();
-            job.state = portCheckTransition[job.state.ordinal()]
-                    [job.portCheck.result.status.ordinal()];
+            job.state = portCheckTransition[job.state.ordinal()][job.portCheck.result.status.ordinal()];
             LOGGER.log(Level.FINE, METHOD, "transition",
-                    new String[] {job.portCheck.result.status.toString(),
-                oldInternalState.toString(), job.state.toString()});
+                    new String[] { job.portCheck.result.status.toString(),
+                            oldInternalState.toString(), job.state.toString() });
             if (oldInternalState != job.state) {
                 StatusScheduler scheduler = StatusScheduler.getInstance();
                 scheduler.remove(job);
@@ -713,7 +720,7 @@ public class StatusJob {
             }
             newState = job.state.toGlassFishStatus();
             if (oldState != newState) {
-                job.status.setStatus(newState);                
+                job.status.setStatus(newState);
             }
         }
         if (job.portCheck.result.status == GlassFishStatusCheckResult.FAILED) {
@@ -726,10 +733,11 @@ public class StatusJob {
     }
 
     /**
-     * Handles state transition and server status check tasks reschedule
-     * for administrator command execution result evaluation.
+     * Handles state transition and server status check tasks reschedule for administrator command
+     * execution result evaluation.
      * <p/>
-     * @param job  Server status job.
+     * 
+     * @param job Server status job.
      * @param task GlassFish server status check task details.
      */
     private static void commandTransition(
@@ -741,10 +749,9 @@ public class StatusJob {
         synchronized (job) {
             StatusJobState oldInternalState = job.state;
             oldState = job.status.getStatus();
-            job.state = commandTransition[job.state.ordinal()]
-                    [status.ordinal()];
-            LOGGER.log(Level.FINE, METHOD, "transition", new String[] {status.
-                toString(), oldInternalState.toString(), job.state.toString()});
+            job.state = commandTransition[job.state.ordinal()][status.ordinal()];
+            LOGGER.log(Level.FINE, METHOD, "transition",
+                    new String[] { status.toString(), oldInternalState.toString(), job.state.toString() });
             if (oldInternalState != job.state) {
                 StatusScheduler scheduler = StatusScheduler.getInstance();
                 scheduler.remove(job);
@@ -752,7 +759,7 @@ public class StatusJob {
             }
             newState = job.state.toGlassFishStatus();
             if (oldState != newState) {
-                job.status.setStatus(newState);                
+                job.status.setStatus(newState);
             }
         }
         if (oldState != newState) {
@@ -762,7 +769,7 @@ public class StatusJob {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** GlassFish server status entity. */
@@ -790,12 +797,13 @@ public class StatusJob {
     private final LinkedList<GlassFishStatusListener> errorListeners;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Constructs an instance of GlassFish server status check internal data.
      * <p/>
+     * 
      * @param status GlassFish server status entity.
      */
     StatusJob(final GlassFishStatusEntity status) {
@@ -814,12 +822,13 @@ public class StatusJob {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Getters and Setters                                                    //
+    // Getters and Setters //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * get GlassFish server status entity.
      * <p/>
+     * 
      * @return GlassFish server status entity.
      */
     GlassFishStatusEntity getStatus() {
@@ -829,6 +838,7 @@ public class StatusJob {
     /**
      * Get server status job internal state.
      * <p/>
+     * 
      * @return Server status job internal state.
      */
     StatusJobState getState() {
@@ -838,6 +848,7 @@ public class StatusJob {
     /**
      * Get server status job internal state.
      * <p/>
+     * 
      * @param state Server status job internal state.
      */
     void setState(final StatusJobState state) {
@@ -847,6 +858,7 @@ public class StatusJob {
     /**
      * Get administrator port check asynchronous task.
      * <p/>
+     * 
      * @return Administrator port check asynchronous task.
      */
     Task getPortCheck() {
@@ -856,6 +868,7 @@ public class StatusJob {
     /**
      * Get command <code>__locations</code> asynchronous task.
      * <p/>
+     * 
      * @return Command <code>__locations</code> asynchronous task.
      */
     RunnerTask getLocations() {
@@ -865,6 +878,7 @@ public class StatusJob {
     /**
      * Get command <code>version</code> asynchronous task.
      * <p/>
+     * 
      * @return Command <code>version</code> asynchronous task.
      */
     RunnerTask getVersion() {
@@ -872,45 +886,43 @@ public class StatusJob {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Methods                                                                //
+    // Methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Attempts to restart job switching it into <code>UNKNOWN_PORT</code> state
-     * to restart status checking with fastest possible check.
+     * Attempts to restart job switching it into <code>UNKNOWN_PORT</code> state to restart status
+     * checking with fastest possible check.
      * <p/>
-     * Job can be switched into <code>UNKNOWN_PORT</code> state only when it's
-     * in <code>NO_CHECK</code> state. This is equivalent to state transition
-     * methods.
-     * If listener is provided, it will be registered to receive any state
-     * change notification following status checking restart. This listener
-     * won't be unregistered automatically so caller should handle it properly.
+     * Job can be switched into <code>UNKNOWN_PORT</code> state only when it's in <code>NO_CHECK</code>
+     * state. This is equivalent to state transition methods. If listener is provided, it will be
+     * registered to receive any state change notification following status checking restart. This
+     * listener won't be unregistered automatically so caller should handle it properly.
      * <p/>
      * Called by job tasks scheduler.
      * <p/>
+     * 
      * @param scheduler Job tasks scheduler calling this method.
-     * @param listener  Server status listener to be registered when status
-     *                  checking is being restarted.
-     * @return Value of <code>true</code> when job was successfully switched
-     *         into startup mode or false otherwise.
+     * @param listener Server status listener to be registered when status checking is being restarted.
+     * @return Value of <code>true</code> when job was successfully switched into startup mode or false
+     * otherwise.
      */
     boolean restartJob(final StatusScheduler scheduler,
             final GlassFishStatusListener listener) {
         boolean result;
         synchronized (this) {
             switch (state) {
-                case NO_CHECK:
-                    state = UNKNOWN_PORT;
-                    status.setStatus(state.toGlassFishStatus());
-                    scheduler.remove(this);
-                    scheduler.reschedule(this);
-                    result = true;
-                    if (listener != null) {
-                        addNewStatusListener(listener, GlassFishStatus.values());
-                    }
-                    break;
-                default:
-                    result = false;
+            case NO_CHECK:
+                state = UNKNOWN_PORT;
+                status.setStatus(state.toGlassFishStatus());
+                scheduler.remove(this);
+                scheduler.reschedule(this);
+                result = true;
+                if (listener != null) {
+                    addNewStatusListener(listener, GlassFishStatus.values());
+                }
+                break;
+            default:
+                result = false;
             }
         }
         return result;
@@ -919,11 +931,12 @@ public class StatusJob {
     /**
      * Stops job switching it into <code>NO_CHECK</code> state.
      * <p/>
-     * Job can be switched into <code>NO_CHECK</code> state from any state.
-     * This is equivalent to state transition methods.
+     * Job can be switched into <code>NO_CHECK</code> state from any state. This is equivalent to state
+     * transition methods.
      * <p/>
      * Called by job tasks scheduler.
      * <p/>
+     * 
      * @param scheduler Job tasks scheduler calling this method.
      */
     void stopJob(StatusScheduler scheduler) {
@@ -942,11 +955,11 @@ public class StatusJob {
     /**
      * Switches job into <code>STARTUP</code> state.
      * <p/>
+     * 
      * @param scheduler Job tasks scheduler calling this method.
-     * @param listener  Server status listener to be registered together with
-     *                  switching into startup mode.
-     * @param newState  Notify about server status change for new states
-     *                  provided as this argument.
+     * @param listener Server status listener to be registered together with switching into startup
+     * mode.
+     * @param newState Notify about server status change for new states provided as this argument.
      */
     private void startStateImpl(StatusScheduler scheduler,
             final GlassFishStatusListener listener,
@@ -967,21 +980,20 @@ public class StatusJob {
     /**
      * Attempts to switch job into <code>STARTUP</code> state.
      * <p/>
-     * Job can be switched into <code>STARTUP</code> state only when it's
-     * in <code>OFFLINE</code> or <code>OFFLINE_PORT</code> state. This is
-     * equivalent to state transition methods.
+     * Job can be switched into <code>STARTUP</code> state only when it's in <code>OFFLINE</code> or
+     * <code>OFFLINE_PORT</code> state. This is equivalent to state transition methods.
      * <p/>
      * Called by job tasks scheduler.
      * <p/>
+     * 
      * @param scheduler Job tasks scheduler calling this method.
-     * @param force     Force startup mode for GlassFish server instance
-     *                  from any state then <code>true</code>.
-     * @param listener  Server status listener to be registered together with
-     *                  switching into startup mode.
-     * @param newState  Notify about server status change for new states
-     *                  provided as this argument.
-     * @return Value of <code>true</code> when job was successfully switched
-     *         into startup mode or false otherwise.
+     * @param force Force startup mode for GlassFish server instance from any state then
+     * <code>true</code>.
+     * @param listener Server status listener to be registered together with switching into startup
+     * mode.
+     * @param newState Notify about server status change for new states provided as this argument.
+     * @return Value of <code>true</code> when job was successfully switched into startup mode or false
+     * otherwise.
      */
     boolean startState(StatusScheduler scheduler, final boolean force,
             final GlassFishStatusListener listener,
@@ -989,21 +1001,21 @@ public class StatusJob {
         boolean result;
         synchronized (this) {
             switch (state) {
-                case OFFLINE:
-                case OFFLINE_PORT:
+            case OFFLINE:
+            case OFFLINE_PORT:
+                startStateImpl(scheduler, listener, newState);
+                result = true;
+                break;
+            case STARTUP:
+                result = false;
+                break;
+            default:
+                if (force) {
                     startStateImpl(scheduler, listener, newState);
                     result = true;
-                    break;
-                case STARTUP:
+                } else {
                     result = false;
-                    break;
-                default:
-                    if (force) {
-                        startStateImpl(scheduler, listener, newState);
-                        result = true;
-                    } else {
-                        result = false;
-                    }
+                }
             }
         }
         return result;
@@ -1012,30 +1024,30 @@ public class StatusJob {
     /**
      * Attempts to switch job into <code>SHUTDOWN</code> state.
      * <p/>
-     * Job can be switched into <code>SHUTDOWN</code> state only when it's
-     * in <code>ONLINE</code> state. This is equivalent to state transition
-     * methods.
+     * Job can be switched into <code>SHUTDOWN</code> state only when it's in <code>ONLINE</code> state.
+     * This is equivalent to state transition methods.
      * <p/>
      * Called by job tasks scheduler.
      * <p/>
+     * 
      * @param scheduler Job tasks scheduler calling this method.
-     * @return Value of <code>true</code> when job was successfully switched
-     *         into shutdown mode or false otherwise.
+     * @return Value of <code>true</code> when job was successfully switched into shutdown mode or false
+     * otherwise.
      */
     boolean shutdownState(StatusScheduler scheduler) {
         boolean result;
         synchronized (this) {
             switch (state) {
-                case ONLINE:
-                    state = SHUTDOWN;
-                    status.setStatus(state.toGlassFishStatus());
-                    scheduler.remove(this);
-                    scheduler.reschedule(this);
-                    result = true;
-                    notifyNewStatusListeners(status.getStatus(), null);
-                    break;
-                default:
-                    result = false;
+            case ONLINE:
+                state = SHUTDOWN;
+                status.setStatus(state.toGlassFishStatus());
+                scheduler.remove(this);
+                scheduler.reschedule(this);
+                result = true;
+                notifyNewStatusListeners(status.getStatus(), null);
+                break;
+            default:
+                result = false;
             }
         }
         return result;
@@ -1046,6 +1058,7 @@ public class StatusJob {
      * <p/>
      * Called by job tasks scheduler.
      * <p/>
+     * 
      * @param scheduler Job tasks scheduler calling this method.
      */
     void scheduleNew(StatusScheduler scheduler) {
@@ -1057,12 +1070,12 @@ public class StatusJob {
     /**
      * Notify server status change listeners about state change.
      * <p/>
-     * Listeners list access is synchronized but they are just copied into
-     * temporary array and executed outside synchronized block to avoid
-     * deadlocks.
+     * Listeners list access is synchronized but they are just copied into temporary array and executed
+     * outside synchronized block to avoid deadlocks.
      * <p/>
+     * 
      * @param status Current server status.
-     * @param task   GlassFish server status check task details.
+     * @param task GlassFish server status check task details.
      */
     public void notifyNewStatusListeners(
             final GlassFishStatus status, final GlassFishStatusTask task) {
@@ -1075,7 +1088,7 @@ public class StatusJob {
             listeners = newStatusListeners[status.ordinal()];
             call = new GlassFishStatusListener[listeners.size()];
             isElement = listeners.first();
-            while(isElement) {
+            while (isElement) {
                 call[i++] = listeners.getCurrent();
                 isElement = listeners.next();
             }
@@ -1087,15 +1100,14 @@ public class StatusJob {
     }
 
     /**
-     * Notify server status change listeners about current server status
-     * after every check.
+     * Notify server status change listeners about current server status after every check.
      * <p/>
-     * Listeners list access is synchronized but they are just copied into
-     * temporary array and executed outside synchronized block to avoid
-     * deadlocks.
+     * Listeners list access is synchronized but they are just copied into temporary array and executed
+     * outside synchronized block to avoid deadlocks.
      * <p/>
+     * 
      * @param status Current server status.
-     * @param task   GlassFish server status check task details.
+     * @param task GlassFish server status check task details.
      */
     public void notifyCurrStatusListeners(
             final GlassFishStatus status, final GlassFishStatusTask task) {
@@ -1106,7 +1118,7 @@ public class StatusJob {
         synchronized (currStatusListeners) {
             call = new GlassFishStatusListener[currStatusListeners.size()];
             isElement = currStatusListeners.first();
-            while(isElement) {
+            while (isElement) {
                 call[i++] = currStatusListeners.getCurrent();
                 isElement = currStatusListeners.next();
             }
@@ -1120,11 +1132,11 @@ public class StatusJob {
     /**
      * Notify server status check error listeners about every check error.
      * <p/>
-     * Listeners list access is synchronized but they are just copied into
-     * temporary array and executed outside synchronized block to avoid
-     * deadlocks.
+     * Listeners list access is synchronized but they are just copied into temporary array and executed
+     * outside synchronized block to avoid deadlocks.
      * <p/>
-     * @param task   GlassFish server status check task details.
+     * 
+     * @param task GlassFish server status check task details.
      */
     public void notifyErrorListeners(final GlassFishStatusTask task) {
         GlassFishStatusListener[] call;
@@ -1134,7 +1146,7 @@ public class StatusJob {
         synchronized (errorListeners) {
             call = new GlassFishStatusListener[errorListeners.size()];
             isElement = errorListeners.first();
-            while(isElement) {
+            while (isElement) {
                 call[i++] = errorListeners.getCurrent();
                 isElement = errorListeners.next();
             }
@@ -1146,12 +1158,12 @@ public class StatusJob {
     }
 
     /**
-     * Register server status listener to be notified about current server
-     * status after every check.
+     * Register server status listener to be notified about current server status after every check.
      * <p/>
+     * 
      * @param listener Server status listener to be registered.
-     * @return Value of <code>true</code> when listener was added
-     *         or <code>false</code> when this listener was already registered.
+     * @return Value of <code>true</code> when listener was added or <code>false</code> when this
+     * listener was already registered.
      */
     public boolean addCurrStatusListener(
             final GlassFishStatusListener listener) {
@@ -1160,7 +1172,7 @@ public class StatusJob {
         boolean isElement;
         synchronized (currStatusListeners) {
             isElement = currStatusListeners.first();
-            while(isElement) {
+            while (isElement) {
                 if (listener.equals(currStatusListeners.getCurrent())) {
                     exists = true;
                 }
@@ -1178,15 +1190,13 @@ public class StatusJob {
     }
 
     /**
-     * Register server status listener to be notified about server status
-     * change.
+     * Register server status listener to be notified about server status change.
      * <p/>
+     * 
      * @param listener Server status listener to be registered.
-     * @param newState Notify about server status change for new states
-     *                 provided as this argument.
-     * @return Value of <code>true</code> when listener was added in at least
-     *         one list or <code>false</code> when this listener was already
-     *         registered in all requested lists.
+     * @param newState Notify about server status change for new states provided as this argument.
+     * @return Value of <code>true</code> when listener was added in at least one list or
+     * <code>false</code> when this listener was already registered in all requested lists.
      */
     public boolean addNewStatusListener(
             final GlassFishStatusListener listener,
@@ -1200,7 +1210,7 @@ public class StatusJob {
                 listeners = newStatusListeners[stateToAdd.ordinal()];
                 exists = false;
                 isElement = listeners.first();
-                while(isElement) {
+                while (isElement) {
                     if (listener.equals(listeners.getCurrent())) {
                         exists = true;
                     }
@@ -1220,12 +1230,12 @@ public class StatusJob {
     }
 
     /**
-     * Register server status listener to be notified about server status
-     * check errors.
+     * Register server status listener to be notified about server status check errors.
      * <p/>
+     * 
      * @param listener Server status listener to be registered.
-     * @return Value of <code>true</code> when listener was added
-     *         or <code>false</code> when this listener was already registered.
+     * @return Value of <code>true</code> when listener was added or <code>false</code> when this
+     * listener was already registered.
      */
     public boolean addErrorListener(
             final GlassFishStatusListener listener) {
@@ -1234,7 +1244,7 @@ public class StatusJob {
         boolean isElement;
         synchronized (errorListeners) {
             isElement = errorListeners.first();
-            while(isElement) {
+            while (isElement) {
                 if (listener.equals(errorListeners.getCurrent())) {
                     exists = true;
                 }
@@ -1254,14 +1264,12 @@ public class StatusJob {
     /**
      * Register server status listener.
      * <p/>
+     * 
      * @param listener Server status listener to be registered.
-     * @param currentState Notify about current server status after every check
-     *                     when <code>true</code>.
-     * @param newState Notify about server status change for new states
-     *                 provided as this argument.
-     * @return Value of <code>true</code> when listener was added in at least
-     *         one list or <code>false</code> when this listener was already
-     *         registered in all requested lists.
+     * @param currentState Notify about current server status after every check when <code>true</code>.
+     * @param newState Notify about server status change for new states provided as this argument.
+     * @return Value of <code>true</code> when listener was added in at least one list or
+     * <code>false</code> when this listener was already registered in all requested lists.
      */
     public boolean addStatusListener(
             final GlassFishStatusListener listener,
@@ -1286,10 +1294,10 @@ public class StatusJob {
     /**
      * Unregister server status listener.
      * <p/>
+     * 
      * @param listener Server status listener to be unregistered.
-     * @return Value of <code>true</code> when listener was found and removed
-     *         or <code>false</code> when listener was not found among
-     *         registered listeners.
+     * @return Value of <code>true</code> when listener was found and removed or <code>false</code> when
+     * listener was not found among registered listeners.
      */
     public boolean removeStatusListener(
             final GlassFishStatusListener listener) {
@@ -1298,7 +1306,7 @@ public class StatusJob {
         boolean isElement;
         synchronized (currStatusListeners) {
             isElement = currStatusListeners.first();
-            while(isElement) {
+            while (isElement) {
                 if (listener.equals(currStatusListeners.getCurrent())) {
                     currStatusListeners.removeAndNext();
                     isElement = currStatusListeners.isCurrent();
@@ -1314,7 +1322,7 @@ public class StatusJob {
             for (GlassFishStatus stateToRemove : GlassFishStatus.values()) {
                 listeners = newStatusListeners[stateToRemove.ordinal()];
                 isElement = listeners.first();
-                while(isElement) {
+                while (isElement) {
                     if (listener.equals(listeners.getCurrent())) {
                         listeners.removeAndNext();
                         isElement = listeners.isCurrent();
@@ -1329,7 +1337,7 @@ public class StatusJob {
         // Remove from server status check errors list.
         synchronized (errorListeners) {
             isElement = errorListeners.first();
-            while(isElement) {
+            while (isElement) {
                 if (listener.equals(errorListeners.getCurrent())) {
                     errorListeners.removeAndNext();
                     isElement = errorListeners.isCurrent();

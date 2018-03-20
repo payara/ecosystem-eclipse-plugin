@@ -12,17 +12,18 @@ package org.eclipse.payara.tools.sdk.server.config;
 /**
  * Internal library node element.
  * <p/>
+ * 
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class LibraryNode {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Library ID. */
     final String libraryID;
-    
+
     /** Class path file set. */
     final FileSet classpath;
 
@@ -33,16 +34,17 @@ public class LibraryNode {
     final FileSet sources;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Creates an instance of internal library node element.
      * <p/>
+     * 
      * @param libraryID Library ID.
      * @param classpath Class path file set
-     * @param javadocs  Java doc file set.
-     * @param sources   Java sources file set.
+     * @param javadocs Java doc file set.
+     * @param sources Java sources file set.
      */
     public LibraryNode(final String libraryID, final FileSet classpath,
             final FileSet javadocs, final FileSet sources) {
@@ -51,5 +53,5 @@ public class LibraryNode {
         this.javadocs = javadocs;
         this.sources = sources;
     }
-    
+
 }

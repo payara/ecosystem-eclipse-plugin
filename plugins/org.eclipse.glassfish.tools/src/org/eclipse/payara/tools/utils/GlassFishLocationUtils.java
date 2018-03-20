@@ -43,311 +43,310 @@ import org.eclipse.wst.common.project.facet.core.runtime.IRuntimeComponent;
 
 /**
  * Series of utils related to the location where Payara / GlassFish is installed.
- * 
+ *
  * @author <a href="mailto:konstantin.komissarchik@oracle.com">Konstantin Komissarchik</a>
  */
 public final class GlassFishLocationUtils {
-	
-    private static final Pattern VERSION_PATTERN = Pattern.compile( "([0-9]\\.[0-9]+(\\.[0-9])?(\\.[0-9])?)(\\..*)?.*" );
-    
+
+    private static final Pattern VERSION_PATTERN = Pattern.compile("([0-9]\\.[0-9]+(\\.[0-9])?(\\.[0-9])?)(\\..*)?.*");
+
     private static final String[] LIBRARIES_3_1 = {
-         "glassfish/modules/javax.*.jar",
-         "glassfish/modules/weld-osgi-bundle.jar",
-         "glassfish/modules/bean-validator.jar",
-         "glassfish/modules/jersey-*.jar",
-         "glassfish/modules/grizzly-comet.jar",
-         "glassfish/modules/grizzly-websockets.jar",
-         "glassfish/modules/glassfish-api.jar",
-         "glassfish/modules/ha-api.jar",
-         "glassfish/modules/endorsed/*.jar",
-         "glassfish/modules/jsf-api.jar",
-         "glassfish/modules/jsf-impl.jar",
-         "glassfish/modules/jstl-impl.jar",
-         "glassfish/modules/org.eclipse.persistence*.jar",
-         "glassfish/modules/jaxb*.jar",
-         "glassfish/modules/webservices*.jar",
-         "glassfish/modules/woodstox-osgi*.jar",
-         "mq/lib/jaxm-api*.jar"
+            "glassfish/modules/javax.*.jar",
+            "glassfish/modules/weld-osgi-bundle.jar",
+            "glassfish/modules/bean-validator.jar",
+            "glassfish/modules/jersey-*.jar",
+            "glassfish/modules/grizzly-comet.jar",
+            "glassfish/modules/grizzly-websockets.jar",
+            "glassfish/modules/glassfish-api.jar",
+            "glassfish/modules/ha-api.jar",
+            "glassfish/modules/endorsed/*.jar",
+            "glassfish/modules/jsf-api.jar",
+            "glassfish/modules/jsf-impl.jar",
+            "glassfish/modules/jstl-impl.jar",
+            "glassfish/modules/org.eclipse.persistence*.jar",
+            "glassfish/modules/jaxb*.jar",
+            "glassfish/modules/webservices*.jar",
+            "glassfish/modules/woodstox-osgi*.jar",
+            "mq/lib/jaxm-api*.jar"
     };
-    
+
     private static final String[] LIBRARIES_3_1_2 = {
-         "glassfish/modules/javax.*.jar",
-         "glassfish/modules/weld-osgi-bundle.jar",
-         "glassfish/modules/bean-validator.jar",
-         "glassfish/modules/jersey-*.jar",
-         "glassfish/modules/grizzly-comet.jar", // 
-         "glassfish/modules/grizzly-websockets.jar", //
-         "glassfish/modules/glassfish-api.jar",
-         "glassfish/modules/ha-api.jar",
-         "glassfish/modules/endorsed/*.jar",
-         "glassfish/modules/org.eclipse.persistence*.jar",
-         "glassfish/modules/jaxb*.jar",
-         "glassfish/modules/webservices*.jar",
-         "glassfish/modules/woodstox-osgi*.jar", //
-         "mq/lib/jaxm-api*.jar"
+            "glassfish/modules/javax.*.jar",
+            "glassfish/modules/weld-osgi-bundle.jar",
+            "glassfish/modules/bean-validator.jar",
+            "glassfish/modules/jersey-*.jar",
+            "glassfish/modules/grizzly-comet.jar", //
+            "glassfish/modules/grizzly-websockets.jar", //
+            "glassfish/modules/glassfish-api.jar",
+            "glassfish/modules/ha-api.jar",
+            "glassfish/modules/endorsed/*.jar",
+            "glassfish/modules/org.eclipse.persistence*.jar",
+            "glassfish/modules/jaxb*.jar",
+            "glassfish/modules/webservices*.jar",
+            "glassfish/modules/woodstox-osgi*.jar", //
+            "mq/lib/jaxm-api*.jar"
     };
-    
+
     private static final String[] LIBRARIES_4 = {
-        "glassfish/modules/javax.*.jar",
-        "glassfish/modules/weld-osgi-bundle.jar",
-        "glassfish/modules/bean-validator.jar",
-        "glassfish/modules/jersey-*.jar",
-        "glassfish/modules/glassfish-api.jar",
-        "glassfish/modules/ha-api.jar",
-        "glassfish/modules/endorsed/*.jar",
-        "glassfish/modules/org.eclipse.persistence*.jar",
-        "glassfish/modules/jaxb*.jar",
-        "glassfish/modules/webservices*.jar",
-        "glassfish/modules/cdi-api.jar", // +
-        "mq/lib/jaxm-api.jar"        
+            "glassfish/modules/javax.*.jar",
+            "glassfish/modules/weld-osgi-bundle.jar",
+            "glassfish/modules/bean-validator.jar",
+            "glassfish/modules/jersey-*.jar",
+            "glassfish/modules/glassfish-api.jar",
+            "glassfish/modules/ha-api.jar",
+            "glassfish/modules/endorsed/*.jar",
+            "glassfish/modules/org.eclipse.persistence*.jar",
+            "glassfish/modules/jaxb*.jar",
+            "glassfish/modules/webservices*.jar",
+            "glassfish/modules/cdi-api.jar", // +
+            "mq/lib/jaxm-api.jar"
     };
 
     private static final String[] LIBRARIES_5 = LIBRARIES_4;
-    
-	// Defined as:
-	// <extension point="org.eclipse.wst.common.project.facet.core.runtimes">
-	// <runtime-component-type id="payara.runtime"/>
-	private static final String RUNTIME_COMPONENT_ID = "payara.runtime"; //$NON-NLS-1$
 
-	private static final Map<File, SoftReference<GlassFishLocationUtils>> CACHE = new HashMap<>();
+    // Defined as:
+    // <extension point="org.eclipse.wst.common.project.facet.core.runtimes">
+    // <runtime-component-type id="payara.runtime"/>
+    private static final String RUNTIME_COMPONENT_ID = "payara.runtime"; //$NON-NLS-1$
 
-	private final Version version;
-	private final List<File> libraries;
-	
-	private GlassFishLocationUtils(File location) {
-		
-		if (location == null || !location.exists() || !location.isDirectory()) {
-			throw new IllegalArgumentException();
-		}
-		
-		File glassFishlocation = location;
+    private static final Map<File, SoftReference<GlassFishLocationUtils>> CACHE = new HashMap<>();
 
-		File gfApiJar = new File(glassFishlocation, "modules/glassfish-api.jar");
-		
-		if (!gfApiJar.exists()) {
-			glassFishlocation = new File(glassFishlocation, "glassfish");
-			
-			gfApiJar = new File(glassFishlocation, "modules/glassfish-api.jar");
+    private final Version version;
+    private final List<File> libraries;
 
-			if (!gfApiJar.exists()) {
-				throw new IllegalArgumentException();
-			}
-		}
+    private GlassFishLocationUtils(File location) {
 
-		if (!gfApiJar.isFile()) {
-			throw new IllegalArgumentException();
-		}
+        if (location == null || !location.exists() || !location.isDirectory()) {
+            throw new IllegalArgumentException();
+        }
 
-		version = readPayaraVerionFromAPIJar(gfApiJar);
+        File glassFishlocation = location;
 
-		ListFactory<File> librariesListFactory = ListFactory.start();
-		String[] libraryIncludes = getLibraryIncludes(version);
+        File gfApiJar = new File(glassFishlocation, "modules/glassfish-api.jar");
 
-		if (libraryIncludes != null) {
-			File parentFolderToLocation = glassFishlocation.getParentFile();
-			DirectoryScanner scanner = new DirectoryScanner();
+        if (!gfApiJar.exists()) {
+            glassFishlocation = new File(glassFishlocation, "glassfish");
 
-			scanner.setBasedir(parentFolderToLocation);
-			scanner.setIncludes(libraryIncludes);
-			scanner.scan();
+            gfApiJar = new File(glassFishlocation, "modules/glassfish-api.jar");
 
-			for (String libraryRelativePath : scanner.getIncludedFiles()) {
-				librariesListFactory.add(new File(parentFolderToLocation, libraryRelativePath));
-			}
-		}
+            if (!gfApiJar.exists()) {
+                throw new IllegalArgumentException();
+            }
+        }
 
-		libraries = librariesListFactory.result();
-	}
-	
-	private static String[] getLibraryIncludes(Version version) {
+        if (!gfApiJar.isFile()) {
+            throw new IllegalArgumentException();
+        }
 
-		if (version.matches("[5")) {
-			return LIBRARIES_5;
-		} 
-		
-		if (version.matches("[4-5)")) {
-			return LIBRARIES_4;
-		}
-		
-		if (version.matches("[3.1.2-4)")) {
-			return LIBRARIES_3_1_2;
-		} 
-		
-		if (version.matches("[3.1-3.1.2)")) {
-			return LIBRARIES_3_1;
-		}
-		
-		return null;
-	}
-	
-	private static Version readPayaraVerionFromAPIJar(File gfApiJar) {
-		String versionString;
-		try {
-			versionString = readManifestEntry(gfApiJar, "Bundle-Version");
-		} catch (IOException e) {
-			throw new IllegalArgumentException(e);
-		}
+        version = readPayaraVerionFromAPIJar(gfApiJar);
 
-		Matcher versionMatcher = VERSION_PATTERN.matcher(versionString);
+        ListFactory<File> librariesListFactory = ListFactory.start();
+        String[] libraryIncludes = getLibraryIncludes(version);
 
-		if (!versionMatcher.matches()) {
-			throw new IllegalArgumentException();
-		}
+        if (libraryIncludes != null) {
+            File parentFolderToLocation = glassFishlocation.getParentFile();
+            DirectoryScanner scanner = new DirectoryScanner();
 
-		return new Version(versionMatcher.group(1));
-	}
-	
-	
-	public static synchronized GlassFishLocationUtils find(final File location) {
-		for (Iterator<Map.Entry<File, SoftReference<GlassFishLocationUtils>>> itr = CACHE.entrySet().iterator(); itr
-				.hasNext();) {
-			if (itr.next().getValue().get() == null) {
-				itr.remove();
-			}
-		}
+            scanner.setBasedir(parentFolderToLocation);
+            scanner.setIncludes(libraryIncludes);
+            scanner.scan();
 
-		GlassFishLocationUtils glassFishInstall = null;
+            for (String libraryRelativePath : scanner.getIncludedFiles()) {
+                librariesListFactory.add(new File(parentFolderToLocation, libraryRelativePath));
+            }
+        }
 
-		if (location != null) {
-			SoftReference<GlassFishLocationUtils> ref = CACHE.get(location);
+        libraries = librariesListFactory.result();
+    }
 
-			if (ref != null) {
-				glassFishInstall = ref.get();
-			}
+    private static String[] getLibraryIncludes(Version version) {
 
-			if (glassFishInstall == null) {
-				try {
-					glassFishInstall = new GlassFishLocationUtils(location);
-				} catch (IllegalArgumentException e) {
-					return null;
-				}
+        if (version.matches("[5")) {
+            return LIBRARIES_5;
+        }
 
-				CACHE.put(location, new SoftReference<>(glassFishInstall));
-			}
-		}
+        if (version.matches("[4-5)")) {
+            return LIBRARIES_4;
+        }
 
-		return glassFishInstall;
-	}
+        if (version.matches("[3.1.2-4)")) {
+            return LIBRARIES_3_1_2;
+        }
 
-	public static synchronized GlassFishLocationUtils find(final IRuntimeComponent component) {
-		if (component != null && component.getRuntimeComponentType().getId().equals(RUNTIME_COMPONENT_ID)) {
-			String location = component.getProperty("location");
+        if (version.matches("[3.1-3.1.2)")) {
+            return LIBRARIES_3_1;
+        }
 
-			if (location != null) {
-				return find(new File(location));
-			}
-		}
+        return null;
+    }
 
-		return null;
-	}
+    private static Version readPayaraVerionFromAPIJar(File gfApiJar) {
+        String versionString;
+        try {
+            versionString = readManifestEntry(gfApiJar, "Bundle-Version");
+        } catch (IOException e) {
+            throw new IllegalArgumentException(e);
+        }
 
-	public static synchronized GlassFishLocationUtils find(final IRuntime runtime) {
-		if (runtime != null) {
-			for (IRuntimeComponent component : runtime.getRuntimeComponents()) {
-				final GlassFishLocationUtils glassFishInstall = find(component);
+        Matcher versionMatcher = VERSION_PATTERN.matcher(versionString);
 
-				if (glassFishInstall != null) {
-					return glassFishInstall;
-				}
-			}
-		}
+        if (!versionMatcher.matches()) {
+            throw new IllegalArgumentException();
+        }
 
-		return null;
-	}
+        return new Version(versionMatcher.group(1));
+    }
 
-	public static synchronized GlassFishLocationUtils find(final IFacetedProject project) {
-		if (project != null) {
-			IRuntime primary = project.getPrimaryRuntime();
+    public static synchronized GlassFishLocationUtils find(final File location) {
+        for (Iterator<Map.Entry<File, SoftReference<GlassFishLocationUtils>>> itr = CACHE.entrySet().iterator(); itr
+                .hasNext();) {
+            if (itr.next().getValue().get() == null) {
+                itr.remove();
+            }
+        }
 
-			if (primary != null) {
-				GlassFishLocationUtils gf = find(primary);
+        GlassFishLocationUtils glassFishInstall = null;
 
-				if (gf != null) {
-					return gf;
-				}
+        if (location != null) {
+            SoftReference<GlassFishLocationUtils> ref = CACHE.get(location);
 
-				for (IRuntime runtime : project.getTargetedRuntimes()) {
-					if (runtime != primary) {
-						gf = find(runtime);
+            if (ref != null) {
+                glassFishInstall = ref.get();
+            }
 
-						if (gf != null) {
-							return gf;
-						}
-					}
-				}
-			}
-		}
+            if (glassFishInstall == null) {
+                try {
+                    glassFishInstall = new GlassFishLocationUtils(location);
+                } catch (IllegalArgumentException e) {
+                    return null;
+                }
 
-		return null;
-	}
+                CACHE.put(location, new SoftReference<>(glassFishInstall));
+            }
+        }
 
-	public static synchronized GlassFishLocationUtils find(IProject project) {
-		if (project != null) {
-			IFacetedProject fproj = null;
+        return glassFishInstall;
+    }
 
-			try {
-				fproj = ProjectFacetsManager.create(project);
-			} catch (CoreException e) {
-				// Intentionally ignored. If project isn't faceted or another error occurs, 
-				// all that matters is that GlassFish install is not found, which is signaled by null
-				// return.
-			}
+    public static synchronized GlassFishLocationUtils find(final IRuntimeComponent component) {
+        if (component != null && component.getRuntimeComponentType().getId().equals(RUNTIME_COMPONENT_ID)) {
+            String location = component.getProperty("location");
 
-			if (fproj != null) {
-				return find(fproj);
-			}
-		}
+            if (location != null) {
+                return find(new File(location));
+            }
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	public static synchronized GlassFishLocationUtils find(final IJavaProject project) {
-		if (project != null) {
-			return find(project.getProject());
-		}
+    public static synchronized GlassFishLocationUtils find(final IRuntime runtime) {
+        if (runtime != null) {
+            for (IRuntimeComponent component : runtime.getRuntimeComponents()) {
+                final GlassFishLocationUtils glassFishInstall = find(component);
 
-		return null;
-	}
+                if (glassFishInstall != null) {
+                    return glassFishInstall;
+                }
+            }
+        }
 
-	public Version version() {
-		return version;
-	}
+        return null;
+    }
 
-	public List<IClasspathEntry> classpath(IProject proj) {
-		ListFactory<IClasspathEntry> classpathListFactory = ListFactory.start();
+    public static synchronized GlassFishLocationUtils find(final IFacetedProject project) {
+        if (project != null) {
+            IRuntime primary = project.getPrimaryRuntime();
 
-		URL doc;
-		String javaEEVersion = (version.matches("[5") ? "8" : (version.matches("[4") ? "7" : "6"));
+            if (primary != null) {
+                GlassFishLocationUtils gf = find(primary);
 
-		try {
-			doc = new URL("http://docs.oracle.com/javaee/" + javaEEVersion + "/api/");
-		} catch (MalformedURLException e) {
-			throw new RuntimeException(e);
-		}
+                if (gf != null) {
+                    return gf;
+                }
 
-		SystemLibrariesSetting libSettings = SystemLibrariesSetting.load(proj);
+                for (IRuntime runtime : project.getTargetedRuntimes()) {
+                    if (runtime != primary) {
+                        gf = find(runtime);
 
-		for (File library : libraries) {
-			File srcPath = libSettings != null ? libSettings.getSourcePath(library) : null;
-			classpathListFactory.add(createLibraryEntry(new Path(library.toString()), srcPath, doc));
-		}
+                        if (gf != null) {
+                            return gf;
+                        }
+                    }
+                }
+            }
+        }
 
-		return classpathListFactory.result();
-	}
+        return null;
+    }
 
-	private static IClasspathEntry createLibraryEntry(final IPath library, final File src, final URL javadoc) {
-		final IPath srcpath = src == null ? null : new Path(src.getAbsolutePath());
-		final IAccessRule[] access = {};
-		final IClasspathAttribute[] attrs;
+    public static synchronized GlassFishLocationUtils find(IProject project) {
+        if (project != null) {
+            IFacetedProject fproj = null;
 
-		if (javadoc == null) {
-			attrs = new IClasspathAttribute[0];
-		} else {
-			attrs = new IClasspathAttribute[] { JavaCore.newClasspathAttribute(
-					IClasspathAttribute.JAVADOC_LOCATION_ATTRIBUTE_NAME, javadoc.toExternalForm()) };
-		}
+            try {
+                fproj = ProjectFacetsManager.create(project);
+            } catch (CoreException e) {
+                // Intentionally ignored. If project isn't faceted or another error occurs,
+                // all that matters is that GlassFish install is not found, which is signaled by null
+                // return.
+            }
 
-		return JavaCore.newLibraryEntry(library, srcpath, null, access, attrs, false);
-	}
+            if (fproj != null) {
+                return find(fproj);
+            }
+        }
+
+        return null;
+    }
+
+    public static synchronized GlassFishLocationUtils find(final IJavaProject project) {
+        if (project != null) {
+            return find(project.getProject());
+        }
+
+        return null;
+    }
+
+    public Version version() {
+        return version;
+    }
+
+    public List<IClasspathEntry> classpath(IProject proj) {
+        ListFactory<IClasspathEntry> classpathListFactory = ListFactory.start();
+
+        URL doc;
+        String javaEEVersion = (version.matches("[5") ? "8" : (version.matches("[4") ? "7" : "6"));
+
+        try {
+            doc = new URL("http://docs.oracle.com/javaee/" + javaEEVersion + "/api/");
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+
+        SystemLibrariesSetting libSettings = SystemLibrariesSetting.load(proj);
+
+        for (File library : libraries) {
+            File srcPath = libSettings != null ? libSettings.getSourcePath(library) : null;
+            classpathListFactory.add(createLibraryEntry(new Path(library.toString()), srcPath, doc));
+        }
+
+        return classpathListFactory.result();
+    }
+
+    private static IClasspathEntry createLibraryEntry(final IPath library, final File src, final URL javadoc) {
+        final IPath srcpath = src == null ? null : new Path(src.getAbsolutePath());
+        final IAccessRule[] access = {};
+        final IClasspathAttribute[] attrs;
+
+        if (javadoc == null) {
+            attrs = new IClasspathAttribute[0];
+        } else {
+            attrs = new IClasspathAttribute[] { JavaCore.newClasspathAttribute(
+                    IClasspathAttribute.JAVADOC_LOCATION_ATTRIBUTE_NAME, javadoc.toExternalForm()) };
+        }
+
+        return JavaCore.newLibraryEntry(library, srcpath, null, access, attrs, false);
+    }
 
 }

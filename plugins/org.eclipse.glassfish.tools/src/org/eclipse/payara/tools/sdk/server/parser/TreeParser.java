@@ -34,9 +34,9 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
- * SAX parser that invokes a user defined node reader(s) on a list of xpath
- * designated nodes.
+ * SAX parser that invokes a user defined node reader(s) on a list of xpath designated nodes.
  * <p/>
+ * 
  * @author Peter Williams
  */
 public final class TreeParser extends DefaultHandler {
@@ -45,7 +45,7 @@ public final class TreeParser extends DefaultHandler {
     static final String PATH_SEPARATOR = "/";
 
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
     /** Logger instance for this class. */
     private static final Logger LOGGER = new Logger(TreeParser.class);
@@ -53,16 +53,14 @@ public final class TreeParser extends DefaultHandler {
     private static final boolean isFinestLoggable = LOGGER.isLoggable(
             Level.FINEST);
 
-    private static final boolean isFinerLoggable = LOGGER.
-            isLoggable(Level.FINER);
+    private static final boolean isFinerLoggable = LOGGER.isLoggable(Level.FINER);
 
     /**
      * Stops SAX parser from accessing remote DTDs or schemas.
      */
     private static final EntityResolver DUMMY_RESOLVER = new EntityResolver() {
         @Override
-        public InputSource resolveEntity(String string, String string1) throws
-                SAXException,
+        public InputSource resolveEntity(String string, String string1) throws SAXException,
                 IOException {
             return new InputSource(new StringReader(""));
         }
@@ -74,12 +72,12 @@ public final class TreeParser extends DefaultHandler {
         boolean result = false;
         InputStream is = null;
         try {
-            // !PW FIXME what to do about entity resolvers?  Timed out when
+            // !PW FIXME what to do about entity resolvers? Timed out when
             // looking up doctype for sun-resources.xml earlier today (Jul 10)
             SAXParserFactory factory = SAXParserFactory.newInstance();
             // !PW If namespace-aware is enabled, make sure localpart and
             // qname are treated correctly in the handler code.
-            //                
+            //
             factory.setNamespaceAware(false);
             SAXParser saxParser = factory.newSAXParser();
             org.xml.sax.XMLReader reader = saxParser.getXMLReader();
@@ -110,12 +108,12 @@ public final class TreeParser extends DefaultHandler {
         boolean result = false;
         InputStream is = null;
         try {
-            // !PW FIXME what to do about entity resolvers?  Timed out when
+            // !PW FIXME what to do about entity resolvers? Timed out when
             // looking up doctype for sun-resources.xml earlier today (Jul 10)
             SAXParserFactory factory = SAXParserFactory.newInstance();
             // !PW If namespace-aware is enabled, make sure localpart and
             // qname are treated correctly in the handler code.
-            //                
+            //
             factory.setNamespaceAware(false);
             SAXParser saxParser = factory.newSAXParser();
             DefaultHandler handler = new TreeParser(pathList);
@@ -177,7 +175,7 @@ public final class TreeParser extends DefaultHandler {
             }
             if (isFinestLoggable) {
                 LOGGER.log(Level.FINEST, METHOD,
-                        "skipDescend", new Object[] {depth, qname});
+                        "skipDescend", new Object[] { depth, qname });
             }
         } else {
             TreeParser.Node child = rover.findChild(qname);
@@ -206,7 +204,7 @@ public final class TreeParser extends DefaultHandler {
                 }
                 if (isFinestLoggable) {
                     LOGGER.log(Level.FINEST, METHOD,
-                            "skipStart", new Object[] {depth, qname});
+                            "skipStart", new Object[] { depth, qname });
                 }
             }
         }
@@ -223,7 +221,7 @@ public final class TreeParser extends DefaultHandler {
             if (--depth == 0) {
                 if (!skipping.equals(qname)) {
                     LOGGER.log(Level.WARNING, METHOD, "doesNotMatch",
-                            new Object[] {skipping, qname, depth});
+                            new Object[] { skipping, qname, depth });
                 }
                 skipping = null;
                 childNodeReader = null;
@@ -256,20 +254,17 @@ public final class TreeParser extends DefaultHandler {
     }
 
     @Override
-    public InputSource resolveEntity(String string, String string1) throws
-            IOException,
+    public InputSource resolveEntity(String string, String string1) throws IOException,
             SAXException {
         return super.resolveEntity(string, string1);
     }
 
     public static abstract class NodeListener {
 
-        public void readAttributes(String qname, Attributes attributes) throws
-                SAXException {
+        public void readAttributes(String qname, Attributes attributes) throws SAXException {
         }
 
-        public void readChildren(String qname, Attributes attributes) throws
-                SAXException {
+        public void readChildren(String qname, Attributes attributes) throws SAXException {
         }
 
         public void readCData(String qname, char[] ch, int start, int length)
@@ -330,27 +325,27 @@ public final class TreeParser extends DefaultHandler {
                 root = new TreeParser.Node(parts[0]);
             }
             TreeParser.Node rover = root;
-            for (int i = 1 ; i < parts.length ; i++) {
+            for (int i = 1; i < parts.length; i++) {
                 if (parts[i] != null && parts[i].length() > 0) {
                     TreeParser.Node existing = rover.findChild(parts[i]);
                     if (existing != null) {
                         if (isFinerLoggable) {
                             LOGGER.log(Level.FINER, METHOD, "existing",
-                                    new Object[] {parts[i],
-                                        Integer.toString(i)});
+                                    new Object[] { parts[i],
+                                            Integer.toString(i) });
                         }
                         rover = existing;
                     } else {
                         if (isFinerLoggable) {
                             LOGGER.log(Level.FINER, METHOD, "add",
-                                    new Object[] {parts[i],
-                                        Integer.toString(i)});
+                                    new Object[] { parts[i],
+                                            Integer.toString(i) });
                         }
                         rover = rover.addChild(parts[i]);
                     }
                 } else {
                     LOGGER.log(Level.WARNING, METHOD, "broken",
-                            new Object[] {path, Integer.toString(i)});
+                            new Object[] { path, Integer.toString(i) });
                 }
             }
             if (rover != null) {
@@ -415,10 +410,10 @@ public final class TreeParser extends DefaultHandler {
             if (getClass() != obj.getClass()) {
                 return false;
             }
-            final TreeParser.Node other = (TreeParser.Node)obj;
+            final TreeParser.Node other = (TreeParser.Node) obj;
             if (this.element != other.element
                     && (this.element == null
-                    || !this.element.equals(other.element))) {
+                            || !this.element.equals(other.element))) {
                 return false;
             }
             return true;
@@ -428,7 +423,8 @@ public final class TreeParser extends DefaultHandler {
         public int hashCode() {
             int hash = 3;
             hash = 41 * hash + (this.element != null
-                    ? this.element.hashCode() : 0);
+                    ? this.element.hashCode()
+                    : 0);
             return hash;
         }
 

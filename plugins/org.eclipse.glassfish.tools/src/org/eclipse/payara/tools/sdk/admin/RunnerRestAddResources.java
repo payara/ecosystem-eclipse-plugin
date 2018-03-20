@@ -21,24 +21,23 @@ import org.eclipse.payara.tools.server.GlassFishServer;
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class RunnerRestAddResources extends RunnerRest {
-    
+
     /**
-     * Constructs an instance of administration command executor using
-     * REST interface.
+     * Constructs an instance of administration command executor using REST interface.
      * <p/>
-     * @param server  GlassFish server entity object.
+     * 
+     * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
     public RunnerRestAddResources(final GlassFishServer server,
             final Command command) {
         super(server, command);
     }
-    
+
     @Override
     protected void handleSend(HttpURLConnection hconn) throws IOException {
-        CommandAddResources cmd = (CommandAddResources)command;
-        OutputStreamWriter wr =
-                new OutputStreamWriter(hconn.getOutputStream());
+        CommandAddResources cmd = (CommandAddResources) command;
+        OutputStreamWriter wr = new OutputStreamWriter(hconn.getOutputStream());
         StringBuilder data = new StringBuilder();
         data.append("xml_file_name=").append(cmd.xmlResFile.getAbsolutePath());
         if (cmd.target != null) {

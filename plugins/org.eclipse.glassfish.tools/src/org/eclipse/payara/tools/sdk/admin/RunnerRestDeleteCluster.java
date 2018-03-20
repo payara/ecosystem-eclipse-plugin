@@ -18,15 +18,16 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 /**
  * Command runner for command that deletes the cluster.
  * <p>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RunnerRestDeleteCluster extends RunnerRest {
-    
+
     /**
-     * Constructs an instance of administration command executor using
-     * REST interface.
+     * Constructs an instance of administration command executor using REST interface.
      * <p/>
-     * @param server  GlassFish server entity object.
+     * 
+     * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
     public RunnerRestDeleteCluster(final GlassFishServer server,
@@ -34,12 +35,11 @@ public class RunnerRestDeleteCluster extends RunnerRest {
         super(server, command);
     }
 
-    
     @Override
     protected void handleSend(HttpURLConnection hconn) throws IOException {
-         OutputStreamWriter wr = new OutputStreamWriter(hconn.getOutputStream());
-         wr.write("name=" + ((CommandTarget)command).target);
-         wr.flush();
-         wr.close();
+        OutputStreamWriter wr = new OutputStreamWriter(hconn.getOutputStream());
+        wr.write("name=" + ((CommandTarget) command).target);
+        wr.flush();
+        wr.close();
     }
 }

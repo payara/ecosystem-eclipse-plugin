@@ -12,6 +12,7 @@ package org.eclipse.payara.tools.sdk.data;
 /**
  * IDE context containing interfaces to access IDE objects.
  * <p/>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  * @deprecated IDE context support was removed. DO NOT USE!
  */
@@ -19,17 +20,17 @@ package org.eclipse.payara.tools.sdk.data;
 public class IdeContext {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Constructs IDE context object and sets IDE accessors.
      * <p/>
+     * 
      * @deprecated IDE context support was removed. DO NOT USE!
      */
     @Deprecated
     public IdeContext() {
     }
-
 
 }

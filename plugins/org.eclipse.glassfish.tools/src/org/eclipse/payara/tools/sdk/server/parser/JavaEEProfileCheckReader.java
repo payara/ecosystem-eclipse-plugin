@@ -7,7 +7,7 @@
  * SPDX-License-Identifier: EPL-2.0
  ******************************************************************************/
 
- package org.eclipse.payara.tools.sdk.server.parser;
+package org.eclipse.payara.tools.sdk.server.parser;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -19,13 +19,14 @@ import org.xml.sax.SAXException;
 /**
  * Java EE platform check configuration XML element reader.
  * <p/>
+ * 
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class JavaEEProfileCheckReader
-    extends AbstractReader implements XMLReader {
-    
+        extends AbstractReader implements XMLReader {
+
     ////////////////////////////////////////////////////////////////////////////
-    // Inner classes                                                          //
+    // Inner classes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Java EE platform check values from XML element. */
@@ -36,13 +37,13 @@ public class JavaEEProfileCheckReader
 
         /** Java EE platform check files. */
         List<String> files;
-    
+
         /**
-         * Creates an instance of Java EE platform check values
-         * from XML element.
+         * Creates an instance of Java EE platform check values from XML element.
          * <p/>
          * Internal file list to check is initialized as an empty list.
          * <p/>
+         * 
          * @param name Java EE platform check name (unique ID).
          */
         Check(final String name) {
@@ -53,6 +54,7 @@ public class JavaEEProfileCheckReader
         /**
          * Set Java EE platform check files.
          * <p/>
+         * 
          * @param files Java EE platform check files.
          */
         void setFiles(final List<String> files) {
@@ -62,6 +64,7 @@ public class JavaEEProfileCheckReader
         /**
          * Get Java EE platform check name (unique ID).
          * <p/>
+         * 
          * @return Java EE platform check name (unique ID).
          */
         public String getName() {
@@ -71,6 +74,7 @@ public class JavaEEProfileCheckReader
         /**
          * Get Java EE platform check files.
          * <p/>
+         * 
          * @return Java EE platform check files.
          */
         public List<String> getFiles() {
@@ -79,7 +83,7 @@ public class JavaEEProfileCheckReader
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** <code>check</code> XML element name. */
@@ -89,7 +93,7 @@ public class JavaEEProfileCheckReader
     private static final String NAME_ATTR = "name";
 
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Java EE platform check value from XML element. */
@@ -102,15 +106,14 @@ public class JavaEEProfileCheckReader
     final PathReader pathReader;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Creates an instance of Java EE platform check configuration
-     * XML element reader.
+     * Creates an instance of Java EE platform check configuration XML element reader.
      * <p/>
-     * @param pathPrefix Tree parser path prefix to be prepended before
-     *                   current XML element.
+     * 
+     * @param pathPrefix Tree parser path prefix to be prepended before current XML element.
      */
     JavaEEProfileCheckReader(final String pathPrefix) {
         super(pathPrefix, NODE);
@@ -120,12 +123,13 @@ public class JavaEEProfileCheckReader
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Getters and setters                                                    //
+    // Getters and setters //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Get all Java EE platform check values from XML elements on this level.
      * <p/>
+     * 
      * @return All Java EE platform check values from XML elements on this level.
      */
     List<Check> getChecks() {
@@ -133,7 +137,7 @@ public class JavaEEProfileCheckReader
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // XML reader methods                                                     //
+    // XML reader methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
@@ -141,6 +145,7 @@ public class JavaEEProfileCheckReader
      * <p/>
      * Sets readers for <code>javaee</code> element and it's content.
      * <p/>
+     * 
      * @return Paths that the reader listens to.
      */
     @Override
@@ -154,7 +159,8 @@ public class JavaEEProfileCheckReader
     /**
      * Process attributes from current XML element.
      * <p/>
-     * @param qname      Not used.
+     * 
+     * @param qname Not used.
      * @param attributes List of XML attributes.
      * @throws SAXException When any problem occurs.
      */
@@ -167,9 +173,9 @@ public class JavaEEProfileCheckReader
     /**
      * Finish <code>javaee</code> element processing.
      * <p/>
+     * 
      * @param qname Current XML element name.
-     * @throws ServerConfigException when more than one <code>javaee</code>
-     *         XML elements were found.
+     * @throws ServerConfigException when more than one <code>javaee</code> XML elements were found.
      */
     @Override
     public void endNode(final String qname) throws SAXException {
@@ -181,16 +187,15 @@ public class JavaEEProfileCheckReader
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Methods                                                                //
+    // Methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Reset this XML element reader to allow reading of next element
-     * on the same level.
+     * Reset this XML element reader to allow reading of next element on the same level.
      */
     private void localReset() {
-       currentCheck = null;
-       pathReader.reset();
+        currentCheck = null;
+        pathReader.reset();
     }
 
     /**

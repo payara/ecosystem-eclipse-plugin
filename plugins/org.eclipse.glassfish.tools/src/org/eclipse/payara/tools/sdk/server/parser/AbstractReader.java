@@ -12,33 +12,33 @@ package org.eclipse.payara.tools.sdk.server.parser;
 /**
  * Abstract XML element reader.
  * <p/>
+ * 
  * @author Peter Benedikovic, Tomas Kraus
  */
 public abstract class AbstractReader extends TreeParser.NodeListener {
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Tree parser element path. */
     final String path;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Creates an instance of Java EE platform check configuration
-     * XML element reader.
+     * Creates an instance of Java EE platform check configuration XML element reader.
      * <p/>
-     * @param pathPrefix Tree parser path prefix to be prepended before
-     *                   current XML element.
-     * @param node       XML element name.
+     * 
+     * @param pathPrefix Tree parser path prefix to be prepended before current XML element.
+     * @param node XML element name.
      */
     AbstractReader(final String pathPrefix, final String node) {
         StringBuilder sb = new StringBuilder(
                 (pathPrefix != null ? pathPrefix.length() : 0)
-                + TreeParser.PATH_SEPARATOR.length() + node.length());
+                        + TreeParser.PATH_SEPARATOR.length() + node.length());
         if (pathPrefix != null) {
             sb.append(pathPrefix);
         }
@@ -48,12 +48,13 @@ public abstract class AbstractReader extends TreeParser.NodeListener {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Getters and setters                                                    //
+    // Getters and setters //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Get current element tree parser path.
      * <p/>
+     * 
      * @return Current element tree parser path.
      */
     String getPath() {

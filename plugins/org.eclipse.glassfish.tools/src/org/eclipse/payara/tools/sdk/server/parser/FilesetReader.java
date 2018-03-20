@@ -20,29 +20,30 @@ import org.xml.sax.SAXException;
 /**
  * <code>fileset</code> library configuration XML element reader.
  * <p/>
+ * 
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class FilesetReader extends TreeParser.NodeListener {
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** File sets retrieved from XML elements. */
-    private Map<String, List<String>> filesets
-            = new HashMap<>();
-    
+    private Map<String, List<String>> filesets = new HashMap<>();
+
     /** File set being actually processed. */
     private List<String> actualFileset = null;
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Tree parser methods                                                    //
+    // Tree parser methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Process attributes from current XML element.
      * <p/>
-     * @param qname      Not used.
+     * 
+     * @param qname Not used.
      * @param attributes List of XML attributes.
      * @throws SAXException When any problem occurs.
      */
@@ -59,7 +60,8 @@ public class FilesetReader extends TreeParser.NodeListener {
     /**
      * Process child elements from current XML element.
      * <p/>
-     * @param qname      Not used.
+     * 
+     * @param qname Not used.
      * @param attributes List of XML attributes.
      * @throws SAXException When any problem occurs.
      */
@@ -68,22 +70,23 @@ public class FilesetReader extends TreeParser.NodeListener {
             throws SAXException {
         actualFileset.add(attributes.getValue("name"));
     }
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Getters and setters                                                    //
+    // Getters and setters //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Get file sets retrieved from XML elements.
      * <p/>
+     * 
      * @return File sets retrieved from XML elements.
      */
     public Map<String, List<String>> getFilesets() {
         return filesets;
     }
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Methods                                                                //
+    // Methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**

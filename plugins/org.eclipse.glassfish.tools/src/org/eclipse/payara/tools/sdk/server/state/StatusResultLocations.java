@@ -14,39 +14,39 @@ import org.eclipse.payara.tools.sdk.admin.ResultMap;
 import org.eclipse.payara.tools.sdk.data.GlassFishStatusCheckResult;
 
 /**
- * Server status task execution result for <code>__locations</code> command
- * including additional information.
+ * Server status task execution result for <code>__locations</code> command including additional
+ * information.
  * <p/>
- * This class stores task execution result only. Value <code>SUCCESS</code>
- * means that Locations command task execution finished successfully but it
- * does not mean that administration command itself returned with
- * <code>COMPLETED</code> status.
- * When <code>SUCCESS</code> status is set, stored <code>result</code> value
- * shall be examined too to see real administration command execution result.
+ * This class stores task execution result only. Value <code>SUCCESS</code> means that Locations
+ * command task execution finished successfully but it does not mean that administration command
+ * itself returned with <code>COMPLETED</code> status. When <code>SUCCESS</code> status is set,
+ * stored <code>result</code> value shall be examined too to see real administration command
+ * execution result.
  * <p/>
+ * 
  * @author Tomas Kraus
  */
 class StatusResultLocations extends StatusResult {
 
     ////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////
 
     /** Command <code>__locations</code> execution result. */
     final ResultMap<String, String> result;
 
     ////////////////////////////////////////////////////////////////////////
-    // Constructors                                                       //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////
 
     /**
-     * Creates an instance of individual server status result
-     * for <code>__locations</code> command.
+     * Creates an instance of individual server status result for <code>__locations</code> command.
      * <p/>
      * Command <code>__locations</code> result is stored.
      * <p/>
-     * @param result       Command <code>__locations</code> execution result.
-     * @param status       Individual server status returned.
+     * 
+     * @param result Command <code>__locations</code> execution result.
+     * @param status Individual server status returned.
      * @param failureEvent Failure cause.
      */
     StatusResultLocations(final ResultMap<String, String> result,
@@ -57,12 +57,13 @@ class StatusResultLocations extends StatusResult {
     }
 
     ////////////////////////////////////////////////////////////////////////
-    // Getters                                                            //
+    // Getters //
     ////////////////////////////////////////////////////////////////////////
 
     /**
      * Get <code>__locations</code> command execution result.
      * <p/>
+     * 
      * @return <code>__locations</code> command execution result.
      */
     public ResultMap<String, String> getStatusResult() {

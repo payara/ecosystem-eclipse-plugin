@@ -15,12 +15,13 @@ import org.eclipse.payara.tools.sdk.data.GlassFishStatusCheckResult;
 /**
  * Individual server status result including additional information.
  * <p/>
+ * 
  * @author tomas Kraus
  */
 class StatusResult {
 
     ////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////
 
     /** Individual server status returned. */
@@ -30,13 +31,14 @@ class StatusResult {
     final TaskEvent event;
 
     ////////////////////////////////////////////////////////////////////////
-    // Constructors                                                       //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////
     /**
      * Creates an instance of individual server status result.
      * <p/>
+     * 
      * @param status Individual server status returned.
-     * @param event  Current status cause.
+     * @param event Current status cause.
      */
     StatusResult(final GlassFishStatusCheckResult status,
             final TaskEvent event) {
@@ -47,6 +49,7 @@ class StatusResult {
     /**
      * Creates an instance of individual server status result.
      * <p/>
+     * 
      * @param status Individual server status returned.
      */
     StatusResult(final GlassFishStatusCheckResult status) {
@@ -54,12 +57,13 @@ class StatusResult {
     }
 
     ////////////////////////////////////////////////////////////////////////
-    // Getters                                                            //
+    // Getters //
     ////////////////////////////////////////////////////////////////////////
 
     /**
      * Get individual check task status.
      * <p/>
+     * 
      * @return Individual check task status.
      */
     public GlassFishStatusCheckResult getStatus() {
@@ -69,10 +73,11 @@ class StatusResult {
     /**
      * Get task failure event.
      * <p/>
+     * 
      * @return Task failure event.
      */
     public TaskEvent getEvent() {
         return event;
     }
-    
+
 }

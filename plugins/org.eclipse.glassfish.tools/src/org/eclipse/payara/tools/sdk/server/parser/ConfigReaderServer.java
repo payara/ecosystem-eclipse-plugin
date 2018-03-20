@@ -26,13 +26,14 @@ import org.xml.sax.SAXException;
 /**
  * Whole <code>server</code> configuration XML element reader.
  * <p/>
+ * 
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class ConfigReaderServer extends TreeParser.NodeListener implements
         XMLReader {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** <code>classpath</code> library configuration XML element reader. */
@@ -51,8 +52,7 @@ public class ConfigReaderServer extends TreeParser.NodeListener implements
     private ConfigReaderJavaEE javaEEReader = new ConfigReaderJavaEE("/server");
 
     /** Tools configuration XML element reader. */
-    private ConfigReaderTools configReaderTools
-            = new ConfigReaderTools("/server");
+    private ConfigReaderTools configReaderTools = new ConfigReaderTools("/server");
 
     /** Libraries read from XML file. */
     private List<LibraryNode> libraries = new LinkedList<>();
@@ -61,7 +61,7 @@ public class ConfigReaderServer extends TreeParser.NodeListener implements
     private String actualLibID;
 
     ////////////////////////////////////////////////////////////////////////////
-    // XML reader methods                                                     //
+    // XML reader methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
@@ -69,6 +69,7 @@ public class ConfigReaderServer extends TreeParser.NodeListener implements
      * <p/>
      * Sets readers for <code>server</code> element and it's content.
      * <p/>
+     * 
      * @return Paths that the reader listens to.
      */
     @Override
@@ -87,22 +88,23 @@ public class ConfigReaderServer extends TreeParser.NodeListener implements
     /**
      * Process attributes from current XML element.
      * <p/>
-     * @param qname      Not used.
+     * 
+     * @param qname Not used.
      * @param attributes List of XML attributes.
      * @throws SAXException When any problem occurs.
      */
     @Override
     public void readAttributes(final String qname,
-    final Attributes attributes) throws SAXException {
+            final Attributes attributes) throws SAXException {
         actualLibID = attributes.getValue("id");
     }
 
     /**
      * Finish <code>javaee</code> element processing.
      * <p/>
+     * 
      * @param qname Current XML element name.
-     * @throws ServerConfigException when more than one <code>javaee</code>
-     *         XML elements were found.
+     * @throws ServerConfigException when more than one <code>javaee</code> XML elements were found.
      */
     @Override
     public void endNode(final String qname) throws SAXException {
@@ -122,17 +124,18 @@ public class ConfigReaderServer extends TreeParser.NodeListener implements
             actualLibID = null;
             classpathReader.reset();
             javadocsReader.reset();
-            sourcesReader.reset();            
-        }                        
+            sourcesReader.reset();
+        }
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Getters and setters                                                    //
+    // Getters and setters //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Get libraries read from XML file.
      * <p/>
+     * 
      * @return Libraries read from XML file.
      */
     public List<LibraryNode> getLibraries() {
@@ -142,6 +145,7 @@ public class ConfigReaderServer extends TreeParser.NodeListener implements
     /**
      * Get JavaEE set for Payara features configuration read from XML.
      * <p/>
+     * 
      * @return JavaEE set for Payara features configuration read from XML.
      */
     public JavaEESet getJavaEE() {
@@ -151,6 +155,7 @@ public class ConfigReaderServer extends TreeParser.NodeListener implements
     /**
      * Get JavaSE set for Payara features configuration read from XML.
      * <p/>
+     * 
      * @return JavaSE set for Payara features configuration read from XML.
      */
     public JavaSESet getJavaSE() {
@@ -160,6 +165,7 @@ public class ConfigReaderServer extends TreeParser.NodeListener implements
     /**
      * Get Payara tools configuration read from XML.
      * <p/>
+     * 
      * @return Payara tools configuration read from XML.
      */
     public Tools getTools() {

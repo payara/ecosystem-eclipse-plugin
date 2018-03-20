@@ -21,22 +21,22 @@ import org.eclipse.wst.server.core.IServer;
 
 public class ViewAdminConsoleHandler extends AbstractGlassfishSelectionHandler {
 
-	@Override
-	public void processSelection(IServer server) {
-		try {
-			PlatformUI.getWorkbench()
-					  .getBrowserSupport()
-					  .createBrowser(
-						  LOCATION_BAR | NAVIGATION_BAR, 
-						  null, null,	null)
-					  .openURL(
-						  getServerAdminURI(
-							  load(server, GlassFishServerBehaviour.class).getGlassfishServerDelegate())
-						  .toURL());
+    @Override
+    public void processSelection(IServer server) {
+        try {
+            PlatformUI.getWorkbench()
+                    .getBrowserSupport()
+                    .createBrowser(
+                            LOCATION_BAR | NAVIGATION_BAR,
+                            null, null, null)
+                    .openURL(
+                            getServerAdminURI(
+                                    load(server, GlassFishServerBehaviour.class).getGlassfishServerDelegate())
+                                            .toURL());
 
-		} catch (Exception e) {
-			logMessage("Error opening browser: " + e.getMessage());
-		}
-	}
+        } catch (Exception e) {
+            logMessage("Error opening browser: " + e.getMessage());
+        }
+    }
 
 }

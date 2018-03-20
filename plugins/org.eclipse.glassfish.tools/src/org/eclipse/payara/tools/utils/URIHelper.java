@@ -22,24 +22,24 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 
 public class URIHelper {
 
-	public static final void showURI(String uriParam) throws URISyntaxException, IOException {
-		Desktop.getDesktop().browse(new URI(uriParam));
-	}
+    public static final void showURI(String uriParam) throws URISyntaxException, IOException {
+        Desktop.getDesktop().browse(new URI(uriParam));
+    }
 
-	public static final void showURI(URI uri) throws IOException {
-		Desktop.getDesktop().browse(uri);
-	}
+    public static final void showURI(URI uri) throws IOException {
+        Desktop.getDesktop().browse(uri);
+    }
 
-	public static final URI getServerAdminURI(GlassFishServer server) throws URISyntaxException {
-		return new URI(getHttpListenerProtocol(server.getHost(), server.getAdminPort()), null, server.getHost(),
-				server.getAdminPort(), null, null, null);
-	}
+    public static final URI getServerAdminURI(GlassFishServer server) throws URISyntaxException {
+        return new URI(getHttpListenerProtocol(server.getHost(), server.getAdminPort()), null, server.getHost(),
+                server.getAdminPort(), null, null, null);
+    }
 
-	public static final URI getServerHomeURI(GlassFishServer server) throws URISyntaxException {
-		return new File(server.getServerHome()).toURI();
-	}
+    public static final URI getServerHomeURI(GlassFishServer server) throws URISyntaxException {
+        return new File(server.getServerHome()).toURI();
+    }
 
-	public static final URI getDomainHomeURI(GlassFishServer server) throws URISyntaxException {
-		return new File(server.getDomainsFolder() + separator + server.getDomainName()).toURI();
-	}
+    public static final URI getDomainHomeURI(GlassFishServer server) throws URISyntaxException {
+        return new File(server.getDomainsFolder() + separator + server.getDomainName()).toURI();
+    }
 }

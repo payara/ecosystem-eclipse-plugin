@@ -22,18 +22,17 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 
 /**
  * This class provides convenience methods for working with cloud (CPAS server).
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class CloudTasks {
-    
+
     /**
      * Deploy task that deploys application on server.
-     * 
+     *
      * @param server - server to deploy on
      * @param account - which account the application is deployed under
-     * @param application - File object representing archive or directory where
-     * the application is
+     * @param application - File object representing archive or directory where the application is
      * @param listener - listener, that listens to command execution events
      * @return result object with task status and message
      */
@@ -41,8 +40,7 @@ public class CloudTasks {
             final String account, final File application,
             final TaskStateListener listener) {
         Command command = new CommandCloudDeploy(account, application);
-        Future<ResultString> future =
-                ServerAdmin.<ResultString>exec(server, command, listener);
+        Future<ResultString> future = ServerAdmin.<ResultString>exec(server, command, listener);
         try {
             return future.get();
         } catch (InterruptedException | ExecutionException e) {

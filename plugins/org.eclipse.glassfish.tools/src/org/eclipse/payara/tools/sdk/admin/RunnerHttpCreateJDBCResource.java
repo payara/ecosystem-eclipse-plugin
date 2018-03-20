@@ -12,40 +12,42 @@ package org.eclipse.payara.tools.sdk.admin;
 import org.eclipse.payara.tools.server.GlassFishServer;
 
 /**
- * GlassFish server create JDBC resource administration command execution
- * using HTTP interface.
+ * GlassFish server create JDBC resource administration command execution using HTTP interface.
  * <p/>
- * Contains code for create JDBC resource command.
- * Class implements GlassFish server administration functionality trough HTTP
- * interface.
+ * Contains code for create JDBC resource command. Class implements GlassFish server administration
+ * functionality trough HTTP interface.
  * <p/>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RunnerHttpCreateJDBCResource extends RunnerHttp {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
-    /** Create JDBC connection pool command <code>connectionpoolid</code>
-     *  parameter name. */
+    /**
+     * Create JDBC connection pool command <code>connectionpoolid</code> parameter name.
+     */
     private static final String CONN_POOL_ID_PARAM = "connectionpoolid";
 
-    /** Create JDBC connection pool command <code>jndi_name</code>
-     *  parameter name. */
-    private static final String JNDI_NAME_PARAM="jndi_name";
+    /**
+     * Create JDBC connection pool command <code>jndi_name</code> parameter name.
+     */
+    private static final String JNDI_NAME_PARAM = "jndi_name";
 
-    /** Create JDBC connection pool command <code>target</code>
-     *  parameter name. */
-    private static final String TARGET_PARAM="target";
+    /**
+     * Create JDBC connection pool command <code>target</code> parameter name.
+     */
+    private static final String TARGET_PARAM = "target";
 
-    /** Create JDBC connection pool command <code>property</code>
-     *  parameter name. */
+    /**
+     * Create JDBC connection pool command <code>property</code> parameter name.
+     */
     private static final String PROPERTY_PARAM = "property";
 
-    
     ////////////////////////////////////////////////////////////////////////////
-    // Static methods                                                         //
+    // Static methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
@@ -57,9 +59,9 @@ public class RunnerHttpCreateJDBCResource extends RunnerHttp {
      * &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ['&' "properties" '=' &lt;pname&gt; '=' &lt;pvalue&gt;
      * { ':' &lt;pname&gt; '=' &lt;pvalue&gt;} ]</code>
      * <p/>
+     * 
      * @param command GlassFish server administration command entity.
-     *                <code>CommandCreateJDBCResource</code> instance
-     *                is expected.
+     * <code>CommandCreateJDBCResource</code> instance is expected.
      * @return Create JDBC connection pool query string for given command.
      */
     private static String query(final Command command) {
@@ -67,10 +69,9 @@ public class RunnerHttpCreateJDBCResource extends RunnerHttp {
         String jndiName;
         String target;
         if (command instanceof CommandCreateJDBCResource) {
-            connectionPoolId = ((CommandCreateJDBCResource)command)
-                    .connectionPoolId;
-            jndiName = ((CommandCreateJDBCResource)command).jndiName;
-            target = ((CommandCreateJDBCResource)command).target;
+            connectionPoolId = ((CommandCreateJDBCResource) command).connectionPoolId;
+            jndiName = ((CommandCreateJDBCResource) command).jndiName;
+            target = ((CommandCreateJDBCResource) command).target;
         } else {
             throw new CommandException(
                     CommandException.ILLEGAL_COMAND_INSTANCE);
@@ -80,42 +81,42 @@ public class RunnerHttpCreateJDBCResource extends RunnerHttp {
         // Calculate StringBuilder initial length to avoid resizing
         StringBuilder sb = new StringBuilder(
                 CONN_POOL_ID_PARAM.length() + 1 + connectionPoolId.length()
-                + ( isJndiName
-                        ?  JNDI_NAME_PARAM.length()
-                           + 1 + jndiName.length()
-                        : 0 )
-                + ( isTarget
-                        ? TARGET_PARAM.length() + 1 + target.length()
-                        : 0)
-                + queryPropertiesLength(
-                        ((CommandCreateJDBCResource)command).properties,
-                        PROPERTY_PARAM));
+                        + (isJndiName
+                                ? JNDI_NAME_PARAM.length()
+                                        + 1 + jndiName.length()
+                                : 0)
+                        + (isTarget
+                                ? TARGET_PARAM.length() + 1 + target.length()
+                                : 0)
+                        + queryPropertiesLength(
+                                ((CommandCreateJDBCResource) command).properties,
+                                PROPERTY_PARAM));
         // Build query string
         sb.append(CONN_POOL_ID_PARAM).append(PARAM_ASSIGN_VALUE);
         sb.append(connectionPoolId);
         if (isJndiName) {
             sb.append(PARAM_SEPARATOR).append(JNDI_NAME_PARAM);
-            sb.append(PARAM_ASSIGN_VALUE).append(jndiName);            
+            sb.append(PARAM_ASSIGN_VALUE).append(jndiName);
         }
         if (isTarget) {
             sb.append(PARAM_SEPARATOR).append(TARGET_PARAM);
-            sb.append(PARAM_ASSIGN_VALUE).append(target);            
+            sb.append(PARAM_ASSIGN_VALUE).append(target);
         }
         queryPropertiesAppend(sb,
-                ((CommandCreateJDBCResource)command).properties,
+                ((CommandCreateJDBCResource) command).properties,
                 PROPERTY_PARAM, true);
         return sb.toString();
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Constructs an instance of administration command executor using
-     * HTTP interface.
+     * Constructs an instance of administration command executor using HTTP interface.
      * <p/>
-     * @param server  GlassFish server entity object.
+     * 
+     * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
     public RunnerHttpCreateJDBCResource(final GlassFishServer server,

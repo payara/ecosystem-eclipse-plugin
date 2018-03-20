@@ -27,71 +27,69 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 /**
  * GlassFish server administration command execution using REST interface.
  * <p/>
- * Class implements GlassFish server administration functionality trough REST
- * interface.
+ * Class implements GlassFish server administration functionality trough REST interface.
  * <p/>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RunnerRest extends Runner {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Parser for returned response. Default response is XML. */
     RestResponseParser parser = ResponseParserFactory.getRestParser(getResponseType());
 
-    /** Object representation of returned response.*/
+    /** Object representation of returned response. */
     RestActionReport report;
 
     /**
      * GlassFish administration command result.
      * <p/>
-     * Result instance life cycle is started with submitting task into
-     * <code>ExecutorService</code>'s queue. method <code>call()</code>
-     * is responsible for correct <code>TaskState</code> and receiveResult value
-     * handling.
+     * Result instance life cycle is started with submitting task into <code>ExecutorService</code>'s
+     * queue. method <code>call()</code> is responsible for correct <code>TaskState</code> and
+     * receiveResult value handling.
      */
     @SuppressWarnings("FieldNameHidesFieldInSuperclass")
     protected ResultString result;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Constructs an instance of administration command executor using
-     * REST interface.
+     * Constructs an instance of administration command executor using REST interface.
      * <p/>
-     * @param server  GlassFish server entity object.
+     * 
+     * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
     public RunnerRest(final GlassFishServer server, final Command command) {
         this(server, command, null);
     }
 
-
     /**
-     * Constructs an instance of administration command executor using
-     * REST interface.
+     * Constructs an instance of administration command executor using REST interface.
      * <p/>
-     * @param server  GlassFish server entity object.
+     * 
+     * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
-     * @param query   Query string for this command.
+     * @param query Query string for this command.
      */
     public RunnerRest(final GlassFishServer server, final Command command,
             final String query) {
         this(server, command, "/command/", query);
     }
-    
+
     /**
-     * Constructs an instance of administration command executor using
-     * REST interface.
+     * Constructs an instance of administration command executor using REST interface.
      * <p/>
-     * @param server  GlassFish server entity object.
+     * 
+     * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
-     * @param path    path which builds URL we speak to.
-     * @param query   Query string for this command.
+     * @param path path which builds URL we speak to.
+     * @param query Query string for this command.
      */
     public RunnerRest(final GlassFishServer server, final Command command,
             final String path, final String query) {
@@ -100,30 +98,29 @@ public class RunnerRest extends Runner {
     }
 
     /**
-     * Helper methods that appends java.util.Properties into
-     * POST request body.
+     * Helper methods that appends java.util.Properties into POST request body.
+     * 
      * @param sb
      * @param properties
      * @param paramName
-     * @param separator 
+     * @param separator
      */
     protected void appendProperties(StringBuilder sb,
-            final Map<String,String> properties, final String paramName,
+            final Map<String, String> properties, final String paramName,
             final boolean separator) {
         if (null != properties && properties.size() > 0) {
-            Set<Map.Entry<String,String>> entrySet = properties.entrySet();
+            Set<Map.Entry<String, String>> entrySet = properties.entrySet();
             boolean first = true;
             if (separator) {
                 sb.append(PARAM_SEPARATOR);
             }
             sb.append(paramName).append(PARAM_ASSIGN_VALUE);
-            for (Map.Entry<String,String> entry : entrySet) {
+            for (Map.Entry<String, String> entry : entrySet) {
                 String key = entry.getKey();
                 String val = entry.getValue();
                 if (first) {
                     first = false;
-                }
-                else {
+                } else {
                     sb.append(ITEM_SEPARATOR);
                 }
                 sb.append(key);
@@ -134,7 +131,7 @@ public class RunnerRest extends Runner {
             }
         }
     }
-    
+
     protected void appendIfNotEmpty(StringBuilder sb, String paramName, String paramValue) {
         if ((paramValue != null) && (!paramValue.isEmpty())) {
             sb.append(paramName);
@@ -142,15 +139,16 @@ public class RunnerRest extends Runner {
             sb.append(paramValue);
         }
     }
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Implemented Abstract Methods                                           //
+    // Implemented Abstract Methods //
     ////////////////////////////////////////////////////////////////////////////
 
-   /**
-     * Create <code>ResultString</code> object corresponding
-     * to <code>String</code>command execution value to be returned.
+    /**
+     * Create <code>ResultString</code> object corresponding to <code>String</code>command execution
+     * value to be returned.
      * <p/>
+     * 
      * @return <code>String</code>command execution value to be returned.
      */
     @Override
@@ -158,12 +156,11 @@ public class RunnerRest extends Runner {
         return result = new ResultString();
     }
 
-
     /**
      * Do not send information to the server via HTTP POST by default.
      * <p/>
-     * @return <code>true</code> if using HTTP POST to send to server
-     *         or <code>false</code> otherwise
+     * 
+     * @return <code>true</code> if using HTTP POST to send to server or <code>false</code> otherwise
      */
     @Override
     public boolean getDoOutput() {
@@ -173,8 +170,8 @@ public class RunnerRest extends Runner {
     /**
      * Inform whether this runner implementation accepts gzip format.
      * <p/>
-     * @return <code>true</code> when gzip format is accepted,
-     *         <code>false</code> otherwise.
+     * 
+     * @return <code>true</code> when gzip format is accepted, <code>false</code> otherwise.
      */
     @Override
     public boolean acceptsGzip() {
@@ -184,9 +181,9 @@ public class RunnerRest extends Runner {
     /**
      * Build Glassfish REST command URL.
      * <p/>
+     * 
      * @return <code>String</code> value containing command URL.
-     * @throws <code>CommandException</code> if there is a problem with building
-     *         command URL.
+     * @throws <code>CommandException</code> if there is a problem with building command URL.
      */
     @Override
     protected String constructCommandUrl() throws CommandException {
@@ -203,17 +200,17 @@ public class RunnerRest extends Runner {
     }
 
     /**
-     * Override to change the type of HTTP method used for this command.
-     * Default is GET.
+     * Override to change the type of HTTP method used for this command. Default is GET.
      * <p/>
+     * 
      * @return HTTP method (GET, POST, etc.)
      */
     @Override
     protected String getRequestMethod() {
         return "POST"; // NOI18N
     }
-    
-   /*
+
+    /*
      * Handle sending data to server using REST command interface.
      */
     @Override
@@ -222,10 +219,13 @@ public class RunnerRest extends Runner {
     }
 
     /**
-     * Override this method to read response from provided input stream. <p/>
-     * Override to read the response data sent by the server. Do not close the
-     * stream parameter when finished. Caller will take care of that. <p/>
+     * Override this method to read response from provided input stream.
      * <p/>
+     * Override to read the response data sent by the server. Do not close the stream parameter when
+     * finished. Caller will take care of that.
+     * <p/>
+     * <p/>
+     * 
      * @param in Stream to read data from.
      * @return <code>true</code> if response was read correctly.
      * @throws java.io.IOException in case of stream error.
@@ -237,9 +237,10 @@ public class RunnerRest extends Runner {
     }
 
     /**
-     * Override to parse, validate, and/or format any data read from the server
-     * in readResponse() / readManifest().
+     * Override to parse, validate, and/or format any data read from the server in readResponse() /
+     * readManifest().
      * <p/>
+     * 
      * @return <code>true</code> if data was processed correctly.
      */
     @Override
@@ -249,11 +250,11 @@ public class RunnerRest extends Runner {
     }
 
     /**
-     * Added to give descendants possibility to decide what report state has
-     * successful meaning.
+     * Added to give descendants possibility to decide what report state has successful meaning.
      * <p/>
      * Default is to delegate decision to report itself.
      * <p/>
+     * 
      * @return Does report state have successful meaning?
      */
     protected boolean isSuccess() {
@@ -261,15 +262,15 @@ public class RunnerRest extends Runner {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Methods                                                                //
+    // Methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Prepare headers for HTTP connection.
      * <p/>
+     * 
      * @param conn Target HTTP connection.
-     * @throws <code>CommandException</code> if there is a problem with setting
-     *         the headers.
+     * @throws <code>CommandException</code> if there is a problem with setting the headers.
      */
     @Override
     protected void prepareHttpConnection(HttpURLConnection conn)
@@ -292,9 +293,9 @@ public class RunnerRest extends Runner {
     }
 
     /**
-     * Method returns content type in which the server is asked to return
-     * the response.
+     * Method returns content type in which the server is asked to return the response.
      * <p/>
+     * 
      * @return <code>ContentType</code> that runner wants to get from server.
      */
     protected ResponseContentType getResponseType() {

@@ -14,44 +14,41 @@ import org.eclipse.wst.server.core.IServerAttributes;
 import org.eclipse.wst.server.core.ServerCore;
 
 /**
- * @author <a href="mailto:konstantin.komissarchik@oracle.com">Konstantin
- *         Komissarchik</a>
+ * @author <a href="mailto:konstantin.komissarchik@oracle.com">Konstantin Komissarchik</a>
  */
 
 public final class WtpUtil {
-	
-	public static final String findUniqueServerName(final String base) {
-		int i = 1;
-		String name = base;
 
-		while (ServerCore.findServer(name) != null) {
-			i++;
-			name = base + " (" + i + ")";
-		}
+    public static final String findUniqueServerName(final String base) {
+        int i = 1;
+        String name = base;
 
-		return name;
-	}
+        while (ServerCore.findServer(name) != null) {
+            i++;
+            name = base + " (" + i + ")";
+        }
 
-	public static final String findUniqueRuntimeName(final String base) {
-		int i = 1;
-		String name = base;
+        return name;
+    }
 
-		while (ServerCore.findRuntime(name) != null) {
-			i++;
-			name = base + " (" + i + ")";
-		}
+    public static final String findUniqueRuntimeName(final String base) {
+        int i = 1;
+        String name = base;
 
-		return name;
-	}
-	
-	public static <T> T load(IServerAttributes server, Class<T> adapter) {
-		return adapter.cast(server.loadAdapter(adapter, null));
-	}
-	
-	public static <T> T load(IRuntime server, Class<T> adapter) {
-		return adapter.cast(server.loadAdapter(adapter, null));
-	}
-	
-	
-	
+        while (ServerCore.findRuntime(name) != null) {
+            i++;
+            name = base + " (" + i + ")";
+        }
+
+        return name;
+    }
+
+    public static <T> T load(IServerAttributes server, Class<T> adapter) {
+        return adapter.cast(server.loadAdapter(adapter, null));
+    }
+
+    public static <T> T load(IRuntime server, Class<T> adapter) {
+        return adapter.cast(server.loadAdapter(adapter, null));
+    }
+
 }

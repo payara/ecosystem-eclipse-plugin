@@ -12,20 +12,21 @@ package org.eclipse.payara.tools.sdk.server.parser;
 /**
  * Data holder for port informations from domain.xml.
  * <p/>
+ * 
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class HttpData {
 
-	private final String id;
+    private final String id;
     private final int port;
     private final boolean secure;
-    
+
     public HttpData(String id, int port, boolean secure) {
         this.id = id;
         this.port = port;
         this.secure = secure;
     }
-    
+
     public String getId() {
         return id;
     }
@@ -37,9 +38,9 @@ public class HttpData {
     public boolean isSecure() {
         return secure;
     }
-    
+
     @Override
     public String toString() {
-        return "{ " + id + ", " + port + ", " + secure + " }";	//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+        return "{ " + id + ", " + port + ", " + secure + " }"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     }
 }

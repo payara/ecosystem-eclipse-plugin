@@ -15,43 +15,45 @@ import java.util.Map;
 /**
  * GlassFish administration command result.
  * <p>
- * Stores administration command result values and command execution state.
- * Result value is <code>Map</code>.
+ * Stores administration command result values and command execution state. Result value is
+ * <code>Map</code>.
  * <p>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class ResultMap<K, V> extends Result<Map<K, V>> {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Value returned by administration command execution. */
     HashMap<K, V> value;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Constructs an instance of GlassFish administration command result for
-     * <code>Map</code> result value.
+     * Constructs an instance of GlassFish administration command result for <code>Map</code> result
+     * value.
      */
     ResultMap() {
         super();
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Getters and Setters                                                    //
+    // Getters and Setters //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Get value returned by administration command execution.
+     * 
      * @return Value returned by administration command execution.
      */
     @Override
     public Map<K, V> getValue() {
         return value;
     }
-    
+
 }

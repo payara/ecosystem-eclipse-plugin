@@ -11,14 +11,14 @@ package org.eclipse.payara.tools.log;
 
 public class GlassfishStartupConsole extends GlassfishConsole {
 
-	GlassfishStartupConsole(String name, ILogFilter filter) {
-		super(name, filter);
-	}
+    GlassfishStartupConsole(String name, ILogFilter filter) {
+        super(name, filter);
+    }
 
-	@Override
-	public synchronized void stopLogging() {
-		// do nothing...
-		readers = null;
-	}
+    @Override
+    public synchronized void stopLogging() {
+        // do nothing...
+        readers = null;
+    }
 
 }

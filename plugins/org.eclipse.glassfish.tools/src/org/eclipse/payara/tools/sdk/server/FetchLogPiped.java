@@ -33,16 +33,16 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 /**
  * Fetch GlassFish log from local or remote server.
  * <p/>
- * Data are fetched in service thread and passed into
- * <code>PipedOutputStream</code>.
+ * Data are fetched in service thread and passed into <code>PipedOutputStream</code>.
  * <p/>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public abstract class FetchLogPiped
         extends FetchLog implements Callable<TaskState> {
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Logger instance for this class. */
@@ -53,20 +53,20 @@ public abstract class FetchLogPiped
 
     /** Log refresh delay in miliseconds. */
     static final int LOG_REFRESH_DELAY = 1000;
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Static methods                                                         //
+    // Static methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Constructs an instance of GlassFish server log fetcher depending
-     * on server being remote or local.
+     * Constructs an instance of GlassFish server log fetcher depending on server being remote or local.
      * <p/>
-     * Decision if server is local or remote depends on domains folder and
-     * domain name attributes stored in <code>GlassFishServer</code> object.
+     * Decision if server is local or remote depends on domains folder and domain name attributes stored
+     * in <code>GlassFishServer</code> object.
      * <p/>
+     * 
      * @param server GlassFish server for fetching server log.
-     * @param skip   Skip to the end of the log file.
+     * @param skip Skip to the end of the log file.
      * @return Newly created <code>FetchLog</code> instance.
      */
     public static FetchLogPiped create(final GlassFishServer server,
@@ -80,13 +80,13 @@ public abstract class FetchLogPiped
     }
 
     /**
-     * Constructs an instance of GlassFish server log fetcher depending
-     * on server being remote or local.
+     * Constructs an instance of GlassFish server log fetcher depending on server being remote or local.
      * <p/>
-     * Decision if server is local or remote depends on domains folder and
-     * domain name attributes stored in <code>GlassFishServer</code> object.
-     * Log file is passed whole as is without skipping to the end.
+     * Decision if server is local or remote depends on domains folder and domain name attributes stored
+     * in <code>GlassFishServer</code> object. Log file is passed whole as is without skipping to the
+     * end.
      * <p/>
+     * 
      * @param server GlassFish server for fetching server log.
      * @return Newly created <code>FetchLog</code> instance.
      */
@@ -95,15 +95,16 @@ public abstract class FetchLogPiped
     }
 
     /**
-     * Constructs an instance of GlassFish server log fetcher depending
-     * on server being remote or local  with external {@link ExecutorService}.
+     * Constructs an instance of GlassFish server log fetcher depending on server being remote or local
+     * with external {@link ExecutorService}.
      * <p/>
-     * Decision if server is local or remote depends on domains folder and
-     * domain name attributes stored in <code>GlassFishServer</code> object.
+     * Decision if server is local or remote depends on domains folder and domain name attributes stored
+     * in <code>GlassFishServer</code> object.
      * <p/>
+     * 
      * @param executor Executor service used to start task.
-     * @param server   GlassFish server for fetching server log.
-     * @param skip     Skip to the end of the log file.
+     * @param server GlassFish server for fetching server log.
+     * @param skip Skip to the end of the log file.
      * @return Newly created <code>FetchLog</code> instance.
      */
     public static FetchLogPiped create(final ExecutorService executor,
@@ -117,15 +118,16 @@ public abstract class FetchLogPiped
     }
 
     /**
-     * Constructs an instance of GlassFish server log fetcher depending
-     * on server being remote or local with external {@link ExecutorService}.
+     * Constructs an instance of GlassFish server log fetcher depending on server being remote or local
+     * with external {@link ExecutorService}.
      * <p/>
-     * Decision if server is local or remote depends on domains folder and
-     * domain name attributes stored in <code>GlassFishServer</code> object.
-     * Log file is passed whole as is without skipping to the end.
+     * Decision if server is local or remote depends on domains folder and domain name attributes stored
+     * in <code>GlassFishServer</code> object. Log file is passed whole as is without skipping to the
+     * end.
      * <p/>
+     * 
      * @param executor Executor service used to start task.
-     * @param server   GlassFish server for fetching server log.
+     * @param server GlassFish server for fetching server log.
      * @return Newly created <code>FetchLog</code> instance.
      */
     public static FetchLogPiped create(final ExecutorService executor,
@@ -133,9 +135,8 @@ public abstract class FetchLogPiped
         return create(executor, server, false);
     }
 
-
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Output stream where to write retrieved remote server log. */
@@ -157,28 +158,27 @@ public abstract class FetchLogPiped
     private final LinkedList<FetchLogEventListener> eventListeners;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Constructs an instance of GlassFish remote server log fetcher.
      * <p/>
-     * Super class constructor will call <code>initInputStream</code> method
-     * which initializes <code>InputStream</code> as
-     * <code>PipedInputStream</code> before this constructor code is being
-     * executed. Here we can simply connect already initialized
-     * <code>PipedInputStream</code> with newly created
-     * <code>PipedInputStream</code>.
+     * Super class constructor will call <code>initInputStream</code> method which initializes
+     * <code>InputStream</code> as <code>PipedInputStream</code> before this constructor code is being
+     * executed. Here we can simply connect already initialized <code>PipedInputStream</code> with newly
+     * created <code>PipedInputStream</code>.
      * <p/>
+     * 
      * @param server GlassFish server for fetching server log.
-     * @param skip   Skip to the end of the log file.
+     * @param skip Skip to the end of the log file.
      */
     FetchLogPiped(final GlassFishServer server, boolean skip) {
         super(server, skip);
         final String METHOD = "init";
         this.eventListeners = new LinkedList();
         try {
-            out = new PipedOutputStream((PipedInputStream)this.in);
+            out = new PipedOutputStream((PipedInputStream) this.in);
         } catch (IOException ioe) {
             super.close();
             throw new FetchLogException(LOGGER.excMsg(METHOD, "cantInit"), ioe);
@@ -187,31 +187,30 @@ public abstract class FetchLogPiped
         // Create internal executor to run log reader task.
         executor = new ThreadPoolExecutor(0, 1, 0L, TimeUnit.MILLISECONDS,
                 new LinkedBlockingQueue<Runnable>(), new ThreadFactory() {
-            @Override
-            public Thread newThread(Runnable r) {
-                Thread t = new Thread(r, FetchLogPiped.class.getName()
-                        + server.getUrl()!=null ? " (Localhost)":server.getUrl());
-                t.setDaemon(true);
-                return t;
-            }
-        });
+                    @Override
+                    public Thread newThread(Runnable r) {
+                        Thread t = new Thread(r, FetchLogPiped.class.getName()
+                                + server.getUrl() != null ? " (Localhost)" : server.getUrl());
+                        t.setDaemon(true);
+                        return t;
+                    }
+                });
         internalExecutor = true;
     }
 
     /**
-     * Constructs an instance of GlassFish remote server log fetcher with
-     * external {@link ExecutorService}.
+     * Constructs an instance of GlassFish remote server log fetcher with external
+     * {@link ExecutorService}.
      * <p/>
-     * Super class constructor will call <code>initInputStream</code> method
-     * which initializes <code>InputStream</code> as
-     * <code>PipedInputStream</code> before this constructor code is being
-     * executed. Here we can simply connect already initialized
-     * <code>PipedInputStream</code> with newly created
-     * <code>PipedInputStream</code>.
+     * Super class constructor will call <code>initInputStream</code> method which initializes
+     * <code>InputStream</code> as <code>PipedInputStream</code> before this constructor code is being
+     * executed. Here we can simply connect already initialized <code>PipedInputStream</code> with newly
+     * created <code>PipedInputStream</code>.
      * <p/>
+     * 
      * @param executor Executor service used to start task.
-     * @param server   GlassFish server for fetching server log.
-     * @param skip     Skip to the end of the log file.
+     * @param server GlassFish server for fetching server log.
+     * @param skip Skip to the end of the log file.
      */
     @SuppressWarnings("LeakingThisInConstructor")
     FetchLogPiped(final ExecutorService executor, final GlassFishServer server,
@@ -220,7 +219,7 @@ public abstract class FetchLogPiped
         final String METHOD = "init";
         this.eventListeners = new LinkedList();
         try {
-            out = new PipedOutputStream((PipedInputStream)this.in);
+            out = new PipedOutputStream((PipedInputStream) this.in);
         } catch (IOException ioe) {
             super.close();
             throw new FetchLogException(LOGGER.excMsg(METHOD, "cantInit"), ioe);
@@ -232,21 +231,20 @@ public abstract class FetchLogPiped
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Implemented Abstract Methods                                           //
+    // Implemented Abstract Methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Constructor callback which initializes log <code>InputStream</code>
-     * as <code>PipedInputStream</code> sending data from remote server
-     * log reader.
+     * Constructor callback which initializes log <code>InputStream</code> as
+     * <code>PipedInputStream</code> sending data from remote server log reader.
      * <p/>
-     * This initialization is called form <code>FetchLog</code> super class
-     * constructor. It already exists when <code>FetchLogRemote</code>
-     * constructor is running so it may be used as argument for local 
-     * <code>PipedOutputStream</code> initialization.
+     * This initialization is called form <code>FetchLog</code> super class constructor. It already
+     * exists when <code>FetchLogRemote</code> constructor is running so it may be used as argument for
+     * local <code>PipedOutputStream</code> initialization.
      * <p/>
-     * @return <code>PipedInputStream</code> where log lines received from server
-     *         will be available to read.
+     * 
+     * @return <code>PipedInputStream</code> where log lines received from server will be available to
+     * read.
      */
     @Override
     InputStream initInputStream() {
@@ -254,17 +252,16 @@ public abstract class FetchLogPiped
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Methods                                                                //
+    // Methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Add GlassFish log fetcher state change listener at the end
-     * of listeners list.
+     * Add GlassFish log fetcher state change listener at the end of listeners list.
      * <p/>
-     * @param listener Listener for state change events in GlassFish log fetcher
-     *                 to be added. Value shall not be <code>null</code>.
-     * @throws FetchLogException When <code>listener</code> parameter
-     *                           is <code>null</code>.
+     * 
+     * @param listener Listener for state change events in GlassFish log fetcher to be added. Value
+     * shall not be <code>null</code>.
+     * @throws FetchLogException When <code>listener</code> parameter is <code>null</code>.
      */
     public final void addListener(final FetchLogEventListener listener)
             throws FetchLogException {
@@ -272,21 +269,20 @@ public abstract class FetchLogPiped
         if (listener == null) {
             throw new FetchLogException(LOGGER.excMsg(METHOD, "listenerNull"));
         }
-        synchronized(eventListeners) {
+        synchronized (eventListeners) {
             eventListeners.addLast(listener);
         }
     }
 
     /**
-     * Remove all occurrences of log fetcher state change listener
-     * from listeners list.
+     * Remove all occurrences of log fetcher state change listener from listeners list.
      * <p/>
-     * @param listener Listener for state change events in GlassFish log fetcher
-     *                 to be removed. Value shall not be <code>null</code>.
-     * @return Value of <code>true</code> when at least one listener was removed
-     *         or <code>false</code> otherwise.
-     * @throws FetchLogException When <code>listener</code> parameter
-     *                           is <code>null</code>.
+     * 
+     * @param listener Listener for state change events in GlassFish log fetcher to be removed. Value
+     * shall not be <code>null</code>.
+     * @return Value of <code>true</code> when at least one listener was removed or <code>false</code>
+     * otherwise.
+     * @throws FetchLogException When <code>listener</code> parameter is <code>null</code>.
      */
     public final boolean removeListener(final FetchLogEventListener listener)
             throws FetchLogException {
@@ -295,7 +291,7 @@ public abstract class FetchLogPiped
             throw new FetchLogException(LOGGER.excMsg(METHOD, "listenerNull"));
         }
         boolean removed = false;
-        synchronized(eventListeners) {
+        synchronized (eventListeners) {
             boolean isElement = !eventListeners.isEmpty();
             eventListeners.first();
             while (isElement) {
@@ -312,9 +308,9 @@ public abstract class FetchLogPiped
     }
 
     /**
-     * Notify all GlassFish log fetcher state change listeners about state
-     * change event.
+     * Notify all GlassFish log fetcher state change listeners about state change event.
      * <p/>
+     * 
      * @param state Current GlassFish log fetcher state.
      * @return Current GlassFish log fetcher state.
      */
@@ -346,6 +342,7 @@ public abstract class FetchLogPiped
     /**
      * Stop running task if it's still running.
      * <p/>
+     * 
      * @return Task execution result.
      */
     private TaskState stop() {
@@ -360,15 +357,15 @@ public abstract class FetchLogPiped
         } else {
             LOGGER.log(Level.INFO, METHOD, "isNull");
         }
-        TaskState result;        
+        TaskState result;
         try {
             result = task.get();
         } catch (InterruptedException ie) {
             throw new FetchLogException(
                     LOGGER.excMsg(METHOD, "interrupted"), ie);
         } catch (ExecutionException ee) {
-              throw new FetchLogException(
-                      LOGGER.excMsg(METHOD, "exception"), ee);
+            throw new FetchLogException(
+                    LOGGER.excMsg(METHOD, "exception"), ee);
         } catch (CancellationException ce) {
             throw new FetchLogException(
                     LOGGER.excMsg(METHOD, "cancelled"), ce);
@@ -377,13 +374,13 @@ public abstract class FetchLogPiped
     }
 
     /**
-     * Stop log lines reading task and close input and output streams used
-     * to access log lines received from server.
+     * Stop log lines reading task and close input and output streams used to access log lines received
+     * from server.
      */
     @Override
     public void close() {
         final String METHOD = "close";
-        TaskState result = stop();        
+        TaskState result = stop();
         super.close();
         // Clean up internal executor.
         if (internalExecutor) {
@@ -399,8 +396,8 @@ public abstract class FetchLogPiped
     /**
      * Check if log lines reading task is running.
      * <p/>
-     * @return Returns <code>true</code> when task is still running
-     *         or <code>false></code> otherwise.
+     * 
+     * @return Returns <code>true</code> when task is still running or <code>false></code> otherwise.
      */
     public boolean isRunning() {
         return !task.isDone();

@@ -12,12 +12,13 @@ package org.eclipse.payara.tools.sdk.admin;
 /**
  * GlassFish server process.
  * <p/>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class ValueProcess {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** The name of the executable to run. */
@@ -30,32 +31,32 @@ public class ValueProcess {
     private Process process;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Creates an instance of GlassFish server process entity.
      * <p/>
-     * Entity is initialized in <code>RunnerLocal</code> method
-     * <code>call</code>.
-     * method.
+     * Entity is initialized in <code>RunnerLocal</code> method <code>call</code>. method.
      * <p/>
+     * 
      * @param processName The name of the executable to run..
      * @param arguments Arguments passed to the executable.
      */
     ValueProcess(String processName, String arguments, Process process) {
-        this.processName = processName;        
+        this.processName = processName;
         this.arguments = arguments;
         this.process = process;
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Getters and Setters                                                    //
+    // Getters and Setters //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Get name of the executable to run.
      * <p/>
+     * 
      * @return Name of the executable to run.
      */
     public String getProcessName() {
@@ -65,6 +66,7 @@ public class ValueProcess {
     /**
      * Get arguments passed to the executable.
      * <p/>
+     * 
      * @return Arguments passed to the executable.
      */
     public String getArguments() {
@@ -74,6 +76,7 @@ public class ValueProcess {
     /**
      * Get process information.
      * <p/>
+     * 
      * @return Process information.
      */
     public Process getProcess() {
@@ -81,12 +84,13 @@ public class ValueProcess {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Methods                                                                //
+    // Methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Convert stored process information to <code>String</code>.
      * <p>
+     * 
      * @return A <code>String</code> representation of the value of this object.
      */
     @Override

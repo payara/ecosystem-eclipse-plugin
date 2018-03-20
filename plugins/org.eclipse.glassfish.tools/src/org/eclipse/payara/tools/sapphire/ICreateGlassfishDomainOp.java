@@ -31,75 +31,79 @@ import org.eclipse.sapphire.modeling.annotations.Service;
 import org.eclipse.sapphire.modeling.annotations.ValidFileSystemResourceType;
 
 public interface ICreateGlassfishDomainOp extends ExecutableElement {
-	
-	ElementType TYPE = new ElementType(ICreateGlassfishDomainOp.class);
-	
-	@Label(standard = "&Name")
-	@Service(impl = DomainNameValidationService.class)
-	@Required
-	ValueProperty PROP_NAME = new ValueProperty(TYPE, "Name");
-	Value<String> getName();
 
-	void setName(String name);
+    ElementType TYPE = new ElementType(ICreateGlassfishDomainOp.class);
 
-	@Label(standard = "Java location used to run GlassFish asadmin")
-	ValueProperty PROP_JAVA_LOCATION = new ValueProperty(TYPE, "JavaLocation");
+    @Label(standard = "&Name")
+    @Service(impl = DomainNameValidationService.class)
+    @Required
+    ValueProperty PROP_NAME = new ValueProperty(TYPE, "Name");
 
-	Value<Path> getJavaLocation();
-	void setJavaLocation(String location);
+    Value<String> getName();
 
-	
-	@Type(base = Path.class)
-	@AbsolutePath
-	@MustExist
-	@ValidFileSystemResourceType(FileSystemResourceType.FOLDER)
-	@Required
-	ValueProperty PROP_LOCATION = new ValueProperty(TYPE, "Location");
+    void setName(String name);
 
-	Value<Path> getLocation();
-	void setLocation(String location);
-	void setLocation(Path location);
+    @Label(standard = "Java location used to run GlassFish asadmin")
+    ValueProperty PROP_JAVA_LOCATION = new ValueProperty(TYPE, "JavaLocation");
 
-	
-	@Label(standard = "&Domain directory")
-	@Type(base = Path.class)
-	@AbsolutePath
-	@MustExist
-	@DefaultValue(text = "${Location}/domains")
-	@ValidFileSystemResourceType(FileSystemResourceType.FOLDER)
-	@Required
-	ValueProperty PROP_DOMAIN_DIR = new ValueProperty(TYPE, "DomainDir");
+    Value<Path> getJavaLocation();
 
-	Value<Path> getDomainDir();
-	void setDomainDir(String location);
-	void setDomainDir(Path location);
+    void setJavaLocation(String location);
 
-	
-	@Label(standard = "&Portbase")
-	@Type(base = Integer.class)
-	@Documentation(content = "Determines the number with which port assignments"
-			+ "should start. A domain uses a certain number of ports "
-			+ "that are statically assigned. The portbase value determines "
-			+ "where the assignment should start. The values for" + "the ports are calculated as follows:\n"
-			+ "Administration port: portbase + 48;\n" + "HTTP listener port: portbase + 80;\n"
-			+ "HTTPS listener port: portbase + 81;\n" + "JMS port: portbase + 76;\n"
-			+ "IIOP listener port: portbase + 37;\n" + "Secure IIOP listener port: portbase + 38;\n"
-			+ "Secure IIOP with mutual authentication port: portbase + 39;\n" + "JMX port: portbase + 86;\n"
-			+ "JPDA debugger port: portbase + 9;\n"
-			+ "Felix shell service port for OSGi module  management: portbase + 66")
-	@Required
-	@NumericRange(min = "1025", max = "65535")
-	@DefaultValue(text = "8000")
-	ValueProperty PROP_PORT_BASE = new ValueProperty(TYPE, "PortBase");
+    @Type(base = Path.class)
+    @AbsolutePath
+    @MustExist
+    @ValidFileSystemResourceType(FileSystemResourceType.FOLDER)
+    @Required
+    ValueProperty PROP_LOCATION = new ValueProperty(TYPE, "Location");
 
-	Value<Integer> getPortBase();
-	void setPortBase(String val);
-	void setPortBase(int val);
+    Value<Path> getLocation();
 
-	
-	// *** Method: execute ***
-	@Override
+    void setLocation(String location);
+
+    void setLocation(Path location);
+
+    @Label(standard = "&Domain directory")
+    @Type(base = Path.class)
+    @AbsolutePath
+    @MustExist
+    @DefaultValue(text = "${Location}/domains")
+    @ValidFileSystemResourceType(FileSystemResourceType.FOLDER)
+    @Required
+    ValueProperty PROP_DOMAIN_DIR = new ValueProperty(TYPE, "DomainDir");
+
+    Value<Path> getDomainDir();
+
+    void setDomainDir(String location);
+
+    void setDomainDir(Path location);
+
+    @Label(standard = "&Portbase")
+    @Type(base = Integer.class)
+    @Documentation(content = "Determines the number with which port assignments"
+            + "should start. A domain uses a certain number of ports "
+            + "that are statically assigned. The portbase value determines "
+            + "where the assignment should start. The values for" + "the ports are calculated as follows:\n"
+            + "Administration port: portbase + 48;\n" + "HTTP listener port: portbase + 80;\n"
+            + "HTTPS listener port: portbase + 81;\n" + "JMS port: portbase + 76;\n"
+            + "IIOP listener port: portbase + 37;\n" + "Secure IIOP listener port: portbase + 38;\n"
+            + "Secure IIOP with mutual authentication port: portbase + 39;\n" + "JMX port: portbase + 86;\n"
+            + "JPDA debugger port: portbase + 9;\n"
+            + "Felix shell service port for OSGi module  management: portbase + 66")
+    @Required
+    @NumericRange(min = "1025", max = "65535")
+    @DefaultValue(text = "8000")
+    ValueProperty PROP_PORT_BASE = new ValueProperty(TYPE, "PortBase");
+
+    Value<Integer> getPortBase();
+
+    void setPortBase(String val);
+
+    void setPortBase(int val);
+
+    // *** Method: execute ***
+    @Override
     @DelegateImplementation(CreateGlassfishDomainOpMethods.class)
-	Status execute(ProgressMonitor monitor);
+    Status execute(ProgressMonitor monitor);
 
 }

@@ -27,52 +27,51 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 /**
  * Fetch GlassFish log from remote server.
  * <p/>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class FetchLogRemote extends FetchLogPiped {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Logger instance for this class. */
     private static final Logger LOGGER = new Logger(FetchLogPiped.class);
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Constructs an instance of GlassFish remote server log fetcher.
      * <p/>
-     * Super class constructor will call <code>initInputStream</code> method
-     * which initializes <code>InputStream</code> as
-     * <code>PipedInputStream</code> before this constructor code is being
-     * executed. Here we can simply connect already initialized
-     * <code>PipedInputStream</code> with newly created
-     * <code>PipedInputStream</code>.
+     * Super class constructor will call <code>initInputStream</code> method which initializes
+     * <code>InputStream</code> as <code>PipedInputStream</code> before this constructor code is being
+     * executed. Here we can simply connect already initialized <code>PipedInputStream</code> with newly
+     * created <code>PipedInputStream</code>.
      * <p/>
+     * 
      * @param server GlassFish server for fetching server log.
-     * @param skip   Skip to the end of the log file.
+     * @param skip Skip to the end of the log file.
      */
     FetchLogRemote(final GlassFishServer server, final boolean skip) {
         super(server, skip);
     }
 
     /**
-     * Constructs an instance of GlassFish remote server log fetcher with
-     * external {@link ExecutorService}.
+     * Constructs an instance of GlassFish remote server log fetcher with external
+     * {@link ExecutorService}.
      * <p/>
-     * Super class constructor will call <code>initInputStream</code> method
-     * which initializes <code>InputStream</code> as
-     * <code>PipedInputStream</code> before this constructor code is being
-     * executed. Here we can simply connect already initialized
-     * <code>PipedInputStream</code> with newly created
-     * <code>PipedInputStream</code>.
+     * Super class constructor will call <code>initInputStream</code> method which initializes
+     * <code>InputStream</code> as <code>PipedInputStream</code> before this constructor code is being
+     * executed. Here we can simply connect already initialized <code>PipedInputStream</code> with newly
+     * created <code>PipedInputStream</code>.
      * <p/>
+     * 
      * @param executor Executor service used to start task.
-     * @param server   GlassFish server for fetching server log.
-     * @param skip     Skip to the end of the log file.
+     * @param server GlassFish server for fetching server log.
+     * @param skip Skip to the end of the log file.
      */
     FetchLogRemote(final ExecutorService executor, final GlassFishServer server,
             final boolean skip) {
@@ -80,18 +79,18 @@ public class FetchLogRemote extends FetchLogPiped {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Runnable call() Method                                                  //
+    // Runnable call() Method //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Remote server log lines reading task.
      * <p/>
-     * Reads new log lines from server using GlassFish remote administration API
-     * and sends them into pipe (<code>PipedInputStream</code>).
+     * Reads new log lines from server using GlassFish remote administration API and sends them into
+     * pipe (<code>PipedInputStream</code>).
      * <p/>
-     * @return <code>TaskState.COMPLETED</code> when remote administration API
-     *         stopped responding or <code>TaskState.FAILED</code> when
-     *         exception was caught.
+     * 
+     * @return <code>TaskState.COMPLETED</code> when remote administration API stopped responding or
+     * <code>TaskState.FAILED</code> when exception was caught.
      */
     @SuppressWarnings("SleepWhileInLoop")
     @Override
@@ -112,18 +111,18 @@ public class FetchLogRemote extends FetchLogPiped {
                 out.flush();
             }
             byte[] lineSeparatorOut = OsUtils.LINES_SEPARATOR.getBytes();
-            while (taksExecute  && result.getState() == TaskState.COMPLETED) {
+            while (taksExecute && result.getState() == TaskState.COMPLETED) {
                 future = ServerAdmin.<ResultLog>exec(server,
                         new CommandFetchLogData(
-                        paramsAppendNext));
+                                paramsAppendNext));
                 result = future.get();
                 if (result.getState() == TaskState.COMPLETED) {
                     paramsAppendNext = result.getValue().getParamsAppendNext();
                     for (String line : result.getValue().getLines()) {
                         byte[] lineOut = line.getBytes();
                         LOGGER.log(Level.FINEST, METHOD, "read", new Object[] {
-                            new Integer(lineOut.length
-                                + lineSeparatorOut.length)});
+                                new Integer(lineOut.length
+                                        + lineSeparatorOut.length) });
                         out.write(lineOut);
                         out.write(lineSeparatorOut);
                     }

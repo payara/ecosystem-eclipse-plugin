@@ -31,35 +31,35 @@ import org.eclipse.wst.server.core.IModule;
 @SuppressWarnings("restriction")
 public class ExportJavaEEArchive {
 
-	public static File export(final IModule module, final IProgressMonitor monitor) throws ExecutionException {
+    public static File export(final IModule module, final IProgressMonitor monitor) throws ExecutionException {
 
-		final File root = ResourcesPlugin.getWorkspace().getRoot().getLocation().toFile();
+        final File root = ResourcesPlugin.getWorkspace().getRoot().getLocation().toFile();
 
-		IProject p = module.getProject();
-		File archiveName = null;
-		IDataModel dataModel = null;
+        IProject p = module.getProject();
+        File archiveName = null;
+        IDataModel dataModel = null;
 
-		if (isModuleType(module, "jst.web")) {
-			dataModel = createDataModel(new WebComponentExportDataModelProvider());
-			archiveName = new File(root, p.getName() + ".war");
-		} else if (isModuleType(module, "jst.ear")) {
-			dataModel = createDataModel(new EARComponentExportDataModelProvider());
-			archiveName = new File(root, p.getName() + ".ear");
-		} else { // default
-			dataModel = createDataModel(new EJBComponentExportDataModelProvider());
-			archiveName = new File(root, p.getName() + ".jar");
+        if (isModuleType(module, "jst.web")) {
+            dataModel = createDataModel(new WebComponentExportDataModelProvider());
+            archiveName = new File(root, p.getName() + ".war");
+        } else if (isModuleType(module, "jst.ear")) {
+            dataModel = createDataModel(new EARComponentExportDataModelProvider());
+            archiveName = new File(root, p.getName() + ".ear");
+        } else { // default
+            dataModel = createDataModel(new EJBComponentExportDataModelProvider());
+            archiveName = new File(root, p.getName() + ".jar");
 
-		}
+        }
 
-		dataModel.setProperty(PROJECT_NAME, p.getName());
-		dataModel.setProperty(EXPORT_SOURCE_FILES, false);
-		dataModel.setProperty(OVERWRITE_EXISTING, true);
-		dataModel.setProperty(ARCHIVE_DESTINATION, archiveName.getAbsolutePath());
+        dataModel.setProperty(PROJECT_NAME, p.getName());
+        dataModel.setProperty(EXPORT_SOURCE_FILES, false);
+        dataModel.setProperty(OVERWRITE_EXISTING, true);
+        dataModel.setProperty(ARCHIVE_DESTINATION, archiveName.getAbsolutePath());
 
-		dataModel.getDefaultOperation().execute(monitor, null);
-		
-		return archiveName;
+        dataModel.getDefaultOperation().execute(monitor, null);
 
-	}
+        return archiveName;
+
+    }
 
 }

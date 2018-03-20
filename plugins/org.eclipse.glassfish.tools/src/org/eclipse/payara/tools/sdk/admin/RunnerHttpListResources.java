@@ -21,36 +21,34 @@ import org.eclipse.payara.tools.server.GlassFishServer;
  * Command runner for retrieving resources from server.
  * <p>
  * <p/>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RunnerHttpListResources extends RunnerHttpTarget {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * GlassFish administration command result containing server resources.
      * <p/>
-     * Result instance life cycle is started with submitting task into
-     * <code>ExecutorService</code>'s queue. method
-     * <code>call()</code>
-     * is responsible for correct
-     * <code>TaskState</code> and receiveResult value
-     * handling.
+     * Result instance life cycle is started with submitting task into <code>ExecutorService</code>'s
+     * queue. method <code>call()</code> is responsible for correct <code>TaskState</code> and
+     * receiveResult value handling.
      */
     @SuppressWarnings("FieldNameHidesFieldInSuperclass")
     ResultList<String> result;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Constructs an instance of administration command executor using
-     * HTTP interface.
+     * Constructs an instance of administration command executor using HTTP interface.
      * <p/>
-     * @param server  GlassFish server entity object.
+     * 
+     * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
     public RunnerHttpListResources(final GlassFishServer server,
@@ -59,12 +57,12 @@ public class RunnerHttpListResources extends RunnerHttpTarget {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Implemented Abstract Methods                                           //
+    // Implemented Abstract Methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Create <code>ResultList</code> object corresponding
-     * to server log command execution value to be returned.
+     * Create <code>ResultList</code> object corresponding to server log command execution value to be
+     * returned.
      */
     @Override
     protected ResultList<String> createResult() {
@@ -72,15 +70,13 @@ public class RunnerHttpListResources extends RunnerHttpTarget {
     }
 
     /**
-     * Extracts result value from internal
-     * <code>Manifest</code> object.
-     * Value of <i>message</i> attribute in
-     * <code>Manifest</code> object is
-     * stored as <i>value</i> into
+     * Extracts result value from internal <code>Manifest</code> object. Value of <i>message</i>
+     * attribute in <code>Manifest</code> object is stored as <i>value</i> into
      * <code>ResultString</code> result object.
      * <p/>
-     * @return true if result was extracted correctly. <code>null</code>
-     *         <i>message</i>value is considered as failure.
+     * 
+     * @return true if result was extracted correctly. <code>null</code> <i>message</i>value is
+     * considered as failure.
      */
     @Override
     protected boolean processResponse() {

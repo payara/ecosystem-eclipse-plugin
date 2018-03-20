@@ -14,27 +14,29 @@ package org.eclipse.payara.tools.sdk.admin;
  * <p/>
  * Holds data for command. Objects of this class are created by API user.
  * <p/>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
-@RunnerHttpClass(runner=RunnerHttpEnableDisable.class)
-@RunnerRestClass(runner=RunnerRestEnable.class)
+@RunnerHttpClass(runner = RunnerHttpEnableDisable.class)
+@RunnerRestClass(runner = RunnerRestEnable.class)
 public class CommandEnable extends CommandTargetName {
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Command string for enable command. */
     private static final String COMMAND = "enable";
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Constructs an instance of GlassFish server enable command entity.
      * <p/>
-     * @param name   Name of module to enable.
+     * 
+     * @param name Name of module to enable.
      * @param target Target GlassFish instance.
      */
     public CommandEnable(String name, String target) {

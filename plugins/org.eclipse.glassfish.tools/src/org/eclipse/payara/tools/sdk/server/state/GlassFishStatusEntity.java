@@ -17,20 +17,20 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 /**
  * GlassFish server status entity.
  * <p/>
+ * 
  * @author Tomas Kraus
  */
 public class GlassFishStatusEntity implements GlassFishServerStatus {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Logger instance for this class. */
-    private static final Logger LOGGER
-            = new Logger(GlassFishStatusEntity.class);
+    private static final Logger LOGGER = new Logger(GlassFishStatusEntity.class);
 
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** GlassFish server entity. */
@@ -40,7 +40,7 @@ public class GlassFishStatusEntity implements GlassFishServerStatus {
     private GlassFishStatus status;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
@@ -48,6 +48,7 @@ public class GlassFishStatusEntity implements GlassFishServerStatus {
      * <p/>
      * Initial server status value is set as unknown.
      * <p/>
+     * 
      * @param server GlassFish server entity.
      */
     public GlassFishStatusEntity(final GlassFishServer server) {
@@ -56,12 +57,13 @@ public class GlassFishStatusEntity implements GlassFishServerStatus {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Getters and Setters                                                    //
+    // Getters and Setters //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Get GlassFish server entity.
      * <p/>
+     * 
      * @return GlassFish server entity.
      */
     @Override
@@ -72,6 +74,7 @@ public class GlassFishStatusEntity implements GlassFishServerStatus {
     /**
      * Set GlassFish server entity.
      * <p/>
+     * 
      * @param server GlassFish server entity.
      */
     void setServer(final GlassFishServer server) {
@@ -81,6 +84,7 @@ public class GlassFishStatusEntity implements GlassFishServerStatus {
     /**
      * Get current GlassFish server status.
      * <p/>
+     * 
      * @return Current GlassFish server status.
      */
     @Override
@@ -91,6 +95,7 @@ public class GlassFishStatusEntity implements GlassFishServerStatus {
     /**
      * Set current GlassFish server status.
      * <p/>
+     * 
      * @param status Current GlassFish server status.
      */
     void setStatus(final GlassFishStatus status) {

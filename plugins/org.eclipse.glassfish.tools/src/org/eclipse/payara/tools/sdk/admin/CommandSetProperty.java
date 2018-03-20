@@ -21,43 +21,46 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 /**
  * Command that sets property (properties) on the server.
  * <p/>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
-@RunnerHttpClass(runner=RunnerHttpSetProperty.class)
-@RunnerRestClass(runner=RunnerRestSetProperty.class)
+@RunnerHttpClass(runner = RunnerHttpSetProperty.class)
+@RunnerRestClass(runner = RunnerRestSetProperty.class)
 public class CommandSetProperty extends Command {
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Command string for create-cluster command. */
     private static final String COMMAND = "set";
-    
-    /** Error message prefix for administration command execution exception .*/
-    private static final String ERROR_MESSAGE_PREFIX
-            = "Could not set value ";
 
-    /** Error message middle part for administration command execution
-     *  exception .*/
-    private static final String ERROR_MESSAGE_MIDDLE
-            = " of property ";
+    /** Error message prefix for administration command execution exception . */
+    private static final String ERROR_MESSAGE_PREFIX = "Could not set value ";
+
+    /**
+     * Error message middle part for administration command execution exception .
+     */
+    private static final String ERROR_MESSAGE_MIDDLE = " of property ";
 
     ////////////////////////////////////////////////////////////////////////////
-    // Static methods                                                         //
+    // Static methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Build error message from command property name and it's value.
      * <p/>
+     * 
      * @param command Command used to build error message.
      * @return Error message for administration command execution exception.
      */
     private static String errorMessage(final CommandSetProperty command) {
         int valueLen = command.value != null
-                ? command.value.length() : 0;
+                ? command.value.length()
+                : 0;
         int propertyLen = command.property != null
-                ? command.property.length() : 0;
+                ? command.property.length()
+                : 0;
         StringBuilder sb = new StringBuilder(ERROR_MESSAGE_PREFIX.length()
                 + ERROR_MESSAGE_MIDDLE.length() + valueLen + propertyLen);
         sb.append(ERROR_MESSAGE_PREFIX);
@@ -70,18 +73,16 @@ public class CommandSetProperty extends Command {
     /**
      * Put property to server.
      * <p/>
-     * @param server  GlassFish server entity.
+     * 
+     * @param server GlassFish server entity.
      * @param command Command to set property value.
-     * @return GlassFish command result containing <code>String</code> with
-     *         result message.
-     * @throws GlassFishIdeException When error occurred during administration
-     *         command execution.
+     * @return GlassFish command result containing <code>String</code> with result message.
+     * @throws GlassFishIdeException When error occurred during administration command execution.
      */
     public static ResultString setProperty(
             final GlassFishServer server, final CommandSetProperty command)
             throws GlassFishIdeException {
-        Future<ResultString> future =
-                ServerAdmin.<ResultString>exec(server, command);
+        Future<ResultString> future = ServerAdmin.<ResultString>exec(server, command);
         try {
             return future.get();
         } catch (ExecutionException | InterruptedException
@@ -93,19 +94,17 @@ public class CommandSetProperty extends Command {
     /**
      * Put property to server.
      * <p/>
-     * @param server  GlassFish server entity.
+     * 
+     * @param server GlassFish server entity.
      * @param command Command to set property value.
-     * @param timeout         Administration command execution timeout [ms].
-     * @return GlassFish command result containing <code>String</code> with
-     *         result message.
-     * @throws GlassFishIdeException When error occurred during administration
-     *         command execution.
+     * @param timeout Administration command execution timeout [ms].
+     * @return GlassFish command result containing <code>String</code> with result message.
+     * @throws GlassFishIdeException When error occurred during administration command execution.
      */
     public static ResultString setProperty(
             final GlassFishServer server, final CommandSetProperty command,
             final long timeout) throws GlassFishIdeException {
-        Future<ResultString> future =
-                ServerAdmin.<ResultString>exec(server, command);
+        Future<ResultString> future = ServerAdmin.<ResultString>exec(server, command);
         try {
             return future.get(timeout, TimeUnit.MILLISECONDS);
         } catch (ExecutionException | InterruptedException
@@ -118,28 +117,29 @@ public class CommandSetProperty extends Command {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
-    
+
     /** Name of the property to set. */
     final String property;
-    
+
     /** Value of the property to set. */
     final String value;
-    
+
     /** Format for the query string. */
     final String format;
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Constructs an instance of GlassFish server set property command entity.
      * <p/>
+     * 
      * @param property Name of the property to set.
-     * @param value    Value of the property to set.
-     * @param format   Format for the query string.
+     * @param value Value of the property to set.
+     * @param format Format for the query string.
      */
     public CommandSetProperty(final String property, final String value,
             final String format) {
@@ -148,12 +148,13 @@ public class CommandSetProperty extends Command {
         this.value = value;
         this.format = format;
     }
-    
+
     /**
      * Constructs an instance of GlassFish server set property command entity.
      * <p/>
+     * 
      * @param property Name of the property to set.
-     * @param value    Value of the property to set.
+     * @param value Value of the property to set.
      */
     public CommandSetProperty(final String property, final String value) {
         super(COMMAND);
@@ -163,12 +164,13 @@ public class CommandSetProperty extends Command {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Getters                                                                //
+    // Getters //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Get name of the property to set.
      * <p/>
+     * 
      * @return Name of the property to set.
      */
     public String getProperty() {
@@ -178,6 +180,7 @@ public class CommandSetProperty extends Command {
     /**
      * Get value of the property to set.
      * <p/>
+     * 
      * @return Value of the property to set.
      */
     public String getValue() {

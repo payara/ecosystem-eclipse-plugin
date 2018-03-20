@@ -12,19 +12,18 @@ package org.eclipse.payara.tools.log;
 import org.eclipse.payara.tools.sdk.server.FetchLog;
 import org.eclipse.ui.console.IConsole;
 
-
 public interface IGlassFishConsole extends IConsole {
-	
-	public void startLogging();
-	
-	public void startLogging(FetchLog... logFetchers);
-	
-	public void stopLogging();
-	
-	public void stopLogging(int afterSeconds);
-	
-	public boolean isLogging();
-	
-	public void setLogFilter(ILogFilter filter);
-	
+
+    public void startLogging();
+
+    public void startLogging(FetchLog... logFetchers);
+
+    public void stopLogging();
+
+    public void stopLogging(int afterSeconds);
+
+    public boolean isLogging();
+
+    public void setLogFilter(ILogFilter filter);
+
 }

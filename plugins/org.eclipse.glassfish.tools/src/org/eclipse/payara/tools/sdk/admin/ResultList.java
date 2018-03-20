@@ -14,38 +14,40 @@ import java.util.List;
 /**
  * GlassFish Administration Command Result.
  * <p>
- * Stores administration command result values and command execution state.
- * Result value is <code>List</code>.
+ * Stores administration command result values and command execution state. Result value is
+ * <code>List</code>.
  * <p>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class ResultList<T> extends Result<List<T>> {
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Value returned by administration command execution. */
     List<T> value;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Constructs an instance of GlassFish administration command result for
-     * <code>List</code> result value.
+     * Constructs an instance of GlassFish administration command result for <code>List</code> result
+     * value.
      */
     ResultList() {
         super();
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Getters and Setters                                                    //
+    // Getters and Setters //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Get value returned by administration command execution.
+     * 
      * @return Value returned by administration command execution.
      */
     @Override

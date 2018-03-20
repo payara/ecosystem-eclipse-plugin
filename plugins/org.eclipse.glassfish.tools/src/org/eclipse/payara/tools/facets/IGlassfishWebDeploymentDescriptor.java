@@ -11,9 +11,9 @@ package org.eclipse.payara.tools.facets;
 
 public interface IGlassfishWebDeploymentDescriptor extends IGlassfishDeploymentDescriptor {
 
-	static final String SUN_WEB_DEPLOYMENT_DESCRIPTOR_NAME = "sun-web.xml";
+    static final String SUN_WEB_DEPLOYMENT_DESCRIPTOR_NAME = "sun-web.xml";
 
-	public void setContext(String context);
+    public void setContext(String context);
 
-	public String getContext();
+    public String getContext();
 }

@@ -23,98 +23,87 @@ import org.eclipse.payara.tools.server.GlassFishServer;
  * <p>
  * Holds data for command. Objects of this class are created by API user.
  * <p>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 @RunnerHttpClass(runner = RunnerHttpDeploy.class)
 @RunnerRestClass(runner = RunnerRestDeploy.class)
 public class CommandDeploy extends CommandTargetName {
 
-	////////////////////////////////////////////////////////////////////////////
-	// Class attributes //
-	////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+    // Class attributes //
+    ////////////////////////////////////////////////////////////////////////////
 
-	/** Command string for deploy command. */
-	private static final String COMMAND = "deploy";
+    /** Command string for deploy command. */
+    private static final String COMMAND = "deploy";
 
-	/** Error message for administration command execution exception . */
-	private static final String ERROR_MESSAGE = "Application deployment failed.";
+    /** Error message for administration command execution exception . */
+    private static final String ERROR_MESSAGE = "Application deployment failed.";
 
-	////////////////////////////////////////////////////////////////////////////
-	// Static methods //
-	////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+    // Static methods //
+    ////////////////////////////////////////////////////////////////////////////
 
-	/**
-	 * Deploy task that deploys application on server.
-	 * <p/>
-	 * 
-	 * @param server
-	 *            GlassFish server entity.
-	 * @param application
-	 *            File object representing archive or directory to be deployed.
-	 * @param listener
-	 *            Command execution events listener.
-	 * @return Deploy task response.
-	 * @throws GlassFishIdeException
-	 *             When error occurred during administration command execution.
-	 */
-	public static ResultString deploy(GlassFishServer server, File application, TaskStateListener listener) throws GlassFishIdeException {
-		try {
-			return ServerAdmin.<ResultString>exec(server, new CommandDeploy(null, null, application, null, null, null), listener).get();
-		} catch (InterruptedException | ExecutionException | CancellationException ie) {
-			throw new GlassFishIdeException(ERROR_MESSAGE, ie);
-		}
-	}
+    /**
+     * Deploy task that deploys application on server.
+     * <p/>
+     * 
+     * @param server GlassFish server entity.
+     * @param application File object representing archive or directory to be deployed.
+     * @param listener Command execution events listener.
+     * @return Deploy task response.
+     * @throws GlassFishIdeException When error occurred during administration command execution.
+     */
+    public static ResultString deploy(GlassFishServer server, File application, TaskStateListener listener) throws GlassFishIdeException {
+        try {
+            return ServerAdmin.<ResultString>exec(server, new CommandDeploy(null, null, application, null, null, null), listener).get();
+        } catch (InterruptedException | ExecutionException | CancellationException ie) {
+            throw new GlassFishIdeException(ERROR_MESSAGE, ie);
+        }
+    }
 
-	////////////////////////////////////////////////////////////////////////////
-	// Instance attributes //
-	////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+    // Instance attributes //
+    ////////////////////////////////////////////////////////////////////////////
 
-	/** File to deploy. */
-	final File path;
+    /** File to deploy. */
+    final File path;
 
-	/** Deployed application context root. */
-	final String contextRoot;
+    /** Deployed application context root. */
+    final String contextRoot;
 
-	/** Deployment properties. */
-	final Map<String, String> properties;
+    /** Deployment properties. */
+    final Map<String, String> properties;
 
-	/** Deployment libraries. */
-	final File[] libraries;
+    /** Deployment libraries. */
+    final File[] libraries;
 
-	/** Is this deployment of a directory? */
-	final boolean dirDeploy;
+    /** Is this deployment of a directory? */
+    final boolean dirDeploy;
 
-	////////////////////////////////////////////////////////////////////////////
-	// Constructors //
-	////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+    // Constructors //
+    ////////////////////////////////////////////////////////////////////////////
 
-	/**
-	 * Constructs an instance of GlassFish server deploy command entity.
-	 * <p/>
-	 * 
-	 * @param name
-	 *            Name of module/cluster/instance to modify.
-	 * @param target
-	 *            Target GlassFish instance or cluster where <code>name</code> is
-	 *            stored.
-	 * @param path
-	 *            File to deploy.
-	 * @param contextRoot
-	 *            Deployed application context root.
-	 * @param properties
-	 *            Deployment properties.
-	 * @param libraries
-	 *            Not used in actual deploy command.
-	 */
-	public CommandDeploy(String name, String target, File path, String contextRoot, Map<String, String> properties, File[] libraries) {
-		super(COMMAND, name, target);
-		
-		this.path = path;
-		this.contextRoot = contextRoot;
-		this.properties = properties;
-		this.libraries = libraries;
-		this.dirDeploy = path.isDirectory();
-	}
+    /**
+     * Constructs an instance of GlassFish server deploy command entity.
+     * <p/>
+     * 
+     * @param name Name of module/cluster/instance to modify.
+     * @param target Target GlassFish instance or cluster where <code>name</code> is stored.
+     * @param path File to deploy.
+     * @param contextRoot Deployed application context root.
+     * @param properties Deployment properties.
+     * @param libraries Not used in actual deploy command.
+     */
+    public CommandDeploy(String name, String target, File path, String contextRoot, Map<String, String> properties, File[] libraries) {
+        super(COMMAND, name, target);
+
+        this.path = path;
+        this.contextRoot = contextRoot;
+        this.properties = properties;
+        this.libraries = libraries;
+        this.dirDeploy = path.isDirectory();
+    }
 
 }

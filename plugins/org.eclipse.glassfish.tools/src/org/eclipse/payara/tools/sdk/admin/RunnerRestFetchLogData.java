@@ -26,82 +26,78 @@ import org.eclipse.payara.tools.sdk.logging.Logger;
 import org.eclipse.payara.tools.server.GlassFishServer;
 
 /**
- * GlassFish Server <code>view-log</code> Administration Command Execution
- * using HTTP interface.
+ * GlassFish Server <code>view-log</code> Administration Command Execution using HTTP interface.
  * <p/>
- * Class implements GlassFish server administration functionality trough HTTP
- * interface.
+ * Class implements GlassFish server administration functionality trough HTTP interface.
  * <p/>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RunnerRestFetchLogData extends RunnerRest {
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Static methods                                                         //
+    // Static methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Extracts query string from passed View Log command entity.
-     * <p.>
+     * Extracts query string from passed View Log command entity. <p.>
+     * 
      * @param command View Log command entity.
      * @return Query string for given command.
      */
     private static String query(Command command) {
         if (command instanceof CommandFetchLogData) {
-            return ((CommandFetchLogData)command).paramsAppendNext;
-        }
-        else {
+            return ((CommandFetchLogData) command).paramsAppendNext;
+        } else {
             throw new CommandException(
                     CommandException.ILLEGAL_COMAND_INSTANCE);
         }
-        
+
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * GlassFish log lines.
      * <p/>
-     * <code>List&ltString&gt lines</code> instance is internal server response
-     * holder. Instance life cycle is started in <code>readResponse</code>
-     * method where log returned from server is read and stored internally.
+     * <code>List&ltString&gt lines</code> instance is internal server response holder. Instance life
+     * cycle is started in <code>readResponse</code> method where log returned from server is read and
+     * stored internally.
      */
     private List<String> lines;
 
     /**
      * Content of HTTP header <code>X-Text-Append-Next</code>.
      * <p/>
-     * This header contains the entire URL to pass to the GET method to return
-     * the changes since the last call. You can use this header in client
-     * applications to get all log entries that were added in particular
-     * interval.
+     * This header contains the entire URL to pass to the GET method to return the changes since the
+     * last call. You can use this header in client applications to get all log entries that were added
+     * in particular interval.
      */
     private URL headerAppendNext;
 
     /**
      * GlassFish administration command result containing server log.
      * <p/>
-     * Result instance life cycle is started with submitting task into
-     * <code>ExecutorService</code>'s queue. method <code>call()</code>
-     * is responsible for correct <code>TaskState</code> and receiveResult value
-     * handling.
+     * Result instance life cycle is started with submitting task into <code>ExecutorService</code>'s
+     * queue. method <code>call()</code> is responsible for correct <code>TaskState</code> and
+     * receiveResult value handling.
      */
     @SuppressWarnings("FieldNameHidesFieldInSuperclass")
     ResultLog result;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     // TODO: Make this "/management/domain/" command v3 only after
-    //       NetBeans 7.3 release.
+    // NetBeans 7.3 release.
     /**
-     * Constructs an instance of administration command executor using
-     * HTTP interface.
+     * Constructs an instance of administration command executor using HTTP interface.
      * <p/>
-     * @param server  GlassFish server entity object.
+     * 
+     * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
     public RunnerRestFetchLogData(final GlassFishServer server,
@@ -110,12 +106,12 @@ public class RunnerRestFetchLogData extends RunnerRest {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Implemented Abstract Methods                                           //
+    // Implemented Abstract Methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Create <code>ResultLog</code> object corresponding
-     * to server log command execution value to be returned.
+     * Create <code>ResultLog</code> object corresponding to server log command execution value to be
+     * returned.
      */
     @Override
     protected Result createResult() {
@@ -132,12 +128,11 @@ public class RunnerRestFetchLogData extends RunnerRest {
         return "GET";
     }
 
-    
     /**
      * Inform whether this runner implementation accepts gzip format.
      * <p/>
-     * @return <code>true</code> when gzip format is accepted,
-     *         <code>false</code> otherwise.
+     * 
+     * @return <code>true</code> when gzip format is accepted, <code>false</code> otherwise.
      */
     @Override
     public boolean acceptsGzip() {
@@ -147,19 +142,18 @@ public class RunnerRestFetchLogData extends RunnerRest {
     /**
      * Reads response from server and stores it into internal objects.
      * <p/>
-     * Retrieved lines of server log are stored in internal <code>lines</code>
-     * <code>List</code>. Content of HTTP header <code>X-Text-Append-Next</code>
-     * is stored in internal <code>headerAppendNext</code> variable.
+     * Retrieved lines of server log are stored in internal <code>lines</code> <code>List</code>.
+     * Content of HTTP header <code>X-Text-Append-Next</code> is stored in internal
+     * <code>headerAppendNext</code> variable.
      * <p/>
-     * It's not necessary close the stream parameter when finished. Caller
-     * will take care of that. But this method uses additional stream handlers
-     * for <code>gzip</code> compression and buffered reading so it should
-     * close them.
+     * It's not necessary close the stream parameter when finished. Caller will take care of that. But
+     * this method uses additional stream handlers for <code>gzip</code> compression and buffered
+     * reading so it should close them.
      * <p/>
+     * 
      * @param in Stream to read data from.
-     * @return <code>true</code> if response <code>X-Text-Append-Next</code> HTTP header
-     *         contains some parameters (e.g. ?start=&lt;number&gt;) or
-     *         <code>false</code> otherwise.
+     * @return <code>true</code> if response <code>X-Text-Append-Next</code> HTTP header contains some
+     * parameters (e.g. ?start=&lt;number&gt;) or <code>false</code> otherwise.
      * @throws CommandException in case of stream error.
      */
     @Override
@@ -170,7 +164,8 @@ public class RunnerRestFetchLogData extends RunnerRest {
         String line = null;
         try {
             InputStream cooked = null != ce && ce.contains("gzip")
-                    ? new GZIPInputStream(in) : in;
+                    ? new GZIPInputStream(in)
+                    : in;
             br = new BufferedReader(new java.io.InputStreamReader(cooked));
             while ((line = br.readLine()) != null) {
                 if (line != null) {
@@ -191,8 +186,7 @@ public class RunnerRestFetchLogData extends RunnerRest {
         }
 
         try {
-             headerAppendNext
-                     = new URL(hconn.getHeaderField("X-Text-Append-Next"));
+            headerAppendNext = new URL(hconn.getHeaderField("X-Text-Append-Next"));
         } catch (MalformedURLException mue) {
             Logger.log(Level.WARNING, mue.getLocalizedMessage(), mue);
             headerAppendNext = null;
@@ -202,13 +196,14 @@ public class RunnerRestFetchLogData extends RunnerRest {
         return queryAppendNext != null;
     }
 
-   /**
-     * Extracts result value from internal <code>Manifest</code> object.
-     * Value of <i>message</i> attribute in <code>Manifest</code> object is
-     * stored as <i>value</i> into <code>ResultString</code> result object.
+    /**
+     * Extracts result value from internal <code>Manifest</code> object. Value of <i>message</i>
+     * attribute in <code>Manifest</code> object is stored as <i>value</i> into
+     * <code>ResultString</code> result object.
      * <p/>
-     * @return true if result was extracted correctly. <code>null</code>
-     *         <i>message</i>value is considered as failure.
+     * 
+     * @return true if result was extracted correctly. <code>null</code> <i>message</i>value is
+     * considered as failure.
      */
     @Override
     protected boolean processResponse() {

@@ -18,26 +18,27 @@ import org.xml.sax.SAXException;
 /**
  * <code>lookup</code> library configuration XML element reader.
  * <p/>
+ * 
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class LookupReader extends TreeParser.NodeListener {
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Lookups retrieved from XML elements. */
     private List<String> lookups = new LinkedList<>();
 
-
     ////////////////////////////////////////////////////////////////////////////
-    // Tree parser methods                                                    //
+    // Tree parser methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Process attributes from current XML element.
      * <p/>
-     * @param qname      Not used.
+     * 
+     * @param qname Not used.
      * @param attributes List of XML attributes.
      * @throws SAXException When any problem occurs.
      */
@@ -48,12 +49,13 @@ public class LookupReader extends TreeParser.NodeListener {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Getters and setters                                                    //
+    // Getters and setters //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Get lookups retrieved from XML elements.
      * <p/>
+     * 
      * @return Links sets retrieved from XML elements.
      */
     public List<String> getLookups() {
@@ -61,7 +63,7 @@ public class LookupReader extends TreeParser.NodeListener {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Methods                                                                //
+    // Methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**

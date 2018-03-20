@@ -14,30 +14,30 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 /**
  * GlassFish Server REST Command Factory.
  * <p>
- * Selects correct GlassFish server administration functionality using REST
- * command interface.
+ * Selects correct GlassFish server administration functionality using REST command interface.
  * <p>
  * Factory is implemented as singleton.
  * <p>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class AdminFactoryRest extends AdminFactory {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Singleton object instance. */
     private static volatile AdminFactoryRest instance;
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Static methods                                                         //
+    // Static methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Return existing singleton instance of this class or create a new one
-     * when no instance exists.
+     * Return existing singleton instance of this class or create a new one when no instance exists.
      * <p>
+     * 
      * @return <code>AdminFactoryRest</code> singleton instance.
      */
     static AdminFactoryRest getInstance() {
@@ -53,13 +53,14 @@ public class AdminFactoryRest extends AdminFactory {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Methods                                                                //
+    // Methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Build runner for REST command interface execution and connect it with
-     * provided <code>Command</code> instance.
+     * Build runner for REST command interface execution and connect it with provided
+     * <code>Command</code> instance.
      * <p>
+     * 
      * @param srv GlassFish server entity object.
      * @param cmd GlassFish server administration command entity.
      * @return GlassFish server administration command execution object.
@@ -68,7 +69,7 @@ public class AdminFactoryRest extends AdminFactory {
     public Runner getRunner(final GlassFishServer srv, final Command cmd) {
         Runner runner;
         Class cmcClass = cmd.getClass();
-        RunnerRestClass rc = (RunnerRestClass)cmcClass.getAnnotation(
+        RunnerRestClass rc = (RunnerRestClass) cmcClass.getAnnotation(
                 RunnerRestClass.class);
         if (rc != null) {
             Class runnerClass = rc.runner();
@@ -77,8 +78,7 @@ public class AdminFactoryRest extends AdminFactory {
             if (command != null && command.length() > 0) {
                 cmd.command = command;
             }
-        }
-        else {
+        } else {
             runner = new RunnerRest(srv, cmd);
         }
         return runner;

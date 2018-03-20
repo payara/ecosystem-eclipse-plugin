@@ -23,97 +23,97 @@ import org.eclipse.payara.tools.utils.ServerStatusHelper;
 
 public class ServerStatusMonitor implements Runnable {
 
-	private static final int DEFAULT_DELAY_IN_SEC = 5;
-	
-	private ScheduledExecutorService scheduler;
-	
-	private GlassFishServer server;
-	
-	private int delay;
-	
-	private ScheduledFuture<?> scheduledTask;
-	
-	private volatile ServerStatus status = ServerStatus.NOT_DEFINED;
-	
-	private CopyOnWriteArrayList<ServerStateListener> listeners = null;
-	
-	private ServerStatusMonitor(GlassFishServer server) {
-		this(server, DEFAULT_DELAY_IN_SEC);
-	}
-	
-	private ServerStatusMonitor(GlassFishServer server, ServerStateListener... listeners) {
-		this(server, DEFAULT_DELAY_IN_SEC, listeners);
-	}
-	
-	private ServerStatusMonitor(GlassFishServer server, int checkInterval, ServerStateListener... listeners) {
-		this.server = server;
-		this.delay = checkInterval;
-		this.listeners = new CopyOnWriteArrayList<>(listeners);
-	}
-	
-	public static ServerStatusMonitor getInstance(GlassFishServer server) {
-		return new ServerStatusMonitor(server);
-	}
-	
-	public static ServerStatusMonitor getInstance(GlassFishServer server, ServerStateListener... listeners) {
-		return new ServerStatusMonitor(server, listeners);
-	}
-	
-	public static ServerStatusMonitor getInstance(GlassFishServer server, int checkInterval) {
-		return new ServerStatusMonitor(server, checkInterval);
-	}
-	
-	
-	public void start() {
-		//System.out.println("ServerStatusMonitor for " + server.getName() + " started");
-		scheduler = Executors.newSingleThreadScheduledExecutor();
-		scheduledTask = scheduler.scheduleWithFixedDelay(this, 0, delay, TimeUnit.SECONDS);
-	}
-	
-	public void stop() {
-		//System.out.println("ServerStatusMonitor for " + server.getName() + " stopped");
-		scheduledTask.cancel(true);
-		scheduler.shutdown();
-	}
+    private static final int DEFAULT_DELAY_IN_SEC = 5;
 
-	@Override
-	public void run() {
-		//System.out.println("ServerStatusMonitor for " + server.getName() + " run");
-		
-		//Check server version
-		//long t0 = System.currentTimeMillis();
-		status = ServerStatusHelper.checkServerStatus(server);
-		//long t1 = System.currentTimeMillis();
-		//System.out.println("ServerStatusMonitor for " + server.getName() + " check, took " + (t1 - t0));
-		notifyListeners(status);
-		//t1 = System.currentTimeMillis();
-		//System.out.println("ServerStatusMonitor for " + server.getName() + " run, took " + (t1 - t0));
-	}
-	
-	public ServerStatus getServerStatus(boolean forceUpdate) {
-		if (forceUpdate) {
-			Future<?> f = scheduler.submit(this);
-			try {
-				f.get();
-			} catch (InterruptedException e) {}
-			catch (ExecutionException e) {}
-		}
-		return status; 
-	}
-	
-	public ServerStatus getServerStatus() {
-		return getServerStatus(false);
-	}
-	
-	private void notifyListeners(ServerStatus newStatus) {
-		//System.out.println("Notifying listeners about new status of " + server.getName());
-		for (ServerStateListener listener : listeners) {
-			listener.serverStatusChanged(newStatus);
-		}
-	}
-	
-	public void registerServerStatusListener(ServerStateListener listener) {
-		listeners.add(listener);
-	}
-	
+    private ScheduledExecutorService scheduler;
+
+    private GlassFishServer server;
+
+    private int delay;
+
+    private ScheduledFuture<?> scheduledTask;
+
+    private volatile ServerStatus status = ServerStatus.NOT_DEFINED;
+
+    private CopyOnWriteArrayList<ServerStateListener> listeners = null;
+
+    private ServerStatusMonitor(GlassFishServer server) {
+        this(server, DEFAULT_DELAY_IN_SEC);
+    }
+
+    private ServerStatusMonitor(GlassFishServer server, ServerStateListener... listeners) {
+        this(server, DEFAULT_DELAY_IN_SEC, listeners);
+    }
+
+    private ServerStatusMonitor(GlassFishServer server, int checkInterval, ServerStateListener... listeners) {
+        this.server = server;
+        this.delay = checkInterval;
+        this.listeners = new CopyOnWriteArrayList<>(listeners);
+    }
+
+    public static ServerStatusMonitor getInstance(GlassFishServer server) {
+        return new ServerStatusMonitor(server);
+    }
+
+    public static ServerStatusMonitor getInstance(GlassFishServer server, ServerStateListener... listeners) {
+        return new ServerStatusMonitor(server, listeners);
+    }
+
+    public static ServerStatusMonitor getInstance(GlassFishServer server, int checkInterval) {
+        return new ServerStatusMonitor(server, checkInterval);
+    }
+
+    public void start() {
+        // System.out.println("ServerStatusMonitor for " + server.getName() + " started");
+        scheduler = Executors.newSingleThreadScheduledExecutor();
+        scheduledTask = scheduler.scheduleWithFixedDelay(this, 0, delay, TimeUnit.SECONDS);
+    }
+
+    public void stop() {
+        // System.out.println("ServerStatusMonitor for " + server.getName() + " stopped");
+        scheduledTask.cancel(true);
+        scheduler.shutdown();
+    }
+
+    @Override
+    public void run() {
+        // System.out.println("ServerStatusMonitor for " + server.getName() + " run");
+
+        // Check server version
+        // long t0 = System.currentTimeMillis();
+        status = ServerStatusHelper.checkServerStatus(server);
+        // long t1 = System.currentTimeMillis();
+        // System.out.println("ServerStatusMonitor for " + server.getName() + " check, took " + (t1 - t0));
+        notifyListeners(status);
+        // t1 = System.currentTimeMillis();
+        // System.out.println("ServerStatusMonitor for " + server.getName() + " run, took " + (t1 - t0));
+    }
+
+    public ServerStatus getServerStatus(boolean forceUpdate) {
+        if (forceUpdate) {
+            Future<?> f = scheduler.submit(this);
+            try {
+                f.get();
+            } catch (InterruptedException e) {
+            } catch (ExecutionException e) {
+            }
+        }
+        return status;
+    }
+
+    public ServerStatus getServerStatus() {
+        return getServerStatus(false);
+    }
+
+    private void notifyListeners(ServerStatus newStatus) {
+        // System.out.println("Notifying listeners about new status of " + server.getName());
+        for (ServerStateListener listener : listeners) {
+            listener.serverStatusChanged(newStatus);
+        }
+    }
+
+    public void registerServerStatusListener(ServerStateListener listener) {
+        listeners.add(listener);
+    }
+
 }

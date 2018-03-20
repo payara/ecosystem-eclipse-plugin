@@ -26,61 +26,61 @@ import org.eclipse.wst.server.core.IServer;
 
 public class GlassfishStateResolver {
 
-	private static final Map<ServerStatus, Map<Integer, Integer>> matrix = new HashMap<>();
+    private static final Map<ServerStatus, Map<Integer, Integer>> matrix = new HashMap<>();
 
-	private static final int DEFAULT_ACTION = Integer.MAX_VALUE;
+    private static final int DEFAULT_ACTION = Integer.MAX_VALUE;
 
-	// This is a decision matrix for finding the correct new state based
-	// on the current state and status
-	static {
-		HashMap<Integer, Integer> m = new HashMap<>();
-		
-		// NOT_DEFINED
-		m.put(DEFAULT_ACTION, STATE_UNKNOWN);
-		matrix.put(ServerStatus.NOT_DEFINED, m);
-		m = new HashMap<>();
-		
-		// RUNNING_CONNECTION_ERROR
-		m.put(DEFAULT_ACTION, STATE_STOPPED);
-		m.put(IServer.STATE_STARTING, STATE_STARTING);
-		matrix.put(ServerStatus.RUNNING_CONNECTION_ERROR, m);
-		m = new HashMap<>();
-		
-		// RUNNING_PROXY_ERROR
-		m.put(DEFAULT_ACTION, STATE_STOPPED);
-		matrix.put(ServerStatus.RUNNING_PROXY_ERROR, m);
-		m = new HashMap<>();
-		
-		// RUNNING_CREDENTIAL_ERROR
-		m.put(DEFAULT_ACTION, STATE_STOPPED);
-		matrix.put(ServerStatus.RUNNING_CREDENTIAL_PROBLEM, m);
-		m = new HashMap<>();
-		
-		// STOPPED_DOMAIN_NOT_MATCHING
-		m.put(DEFAULT_ACTION, STATE_STOPPED);
-		matrix.put(STOPPED_DOMAIN_NOT_MATCHING, m);
-		m = new HashMap<>();
-		
-		// STOPPED_NOT_LISTENING
-		m.put(DEFAULT_ACTION, STATE_STOPPED);
-		m.put(STATE_STARTING, STATE_STARTING);
-		matrix.put(STOPPED_NOT_LISTENING, m);
-		m = new HashMap<>();
-		
-		// RUNNING_DOMAIN_MATCHING
-		m.put(DEFAULT_ACTION, STATE_STARTED);
-		m.put(IServer.STATE_STOPPING, STATE_STOPPING);
-		matrix.put(RUNNING_DOMAIN_MATCHING, m);
-	}
+    // This is a decision matrix for finding the correct new state based
+    // on the current state and status
+    static {
+        HashMap<Integer, Integer> m = new HashMap<>();
 
-	public int resolve(ServerStatus status, int actualState) {
-		Integer state = matrix.get(status).get(actualState);
-		
-		if (state == null) {
-			state = matrix.get(status).get(DEFAULT_ACTION);
-		}
-		
-		return state;
-	}
+        // NOT_DEFINED
+        m.put(DEFAULT_ACTION, STATE_UNKNOWN);
+        matrix.put(ServerStatus.NOT_DEFINED, m);
+        m = new HashMap<>();
+
+        // RUNNING_CONNECTION_ERROR
+        m.put(DEFAULT_ACTION, STATE_STOPPED);
+        m.put(IServer.STATE_STARTING, STATE_STARTING);
+        matrix.put(ServerStatus.RUNNING_CONNECTION_ERROR, m);
+        m = new HashMap<>();
+
+        // RUNNING_PROXY_ERROR
+        m.put(DEFAULT_ACTION, STATE_STOPPED);
+        matrix.put(ServerStatus.RUNNING_PROXY_ERROR, m);
+        m = new HashMap<>();
+
+        // RUNNING_CREDENTIAL_ERROR
+        m.put(DEFAULT_ACTION, STATE_STOPPED);
+        matrix.put(ServerStatus.RUNNING_CREDENTIAL_PROBLEM, m);
+        m = new HashMap<>();
+
+        // STOPPED_DOMAIN_NOT_MATCHING
+        m.put(DEFAULT_ACTION, STATE_STOPPED);
+        matrix.put(STOPPED_DOMAIN_NOT_MATCHING, m);
+        m = new HashMap<>();
+
+        // STOPPED_NOT_LISTENING
+        m.put(DEFAULT_ACTION, STATE_STOPPED);
+        m.put(STATE_STARTING, STATE_STARTING);
+        matrix.put(STOPPED_NOT_LISTENING, m);
+        m = new HashMap<>();
+
+        // RUNNING_DOMAIN_MATCHING
+        m.put(DEFAULT_ACTION, STATE_STARTED);
+        m.put(IServer.STATE_STOPPING, STATE_STOPPING);
+        matrix.put(RUNNING_DOMAIN_MATCHING, m);
+    }
+
+    public int resolve(ServerStatus status, int actualState) {
+        Integer state = matrix.get(status).get(actualState);
+
+        if (state == null) {
+            state = matrix.get(status).get(DEFAULT_ACTION);
+        }
+
+        return state;
+    }
 
 }

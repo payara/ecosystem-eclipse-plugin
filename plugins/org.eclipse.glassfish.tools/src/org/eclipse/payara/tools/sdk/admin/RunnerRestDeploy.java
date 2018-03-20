@@ -27,34 +27,34 @@ import org.eclipse.payara.tools.server.GlassFishServer;
  * Command runner for deploying directory or file.
  * <p>
  * <p/>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RunnerRestDeploy extends RunnerRest {
 
     private static final String NEWLINE = "\r\n";
 
-    private String multipartBoundary = Long.toHexString(System.
-            currentTimeMillis());
+    private String multipartBoundary = Long.toHexString(System.currentTimeMillis());
 
     /** Holding data for command execution. */
     @SuppressWarnings("FieldNameHidesFieldInSuperclass")
     final CommandDeploy command;
 
     /**
-     * Constructs an instance of administration command executor using
-     * REST interface.
+     * Constructs an instance of administration command executor using REST interface.
      * <p/>
-     * @param server  GlassFish server entity object.
+     * 
+     * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
     public RunnerRestDeploy(final GlassFishServer server,
             final Command command) {
         super(server, command);
-        this.command = (CommandDeploy)command;
+        this.command = (CommandDeploy) command;
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Implemented Abstract Methods                                           //
+    // Implemented Abstract Methods //
     ////////////////////////////////////////////////////////////////////////////
 
     @Override
@@ -69,15 +69,13 @@ public class RunnerRestDeploy extends RunnerRest {
     /**
      * Handle sending data to server using HTTP command interface.
      * <p/>
-     * This is based on reading the code of
-     * <code>CLIRemoteCommand.java</code>
-     * from the server's code repository. Since some asadmin commands
-     * need to send multiple files, the server assumes the input is a ZIP
-     * stream.
+     * This is based on reading the code of <code>CLIRemoteCommand.java</code> from the server's code
+     * repository. Since some asadmin commands need to send multiple files, the server assumes the input
+     * is a ZIP stream.
      */
     @Override
     protected void handleSend(HttpURLConnection hconn) throws IOException {
-        //InputStream istream = getInputStream();
+        // InputStream istream = getInputStream();
         if (command.path == null) {
             throw new GlassFishIdeException("The path attribute of deploy command"
                     + " has to be non-empty!");
@@ -128,17 +126,17 @@ public class RunnerRestDeploy extends RunnerRest {
 
     private void writeBinaryFile(OutputStreamWriter writer, OutputStream output, File file) throws IOException {
         writer.append("--" + multipartBoundary).append(NEWLINE);
-//        writer.append("Content-Disposition: form-data; name=\"warFile\"; filename=\""
-//                + file.getAbsolutePath() + "\"").append(NEWLINE);
+        // writer.append("Content-Disposition: form-data; name=\"warFile\"; filename=\""
+        // + file.getAbsolutePath() + "\"").append(NEWLINE);
         writer.append("Content-Type: application/octet-stream").append(NEWLINE);
         writer.append("Content-Transfer-Encoding: binary").append(NEWLINE);
         writer.append(NEWLINE).flush();
-        
+
         InputStream input = null;
         try {
             input = new FileInputStream(file);
-            byte[] buffer = new byte[1024*1024];
-            for (int length ; (length = input.read(buffer)) > 0 ;) {
+            byte[] buffer = new byte[1024 * 1024];
+            for (int length; (length = input.read(buffer)) > 0;) {
                 output.write(buffer, 0, length);
             }
             output.flush(); // Important! Output cannot be closed. Close of writer will close output as well.
@@ -153,15 +151,12 @@ public class RunnerRestDeploy extends RunnerRest {
         writer.append(NEWLINE).flush();
     }
     ////////////////////////////////////////////////////////////////////////////
-    // Fake Getters                                                           //
+    // Fake Getters //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Set the content-type of information sent to the server.
-     * Returns
-     * <code>application/zip</code> for file deployment
-     * and
-     * <code>null</code> (not set) for directory deployment.
+     * Set the content-type of information sent to the server. Returns <code>application/zip</code> for
+     * file deployment and <code>null</code> (not set) for directory deployment.
      *
      * @return content-type of data sent to server via HTTP POST
      */
@@ -170,22 +165,22 @@ public class RunnerRestDeploy extends RunnerRest {
         return command.dirDeploy ? null : "application/zip";
     }
 
-//    /**
-//     * Provide the lastModified date for data source whose
-//     * <code>InputStream</code> is returned by getInputStream.
-//     * <p/>
-//     * @return String format of long integer from lastModified date of source.
-//     */
-//    @Override
-//    public String getLastModified() {
-//        return Long.toString(command.path.lastModified());
-//    }
+    // /**
+    // * Provide the lastModified date for data source whose
+    // * <code>InputStream</code> is returned by getInputStream.
+    // * <p/>
+    // * @return String format of long integer from lastModified date of source.
+    // */
+    // @Override
+    // public String getLastModified() {
+    // return Long.toString(command.path.lastModified());
+    // }
     /**
-     * Get
-     * <code>InputStream</code> object for deployed file.
+     * Get <code>InputStream</code> object for deployed file.
      * <p/>
-     * @return <code>InputStream</code> object for deployed file
-     *         or <code>null</code> for directory deployment.
+     * 
+     * @return <code>InputStream</code> object for deployed file or <code>null</code> for directory
+     * deployment.
      */
     public InputStream getInputStream() {
         if (command.dirDeploy) {

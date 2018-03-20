@@ -15,12 +15,13 @@ import java.util.Map;
 /**
  * Current state of GlassFish server administration command execution
  * <p>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public enum TaskState {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Enum values                                                            //
+    // Enum values //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Value representing task waiting in executor queue. */
@@ -36,27 +37,25 @@ public enum TaskState {
     FAILED;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
-    /**  A <code>String</code> representation of READY value. */
+    /** A <code>String</code> representation of READY value. */
     private static final String READY_STR = "READY";
 
-    /**  A <code>String</code> representation of RUNNING value. */
+    /** A <code>String</code> representation of RUNNING value. */
     private static final String RUNNING_STR = "RUNNING";
 
-    /**  A <code>String</code> representation of COMPLETED value. */
+    /** A <code>String</code> representation of COMPLETED value. */
     private static final String COMPLETED_STR = "COMPLETED";
 
-    /**  A <code>String</code> representation of FAILED value. */
+    /** A <code>String</code> representation of FAILED value. */
     private static final String FAILED_STR = "FAILED";
 
-    /** 
-     * Stored <code>String</code> values for backward <code>String</code>
-     * conversion.
+    /**
+     * Stored <code>String</code> values for backward <code>String</code> conversion.
      */
-    private static final Map<String, TaskState> stringValuesMap
-            = new HashMap(values().length);
+    private static final Map<String, TaskState> stringValuesMap = new HashMap(values().length);
 
     // Initialize backward String conversion <code>Map</code>.
     static {
@@ -64,22 +63,21 @@ public enum TaskState {
             stringValuesMap.put(state.toString().toUpperCase(), state);
         }
     }
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Static methods                                                         //
+    // Static methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Returns a <code>TaskState</code> with a value represented by the
-     * specified <code>String</code>. The <code>TaskState</code> returned
-     * represents existing value only if specified <code>String</code>
-     * matches any <code>String</code> returned by <code>toString</code> method.
+     * Returns a <code>TaskState</code> with a value represented by the specified <code>String</code>.
+     * The <code>TaskState</code> returned represents existing value only if specified
+     * <code>String</code> matches any <code>String</code> returned by <code>toString</code> method.
      * Otherwise <code>null</code> value is returned.
      * <p>
-     * @param stateStr Value containing <code>TaskState</code> 
-     *                 <code>toString</code> representation.
-     * @return <code>TaskState</code> value represented by <code>String</code>
-     *         or <code>null</code> if value was not recognized.
+     * 
+     * @param stateStr Value containing <code>TaskState</code> <code>toString</code> representation.
+     * @return <code>TaskState</code> value represented by <code>String</code> or <code>null</code> if
+     * value was not recognized.
      */
     public static TaskState toValue(final String stateStr) {
         if (stateStr != null) {
@@ -90,24 +88,30 @@ public enum TaskState {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Methods                                                                //
+    // Methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Convert <code>TaskState</code> value to <code>String</code>.
      * <p>
+     * 
      * @return A <code>String</code> representation of the value of this object.
      */
     @Override
     public String toString() {
         switch (this) {
-            case READY:     return READY_STR;
-            case RUNNING:   return RUNNING_STR;
-            case COMPLETED: return COMPLETED_STR;
-            case FAILED:    return FAILED_STR;
-            // This is unrecheable. Returned null value means that some
-            // enum value is not handled correctly.
-            default:        return null;
+        case READY:
+            return READY_STR;
+        case RUNNING:
+            return RUNNING_STR;
+        case COMPLETED:
+            return COMPLETED_STR;
+        case FAILED:
+            return FAILED_STR;
+        // This is unrecheable. Returned null value means that some
+        // enum value is not handled correctly.
+        default:
+            return null;
         }
     }
 

@@ -20,11 +20,10 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 /**
- * Reads resources from domain.xml.
- * User has to specify an {@link ResourceType} which specifies
- * path and name of attribute value of which will be the key
- * in returned map.
+ * Reads resources from domain.xml. User has to specify an {@link ResourceType} which specifies path
+ * and name of attribute value of which will be the key in returned map.
  * <p/>
+ * 
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class ResourcesReader extends NodeListener implements
@@ -35,12 +34,10 @@ public class ResourcesReader extends NodeListener implements
      */
     public enum ResourceType {
 
-        JDBC_RESOURCE("/resources/jdbc-resource", "jndi-name"),
-        JDBC_CONNECTION_POOL("/resources/jdbc-connection-pool", "name"),
-        JAVA_MAIL("/resources/mail-resource", "jndi-name"),
-        CONNECTOR_RESOURCE("/resources/connector-resource", "jndi-name"),
-        CONNECTOR_POOL("/resources/connector-connection-pool", "name"),
-        ADMIN_OBJECT_RESOURCE("/resources/admin-object-resource", "jndi-name");
+        JDBC_RESOURCE("/resources/jdbc-resource", "jndi-name"), JDBC_CONNECTION_POOL("/resources/jdbc-connection-pool", "name"), JAVA_MAIL(
+                "/resources/mail-resource", "jndi-name"), CONNECTOR_RESOURCE("/resources/connector-resource", "jndi-name"), CONNECTOR_POOL(
+                        "/resources/connector-connection-pool",
+                        "name"), ADMIN_OBJECT_RESOURCE("/resources/admin-object-resource", "jndi-name");
 
         private String defaultKeyName;
 
@@ -66,8 +63,7 @@ public class ResourcesReader extends NodeListener implements
 
     private Map<String, String> properties = null;
 
-    private Map<String, Map<String, String>> resourceData =
-            new HashMap<>();
+    private Map<String, Map<String, String>> resourceData = new HashMap<>();
 
     public ResourcesReader(ResourceType type) {
         this(type.getDefaultPath(), type.getDefaultKeyName());
@@ -79,29 +75,26 @@ public class ResourcesReader extends NodeListener implements
     }
 
     @Override
-    public void readAttributes(String qname, Attributes attributes) throws
-            SAXException {
+    public void readAttributes(String qname, Attributes attributes) throws SAXException {
         properties = new HashMap<>();
 
         String resourceName = attributes.getValue(keyName);
         properties.put(keyName, resourceName);
 
         int attrLen = attributes.getLength();
-        for (int i = 0 ; i < attrLen ; i++) {
+        for (int i = 0; i < attrLen; i++) {
             String name = attributes.getQName(i);
             String value = attributes.getValue(i);
-            if (name != null && name.length() > 0 && value != null && value.
-                    length() > 0) {
+            if (name != null && name.length() > 0 && value != null && value.length() > 0) {
                 properties.put(name, value);
             }
         }
     }
 
     @Override
-    public void readChildren(String qname, Attributes attributes) throws
-            SAXException {
+    public void readChildren(String qname, Attributes attributes) throws SAXException {
         String propName = qname + "." + attributes.getValue("name"); //$NON-NLS-1$ //$NON-NLS-2$
-        properties.put(propName, attributes.getValue("value"));  //$NON-NLS-1$
+        properties.put(propName, attributes.getValue("value")); //$NON-NLS-1$
     }
 
     @Override

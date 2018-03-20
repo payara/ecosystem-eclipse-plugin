@@ -17,12 +17,13 @@ import org.eclipse.payara.tools.sdk.server.parser.TreeParser.Path;
 /**
  * <code>javadocs</code> library configuration XML element reader.
  * <p/>
+ * 
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class ConfigReaderJavadocs extends ConfigReader {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** <code>link</code> XML element reader. */
@@ -32,7 +33,7 @@ public class ConfigReaderJavadocs extends ConfigReader {
     private final LookupReader lookupReader = new LookupReader();
 
     ////////////////////////////////////////////////////////////////////////////
-    // XML reader methods                                                     //
+    // XML reader methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
@@ -40,6 +41,7 @@ public class ConfigReaderJavadocs extends ConfigReader {
      * <p/>
      * Sets readers for internal <code>javadocs</code> elements.
      * <p/>
+     * 
      * @return Paths that the reader listens to.
      */
     @Override
@@ -53,29 +55,31 @@ public class ConfigReaderJavadocs extends ConfigReader {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Getters and setters                                                    //
+    // Getters and setters //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Get links retrieved from XML elements.
      * <p/>
+     * 
      * @return Links sets retrieved from XML elements.
      */
     List<String> getLinks() {
         return linkReader.getLinks();
     }
-    
+
     /**
      * Get lookups retrieved from XML elements.
      * <p/>
+     * 
      * @return Links sets retrieved from XML elements.
      */
     List<String> getLookups() {
         return lookupReader.getLookups();
     }
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Methods                                                                //
+    // Methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**

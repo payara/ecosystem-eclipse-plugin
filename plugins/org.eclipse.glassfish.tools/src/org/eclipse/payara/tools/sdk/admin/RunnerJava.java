@@ -29,12 +29,13 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 /**
  * GlassFish server administration command execution using local Java VM.
  * <p/>
+ * 
  * @author Tomas Kraus
  */
 abstract class RunnerJava extends Runner {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Logger instance for this class. */
@@ -56,25 +57,24 @@ abstract class RunnerJava extends Runner {
     static final char PARAM_ASSIGN_VALUE = ' ';
 
     ////////////////////////////////////////////////////////////////////////////
-    // Static methods                                                         //
+    // Static methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Get {@link GlassFishConfig} instance for provided GlassFish server which
-     * shall not be <code>null</code>.
+     * Get {@link GlassFishConfig} instance for provided GlassFish server which shall not be
+     * <code>null</code>.
      * <p/>
-     * {@link CommandException} is thrown when configuration object value
-     * is <code>null</code>.
+     * {@link CommandException} is thrown when configuration object value is <code>null</code>.
      * <p/>
+     * 
      * @param server GlassFish server entity object.
-     * @return GlassFish server features configuration which
-     *         is not <code>null</code>.
+     * @return GlassFish server features configuration which is not <code>null</code>.
      */
     static GlassFishConfig getServerConfig(final GlassFishServer server) {
         final String METHOD = "getServerConfig";
         GlassFishConfig config = GlassFishConfigManager.getConfig(
                 ConfigBuilderProvider.getBuilderConfig(
-                server.getVersion()));
+                        server.getVersion()));
         if (config == null) {
             throw new CommandException(LOGGER.excMsg(METHOD, "noConfig"),
                     server.getVersion());
@@ -83,9 +83,9 @@ abstract class RunnerJava extends Runner {
     }
 
     /**
-     * Get {@link JavaSESet} instance for provided GlassFish server
-     * features configuration.
+     * Get {@link JavaSESet} instance for provided GlassFish server features configuration.
      * <p/>
+     * 
      * @param config GlassFish server features configuration.
      * @return GlassFish JavaSE configuration which is not <code>null</code>.
      */
@@ -101,6 +101,7 @@ abstract class RunnerJava extends Runner {
     /**
      * Constructs path to Java VM executable and verifies if it exists.
      * <p/>
+     * 
      * @param server GlassFish server entity object.
      * @param command lassFish server administration command with local Java VM.
      * @return Path to Java VM executable
@@ -119,7 +120,7 @@ abstract class RunnerJava extends Runner {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Holding data for command execution. */
@@ -130,38 +131,38 @@ abstract class RunnerJava extends Runner {
     final String javaVMExe;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Constructs an instance of administration command executor using
-     * command line asadmin interface.
+     * Constructs an instance of administration command executor using command line asadmin interface.
      * <p/>
-     * @param server  GlassFish server entity object.
+     * 
+     * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
-     * @param query   Query string for this command.
+     * @param query Query string for this command.
      */
     public RunnerJava(final GlassFishServer server, final Command command,
             final String query) {
         super(server, command, null, query);
         final String METHOD = "init";
         if (command instanceof CommandJava) {
-            this.command = (CommandJava)command;
+            this.command = (CommandJava) command;
         } else {
             throw new CommandException(LOGGER.excMsg(METHOD, "noCommandJava"));
         }
         javaVMExe = getJavaVM(server, this.command);
         if (javaVMExe == null) {
             throw new CommandException(LOGGER.excMsg(METHOD, "noJavaVMExe"),
-                    new Object[] {this.command.javaHome, server.getName()});
+                    new Object[] { this.command.javaHome, server.getName() });
         }
     }
 
     /**
-     * Constructs an instance of administration command executor using
-     * command line asadmin interface.
+     * Constructs an instance of administration command executor using command line asadmin interface.
      * <p/>
-     * @param server  GlassFish server entity object.
+     * 
+     * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
     public RunnerJava(final GlassFishServer server, final Command command) {
@@ -169,20 +170,21 @@ abstract class RunnerJava extends Runner {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Implemented Abstract Methods                                           //
+    // Implemented Abstract Methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Do not send information to the server via HTTP POST by default.
      * <p/>
-     * @return <code>true</code> if using HTTP POST to send to server
-     *         or <code>false</code> otherwise
+     * 
+     * @return <code>true</code> if using HTTP POST to send to server or <code>false</code> otherwise
      */
     /**
      * Do not send information to the server via HTTP POST by default.
      * <p/>
      * This method makes no sense for this runner.
      * <p/>
+     * 
      * @return Always returns <code>false</code>.
      */
     @Override
@@ -195,6 +197,7 @@ abstract class RunnerJava extends Runner {
      * <p/>
      * This method makes no sense for this runner.
      * <p/>
+     * 
      * @return Always returns <code>false</code>.
      */
     @Override
@@ -207,9 +210,9 @@ abstract class RunnerJava extends Runner {
      * <p/>
      * This method makes no sense for this runner.
      * <p/>
+     * 
      * @return Always returns <code>null</code>.
-     * @throws <code>CommandException</code> if there is a problem with building
-     *         command URL.
+     * @throws <code>CommandException</code> if there is a problem with building command URL.
      */
     @Override
     protected String constructCommandUrl() throws CommandException {
@@ -221,6 +224,7 @@ abstract class RunnerJava extends Runner {
      * <p/>
      * This method makes no sense for this runner.
      * <p/>
+     * 
      * @return Always returns <code>null</code>.
      */
     @Override
@@ -238,34 +242,32 @@ abstract class RunnerJava extends Runner {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // ExecutorService call() method helpers                                  //
+    // ExecutorService call() method helpers //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Verifies if Java VM version is supported by provided GlassFish server.
      * <p/>
-     * @return Value of <code>true</code> when Java VM executable version
-     *         is known and supported by provided GlassFish server
-     *         or <code>false</code> otherwise.
+     * 
+     * @return Value of <code>true</code> when Java VM executable version is known and supported by
+     * provided GlassFish server or <code>false</code> otherwise.
      */
     boolean verifyJavaVM() {
         final String METHOD = "verifyJavaVM";
         // Java VM executable version must be known.
-        JavaUtils.JavaVersion javaVersion
-                = JavaUtils.javaVmVersion(new File(javaVMExe));
+        JavaUtils.JavaVersion javaVersion = JavaUtils.javaVmVersion(new File(javaVMExe));
         if (javaVersion == null) {
             LOGGER.log(Level.INFO, METHOD, "unknown", javaVMExe);
             return false;
         } else {
             LOGGER.log(Level.FINEST, METHOD, "info",
-                    new Object[] {javaVMExe, javaVersion.toString()});
+                    new Object[] { javaVMExe, javaVersion.toString() });
         }
         // Java VM executable version must be supported by provided server.
-        Set<JavaSEPlatform> platforms =
-                getJavaSEConfig(getServerConfig(server)).platforms();
+        Set<JavaSEPlatform> platforms = getJavaSEConfig(getServerConfig(server)).platforms();
         if (!platforms.contains(javaVersion.toPlatform())) {
             LOGGER.log(Level.INFO, METHOD, "unsupported",
-                    new Object[] {javaVMExe, server.getName()});
+                    new Object[] { javaVMExe, server.getName() });
             return false;
         }
         return true;
@@ -274,10 +276,11 @@ abstract class RunnerJava extends Runner {
     /**
      * Prepare Java VM environment for Glassfish server execution.
      * <p/>
-     * @param env     Process builder environment <code>Map</code>.
+     * 
+     * @param env Process builder environment <code>Map</code>.
      * @param command GlassFish Server Administration Command Entity.
      */
-    static void setJavaEnvironment(Map<String,String> env,
+    static void setJavaEnvironment(Map<String, String> env,
             CommandJava command) {
         // Java VM home stored in AS environment variables JAVA_HOME and AS_JAVA
         env.put(JavaUtils.JAVA_HOME_ENV, command.javaHome);
@@ -289,6 +292,7 @@ abstract class RunnerJava extends Runner {
      * <p/>
      * No current directory will be set when domain directory does not exist.
      * <p/>
+     * 
      * @param pb Process builder object where to set current directory.
      */
     void setProcessCurrentDir(ProcessBuilder pb) {
@@ -299,7 +303,7 @@ abstract class RunnerJava extends Runner {
                     ServerUtils.getDomainConfigPath(domainsFolder));
             if (currentDir.exists()) {
                 LOGGER.log(Level.FINEST, METHOD, "dir",
-                        new Object[] {server.getName(), currentDir});
+                        new Object[] { server.getName(), currentDir });
                 pb.directory(currentDir);
             }
         }

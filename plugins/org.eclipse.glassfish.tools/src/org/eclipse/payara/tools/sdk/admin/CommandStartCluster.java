@@ -21,40 +21,40 @@ import org.eclipse.payara.tools.server.GlassFishServer;
  * <p/>
  * Holds data for command. Objects of this class are created by API user.
  * <p/>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
-@RunnerHttpClass(runner=RunnerHttpTarget.class)
-@RunnerRestClass(runner=RunnerRestStartCluster.class)
+@RunnerHttpClass(runner = RunnerHttpTarget.class)
+@RunnerRestClass(runner = RunnerRestStartCluster.class)
 public class CommandStartCluster extends CommandTarget {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Command string for start-cluster command. */
     private static final String COMMAND = "start-cluster";
 
-    /** Error message for administration command execution exception .*/
+    /** Error message for administration command execution exception . */
     private static final String ERROR_MESSAGE = "Cluster start failed.";
 
     ////////////////////////////////////////////////////////////////////////////
-    // Static methods                                                         //
+    // Static methods //
     ////////////////////////////////////////////////////////////////////////////
 
-   /**
+    /**
      * Starts cluster.
      * <p/>
+     * 
      * @param server GlassFish server entity.
      * @param target Cluster name.
      * @return Start cluster task response.
-     * @throws GlassFishIdeException When error occurred during administration
-     *         command execution.
+     * @throws GlassFishIdeException When error occurred during administration command execution.
      */
     public static ResultString startCluster(GlassFishServer server,
             String target) throws GlassFishIdeException {
         Command command = new CommandStartCluster(target);
-        Future<ResultString> future
-                = ServerAdmin.<ResultString>exec(server, command);
+        Future<ResultString> future = ServerAdmin.<ResultString>exec(server, command);
         try {
             return future.get();
         } catch (InterruptedException | ExecutionException
@@ -64,12 +64,13 @@ public class CommandStartCluster extends CommandTarget {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Constructs an instance of GlassFish server start-cluster command entity.
      * <p/>
+     * 
      * @param target Target GlassFish cluster.
      */
     public CommandStartCluster(String target) {

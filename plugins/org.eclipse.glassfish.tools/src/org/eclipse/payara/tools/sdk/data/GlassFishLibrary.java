@@ -15,6 +15,7 @@ import java.util.List;
 /**
  * GlassFish library entity.
  * <p/>
+ * 
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class GlassFishLibrary {
@@ -36,9 +37,10 @@ public class GlassFishLibrary {
         /**
          * Creates an instance of Maven related information.
          * <p/>
-         * @param groupId    Maven Group ID.
+         * 
+         * @param groupId Maven Group ID.
          * @param artifactId Maven Artifact ID.
-         * @param version    Maven Version.
+         * @param version Maven Version.
          */
         public Maven(final String groupId,
                 final String artifactId, final String version) {
@@ -48,15 +50,15 @@ public class GlassFishLibrary {
         }
     }
 
-   /** Library name (unique identifier). */
+    /** Library name (unique identifier). */
     private final String libraryID;
-    
+
     /** Library class path containing all JARs to be addedx to project. */
     private final List<URL> classpath;
 
     /** Library java doc. */
     private final List<URL> javadocs;
-    
+
     /** Library java doc. */
     private final List<String> javadocLookups;
 
@@ -69,10 +71,11 @@ public class GlassFishLibrary {
     /**
      * Creates an instance of GlassFish library entity.
      * <p/>
+     * 
      * @param libraryID Library name (unique identifier).
      * @param classpath Library class path.
-     * @param javadocs  Library java doc.
-     * @param sources   Library sources.
+     * @param javadocs Library java doc.
+     * @param sources Library sources.
      */
     public GlassFishLibrary(final String libraryID,
             final List<URL> classpath, final List<URL> javadocs,
@@ -89,6 +92,7 @@ public class GlassFishLibrary {
     /**
      * Get library name (unique identifier).
      * <p/>
+     * 
      * @return Library name (unique identifier).
      */
     public String getLibraryID() {
@@ -98,6 +102,7 @@ public class GlassFishLibrary {
     /**
      * Get library class path.
      * <p/>
+     * 
      * @return Library class path.
      */
     public List<URL> getClasspath() {
@@ -107,6 +112,7 @@ public class GlassFishLibrary {
     /**
      * Get library java doc.
      * <p/>
+     * 
      * @return Library java doc.
      */
     public List<URL> getJavadocs() {
@@ -116,6 +122,7 @@ public class GlassFishLibrary {
     /**
      * Get library java doc lookups.
      * <p/>
+     * 
      * @return Library java doc lookups.
      */
     public List<String> getJavadocLookups() {
@@ -125,6 +132,7 @@ public class GlassFishLibrary {
     /**
      * get library sources.
      * <p/>
+     * 
      * @return Library sources.
      */
     public List<URL> getSources() {
@@ -132,8 +140,7 @@ public class GlassFishLibrary {
     }
 
     /**
-     * Get Maven dependencies as
-     * <code>&lt;groupId&gt; ':' &lt;artifactId&gt; ':' &lt;version&gt; ':jar'
+     * Get Maven dependencies as <code>&lt;groupId&gt; ':' &lt;artifactId&gt; ':' &lt;version&gt; ':jar'
      * { ' ' &lt;groupId&gt; ':' &lt;artifactId&gt; ':' &lt;version&gt; ':jar'
      * }</ code> {@link String}.
      * <p/>

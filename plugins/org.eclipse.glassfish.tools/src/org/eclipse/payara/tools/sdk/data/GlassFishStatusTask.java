@@ -14,9 +14,9 @@ import org.eclipse.payara.tools.sdk.TaskEvent;
 /**
  * GlassFish server status check task details.
  * <p/>
- * Provides access to server status check task details in status listener
- * callback methods.
+ * Provides access to server status check task details in status listener callback methods.
  * <p/>
+ * 
  * @author Tomas Kraus
  */
 public interface GlassFishStatusTask {
@@ -24,6 +24,7 @@ public interface GlassFishStatusTask {
     /**
      * Get server status check type.
      * <p/>
+     * 
      * @return Server status check type.
      */
     public GlassFishStatusCheck getType();
@@ -31,6 +32,7 @@ public interface GlassFishStatusTask {
     /**
      * Get last command task execution status.
      * <p/>
+     * 
      * @return Last command task execution status.
      */
     public GlassFishStatusCheckResult getStatus();
@@ -38,6 +40,7 @@ public interface GlassFishStatusTask {
     /**
      * Get last command task execution status.
      * <p/>
+     * 
      * @return Last command task execution status.
      */
     public TaskEvent getEvent();

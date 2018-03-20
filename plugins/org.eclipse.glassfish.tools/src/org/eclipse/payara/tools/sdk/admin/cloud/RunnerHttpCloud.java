@@ -18,18 +18,19 @@ import org.eclipse.payara.tools.server.GlassFishServer;
  * <p/>
  * HTTP interface is not supported with cloud commands.
  * <p/>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RunnerHttpCloud extends RunnerHttp {
-    
+
     /**
-     * Constructs an instance of administration command executor using
-     * HTTP interface.
+     * Constructs an instance of administration command executor using HTTP interface.
      * <p/>
-     * This constructor prototype is called from factory class and should
-     * remain public in all child classes.
+     * This constructor prototype is called from factory class and should remain public in all child
+     * classes.
      * <p/>
-     * @param server  GlassFish cloud entity object.
+     * 
+     * @param server GlassFish cloud entity object.
      * @param command GlassFish server administration command entity.
      */
     public RunnerHttpCloud(final GlassFishServer server,
@@ -40,12 +41,12 @@ public class RunnerHttpCloud extends RunnerHttp {
     }
 
     /**
-     * Constructs an instance of administration command executor using
-     * HTTP interface.
+     * Constructs an instance of administration command executor using HTTP interface.
      * <p/>
-     * @param server  GlassFish server entity object.
+     * 
+     * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
-     * @param query   Query string for this command.
+     * @param query Query string for this command.
      */
     RunnerHttpCloud(final GlassFishServer server, final Command command,
             final String query) {
@@ -55,13 +56,13 @@ public class RunnerHttpCloud extends RunnerHttp {
     }
 
     /**
-     * Constructs an instance of administration command executor using
-     * HTTP interface.
+     * Constructs an instance of administration command executor using HTTP interface.
      * <p/>
-     * @param server  GlassFish server entity object.
+     * 
+     * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
-     * @param path    Path which builds URL we speak to.
-     * @param query   Query string for this command.
+     * @param path Path which builds URL we speak to.
+     * @param query Query string for this command.
      */
     RunnerHttpCloud(final GlassFishServer server, final Command command,
             final String path, final String query) {

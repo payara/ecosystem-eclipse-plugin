@@ -11,6 +11,6 @@ package org.eclipse.payara.tools.facets;
 
 public interface IGlassfishEjbDeploymentDescriptor extends IGlassfishDeploymentDescriptor {
 
-	static final String SUN_EJB_DEPLOYMENT_DESCRIPTOR_NAME = "sun-ejb-jar.xml";
+    static final String SUN_EJB_DEPLOYMENT_DESCRIPTOR_NAME = "sun-ejb-jar.xml";
 
 }

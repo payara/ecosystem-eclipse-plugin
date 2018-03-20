@@ -14,21 +14,20 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 /**
- * Marks that the xml parser is currently inside config element with
- * give name.
- * This information is used by descendants of this class.
+ * Marks that the xml parser is currently inside config element with give name. This information is
+ * used by descendants of this class.
  * <p/>
+ * 
  * @author Peter Benedikovic, Tomas Kraus
  */
 class TargetConfigReader extends NodeListener {
 
-    public static final String CONFIG_PATH =
-            "/domain/configs/config";
+    public static final String CONFIG_PATH = "/domain/configs/config";
 
     public static final String DEFAULT_TARGET = "server";
 
     protected static boolean readData = false;
-    
+
     private String targetConfigName = null;
 
     public TargetConfigReader(String targetConfigName) {
@@ -38,11 +37,9 @@ class TargetConfigReader extends NodeListener {
     }
 
     class TargetConfigMarker extends NodeListener {
- 
-        
+
         @Override
-        public void readAttributes(String qname, Attributes attributes) throws
-                SAXException {
+        public void readAttributes(String qname, Attributes attributes) throws SAXException {
             if ((targetConfigName != null) && attributes.getValue("name").equalsIgnoreCase(targetConfigName)) {
                 readData = true;
             }

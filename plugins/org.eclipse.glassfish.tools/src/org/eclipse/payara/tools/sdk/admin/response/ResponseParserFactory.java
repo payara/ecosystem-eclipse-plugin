@@ -11,37 +11,37 @@ package org.eclipse.payara.tools.sdk.admin.response;
 
 import org.eclipse.payara.tools.sdk.GlassFishIdeException;
 
-
-
 /**
- * Factory that returns appropriate response parser implementation
- * based on content type of the response.
+ * Factory that returns appropriate response parser implementation based on content type of the
+ * response.
  * <p>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class ResponseParserFactory {
 
     private static RestXMLResponseParser xmlParser;
-    
-//    private static RestJSONResponseParser jsonParser;
+
+    // private static RestJSONResponseParser jsonParser;
 
     public static synchronized RestResponseParser getRestParser(ResponseContentType contentType) {
         switch (contentType) {
-            case APPLICATION_XML:
-                if (xmlParser == null) {
-                    xmlParser = new RestXMLResponseParser();
-                }
-                return  xmlParser;
-            case APPLICATION_JSON:
-            	// RestJSONResponseParser is not used in Eclipse Payara Tools and has dependency on      
-            	// com.googlecode.json-simple 1.1.1, which we don't want to bundle
-//                if (jsonParser == null) {
-//                    jsonParser = new RestJSONResponseParser();
-//                }
-//                return jsonParser;
-            case TEXT_PLAIN:
-                return null;
-            default: throw new GlassFishIdeException("Not supported content type. Cannot create response parser!");
+        case APPLICATION_XML:
+            if (xmlParser == null) {
+                xmlParser = new RestXMLResponseParser();
+            }
+            return xmlParser;
+        case APPLICATION_JSON:
+            // RestJSONResponseParser is not used in Eclipse Payara Tools and has dependency on
+            // com.googlecode.json-simple 1.1.1, which we don't want to bundle
+            // if (jsonParser == null) {
+            // jsonParser = new RestJSONResponseParser();
+            // }
+            // return jsonParser;
+        case TEXT_PLAIN:
+            return null;
+        default:
+            throw new GlassFishIdeException("Not supported content type. Cannot create response parser!");
         }
     }
 

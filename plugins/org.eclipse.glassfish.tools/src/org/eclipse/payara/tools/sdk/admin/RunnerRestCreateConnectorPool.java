@@ -18,28 +18,27 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 
 /**
  * Runner for create connector pool command via REST interface.
- * 
+ *
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class RunnerRestCreateConnectorPool extends RunnerRest {
-    
+
     /**
-     * Constructs an instance of administration command executor using
-     * REST interface.
+     * Constructs an instance of administration command executor using REST interface.
      * <p/>
-     * @param server  GlassFish server entity object.
+     * 
+     * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
     public RunnerRestCreateConnectorPool(final GlassFishServer server,
             final Command command) {
         super(server, command);
     }
-    
+
     @Override
     protected void handleSend(HttpURLConnection hconn) throws IOException {
-        CommandCreateConnectorConnectionPool cmd = (CommandCreateConnectorConnectionPool)command;
-        OutputStreamWriter wr =
-                new OutputStreamWriter(hconn.getOutputStream());
+        CommandCreateConnectorConnectionPool cmd = (CommandCreateConnectorConnectionPool) command;
+        OutputStreamWriter wr = new OutputStreamWriter(hconn.getOutputStream());
         StringBuilder data = new StringBuilder();
         data.append("poolname=").append(cmd.poolName);
         data.append("&raname=").append(cmd.raName);
@@ -48,7 +47,7 @@ public class RunnerRestCreateConnectorPool extends RunnerRest {
         wr.write(data.toString());
         wr.close();
     }
-    
+
     /**
      * Overridden because server returns WARNING even when it creates the resource.
      */

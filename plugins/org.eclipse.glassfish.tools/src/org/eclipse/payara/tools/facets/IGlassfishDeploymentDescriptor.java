@@ -14,6 +14,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 public interface IGlassfishDeploymentDescriptor {
 
-	public void store(IProgressMonitor monitor) throws CoreException;
+    public void store(IProgressMonitor monitor) throws CoreException;
 
 }

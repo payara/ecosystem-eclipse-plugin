@@ -48,208 +48,208 @@ import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.core.ServerCore;
 
 public final class GlassfishServerConfigServices {
-	
-	public static final class UniqueRuntimeNameValidationService extends ValidationService {
 
-		@Override
-		protected Status compute() {
-			final Value<?> name = context(Value.class);
+    public static final class UniqueRuntimeNameValidationService extends ValidationService {
 
-			if (!name.empty()) {
-				IRuntime thisRuntime = name.element().adapt(IRuntime.class);
+        @Override
+        protected Status compute() {
+            final Value<?> name = context(Value.class);
 
-				if (thisRuntime instanceof IRuntimeWorkingCopy) {
-					thisRuntime = ((IRuntimeWorkingCopy) thisRuntime).getOriginal();
-				}
+            if (!name.empty()) {
+                IRuntime thisRuntime = name.element().adapt(IRuntime.class);
 
-				for (final IRuntime r : ServerCore.getRuntimes()) {
-					if (r != thisRuntime && name.text().equals(r.getName())) {
-						return Status.createErrorStatus(NLS.bind(Messages.duplicateRuntimeName, name.text()));
-					}
-				}
-			}
+                if (thisRuntime instanceof IRuntimeWorkingCopy) {
+                    thisRuntime = ((IRuntimeWorkingCopy) thisRuntime).getOriginal();
+                }
 
-			return Status.createOkStatus();
-		}
-	}
+                for (final IRuntime r : ServerCore.getRuntimes()) {
+                    if (r != thisRuntime && name.text().equals(r.getName())) {
+                        return Status.createErrorStatus(NLS.bind(Messages.duplicateRuntimeName, name.text()));
+                    }
+                }
+            }
 
-	public static final class UniqueServerNameValidationService extends ValidationService {
-		@Text("Server name {0} is already in use")
-		private static LocalizableText duplicateServerName;
+            return Status.createOkStatus();
+        }
+    }
 
-		static {
-			LocalizableText.init(UniqueServerNameValidationService.class);
-		}
+    public static final class UniqueServerNameValidationService extends ValidationService {
+        @Text("Server name {0} is already in use")
+        private static LocalizableText duplicateServerName;
 
-		@Override
-		protected Status compute() {
-			final Value<?> name = context(Value.class);
+        static {
+            LocalizableText.init(UniqueServerNameValidationService.class);
+        }
 
-			if (!name.empty()) {
-				final IServerWorkingCopy thisServerWorkingCopy = name.element().adapt(IServerWorkingCopy.class);
-				final IServer thisServer = thisServerWorkingCopy.getOriginal();
+        @Override
+        protected Status compute() {
+            final Value<?> name = context(Value.class);
 
-				for (final IServer s : ServerCore.getServers()) {
-					if (s != thisServer && name.text().equals(s.getName())) {
-						return Status.createErrorStatus(duplicateServerName.format(name.text()));
-					}
-				}
-			}
+            if (!name.empty()) {
+                final IServerWorkingCopy thisServerWorkingCopy = name.element().adapt(IServerWorkingCopy.class);
+                final IServer thisServer = thisServerWorkingCopy.getOriginal();
 
-			return Status.createOkStatus();
-		}
-	}
+                for (final IServer s : ServerCore.getServers()) {
+                    if (s != thisServer && name.text().equals(s.getName())) {
+                        return Status.createErrorStatus(duplicateServerName.format(name.text()));
+                    }
+                }
+            }
 
-	public static final class DomainLocationDefaultValueService extends DefaultValueService {
+            return Status.createOkStatus();
+        }
+    }
 
-		private static final String DEFAULT_DOMAINS_DIR = "domains";
-		private static final String DEFAULT_DOMAIN_NAME = "domain1";
+    public static final class DomainLocationDefaultValueService extends DefaultValueService {
 
-		@Override
-		protected String compute() {
-			IServerWorkingCopy wc = context(Value.class).element().adapt(IServerWorkingCopy.class);
-			IRuntime runtime = wc.getRuntime();
-			IPath serverLocation = runtime.getLocation();
-			return serverLocation.append(DEFAULT_DOMAINS_DIR).append(DEFAULT_DOMAIN_NAME).toString();
-		}
-	}
+        private static final String DEFAULT_DOMAINS_DIR = "domains";
+        private static final String DEFAULT_DOMAIN_NAME = "domain1";
 
-	public static final class JdkDefaultValueService extends JavaLocationDefaultValueService {
-		@Override
-		protected void initDefaultValueService() {
-			super.initDefaultValueService();
+        @Override
+        protected String compute() {
+            IServerWorkingCopy wc = context(Value.class).element().adapt(IServerWorkingCopy.class);
+            IRuntime runtime = wc.getRuntime();
+            IPath serverLocation = runtime.getLocation();
+            return serverLocation.append(DEFAULT_DOMAINS_DIR).append(DEFAULT_DOMAIN_NAME).toString();
+        }
+    }
 
-			// There is no need to detach the listener as the life cycle of the JDK and
-			// GlassFish
-			// location properties is the same.
+    public static final class JdkDefaultValueService extends JavaLocationDefaultValueService {
+        @Override
+        protected void initDefaultValueService() {
+            super.initDefaultValueService();
 
-			context(IGlassfishRuntimeModel.class).getServerRoot().attach(new FilteredListener<PropertyEvent>() {
-				@Override
-				protected void handleTypedEvent(final PropertyEvent event) {
-					refresh();
-				}
-			});
-		}
+            // There is no need to detach the listener as the life cycle of the JDK and
+            // GlassFish
+            // location properties is the same.
 
-		@Override
-		protected boolean acceptable(final IVMInstall jvm) {
-			if (context(IGlassfishRuntimeModel.class).getServerRoot().validation().ok()) {
-				final IRuntime r = context(Value.class).element().adapt(IRuntime.class);
-				final GlassFishRuntime gf = (GlassFishRuntime) r.loadAdapter(GlassFishRuntime.class, null);
-				return validateJvm(jvm).jdk().version(gf.getJavaVersionConstraint()).result().ok();
-			}
+            context(IGlassfishRuntimeModel.class).getServerRoot().attach(new FilteredListener<PropertyEvent>() {
+                @Override
+                protected void handleTypedEvent(final PropertyEvent event) {
+                    refresh();
+                }
+            });
+        }
 
-			return false;
-		}
-	}
+        @Override
+        protected boolean acceptable(final IVMInstall jvm) {
+            if (context(IGlassfishRuntimeModel.class).getServerRoot().validation().ok()) {
+                final IRuntime r = context(Value.class).element().adapt(IRuntime.class);
+                final GlassFishRuntime gf = (GlassFishRuntime) r.loadAdapter(GlassFishRuntime.class, null);
+                return validateJvm(jvm).jdk().version(gf.getJavaVersionConstraint()).result().ok();
+            }
 
-	public static final class JdkValidationService extends JavaLocationValidationService {
-		@Override
-		protected void initValidationService() {
-			super.initValidationService();
+            return false;
+        }
+    }
 
-			// There is no need to detach the listener as the life cycle of the JDK and
-			// GlassFish
-			// location properties is the same.
+    public static final class JdkValidationService extends JavaLocationValidationService {
+        @Override
+        protected void initValidationService() {
+            super.initValidationService();
 
-			context(IGlassfishRuntimeModel.class).getServerRoot().attach(new FilteredListener<PropertyContentEvent>() {
-				@Override
-				protected void handleTypedEvent(final PropertyContentEvent event) {
-					refresh();
-				}
-			});
-		}
+            // There is no need to detach the listener as the life cycle of the JDK and
+            // GlassFish
+            // location properties is the same.
 
-		@Override
-		protected Status validate(final File location) {
-			final IRuntime r = context(Value.class).element().adapt(IRuntime.class);
-			final GlassFishRuntime gf = (GlassFishRuntime) r.loadAdapter(GlassFishRuntime.class, null);
-			return validateJvm(location).jdk().version(gf.getJavaVersionConstraint()).result();
-		}
-	}
+            context(IGlassfishRuntimeModel.class).getServerRoot().attach(new FilteredListener<PropertyContentEvent>() {
+                @Override
+                protected void handleTypedEvent(final PropertyContentEvent event) {
+                    refresh();
+                }
+            });
+        }
 
-	public static final class ServerLocationValidationService extends ValidationService {
+        @Override
+        protected Status validate(final File location) {
+            final IRuntime r = context(Value.class).element().adapt(IRuntime.class);
+            final GlassFishRuntime gf = (GlassFishRuntime) r.loadAdapter(GlassFishRuntime.class, null);
+            return validateJvm(location).jdk().version(gf.getJavaVersionConstraint()).result();
+        }
+    }
 
-		@Override
-		protected Status compute() {
-			IRuntime r = context(Value.class).element().adapt(IRuntime.class);
-			GlassFishRuntime runtimeDelegate = (GlassFishRuntime) r.loadAdapter(GlassFishRuntime.class, null);
-			IStatus s = runtimeDelegate.validateServerLocation();
-			if (!s.isOK()) {
+    public static final class ServerLocationValidationService extends ValidationService {
+
+        @Override
+        protected Status compute() {
+            IRuntime r = context(Value.class).element().adapt(IRuntime.class);
+            GlassFishRuntime runtimeDelegate = (GlassFishRuntime) r.loadAdapter(GlassFishRuntime.class, null);
+            IStatus s = runtimeDelegate.validateServerLocation();
+            if (!s.isOK()) {
                 return StatusBridge.create(s);
             }
-			return StatusBridge.create(runtimeDelegate.validateVersion());
-		}
-	}
+            return StatusBridge.create(runtimeDelegate.validateVersion());
+        }
+    }
 
-	public static final class ServerLocationListener extends Listener {
-		private static final List<Path> subFoldersToSearch = ListFactory.<Path>start().add(new Path("glassfish"))
-				.add(new Path("glassfish4/glassfish")).add(new Path("glassfish3/glassfish")).result();
+    public static final class ServerLocationListener extends Listener {
+        private static final List<Path> subFoldersToSearch = ListFactory.<Path>start().add(new Path("glassfish"))
+                .add(new Path("glassfish4/glassfish")).add(new Path("glassfish3/glassfish")).result();
 
-		@Override
-		public void handle(final Event event) {
-			final IGlassfishRuntimeModel model = ((PropertyEvent) event).property()
-					.nearest(IGlassfishRuntimeModel.class);
+        @Override
+        public void handle(final Event event) {
+            final IGlassfishRuntimeModel model = ((PropertyEvent) event).property()
+                    .nearest(IGlassfishRuntimeModel.class);
 
-			Version gfVersion = null;
+            Version gfVersion = null;
 
-			final Path location = model.getServerRoot().content();
+            final Path location = model.getServerRoot().content();
 
-			if (location != null) {
-				GlassFishLocationUtils gfInstall = GlassFishLocationUtils.find(location.toFile());
+            if (location != null) {
+                GlassFishLocationUtils gfInstall = GlassFishLocationUtils.find(location.toFile());
 
-				if (gfInstall == null) {
-					for (final Path sf : subFoldersToSearch) {
-						final Path p = location.append(sf);
-						gfInstall = GlassFishLocationUtils.find(p.toFile());
+                if (gfInstall == null) {
+                    for (final Path sf : subFoldersToSearch) {
+                        final Path p = location.append(sf);
+                        gfInstall = GlassFishLocationUtils.find(p.toFile());
 
-						if (gfInstall != null) {
-							model.setServerRoot(p);
-							break;
-						}
-					}
-				}
+                        if (gfInstall != null) {
+                            model.setServerRoot(p);
+                            break;
+                        }
+                    }
+                }
 
-				if (gfInstall != null) {
-					gfVersion = gfInstall.version();
-				}
-			}
+                if (gfInstall != null) {
+                    gfVersion = gfInstall.version();
+                }
+            }
 
-			model.setName(GlassFishRuntime.createDefaultRuntimeName(gfVersion));
-		}
-	}
+            model.setName(GlassFishRuntime.createDefaultRuntimeName(gfVersion));
+        }
+    }
 
-	public static final class DomainLocationValidationService extends ValidationService {
+    public static final class DomainLocationValidationService extends ValidationService {
 
-		@Override
-		protected Status compute() {
-			IServerWorkingCopy wc = context(Value.class).element().adapt(IServerWorkingCopy.class);
-			GlassFishServer serverDelegate = (GlassFishServer) wc.loadAdapter(GlassFishServer.class, null);
+        @Override
+        protected Status compute() {
+            IServerWorkingCopy wc = context(Value.class).element().adapt(IServerWorkingCopy.class);
+            GlassFishServer serverDelegate = (GlassFishServer) wc.loadAdapter(GlassFishServer.class, null);
 
-			return StatusBridge.create(serverDelegate.validate());
-		}
+            return StatusBridge.create(serverDelegate.validate());
+        }
 
-	}
+    }
 
-	public static final class DomainLocationListener extends Listener {
-		@Override
-		public void handle(final Event event) {
-			final Property property = ((PropertyEvent) event).property();
-			final IServerWorkingCopy wc = property.element().adapt(IServerWorkingCopy.class);
-			final IGlassfishServerModel model = property.nearest(IGlassfishServerModel.class);
+    public static final class DomainLocationListener extends Listener {
+        @Override
+        public void handle(final Event event) {
+            final Property property = ((PropertyEvent) event).property();
+            final IServerWorkingCopy wc = property.element().adapt(IServerWorkingCopy.class);
+            final IGlassfishServerModel model = property.nearest(IGlassfishServerModel.class);
 
-			String name = wc.getRuntime().getName() + " [";
+            String name = wc.getRuntime().getName() + " [";
 
-			if (model.getRemote().content()) {
-				name = name + model.getHostName().content();
-			} else {
-				name = name + model.getDomainPath().content().lastSegment();
-			}
+            if (model.getRemote().content()) {
+                name = name + model.getHostName().content();
+            } else {
+                name = name + model.getDomainPath().content().lastSegment();
+            }
 
-			name = name + "]";
+            name = name + "]";
 
-			model.setName(findUniqueServerName(name));
-		}
-	}
+            model.setName(findUniqueServerName(name));
+        }
+    }
 
 }

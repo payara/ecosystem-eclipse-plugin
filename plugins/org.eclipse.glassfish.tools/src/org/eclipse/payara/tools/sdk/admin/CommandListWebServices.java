@@ -12,26 +12,26 @@ package org.eclipse.payara.tools.sdk.admin;
 /**
  * Command that retrieves list of web services defined on server.
  * <p/>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
-@RunnerHttpClass(runner=RunnerHttpListWebServices.class)
-@RunnerRestClass(runner=RunnerRestListWebServices.class)
-public class CommandListWebServices  extends Command {
-    
+@RunnerHttpClass(runner = RunnerHttpListWebServices.class)
+@RunnerRestClass(runner = RunnerRestListWebServices.class)
+public class CommandListWebServices extends Command {
+
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Command string for list web services command. */
     private static final String COMMAND = "__list-webservices";
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Constructs an instance of GlassFish server list web services
-     * command entity.
+     * Constructs an instance of GlassFish server list web services command entity.
      */
     public CommandListWebServices() {
         super(COMMAND);

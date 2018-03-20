@@ -14,19 +14,21 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 /**
  * Runner executes add-resources command via HTTP interface.
  * <p/>
+ * 
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class RunnerHttpAddResources extends RunnerHttp {
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Static methods                                                         //
+    // Static methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Builds add-resources query string for given command.
      * <p/>
-     * @param command GlassFish server administration command entity.
-     *                <code>CommandAddResources</code> instance is expected.
+     * 
+     * @param command GlassFish server administration command entity. <code>CommandAddResources</code>
+     * instance is expected.
      * @return Add-resources query string for given command.
      */
     private static String query(Command command) {
@@ -42,14 +44,14 @@ public class RunnerHttpAddResources extends RunnerHttp {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Constructs an instance of administration command executor using
-     * HTTP interface.
+     * Constructs an instance of administration command executor using HTTP interface.
      * <p/>
-     * @param server  GlassFish server entity object.
+     * 
+     * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
     public RunnerHttpAddResources(final GlassFishServer server,

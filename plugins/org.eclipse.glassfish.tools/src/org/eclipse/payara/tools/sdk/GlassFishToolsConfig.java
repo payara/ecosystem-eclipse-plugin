@@ -14,12 +14,13 @@ import org.eclipse.payara.tools.sdk.logging.Logger;
 /**
  * GlassFisg Tooling Library configuration.
  * <p/>
+ * 
  * @author Tomas Kraus
  */
 public class GlassFishToolsConfig {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Logger instance for this class. */
@@ -29,7 +30,7 @@ public class GlassFishToolsConfig {
     private static volatile boolean proxyForLoopback = true;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Static methods                                                         //
+    // Static methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
@@ -51,6 +52,7 @@ public class GlassFishToolsConfig {
     /**
      * Get proxy settings usage for loopback addresses configuration value.
      * <p/>
+     * 
      * @return Proxy settings usage for loopback addresses configuration value.
      */
     public static boolean getProxyForLoopback() {
@@ -58,4 +60,3 @@ public class GlassFishToolsConfig {
     }
 
 }
-

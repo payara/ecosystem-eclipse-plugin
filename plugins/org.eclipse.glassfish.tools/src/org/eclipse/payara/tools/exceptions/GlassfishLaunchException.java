@@ -11,40 +11,40 @@ package org.eclipse.payara.tools.exceptions;
 
 public class GlassfishLaunchException extends Exception {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -3931653934641477601L;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -3931653934641477601L;
 
-	private Process gfProcess;
+    private Process gfProcess;
 
-	public GlassfishLaunchException() {
-		super();
-	}
+    public GlassfishLaunchException() {
+        super();
+    }
 
-	public GlassfishLaunchException(String message, Throwable cause) {
-		this(message, cause, null);
-	}
+    public GlassfishLaunchException(String message, Throwable cause) {
+        this(message, cause, null);
+    }
 
-	public GlassfishLaunchException(String message, Process gfProcess) {
-		this(message, null, gfProcess);
-	}
+    public GlassfishLaunchException(String message, Process gfProcess) {
+        this(message, null, gfProcess);
+    }
 
-	public GlassfishLaunchException(String message, Throwable cause, Process gfProcess) {
-		super(message, cause);
-		this.gfProcess = gfProcess;
-	}
+    public GlassfishLaunchException(String message, Throwable cause, Process gfProcess) {
+        super(message, cause);
+        this.gfProcess = gfProcess;
+    }
 
-	public GlassfishLaunchException(String message) {
-		this(message, null, null);
-	}
+    public GlassfishLaunchException(String message) {
+        this(message, null, null);
+    }
 
-	public GlassfishLaunchException(Throwable cause) {
-		this(null, cause, null);
-	}
+    public GlassfishLaunchException(Throwable cause) {
+        this(null, cause, null);
+    }
 
-	public Process getStartedProcess() {
-		return gfProcess;
-	}
+    public Process getStartedProcess() {
+        return gfProcess;
+    }
 
 }

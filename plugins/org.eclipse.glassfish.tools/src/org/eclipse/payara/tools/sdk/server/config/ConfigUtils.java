@@ -49,12 +49,12 @@ public class ConfigUtils {
     private static final String MVN_PROP_VERSION = "version";
 
     /** */
-    private static final Pattern MVN_PROPS_PATTERN
-            = Pattern.compile("META-INF/maven/[^/]+/[^/]+/pom.properties");
+    private static final Pattern MVN_PROPS_PATTERN = Pattern.compile("META-INF/maven/[^/]+/[^/]+/pom.properties");
 
     /**
      * Convert {@link File} to {@link URL}.
      * <p/>
+     * 
      * @param file {@link File} to be converted to {@link URL}.
      */
     static URL fileToURL(File file) {
@@ -68,9 +68,10 @@ public class ConfigUtils {
     }
 
     /**
-     * Process <code>List</code> of links from library node and convert them
-     * to <code>List</code> of {@link URL}s.
+     * Process <code>List</code> of links from library node and convert them to <code>List</code> of
+     * {@link URL}s.
      * <p/>
+     * 
      * @param fileset Library node.
      * @return <code>List</code> of {@link URL}s from library node.
      */
@@ -89,9 +90,10 @@ public class ConfigUtils {
     }
 
     /**
-     * Process <code>List</code> of links from library node and convert them
-     * of <code>List</code> of {@link File}s.
+     * Process <code>List</code> of links from library node and convert them of <code>List</code> of
+     * {@link File}s.
      * <p/>
+     * 
      * @param fileset Library node.
      * @param rootDir File system search root.
      * @return <code>List</code> of {@link File}s from library node.
@@ -111,7 +113,7 @@ public class ConfigUtils {
             } else {
                 dirPrefix = d.getAbsolutePath();
             }
-            
+
             List<Pattern> patterns = compilePatterns(filesets.get(dir));
             File[] fileArray = new File(dirPrefix).listFiles(createFilter(
                     patterns));
@@ -119,7 +121,7 @@ public class ConfigUtils {
                 Collections.addAll(result, fileArray);
             }
         }
-        
+
         for (String path : paths) {
             File f = new File(path);
             if (!f.isAbsolute()) {
@@ -131,13 +133,14 @@ public class ConfigUtils {
             }
             result.add(f);
         }
-        
+
         return result;
     }
 
     /**
      * Search class path for Maven information.
      * <p/>
+     * 
      * @param classpath List of class path JAR files.
      * @return List of Maven information
      */
@@ -150,11 +153,9 @@ public class ConfigUtils {
                 Enumeration<? extends ZipEntry> entries = zip.entries();
                 while (entries.hasMoreElements()) {
                     ZipEntry entry = entries.nextElement();
-                    Matcher matcher
-                            = MVN_PROPS_PATTERN.matcher(entry.getName());
+                    Matcher matcher = MVN_PROPS_PATTERN.matcher(entry.getName());
                     if (matcher.matches()) {
-                        GlassFishLibrary.Maven mvnInfo
-                                = getMvnInfoFromProperties(zip.getInputStream(
+                        GlassFishLibrary.Maven mvnInfo = getMvnInfoFromProperties(zip.getInputStream(
                                 entry));
                         if (mvnInfo != null) {
                             mvnList.add(mvnInfo);
@@ -163,35 +164,34 @@ public class ConfigUtils {
                     }
                 }
             } catch (ZipException ze) {
-                 Logger.log(Level.WARNING, "Cannot open JAR file "
-                         + jar.getAbsolutePath() + ":", ze);
+                Logger.log(Level.WARNING, "Cannot open JAR file "
+                        + jar.getAbsolutePath() + ":", ze);
             } catch (IOException ioe) {
-                 Logger.log(Level.WARNING, "Cannot process JAR file "
-                         + jar.getAbsolutePath() + ":", ioe);
+                Logger.log(Level.WARNING, "Cannot process JAR file "
+                        + jar.getAbsolutePath() + ":", ioe);
             } catch (IllegalStateException ise) {
-                 Logger.log(Level.WARNING, "Cannot process JAR file "
-                         + jar.getAbsolutePath() + ":", ise);
+                Logger.log(Level.WARNING, "Cannot process JAR file "
+                        + jar.getAbsolutePath() + ":", ise);
             } finally {
                 if (zip != null) {
                     try {
                         zip.close();
                     } catch (IOException ioe) {
                         Logger.log(Level.WARNING, "Cannot close JAR file "
-                             + jar.getAbsolutePath() + ":", ioe);
+                                + jar.getAbsolutePath() + ":", ioe);
                     }
                 }
             }
-            
+
         }
         return mvnList;
     }
 
     /**
-     * Process <code>pom.properties</code> content to retrieve Maven information
-     * from JAR.
+     * Process <code>pom.properties</code> content to retrieve Maven information from JAR.
      * <p/>
-     * @param propStream Input stream to read <code>pom.properties</code>
-     *                   file from JAR.
+     * 
+     * @param propStream Input stream to read <code>pom.properties</code> file from JAR.
      */
     private static GlassFishLibrary.Maven getMvnInfoFromProperties(
             InputStream propStream) throws IOException {
@@ -208,15 +208,15 @@ public class ConfigUtils {
     }
 
     /**
-     * Creates file name filter from <code>List</code>
-     * of <cpode>Pattern</code>s.
+     * Creates file name filter from <code>List</code> of <cpode>Pattern</code>s.
      * <p/>
+     * 
      * @param patterns <code>List</code> of <cpode>Pattern</code>s.
      * @return File name filter.
      */
     private static FilenameFilter createFilter(final List<Pattern> patterns) {
         return new FilenameFilter() {
-            
+
             @Override
             public boolean accept(File dir, String name) {
                 for (Pattern p : patterns) {
@@ -232,6 +232,7 @@ public class ConfigUtils {
     /**
      * Compile pattern <code>String</code>s.
      * <p/>
+     * 
      * @param names <code>List</code> of pattern <code>String</code>s.
      * @return <code>List</code> of compiled <code>Pattern</code>s.
      */

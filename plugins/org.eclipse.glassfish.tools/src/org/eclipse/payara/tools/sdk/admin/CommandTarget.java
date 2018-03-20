@@ -12,27 +12,29 @@ package org.eclipse.payara.tools.sdk.admin;
 /**
  * Abstract GlassFish Server Command Entity containing target.
  * <p/>
- * Contains common <code>target</code> attribute.
- * Holds data for command. Objects of this class are created by API user.
+ * Contains common <code>target</code> attribute. Holds data for command. Objects of this class are
+ * created by API user.
  * <p/>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public abstract class CommandTarget extends Command {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Target GlassFish instance or cluster. */
     final String target;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Constructs an instance of GlassFish server enable command entity.
      * <p/>
+     * 
      * @param command Server command represented by this object.
      * @param target Target GlassFish instance or cluster.
      */

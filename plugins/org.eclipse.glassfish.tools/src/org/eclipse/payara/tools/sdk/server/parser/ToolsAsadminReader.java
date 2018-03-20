@@ -16,12 +16,13 @@ import org.xml.sax.SAXException;
 /**
  * <code>asadmin</code> tool configuration XML element reader.
  * <p/>
+ * 
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class ToolsAsadminReader extends AbstractReader {
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** <code>asadmin</code> XML element name. */
@@ -31,22 +32,21 @@ public class ToolsAsadminReader extends AbstractReader {
     private static final String JAR_ATTR = "jar";
 
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Platforms retrieved from XML elements. */
     private String jar;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Creates an instance of <code>asadmin</code> tool configuration
-     * XML element reader.
+     * Creates an instance of <code>asadmin</code> tool configuration XML element reader.
      * <p/>
-     * @param pathPrefix Tree parser path prefix to be prepended before
-     *        current XML element.
+     * 
+     * @param pathPrefix Tree parser path prefix to be prepended before current XML element.
      */
     ToolsAsadminReader(final String pathPrefix) throws ServerConfigException {
         super(pathPrefix, NODE);
@@ -54,13 +54,14 @@ public class ToolsAsadminReader extends AbstractReader {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Tree parser methods                                                    //
+    // Tree parser methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Process attributes from current XML element.
      * <p/>
-     * @param qname      Not used.
+     * 
+     * @param qname Not used.
      * @param attributes List of XML attributes.
      * @throws SAXException When any problem occurs.
      */
@@ -71,12 +72,13 @@ public class ToolsAsadminReader extends AbstractReader {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Getters and setters                                                    //
+    // Getters and setters //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Get asadmin tool JAR.
      * <p/>
+     * 
      * @return Asadmin tool JAR.
      */
     String getJar() {
@@ -84,7 +86,7 @@ public class ToolsAsadminReader extends AbstractReader {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Methods                                                                //
+    // Methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**

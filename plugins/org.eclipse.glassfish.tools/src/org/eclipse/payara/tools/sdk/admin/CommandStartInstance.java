@@ -21,40 +21,40 @@ import org.eclipse.payara.tools.server.GlassFishServer;
  * <p/>
  * Holds data for command. Objects of this class are created by API user.
  * <p/>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
-@RunnerHttpClass(runner=RunnerHttpTarget.class)
-@RunnerRestClass(runner=RunnerRestStartInstance.class)
+@RunnerHttpClass(runner = RunnerHttpTarget.class)
+@RunnerRestClass(runner = RunnerRestStartInstance.class)
 public class CommandStartInstance extends CommandTarget {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Command string for start-instance command. */
     private static final String COMMAND = "start-instance";
 
-    /** Error message for administration command execution exception .*/
+    /** Error message for administration command execution exception . */
     private static final String ERROR_MESSAGE = "Instance start failed.";
 
     ////////////////////////////////////////////////////////////////////////////
-    // Static methods                                                         //
+    // Static methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Starts server instance.
      * <p/>
+     * 
      * @param server GlassFish server entity.
      * @param target Instance name.
      * @return Start instance task response.
-     * @throws GlassFishIdeException When error occurred during administration
-     *         command execution.
+     * @throws GlassFishIdeException When error occurred during administration command execution.
      */
     public static ResultString startInstance(final GlassFishServer server,
             final String target) throws GlassFishIdeException {
         Command command = new CommandStartInstance(target);
-        Future<ResultString> future =
-                ServerAdmin.<ResultString>exec(server, command);
+        Future<ResultString> future = ServerAdmin.<ResultString>exec(server, command);
         try {
             return future.get();
         } catch (InterruptedException | ExecutionException
@@ -64,12 +64,13 @@ public class CommandStartInstance extends CommandTarget {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Constructs an instance of GlassFish server start-instance command entity.
      * <p/>
+     * 
      * @param target Target GlassFish instance.
      */
     public CommandStartInstance(final String target) {

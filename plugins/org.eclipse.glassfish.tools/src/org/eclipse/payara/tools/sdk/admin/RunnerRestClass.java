@@ -17,6 +17,7 @@ import java.lang.annotation.Target;
 /**
  * Annotation to select GlassFish server admin command runner for command entity.
  * <p>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 @Retention(RetentionPolicy.RUNTIME)
@@ -24,7 +25,7 @@ import java.lang.annotation.Target;
 public @interface RunnerRestClass {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** GlassFish command runner class as named value. */

@@ -21,19 +21,19 @@ import org.xml.sax.SAXException;
 /**
  * Reader for jmx connector port number as string from domain.xml.
  * <p/>
+ * 
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class JmxConnectorReader extends TargetConfigReader implements XMLReader {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Logger instance for this class. */
     private static final Logger LOGGER = new Logger(JmxConnectorReader.class);
 
-    public static final String DEFAULT_PATH =
-            "/domain/configs/config/admin-service/jmx-connector";
+    public static final String DEFAULT_PATH = "/domain/configs/config/admin-service/jmx-connector";
 
     private String path;
 
@@ -43,7 +43,7 @@ public class JmxConnectorReader extends TargetConfigReader implements XMLReader 
         super(targetConfigName);
         this.path = path;
     }
-    
+
     public JmxConnectorReader(String targetConfigName) {
         this(DEFAULT_PATH, targetConfigName);
     }
@@ -53,14 +53,14 @@ public class JmxConnectorReader extends TargetConfigReader implements XMLReader 
             throws SAXException {
         final String METHOD = "getServerConfig";
         /*
-         <admin-service type="das-and-server" system-jmx-connector-name="system">
-         <jmx-connector ..... port="8686" />
+         * <admin-service type="das-and-server" system-jmx-connector-name="system"> <jmx-connector .....
+         * port="8686" />
          */
         if (readData) {
             String jmxAttr = attributes.getValue("port");
             try {
                 int port = Integer.parseInt(jmxAttr);
-                result = "" + port;	//$NON-NLS-1$
+                result = "" + port; //$NON-NLS-1$
                 LOGGER.log(Level.INFO, METHOD, "port", result);
             } catch (NumberFormatException ex) {
                 LOGGER.log(Level.SEVERE, METHOD, "error", ex);

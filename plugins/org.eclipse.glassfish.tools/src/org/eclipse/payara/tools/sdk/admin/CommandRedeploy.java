@@ -17,65 +17,58 @@ import java.util.Map;
  * <p>
  * Holds data for command. Objects of this class are created by API user.
  * <p>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 @RunnerHttpClass(runner = RunnerHttpRedeploy.class)
 @RunnerRestClass(runner = RunnerRestDeploy.class)
 public class CommandRedeploy extends CommandTargetName {
 
-	////////////////////////////////////////////////////////////////////////////
-	// Class attributes //
-	////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+    // Class attributes //
+    ////////////////////////////////////////////////////////////////////////////
 
-	/** Command string for deploy command. */
-	private static final String COMMAND = "redeploy";
+    /** Command string for deploy command. */
+    private static final String COMMAND = "redeploy";
 
-	////////////////////////////////////////////////////////////////////////////
-	// Instance attributes //
-	////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+    // Instance attributes //
+    ////////////////////////////////////////////////////////////////////////////
 
-	/** Deployed application context root. */
-	final String contextRoot;
+    /** Deployed application context root. */
+    final String contextRoot;
 
-	/** Deployment properties. */
-	final Map<String, String> properties;
+    /** Deployment properties. */
+    final Map<String, String> properties;
 
-	/** Deployment libraries. */
-	final File[] libraries;
+    /** Deployment libraries. */
+    final File[] libraries;
 
-	/** Keep state. */
-	final boolean keepState;
+    /** Keep state. */
+    final boolean keepState;
 
-	////////////////////////////////////////////////////////////////////////////
-	// Constructors //
-	////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+    // Constructors //
+    ////////////////////////////////////////////////////////////////////////////
 
-	/**
-	 * Constructs an instance of GlassFish server deploy command entity.
-	 * <p/>
-	 * 
-	 * @param name
-	 *            Name of module/cluster/instance to modify.
-	 * @param target
-	 *            Target GlassFish instance or cluster where <code>name</code> is
-	 *            stored.
-	 * @param contextRoot
-	 *            Deployed application context root.
-	 * @param properties
-	 *            Deployment properties.
-	 * @param libraries
-	 *            Deployment libraries.
-	 * @param keepState
-	 *            Keep state.
-	 */
-	public CommandRedeploy(final String name, final String target, final String contextRoot,
-			final Map<String, String> properties, final File[] libraries, final boolean keepState) {
-		super(COMMAND, name, target);
-		this.contextRoot = contextRoot;
-		this.properties = properties;
-		this.libraries = libraries;
-		this.keepState = keepState;
-	}
+    /**
+     * Constructs an instance of GlassFish server deploy command entity.
+     * <p/>
+     * 
+     * @param name Name of module/cluster/instance to modify.
+     * @param target Target GlassFish instance or cluster where <code>name</code> is stored.
+     * @param contextRoot Deployed application context root.
+     * @param properties Deployment properties.
+     * @param libraries Deployment libraries.
+     * @param keepState Keep state.
+     */
+    public CommandRedeploy(final String name, final String target, final String contextRoot,
+            final Map<String, String> properties, final File[] libraries, final boolean keepState) {
+        super(COMMAND, name, target);
+        this.contextRoot = contextRoot;
+        this.properties = properties;
+        this.libraries = libraries;
+        this.keepState = keepState;
+    }
 
 }

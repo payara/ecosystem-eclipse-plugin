@@ -18,31 +18,32 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 /**
  * Command runner executes start instance command.
  * <p>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RunnerRestStartInstance extends RunnerRest {
-    
+
     /**
-     * Constructs an instance of administration command executor using
-     * REST interface.
+     * Constructs an instance of administration command executor using REST interface.
      * <p/>
-     * @param server  GlassFish server entity object.
+     * 
+     * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
     public RunnerRestStartInstance(final GlassFishServer server,
             final Command command) {
         super(server, command);
     }
-    
+
     @Override
     protected void handleSend(HttpURLConnection hconn) throws IOException {
-         OutputStreamWriter wr = new OutputStreamWriter(hconn.getOutputStream());
-         CommandTarget cmd = (CommandTarget) command;
-         StringBuilder data = new StringBuilder();
-         data.append("instance_name=").append(cmd.target);
-         
-         wr.write(data.toString());
-         wr.flush();
-         wr.close();
+        OutputStreamWriter wr = new OutputStreamWriter(hconn.getOutputStream());
+        CommandTarget cmd = (CommandTarget) command;
+        StringBuilder data = new StringBuilder();
+        data.append("instance_name=").append(cmd.target);
+
+        wr.write(data.toString());
+        wr.flush();
+        wr.close();
     }
 }

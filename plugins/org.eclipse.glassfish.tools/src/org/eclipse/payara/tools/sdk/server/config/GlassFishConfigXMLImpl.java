@@ -19,18 +19,19 @@ import org.eclipse.payara.tools.sdk.server.parser.TreeParser;
 /**
  * Payara configuration reader API.
  * <p/>
- * Allows to access Payara server features and libraries configuration
- * XML file using configuration XML file parser.
+ * Allows to access Payara server features and libraries configuration XML file using configuration
+ * XML file parser.
  * <p/>
- * XML configuration file reader is called only once. Any subsequent
- * configuration values access will return values cached from first attempt.
+ * XML configuration file reader is called only once. Any subsequent configuration values access
+ * will return values cached from first attempt.
  * <p/>
+ * 
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class GlassFishConfigXMLImpl implements GlassFishConfig {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** GlassFish configuration XML file. */
@@ -39,31 +40,34 @@ public class GlassFishConfigXMLImpl implements GlassFishConfig {
     /** GlassFish configuration XML file reader. */
     private final ConfigReaderServer reader = new ConfigReaderServer();
 
-    /** Stores information whether GlassFish configuration XML file
-     *  was already read and processed */
+    /**
+     * Stores information whether GlassFish configuration XML file was already read and processed
+     */
     private volatile boolean readDone;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Creates an instance of Payara configuration API.
      * <p/>
+     * 
      * @param configFile Payara configuration XML file.
      */
     public GlassFishConfigXMLImpl(final URL configFile) {
         this.configFile = configFile;
         readDone = false;
     }
-   
+
     ////////////////////////////////////////////////////////////////////////////
-    // Getters and setters                                                    //
+    // Getters and setters //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Get Payara libraries configuration.
      * <p/>
+     * 
      * @return Payara libraries configuration.
      */
     @Override
@@ -75,6 +79,7 @@ public class GlassFishConfigXMLImpl implements GlassFishConfig {
     /**
      * Get Payara JavaEE configuration.
      * <p/>
+     * 
      * @return Payara JavaEE configuration.
      */
     @Override
@@ -82,10 +87,11 @@ public class GlassFishConfigXMLImpl implements GlassFishConfig {
         readXml();
         return reader.getJavaEE();
     }
-    
+
     /**
      * Get Payara JavaSE configuration.
      * <p/>
+     * 
      * @return Payara JavaSE configuration.
      */
     @Override
@@ -97,6 +103,7 @@ public class GlassFishConfigXMLImpl implements GlassFishConfig {
     /**
      * Get Payara tools configuration.
      * <p/>
+     * 
      * @return Payara tools configuration.
      */
     @Override
@@ -104,9 +111,9 @@ public class GlassFishConfigXMLImpl implements GlassFishConfig {
         readXml();
         return reader.getTools();
     }
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Methods                                                                //
+    // Methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
@@ -116,12 +123,12 @@ public class GlassFishConfigXMLImpl implements GlassFishConfig {
         if (readDone) {
             return;
         }
-        synchronized(reader) {
+        synchronized (reader) {
             if (!readDone) {
                 TreeParser.readXml(configFile, reader);
                 readDone = true;
             }
         }
     }
-    
+
 }

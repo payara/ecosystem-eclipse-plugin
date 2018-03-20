@@ -28,9 +28,9 @@ import javax.xml.stream.events.XMLEvent;
 import org.eclipse.payara.tools.sdk.GlassFishIdeException;
 
 /**
- * Response parser implementation that can parse XML responses
- * returned by REST admin interface.
+ * Response parser implementation that can parse XML responses returned by REST admin interface.
  * <p>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RestXMLResponseParser extends RestResponseParser {
@@ -48,16 +48,17 @@ public class RestXMLResponseParser extends RestResponseParser {
     /**
      * Parse implementation for XML REST response.
      * <p>
-     * This implementation is based on Stax parser. Currently REST admin service
-     * does not use any schema for XML responses so this implementation is based
-     * on the code that generates the response on server side.
+     * This implementation is based on Stax parser. Currently REST admin service does not use any schema
+     * for XML responses so this implementation is based on the code that generates the response on
+     * server side.
      * <p>
+     * 
      * @param in {@link InputStream} with XML REST response.
      * @return Response returned by REST administration service.
      */
     @Override
     public RestActionReport parse(InputStream in) {
-        //System.out.println("FACTORY: " + factory);
+        // System.out.println("FACTORY: " + factory);
         try {
             XMLEventReader reader = factory.createFilteredReader(factory.createXMLEventReader(in), filter);
             if (reader.hasNext() && MAP.equals(reader.nextEvent().asStartElement().getName().getLocalPart())) {
@@ -74,43 +75,43 @@ public class RestXMLResponseParser extends RestResponseParser {
         int level = 0;
         RestActionReport report = new RestActionReport();
         while (reader.hasNext() && (level > -1)) {
-                XMLEvent event = reader.nextEvent();
-                if (event.isStartElement()) {
+            XMLEvent event = reader.nextEvent();
+            if (event.isStartElement()) {
 
-                    if (level++ == 0) {
-                        StartElement element = event.asStartElement();
-                        String elementName = element.getName().getLocalPart();
-                        if (ENTRY.equals(elementName)) {
-                            Map<String, String> m = getMapEntry(element);
-                            String key = m.get("key");
-                            String value = m.get("value");
-                            switch (key) {
-                                case "message":
-                                    report.setMessage(value);
-                                    break;
-                                case "exit_code":
-                                    report.setExitCode(ActionReport.ExitCode.valueOf(value));
-                                    break;
-                                case "command":
-                                    report.setActionDescription(value);
-                                    break;
-                                case "children":
-                                    report.topMessagePart.children = parseChildrenMessages(reader);
-                                    level--;
-                                    break;
-                                case "subReports":
-                                    report.subActions = parseSubReports(reader);
-                                    break;
-                            }
+                if (level++ == 0) {
+                    StartElement element = event.asStartElement();
+                    String elementName = element.getName().getLocalPart();
+                    if (ENTRY.equals(elementName)) {
+                        Map<String, String> m = getMapEntry(element);
+                        String key = m.get("key");
+                        String value = m.get("value");
+                        switch (key) {
+                        case "message":
+                            report.setMessage(value);
+                            break;
+                        case "exit_code":
+                            report.setExitCode(ActionReport.ExitCode.valueOf(value));
+                            break;
+                        case "command":
+                            report.setActionDescription(value);
+                            break;
+                        case "children":
+                            report.topMessagePart.children = parseChildrenMessages(reader);
+                            level--;
+                            break;
+                        case "subReports":
+                            report.subActions = parseSubReports(reader);
+                            break;
                         }
                     }
-
                 }
 
-                if (event.isEndElement()) {
-                    level--;
-                }
             }
+
+            if (event.isEndElement()) {
+                level--;
+            }
+        }
         return report;
     }
 
@@ -160,15 +161,15 @@ public class RestXMLResponseParser extends RestResponseParser {
                         String key = m.get("key");
                         String value = m.get("value");
                         switch (key) {
-                            case "message":
-                                msg.setMessage(value);
-                                break;
-                            case "properties":
-                                msg.props = parseProperties(reader);
-                                break;
-                            case "children":
-                                msg.children = parseChildrenMessages(reader);
-                                break;
+                        case "message":
+                            msg.setMessage(value);
+                            break;
+                        case "properties":
+                            msg.props = parseProperties(reader);
+                            break;
+                        case "children":
+                            msg.children = parseChildrenMessages(reader);
+                            break;
                         }
                     }
                 }
@@ -189,7 +190,6 @@ public class RestXMLResponseParser extends RestResponseParser {
         ArrayList<RestActionReport> subReports = new ArrayList<>();
         return subReports;
     }
-
 
     static private class RestXMLResponseFilter implements EventFilter {
 

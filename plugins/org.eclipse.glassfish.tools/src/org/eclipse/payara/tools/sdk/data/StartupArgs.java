@@ -14,17 +14,17 @@ import java.util.Map;
 
 /**
  * This interface provides IDE and user specific arguments for starting the server.
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public interface StartupArgs {
-    
+
     public List<String> getGlassfishArgs();
-    
+
     public List<String> getJavaArgs();
-    
+
     public Map<String, String> getEnvironmentVars();
-    
+
     public String getJavaHome();
-    
+
 }

@@ -26,101 +26,81 @@ import org.eclipse.wst.server.core.IRuntime;
 
 /**
  * Contains the logic for processing the <code>runtimeComponentProviders</code> extension point.
- * 
+ *
  * @author <a href="mailto:konstantin.komissarchik@oracle.com">Konstantin Komissarchik</a>
  */
 
-public final class RuntimeComponentProvidersExtensionPoint
-{
+public final class RuntimeComponentProvidersExtensionPoint {
     public static final String EXTENSION_POINT_ID = "runtimeComponentProviders";
     private static final String EL_RUNTIME_COMPONENT_PROVIDER = "runtime-component-provider";
     private static final String ATTR_CLASS = "class";
-    
+
     private static List<RuntimeComponentProvider> providers = null;
-    
-    public static List<IRuntimeComponent> getRuntimeComponents( final IRuntime runtime )
-    {
+
+    public static List<IRuntimeComponent> getRuntimeComponents(final IRuntime runtime) {
         final List<IRuntimeComponent> components = new ArrayList<>();
-        
-        for( final RuntimeComponentProvider provider : getProviders() )
-        {
-            try
-            {
-                final List<IRuntimeComponent> res = provider.getRuntimeComponents( runtime );
-                
-                if( res != null )
-                {
-                    components.addAll( res );
+
+        for (final RuntimeComponentProvider provider : getProviders()) {
+            try {
+                final List<IRuntimeComponent> res = provider.getRuntimeComponents(runtime);
+
+                if (res != null) {
+                    components.addAll(res);
                 }
-            }
-            catch( final Exception e )
-            {
-                GlassfishToolsPlugin.log( e );
+            } catch (final Exception e) {
+                GlassfishToolsPlugin.log(e);
             }
         }
-        
+
         return components;
     }
 
-    private static synchronized List<RuntimeComponentProvider> getProviders()
-    {
-        if( providers == null )
-        {
+    private static synchronized List<RuntimeComponentProvider> getProviders() {
+        if (providers == null) {
             final List<RuntimeComponentProvider> list = new ArrayList<>();
-            
-            for( final ProviderDef pdef : readExtensions() )
-            {
-                final RuntimeComponentProvider provider
-                    = instantiate( pdef.pluginId, pdef.className, RuntimeComponentProvider.class );
-                
-                if( provider != null )
-                {
-                    list.add( provider );
+
+            for (final ProviderDef pdef : readExtensions()) {
+                final RuntimeComponentProvider provider = instantiate(pdef.pluginId, pdef.className, RuntimeComponentProvider.class);
+
+                if (provider != null) {
+                    list.add(provider);
                 }
             }
-            
-            providers = Collections.unmodifiableList( list );
+
+            providers = Collections.unmodifiableList(list);
         }
-        
+
         return providers;
     }
-    
-    private static List<ProviderDef> readExtensions()
-    {
+
+    private static List<ProviderDef> readExtensions() {
         final List<ProviderDef> providers = new ArrayList<>();
-        
-        for( final IConfigurationElement element 
-             : getTopLevelElements( findExtensions( GlassfishToolsPlugin.SYMBOLIC_NAME, EXTENSION_POINT_ID ) ) )
-        {
+
+        for (final IConfigurationElement element : getTopLevelElements(
+                findExtensions(GlassfishToolsPlugin.SYMBOLIC_NAME, EXTENSION_POINT_ID))) {
             final String pluginId = element.getContributor().getName();
-            
-            if( element.getName().equals( EL_RUNTIME_COMPONENT_PROVIDER ) )
-            {
-                try
-                {
-                    final String className = findRequiredAttribute( element, ATTR_CLASS );
-                    providers.add( new ProviderDef( pluginId, className ) );
-                }
-                catch( final InvalidExtensionException e )
-                {
+
+            if (element.getName().equals(EL_RUNTIME_COMPONENT_PROVIDER)) {
+                try {
+                    final String className = findRequiredAttribute(element, ATTR_CLASS);
+                    providers.add(new ProviderDef(pluginId, className));
+                } catch (final InvalidExtensionException e) {
                     // Continue. The problem has been reported to the user via the log.
                 }
             }
         }
-        
+
         return providers;
     }
-    
-    private static final class ProviderDef
-    {
+
+    private static final class ProviderDef {
         public final String pluginId;
         public final String className;
-        
-        public ProviderDef( final String pluginId, final String className )
-        {
+
+        public ProviderDef(final String pluginId, final String className) {
             this.pluginId = pluginId;
             this.className = className;
         }
     }
-    
+
 }

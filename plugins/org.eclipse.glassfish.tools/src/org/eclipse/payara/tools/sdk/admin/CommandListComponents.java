@@ -20,34 +20,35 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 /**
  * Command that retrieves list of components defined on server.
  * <p/>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
-@RunnerHttpClass(runner=RunnerHttpListComponents.class)
-@RunnerRestClass(runner=RunnerRestListApplications.class, command="list-applications")
+@RunnerHttpClass(runner = RunnerHttpListComponents.class)
+@RunnerRestClass(runner = RunnerRestListApplications.class, command = "list-applications")
 public class CommandListComponents extends CommandTarget {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Command string for list components command. */
     private static final String COMMAND = "list-components";
 
-    /** Error message for administration command execution exception .*/
+    /** Error message for administration command execution exception . */
     private static final String ERROR_MESSAGE = "List components failed.";
 
     ////////////////////////////////////////////////////////////////////////////
-    // Static methods                                                         //
+    // Static methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * List components.
      * <p/>
+     * 
      * @param server GlassFish server entity.
      * @param target Target server instance or cluster.
      * @return List components task response.
-     * @throws GlassFishIdeException When error occurred during administration
-     *         command execution.
+     * @throws GlassFishIdeException When error occurred during administration command execution.
      */
     public static ResultMap<String, List<String>> listComponents(
             final GlassFishServer server, final String target)
@@ -64,14 +65,14 @@ public class CommandListComponents extends CommandTarget {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Constructs an instance of GlassFish server list components
-     * command entity.
+     * Constructs an instance of GlassFish server list components command entity.
      * <p/>
-     * @param target  Target GlassFish instance or cluster.
+     * 
+     * @param target Target GlassFish instance or cluster.
      */
     public CommandListComponents(final String target) {
         super(COMMAND, target);

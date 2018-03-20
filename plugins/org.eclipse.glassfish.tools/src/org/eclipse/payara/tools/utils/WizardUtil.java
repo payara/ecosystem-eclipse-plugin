@@ -20,50 +20,49 @@ import org.eclipse.wst.server.core.IRuntime;
 @SuppressWarnings("restriction")
 public class WizardUtil {
 
+    public static boolean isWebOrEJBProjectWithGF3Runtime(IProject project) {
+        try {
+            boolean result = project.isAccessible() &&
+                    project.hasNature(IModuleConstants.MODULE_NATURE_ID) &&
+                    (JavaEEProjectUtilities.isDynamicWebProject(project) ||
+                            JavaEEProjectUtilities.isEJBProject(project));
 
-	public static boolean isWebOrEJBProjectWithGF3Runtime(IProject project) {
-		try {
-			boolean result = project.isAccessible() && 
-				project.hasNature(IModuleConstants.MODULE_NATURE_ID) && 
-				(JavaEEProjectUtilities.isDynamicWebProject(project) ||
-				JavaEEProjectUtilities.isEJBProject(project));
+            if (result) {
+                return hasGF3Runtime(project);
+            }
+        } catch (CoreException e) {
+            e.printStackTrace();
+        }
 
-			if (result) {
-				return hasGF3Runtime(project);
-			}
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
+        return false;
+    }
 
-		return false;
-	}
+    public static boolean isWebProjectWithGF3Runtime(IProject project) {
+        try {
+            boolean result = (project.isAccessible() &&
+                    project.hasNature(IModuleConstants.MODULE_NATURE_ID) &&
+                    JavaEEProjectUtilities.isDynamicWebProject(project));
 
-	public static boolean isWebProjectWithGF3Runtime(IProject project) {
-		try {
-			boolean result = (project.isAccessible() && 
-				project.hasNature(IModuleConstants.MODULE_NATURE_ID) && 
-				JavaEEProjectUtilities.isDynamicWebProject(project));
+            if (result) {
+                return hasGF3Runtime(project);
+            }
+        } catch (CoreException e) {
+            e.printStackTrace();
+        }
 
-			if (result) {
-				return hasGF3Runtime(project);
-			}
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
+        return false;
+    }
 
-		return false;
-	}
+    public static boolean hasGF3Runtime(IProject project) {
+        try {
+            IRuntime runtime = J2EEProjectUtilities.getServerRuntime(project);
+            if ((runtime != null) && GlassfishToolsPlugin.is31OrAbove(runtime)) {
+                return true;
+            }
+        } catch (CoreException e) {
+            e.printStackTrace();
+        }
 
-	public static boolean hasGF3Runtime(IProject project) {
-		try {
-			IRuntime runtime = J2EEProjectUtilities.getServerRuntime(project);
-			if ((runtime != null) && GlassfishToolsPlugin.is31OrAbove(runtime)){
-				return true;
-			}
-               } catch (CoreException e) {
-			e.printStackTrace();
-		}
-
-		return false;
-	}
+        return false;
+    }
 }

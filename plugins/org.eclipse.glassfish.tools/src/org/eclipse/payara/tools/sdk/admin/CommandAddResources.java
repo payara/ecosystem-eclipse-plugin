@@ -24,105 +24,95 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 /**
  * Command registers resources defined in provided xml file on specified target.
  * <p/>
- * 
+ *
  * @author Peter Benedikovic, Tomas Kraus
  */
 @RunnerHttpClass(runner = RunnerHttpAddResources.class)
 @RunnerRestClass(runner = RunnerRestAddResources.class)
 public class CommandAddResources extends CommandTarget {
 
-	////////////////////////////////////////////////////////////////////////////
-	// Class attributes //
-	////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+    // Class attributes //
+    ////////////////////////////////////////////////////////////////////////////
 
-	/** Logger instance for this class. */
-	private static final Logger LOGGER = new Logger(CommandAddResources.class);
+    /** Logger instance for this class. */
+    private static final Logger LOGGER = new Logger(CommandAddResources.class);
 
-	/** Command string for create-cluster command. */
-	private static final String COMMAND = "add-resources";
+    /** Command string for create-cluster command. */
+    private static final String COMMAND = "add-resources";
 
-	////////////////////////////////////////////////////////////////////////////
-	// Static methods //
-	////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+    // Static methods //
+    ////////////////////////////////////////////////////////////////////////////
 
-	/**
-	 * Add resource to target server.
-	 * <p/>
-	 * 
-	 * @param server
-	 *            GlassFish server entity.
-	 * @param xmlResourceFile
-	 *            File object pointing to XML file containing resources to be added.
-	 * @param target
-	 *            GlassFish server target.
-	 * @return Add resource task response.
-	 * @throws GlassFishIdeException
-	 *             When error occurred during administration command execution.
-	 */
-	public static ResultString addResource(GlassFishServer server, File xmlResourceFile, String target) throws GlassFishIdeException {
-		String METHOD = "addResource";
-		
-		Command command = new CommandAddResources(xmlResourceFile, target);
-		Future<ResultString> future = ServerAdmin.<ResultString>exec(server, command);
-		try {
-			return future.get();
-		} catch (InterruptedException | ExecutionException | CancellationException ie) {
-			throw new GlassFishIdeException(LOGGER.excMsg(METHOD, "exception"), ie);
-		}
-	}
+    /**
+     * Add resource to target server.
+     * <p/>
+     * 
+     * @param server GlassFish server entity.
+     * @param xmlResourceFile File object pointing to XML file containing resources to be added.
+     * @param target GlassFish server target.
+     * @return Add resource task response.
+     * @throws GlassFishIdeException When error occurred during administration command execution.
+     */
+    public static ResultString addResource(GlassFishServer server, File xmlResourceFile, String target) throws GlassFishIdeException {
+        String METHOD = "addResource";
 
-	/**
-	 * Add resource to target server.
-	 * <p/>
-	 * 
-	 * @param server
-	 *            GlassFish server entity.
-	 * @param xmlResourceFile
-	 *            File object pointing to XML file containing resources to be added.
-	 * @param target
-	 *            GlassFish server target.
-	 * @param timeout
-	 *            Administration command execution timeout [ms].
-	 * @return Add resource task response.
-	 * @throws GlassFishIdeException
-	 *             When error occurred during administration command execution.
-	 */
-	public static ResultString addResource(GlassFishServer server, File xmlResourceFile, String target, long timeout) throws GlassFishIdeException {
-		String METHOD = "addResource";
-		Command command = new CommandAddResources(xmlResourceFile, target);
-		Future<ResultString> future = ServerAdmin.<ResultString>exec(server, command);
-		
-		try {
-			return future.get(timeout, MILLISECONDS);
-		} catch (InterruptedException | ExecutionException | CancellationException ie) {
-			throw new GlassFishIdeException(LOGGER.excMsg(METHOD, "exception"), ie);
-		} catch (TimeoutException te) {
-			throw new GlassFishIdeException(LOGGER.excMsg(METHOD, "exceptionWithTimeout", Long.toString(timeout)), te);
-		}
-	}
+        Command command = new CommandAddResources(xmlResourceFile, target);
+        Future<ResultString> future = ServerAdmin.<ResultString>exec(server, command);
+        try {
+            return future.get();
+        } catch (InterruptedException | ExecutionException | CancellationException ie) {
+            throw new GlassFishIdeException(LOGGER.excMsg(METHOD, "exception"), ie);
+        }
+    }
 
-	////////////////////////////////////////////////////////////////////////////
-	// Instance attributes //
-	////////////////////////////////////////////////////////////////////////////
+    /**
+     * Add resource to target server.
+     * <p/>
+     * 
+     * @param server GlassFish server entity.
+     * @param xmlResourceFile File object pointing to XML file containing resources to be added.
+     * @param target GlassFish server target.
+     * @param timeout Administration command execution timeout [ms].
+     * @return Add resource task response.
+     * @throws GlassFishIdeException When error occurred during administration command execution.
+     */
+    public static ResultString addResource(GlassFishServer server, File xmlResourceFile, String target, long timeout)
+            throws GlassFishIdeException {
+        String METHOD = "addResource";
+        Command command = new CommandAddResources(xmlResourceFile, target);
+        Future<ResultString> future = ServerAdmin.<ResultString>exec(server, command);
 
-	/** File object pointing to xml file that contains resources to be added. */
-	File xmlResFile;
+        try {
+            return future.get(timeout, MILLISECONDS);
+        } catch (InterruptedException | ExecutionException | CancellationException ie) {
+            throw new GlassFishIdeException(LOGGER.excMsg(METHOD, "exception"), ie);
+        } catch (TimeoutException te) {
+            throw new GlassFishIdeException(LOGGER.excMsg(METHOD, "exceptionWithTimeout", Long.toString(timeout)), te);
+        }
+    }
 
-	////////////////////////////////////////////////////////////////////////////
-	// Constructors //
-	////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+    // Instance attributes //
+    ////////////////////////////////////////////////////////////////////////////
 
-	/**
-	 * Constructs an instance of GlassFish server add-resources command entity.
-	 * <p/>
-	 * 
-	 * @param xmlResourceFile
-	 *            File object pointing to XML file containing resources to be added.
-	 * @param target
-	 *            GlassFish server target.
-	 */
-	public CommandAddResources(final File xmlResourceFile, final String target) {
-		super(COMMAND, target);
-		xmlResFile = xmlResourceFile;
-	}
+    /** File object pointing to xml file that contains resources to be added. */
+    File xmlResFile;
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Constructors //
+    ////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Constructs an instance of GlassFish server add-resources command entity.
+     * <p/>
+     * 
+     * @param xmlResourceFile File object pointing to XML file containing resources to be added.
+     * @param target GlassFish server target.
+     */
+    public CommandAddResources(final File xmlResourceFile, final String target) {
+        super(COMMAND, target);
+        xmlResFile = xmlResourceFile;
+    }
 }

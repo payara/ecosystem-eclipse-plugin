@@ -35,7 +35,7 @@ import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.core.internal.Runtime;
 
 public final class GlassFishRuntimeBridge implements IRuntimeBridge {
-    
+
     @Override
     public Set<String> getExportedRuntimeNames() throws CoreException {
         final SetFactory<String> namesSetFactory = SetFactory.start();
@@ -94,7 +94,7 @@ public final class GlassFishRuntimeBridge implements IRuntimeBridge {
                     } else {
                         properties.put("location", "");
                     }
-                    
+
                     properties.put("name", runtime.getName());
                     properties.put("id", runtime.getId());
                     if (runtime.getRuntimeType() != null) {

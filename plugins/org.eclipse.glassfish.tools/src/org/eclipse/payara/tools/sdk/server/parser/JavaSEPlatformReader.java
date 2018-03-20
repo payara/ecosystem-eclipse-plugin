@@ -19,12 +19,13 @@ import org.xml.sax.SAXException;
 /**
  * <code>platform</code> Java SE configuration XML element reader.
  * <p/>
+ * 
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class JavaSEPlatformReader extends AbstractReader {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** <code>platform</code> XML element name. */
@@ -34,22 +35,21 @@ public class JavaSEPlatformReader extends AbstractReader {
     private static final String VERSION_ATTR = "version";
 
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Platforms retrieved from XML elements. */
     private List<String> platforms;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Creates an instance of <code>platform</code> Java EE configuration
-     * XML element reader.
+     * Creates an instance of <code>platform</code> Java EE configuration XML element reader.
      * <p/>
-     * @param pathPrefix Tree parser path prefix to be prepended before
-     *        current XML element.
+     * 
+     * @param pathPrefix Tree parser path prefix to be prepended before current XML element.
      */
     JavaSEPlatformReader(final String pathPrefix) throws ServerConfigException {
         super(pathPrefix, NODE);
@@ -57,13 +57,14 @@ public class JavaSEPlatformReader extends AbstractReader {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Tree parser methods                                                    //
+    // Tree parser methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Process attributes from current XML element.
      * <p/>
-     * @param qname      Not used.
+     * 
+     * @param qname Not used.
      * @param attributes List of XML attributes.
      * @throws SAXException When any problem occurs.
      */
@@ -74,12 +75,13 @@ public class JavaSEPlatformReader extends AbstractReader {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Getters and setters                                                    //
+    // Getters and setters //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Get platforms retrieved from XML elements.
      * <p/>
+     * 
      * @return Platforms retrieved from XML elements.
      */
     public List<String> getPlatforms() {
@@ -87,7 +89,7 @@ public class JavaSEPlatformReader extends AbstractReader {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Methods                                                                //
+    // Methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**

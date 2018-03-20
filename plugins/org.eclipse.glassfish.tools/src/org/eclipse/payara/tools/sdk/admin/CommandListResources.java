@@ -20,48 +20,50 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 /**
  * Command that retrieves list of JDBC resources defined on server.
  * <p>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
-@RunnerHttpClass(runner=RunnerHttpListResources.class)
-@RunnerRestClass(runner=RunnerRestListResources.class)
+@RunnerHttpClass(runner = RunnerHttpListResources.class)
+@RunnerRestClass(runner = RunnerRestListResources.class)
 public class CommandListResources extends CommandTarget {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Logger instance for this class. */
     private static final Logger LOGGER = new Logger(CommandListResources.class);
 
-    /** Command string prefix used to construct list JDBC resources
-     *  HTTP command. */
+    /**
+     * Command string prefix used to construct list JDBC resources HTTP command.
+     */
     private static final String COMMAND_PREFIX = "list-";
 
-    /** Command string suffix used to construct list JDBC resources
-     *  HTTP command. */
+    /**
+     * Command string suffix used to construct list JDBC resources HTTP command.
+     */
     private static final String COMMAND_SUFFIX = "s";
 
     ////////////////////////////////////////////////////////////////////////////
-    // Static methods                                                         //
+    // Static methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Add resource to target server.
      * <p/>
-     * @param server    GlassFish server entity.
+     * 
+     * @param server GlassFish server entity.
      * @param cmdSuffix Resource command suffix. Value should not be null.
-     * @param target              GlassFish server target.
+     * @param target GlassFish server target.
      * @return Add resource task response.
-     * @throws GlassFishIdeException When error occurred during administration
-     *         command execution.
+     * @throws GlassFishIdeException When error occurred during administration command execution.
      */
     public static ResultList<String> listResources(final GlassFishServer server,
             final String cmdSuffix, final String target)
             throws GlassFishIdeException {
         final String METHOD = "listResources";
         Command command = new CommandListResources(command(cmdSuffix), target);
-        Future<ResultList<String>> future =
-                ServerAdmin.<ResultList<String>>exec(server, command);
+        Future<ResultList<String>> future = ServerAdmin.<ResultList<String>>exec(server, command);
         try {
             return future.get();
         } catch (InterruptedException | ExecutionException
@@ -74,8 +76,8 @@ public class CommandListResources extends CommandTarget {
     /**
      * Constructs command string for provided resource command suffix.
      * <p/>
-     * @param resourceCmdSuffix Resource command suffix. Value should not
-     *                          be null.
+     * 
+     * @param resourceCmdSuffix Resource command suffix. Value should not be null.
      */
     public static String command(String resourceCmdSuffix) {
         StringBuilder sb = new StringBuilder(COMMAND_PREFIX.length()
@@ -87,19 +89,18 @@ public class CommandListResources extends CommandTarget {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Constructs an instance of GlassFish server list JDBC resources
-     * command entity.
+     * Constructs an instance of GlassFish server list JDBC resources command entity.
      * <p/>
      * Command string is supplied as an argument.
      * <p/>
-     * @param command Server command represented by this object. Use
-     *                <code>command</code> static method to build this string
-     *                using resource command suffix.
-     * @param target  Target GlassFish instance or cluster.
+     * 
+     * @param command Server command represented by this object. Use <code>command</code> static method
+     * to build this string using resource command suffix.
+     * @param target Target GlassFish instance or cluster.
      */
     public CommandListResources(final String command, final String target) {
         super(command, target);

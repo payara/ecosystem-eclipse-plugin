@@ -16,31 +16,31 @@ import org.eclipse.payara.tools.sdk.GlassFishIdeException;
  * <p>
  * All exceptions are logging themselves on WARNING level when created.
  * <p>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class FetchLogException extends GlassFishIdeException {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
 
     /**
-     * Constructs an instance of <code>FetchLogException</code> without
-     * detail message.
+     * Constructs an instance of <code>FetchLogException</code> without detail message.
      */
     public FetchLogException() {
         super();
     }
 
     /**
-     * Constructs an instance of <code>FetchLogException</code> with the
-     * specified detail message.
+     * Constructs an instance of <code>FetchLogException</code> with the specified detail message.
      * <p>
+     * 
      * @param msg The detail message.
      */
     public FetchLogException(String msg) {
@@ -48,18 +48,17 @@ public class FetchLogException extends GlassFishIdeException {
     }
 
     /**
-     * Constructs an instance of <code>FetchLogException</code> with the
-     * specified detail message and cause. Exception is logged on WARN level.
+     * Constructs an instance of <code>FetchLogException</code> with the specified detail message and
+     * cause. Exception is logged on WARN level.
      * <p>
-     * Note that the detail message associated with {@code cause} is <i>not</i>
-     * automatically incorporated in this runtime exception's detail message.
+     * Note that the detail message associated with {@code cause} is <i>not</i> automatically
+     * incorporated in this runtime exception's detail message.
      * <p>
-     * @param msg   the detail message (which is saved for later retrieval
-     *              by the {@link #getMessage()} method).
-     * @param cause the cause (which is saved for later retrieval by the
-     *              {@link #getCause()} method).  (A <code>null</code> value is
-     *              permitted, and indicates that the cause is nonexistent or
-     *              unknown.)
+     * 
+     * @param msg the detail message (which is saved for later retrieval by the {@link #getMessage()}
+     * method).
+     * @param cause the cause (which is saved for later retrieval by the {@link #getCause()} method). (A
+     * <code>null</code> value is permitted, and indicates that the cause is nonexistent or unknown.)
      */
     public FetchLogException(String msg, Throwable cause) {
         super(msg, cause);

@@ -14,37 +14,36 @@ import org.eclipse.wst.common.project.facet.core.runtime.IRuntimeComponent;
 
 /**
  * Set of utility methods to help determining whether something constitutes "Payara" or "GlassFish".
- * 
- * 
- * @author <a href="mailto:konstantin.komissarchik@oracle.com">Konstantin
- *         Komissarchik</a>
+ *
+ *
+ * @author <a href="mailto:konstantin.komissarchik@oracle.com">Konstantin Komissarchik</a>
  */
 
 public final class IsGlassFishUtil {
-	
-	public static boolean isGlassFish(org.eclipse.wst.server.core.IRuntime runtime) {
-		if (runtime != null) {
-			return runtime.getRuntimeType().getId().equals("payara.runtime");
-		}
 
-		return false;
-	}
+    public static boolean isGlassFish(org.eclipse.wst.server.core.IRuntime runtime) {
+        if (runtime != null) {
+            return runtime.getRuntimeType().getId().equals("payara.runtime");
+        }
 
-	public static boolean isGlassFish(IRuntime runtime) {
-		if (runtime != null) {
-			for (IRuntimeComponent component : runtime.getRuntimeComponents()) {
-				return isGlassFish(component);
-			}
-		}
+        return false;
+    }
 
-		return false;
-	}
+    public static boolean isGlassFish(IRuntime runtime) {
+        if (runtime != null) {
+            for (IRuntimeComponent component : runtime.getRuntimeComponents()) {
+                return isGlassFish(component);
+            }
+        }
 
-	public static boolean isGlassFish(IRuntimeComponent component) {
-		if (component != null) {
-			return component.getRuntimeComponentType().getId().equals("payara.runtime");
-		}
+        return false;
+    }
 
-		return false;
-	}
+    public static boolean isGlassFish(IRuntimeComponent component) {
+        if (component != null) {
+            return component.getRuntimeComponentType().getId().equals("payara.runtime");
+        }
+
+        return false;
+    }
 }

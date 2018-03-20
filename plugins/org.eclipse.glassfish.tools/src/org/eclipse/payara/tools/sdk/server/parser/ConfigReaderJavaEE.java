@@ -20,19 +20,20 @@ import org.xml.sax.SAXException;
 /**
  * Java EE configuration XML element reader.
  * <p/>
+ * 
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class ConfigReaderJavaEE extends ConfigReaderJava {
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** <code>javaee</code> XML element name. */
     static final String NODE = "javaee";
 
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** <code>profile</code> XML element reader. */
@@ -41,21 +42,21 @@ public class ConfigReaderJavaEE extends ConfigReaderJava {
     /** <code>module</code> XML element reader. */
     private final JavaEEModuleReader moduleReader;
 
-    /**<code>check</code> XML element reader. */
+    /** <code>check</code> XML element reader. */
     private final JavaEEProfileCheckReader checkReader;
 
     /** JavaEE set for GlassFish features configuration read from XML. */
     JavaEESet javaEE;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Creates an instance of Java EE configuration XML element reader.
      * <p/>
-     * @param pathPrefix Tree parser path prefix to be prepended before
-     *        current XML element.
+     * 
+     * @param pathPrefix Tree parser path prefix to be prepended before current XML element.
      */
     ConfigReaderJavaEE(final String pathPrefix) {
         super(pathPrefix, NODE);
@@ -66,7 +67,7 @@ public class ConfigReaderJavaEE extends ConfigReaderJava {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // XML reader methods                                                     //
+    // XML reader methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
@@ -74,6 +75,7 @@ public class ConfigReaderJavaEE extends ConfigReaderJava {
      * <p/>
      * Sets readers for <code>javaee</code> element and it's content.
      * <p/>
+     * 
      * @return Paths that the reader listens to.
      */
     @Override
@@ -89,7 +91,8 @@ public class ConfigReaderJavaEE extends ConfigReaderJava {
     /**
      * Process attributes from current XML element.
      * <p/>
-     * @param qname      Not used.
+     * 
+     * @param qname Not used.
      * @param attributes List of XML attributes.
      * @throws SAXException When any problem occurs.
      */
@@ -102,9 +105,9 @@ public class ConfigReaderJavaEE extends ConfigReaderJava {
     /**
      * Finish <code>javaee</code> element processing.
      * <p/>
+     * 
      * @param qname Current XML element name.
-     * @throws ServerConfigException when more than one <code>javaee</code>
-     *         XML elements were found.
+     * @throws ServerConfigException when more than one <code>javaee</code> XML elements were found.
      */
     @Override
     public void endNode(final String qname) throws SAXException {
@@ -120,21 +123,23 @@ public class ConfigReaderJavaEE extends ConfigReaderJava {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Getters and setters                                                    //
+    // Getters and setters //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Get profiles retrieved from XML elements.
      * <p/>
+     * 
      * @return Profiles retrieved from XML elements.
      */
     private List<JavaEEProfileReader.Profile> getProfiles() {
         return profileReader.getProfiles();
     }
-    
+
     /**
      * Get modules retrieved from XML elements.
      * <p/>
+     * 
      * @return Modules sets retrieved from XML elements.
      */
     private List<JavaEEModuleReader.Module> getModules() {
@@ -144,6 +149,7 @@ public class ConfigReaderJavaEE extends ConfigReaderJava {
     /**
      * Get Java EE platform checks retrieved from XML elements.
      * <p/>
+     * 
      * @return Java EE platform checks retrieved from XML elements.
      */
     private List<JavaEEProfileCheckReader.Check> getChecks() {
@@ -151,7 +157,7 @@ public class ConfigReaderJavaEE extends ConfigReaderJava {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Methods                                                                //
+    // Methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**

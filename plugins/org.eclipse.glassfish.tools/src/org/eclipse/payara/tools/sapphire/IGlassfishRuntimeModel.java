@@ -28,51 +28,54 @@ import org.eclipse.sapphire.modeling.xml.annotations.XmlBinding;
 
 public interface IGlassfishRuntimeModel extends Element {
 
-	ElementType TYPE = new ElementType(IGlassfishRuntimeModel.class);
+    ElementType TYPE = new ElementType(IGlassfishRuntimeModel.class);
 
-	// *** Name ***
+    // *** Name ***
 
-	@XmlBinding(path = "name")
-	@Label(standard = "na&me")
-	@Required
-	@Service(impl = GlassfishServerConfigServices.UniqueRuntimeNameValidationService.class)
-	ValueProperty PROP_NAME = new ValueProperty(TYPE, "Name");
+    @XmlBinding(path = "name")
+    @Label(standard = "na&me")
+    @Required
+    @Service(impl = GlassfishServerConfigServices.UniqueRuntimeNameValidationService.class)
+    ValueProperty PROP_NAME = new ValueProperty(TYPE, "Name");
 
-	Value<String> getName();
-	void setName(String value);
+    Value<String> getName();
 
-	
-	// *** ServerRoot ***
+    void setName(String value);
 
-	@Type(base = Path.class)
-	@MustExist
-	@AbsolutePath
-	@ValidFileSystemResourceType(FOLDER)
-	@XmlBinding(path = "server-root")
-	@Label(standard = "&GlassFish location")
-	@Required
-	@Service(impl = GlassfishServerConfigServices.ServerLocationValidationService.class)
-	@Listeners(GlassfishServerConfigServices.ServerLocationListener.class)
-	ValueProperty PROP_SERVER_ROOT = new ValueProperty(TYPE, "ServerRoot");
+    // *** ServerRoot ***
 
-	Value<Path> getServerRoot();
-	void setServerRoot(Path value);
-	void setServerRoot(String value);
+    @Type(base = Path.class)
+    @MustExist
+    @AbsolutePath
+    @ValidFileSystemResourceType(FOLDER)
+    @XmlBinding(path = "server-root")
+    @Label(standard = "&GlassFish location")
+    @Required
+    @Service(impl = GlassfishServerConfigServices.ServerLocationValidationService.class)
+    @Listeners(GlassfishServerConfigServices.ServerLocationListener.class)
+    ValueProperty PROP_SERVER_ROOT = new ValueProperty(TYPE, "ServerRoot");
 
-	
-	// *** JavaRuntimeEnvironment ***
+    Value<Path> getServerRoot();
 
-	@Type(base = Path.class)
-	@MustExist
-	@AbsolutePath
-	@ValidFileSystemResourceType(FOLDER)
-	@Label(standard = "&Java location")
-	@Required
-	@Service(impl = GlassfishServerConfigServices.JdkValidationService.class)
-	@Service(impl = GlassfishServerConfigServices.JdkDefaultValueService.class)
-	ValueProperty PROP_JAVA_RUNTIME_ENVIRONMENT = new ValueProperty(TYPE, "JavaRuntimeEnvironment");
+    void setServerRoot(Path value);
 
-	Value<Path> getJavaRuntimeEnvironment();
-	void setJavaRuntimeEnvironment(Path value);
-	void setJavaRuntimeEnvironment(String value);
+    void setServerRoot(String value);
+
+    // *** JavaRuntimeEnvironment ***
+
+    @Type(base = Path.class)
+    @MustExist
+    @AbsolutePath
+    @ValidFileSystemResourceType(FOLDER)
+    @Label(standard = "&Java location")
+    @Required
+    @Service(impl = GlassfishServerConfigServices.JdkValidationService.class)
+    @Service(impl = GlassfishServerConfigServices.JdkDefaultValueService.class)
+    ValueProperty PROP_JAVA_RUNTIME_ENVIRONMENT = new ValueProperty(TYPE, "JavaRuntimeEnvironment");
+
+    Value<Path> getJavaRuntimeEnvironment();
+
+    void setJavaRuntimeEnvironment(Path value);
+
+    void setJavaRuntimeEnvironment(String value);
 }

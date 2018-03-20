@@ -12,7 +12,7 @@ package org.eclipse.payara.tools.internal;
 import org.eclipse.payara.tools.server.ServerStatus;
 
 public interface ServerStateListener {
-	
-	public void serverStatusChanged(ServerStatus newStatus);
+
+    public void serverStatusChanged(ServerStatus newStatus);
 
 }

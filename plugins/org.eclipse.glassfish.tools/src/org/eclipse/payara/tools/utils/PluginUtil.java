@@ -33,206 +33,173 @@ import org.osgi.framework.Bundle;
  * @author <a href="mailto:konstantin.komissarchik@oracle.com">Konstantin Komissarchik</a>
  */
 
-public final class PluginUtil
-{
+public final class PluginUtil {
     private static final String ATTR_BUNDLE_VERSION = "Bundle-Version";
     private static final String PLUGIN_LOCATION_PREFIX = "reference:file:";
 
     public static final class InvalidExtensionException
 
-        extends Exception
+            extends Exception
 
     {
         private static final long serialVersionUID = 1L;
     }
 
-    private PluginUtil() {}
+    private PluginUtil() {
+    }
 
-    public static Collection<IExtension> findExtensions( final String pluginId,
-                                                         final String extensionPointId )
-    {
+    public static Collection<IExtension> findExtensions(final String pluginId,
+            final String extensionPointId) {
         final IExtensionRegistry registry = Platform.getExtensionRegistry();
-        final IExtensionPoint point = registry.getExtensionPoint( pluginId, extensionPointId );
+        final IExtensionPoint point = registry.getExtensionPoint(pluginId, extensionPointId);
 
-        if( point == null )
-        {
+        if (point == null) {
             throw new RuntimeException();
         }
 
         final List<IExtension> extensions = new ArrayList<>();
 
-        for( IExtension extension : point.getExtensions() )
-        {
-            extensions.add( extension );
+        for (IExtension extension : point.getExtensions()) {
+            extensions.add(extension);
         }
 
         return extensions;
     }
 
-    public static Collection<IConfigurationElement> getTopLevelElements( final Collection<IExtension> extensions )
-    {
+    public static Collection<IConfigurationElement> getTopLevelElements(final Collection<IExtension> extensions) {
         final List<IConfigurationElement> elements = new ArrayList<>();
 
-        for( IExtension extension : extensions )
-        {
-            for( IConfigurationElement element : extension.getConfigurationElements() )
-            {
-                elements.add( element );
+        for (IExtension extension : extensions) {
+            for (IConfigurationElement element : extension.getConfigurationElements()) {
+                elements.add(element);
             }
         }
 
         return elements;
     }
 
-    public static void reportInvalildElement( final IExtension extension,
-                                              final IConfigurationElement element )
-    {
-        final String msg
-            = NLS.bind( Resources.invalidElement, extension.getSimpleIdentifier(), element.getName() );
+    public static void reportInvalildElement(final IExtension extension,
+            final IConfigurationElement element) {
+        final String msg = NLS.bind(Resources.invalidElement, extension.getSimpleIdentifier(), element.getName());
 
-        logError( extension.getContributor().getName(), msg );
+        logError(extension.getContributor().getName(), msg);
     }
 
-    public static void reportMissingAttribute( final IConfigurationElement el,
-                                               final String attribute )
-    {
-        final String msg
-            = NLS.bind( Resources.missingAttribute, el.getName(), attribute );
+    public static void reportMissingAttribute(final IConfigurationElement el,
+            final String attribute) {
+        final String msg = NLS.bind(Resources.missingAttribute, el.getName(), attribute);
 
-        logError( el.getContributor().getName(), msg );
+        logError(el.getContributor().getName(), msg);
     }
 
-    public static void reportMissingElement( final IConfigurationElement el,
-                                             final String element )
-    {
-        final String msg
-            = NLS.bind( Resources.missingElement, el.getName(), element );
+    public static void reportMissingElement(final IConfigurationElement el,
+            final String element) {
+        final String msg = NLS.bind(Resources.missingElement, el.getName(), element);
 
-        logError( el.getContributor().getName(), msg );
-    }
-    
-    private static void logError( final String bundle, final String message )
-    {
-        logError( bundle, message, null );
+        logError(el.getContributor().getName(), msg);
     }
 
-    private static void logError( final String bundle, final String message, final Exception e )
-    {
-        log( new Status( IStatus.ERROR, bundle, 0, message, e ) );
+    private static void logError(final String bundle, final String message) {
+        logError(bundle, message, null);
     }
-    
-    public static String findRequiredAttribute( final IConfigurationElement el,
-                                                final String attribute )
 
-        throws InvalidExtensionException
+    private static void logError(final String bundle, final String message, final Exception e) {
+        log(new Status(IStatus.ERROR, bundle, 0, message, e));
+    }
+
+    public static String findRequiredAttribute(final IConfigurationElement el,
+            final String attribute)
+
+            throws InvalidExtensionException
 
     {
-        final String val = el.getAttribute( attribute );
+        final String val = el.getAttribute(attribute);
 
-        if( val == null )
-        {
-            reportMissingAttribute( el, attribute );
+        if (val == null) {
+            reportMissingAttribute(el, attribute);
             throw new InvalidExtensionException();
         }
 
         return val;
     }
-    
-    public static String findOptionalAttribute( final IConfigurationElement el,
-    		final String attribute ) {
-    	final String val = el.getAttribute( attribute );
-    	return val;
+
+    public static String findOptionalAttribute(final IConfigurationElement el,
+            final String attribute) {
+        final String val = el.getAttribute(attribute);
+        return val;
     }
 
+    public static IConfigurationElement findRequiredElement(final IConfigurationElement el,
+            final String childElement)
 
-    public static IConfigurationElement findRequiredElement( final IConfigurationElement el,
-                                                             final String childElement )
-
-        throws InvalidExtensionException
+            throws InvalidExtensionException
 
     {
-        final IConfigurationElement[] children = el.getChildren( childElement );
+        final IConfigurationElement[] children = el.getChildren(childElement);
 
-        if( children.length == 0 )
-        {
-            reportMissingElement( el, childElement );
+        if (children.length == 0) {
+            reportMissingElement(el, childElement);
             throw new InvalidExtensionException();
         }
 
-        return children[ 0 ];
+        return children[0];
     }
 
-    public static IConfigurationElement findOptionalElement( final IConfigurationElement el,
-                                                             final String childElement )
-    {
-        final IConfigurationElement[] children = el.getChildren( childElement );
+    public static IConfigurationElement findOptionalElement(final IConfigurationElement el,
+            final String childElement) {
+        final IConfigurationElement[] children = el.getChildren(childElement);
 
-        if( children.length == 0 )
-        {
+        if (children.length == 0) {
             return null;
-        }
-        else
-        {
-            return children[ 0 ];
+        } else {
+            return children[0];
         }
     }
-    
-    public static String getElementValue( final IConfigurationElement el,
-                                          final String defaultValue )
-    {
-        if( el != null )
-        {
+
+    public static String getElementValue(final IConfigurationElement el,
+            final String defaultValue) {
+        if (el != null) {
             String text = el.getValue();
-            
-            if( text != null )
-            {
+
+            if (text != null) {
                 text = text.trim();
-                
-                if( text.length() > 0 )
-                {
+
+                if (text.length() > 0) {
                     return text;
                 }
             }
         }
-        
+
         return defaultValue;
     }
-    
-    public static <T> Class<T> loadClass( final String pluginId,
-                                          final String clname )
-    {
-        return loadClass( pluginId, clname, null );
+
+    public static <T> Class<T> loadClass(final String pluginId,
+            final String clname) {
+        return loadClass(pluginId, clname, null);
     }
 
-    @SuppressWarnings( "unchecked" )
-    public static <T> Class<T> loadClass( final String pluginId,
-                                          final String clname,
-                                          final Class<T> interfc )
-    {
-        final Bundle bundle = Platform.getBundle( pluginId );
+    @SuppressWarnings("unchecked")
+    public static <T> Class<T> loadClass(final String pluginId,
+            final String clname,
+            final Class<T> interfc) {
+        final Bundle bundle = Platform.getBundle(pluginId);
         final Class<?> cl;
 
-        try
-        {
-            cl = bundle.loadClass( clname );
-        }
-        catch( Exception e )
-        {
-            final String msg
-                = Resources.bind( Resources.failedToLoadClass, clname, pluginId );
+        try {
+            cl = bundle.loadClass(clname);
+        } catch (Exception e) {
+            final String msg = Resources.bind(Resources.failedToLoadClass, clname, pluginId);
 
-            logError( pluginId, msg, e );
+            logError(pluginId, msg, e);
 
             return null;
         }
 
-        if( interfc != null && ! interfc.isAssignableFrom( cl ) )
-        {
-            final String msg
-                = Resources.bind( Resources.doesNotImplement, clname,
-                                  interfc.getName() );
+        if (interfc != null && !interfc.isAssignableFrom(cl)) {
+            final String msg = Resources.bind(Resources.doesNotImplement, clname,
+                    interfc.getName());
 
-            logError( pluginId, msg );
+            logError(pluginId, msg);
 
             return null;
         }
@@ -240,66 +207,51 @@ public final class PluginUtil
         return (Class<T>) cl;
     }
 
-    public static <T> T instantiate( final String pluginId,
-                                     final Class<T> cl )
-    {
-        try
-        {
+    public static <T> T instantiate(final String pluginId,
+            final Class<T> cl) {
+        try {
             return cl.newInstance();
-        }
-        catch( Exception e )
-        {
-            final String msg
-                = NLS.bind( Resources.failedToInstantiate, cl.getName(), pluginId );
+        } catch (Exception e) {
+            final String msg = NLS.bind(Resources.failedToInstantiate, cl.getName(), pluginId);
 
-            logError( pluginId, msg, e );
+            logError(pluginId, msg, e);
 
             return null;
         }
     }
 
-    public static <T> T instantiate( final String pluginId,
-                                     final String clname )
-    {
-        return instantiate( pluginId, clname, (Class<T>) null );
+    public static <T> T instantiate(final String pluginId,
+            final String clname) {
+        return instantiate(pluginId, clname, (Class<T>) null);
     }
 
-    public static <T> T instantiate( final String pluginId,
-                                     final String clname,
-                                     final Class<T> interfc )
-    {
-        final Class<T> cl = loadClass( pluginId, clname, interfc );
+    public static <T> T instantiate(final String pluginId,
+            final String clname,
+            final Class<T> interfc) {
+        final Class<T> cl = loadClass(pluginId, clname, interfc);
 
-        if( cl == null )
-        {
+        if (cl == null) {
             return null;
         }
 
-        return instantiate( pluginId, cl );
+        return instantiate(pluginId, cl);
     }
 
-    public static String getPluginVersion( final String pluginId )
-    {
-        final Bundle bundle = Platform.getBundle( pluginId );
-        return bundle.getHeaders().get( ATTR_BUNDLE_VERSION );
+    public static String getPluginVersion(final String pluginId) {
+        final Bundle bundle = Platform.getBundle(pluginId);
+        return bundle.getHeaders().get(ATTR_BUNDLE_VERSION);
     }
 
-    public static boolean waitForPluginToActivate( final String bundleId )
-    {
-        final Bundle bundle = Platform.getBundle( bundleId );
-        return waitForPluginToActivate( bundle );
+    public static boolean waitForPluginToActivate(final String bundleId) {
+        final Bundle bundle = Platform.getBundle(bundleId);
+        return waitForPluginToActivate(bundle);
     }
 
-    public static boolean waitForPluginToActivate( final Bundle bundle )
-    {
-        while( bundle.getState() != Bundle.ACTIVE )
-        {
-            try
-            {
-                Thread.sleep( 500 );
-            }
-            catch( InterruptedException e )
-            {
+    public static boolean waitForPluginToActivate(final Bundle bundle) {
+        while (bundle.getState() != Bundle.ACTIVE) {
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
                 return false;
             }
         }
@@ -307,49 +259,40 @@ public final class PluginUtil
         return true;
     }
 
-    public static IPath getPluginLocation( final String bundleId )
-    {
-        final Bundle bundle = Platform.getBundle( bundleId );
-        return getPluginLocation( bundle );
+    public static IPath getPluginLocation(final String bundleId) {
+        final Bundle bundle = Platform.getBundle(bundleId);
+        return getPluginLocation(bundle);
     }
 
-    public static IPath getPluginLocation( final Bundle bundle )
-    {
+    public static IPath getPluginLocation(final Bundle bundle) {
         String location = bundle.getLocation();
 
-        if( location.startsWith( PLUGIN_LOCATION_PREFIX ) )
-        {
+        if (location.startsWith(PLUGIN_LOCATION_PREFIX)) {
             int offset = PLUGIN_LOCATION_PREFIX.length();
 
-            if( location.length() > offset + 1 && location.charAt( offset ) == '/' )
-            {
+            if (location.length() > offset + 1 && location.charAt(offset) == '/') {
                 offset++;
             }
 
-            location = location.substring( offset );
+            location = location.substring(offset);
         }
 
-        final Path pluginLocation = new Path( location );
+        final Path pluginLocation = new Path(location);
 
-        if( pluginLocation.isAbsolute() )
-        {
+        if (pluginLocation.isAbsolute()) {
             return pluginLocation;
-        }
-        else
-        {
+        } else {
             final String installPath = Platform.getInstallLocation().getURL().getPath();
-            return new Path( installPath + "/" + pluginLocation ); //$NON-NLS-1$
+            return new Path(installPath + "/" + pluginLocation); //$NON-NLS-1$
         }
     }
 
-    public static final class ClassInfo
-    {
+    public static final class ClassInfo {
         public final String pluginId;
         public final String className;
 
-        public ClassInfo( final String pluginId,
-                          final String className )
-        {
+        public ClassInfo(final String pluginId,
+                final String className) {
             this.pluginId = pluginId;
             this.className = className;
         }
@@ -357,7 +300,7 @@ public final class PluginUtil
 
     private static final class Resources
 
-        extends NLS
+            extends NLS
 
     {
         public static String invalidElement;
@@ -367,10 +310,9 @@ public final class PluginUtil
         public static String failedToInstantiate;
         public static String doesNotImplement;
 
-        static
-        {
-            initializeMessages( PluginUtil.class.getName(),
-                                Resources.class );
+        static {
+            initializeMessages(PluginUtil.class.getName(),
+                    Resources.class);
         }
     }
 

@@ -14,24 +14,26 @@ import org.eclipse.payara.tools.sdk.data.ToolsConfig;
 /**
  * Payara tools.
  * <p/>
+ * 
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class Tools implements ToolsConfig {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Asadmin tool. */
     private final AsadminTool asadmin;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Creates an instance of Payara tools.
      * <p/>
+     * 
      * @param asadmin Payara asadmin tool.
      */
     public Tools(AsadminTool asadmin) {
@@ -39,12 +41,13 @@ public class Tools implements ToolsConfig {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Getters and setters                                                    //
+    // Getters and setters //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Get asadmin tool.
      * <p/>
+     * 
      * @return Asadmin tool.
      */
     @Override

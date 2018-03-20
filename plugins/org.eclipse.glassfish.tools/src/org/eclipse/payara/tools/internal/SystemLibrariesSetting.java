@@ -28,89 +28,83 @@ import org.eclipse.core.runtime.Path;
 @XmlRootElement(name = "system-libraries")
 public class SystemLibrariesSetting {
 
-	static final String SETTING_XML = "/.settings/org.eclipse.payara.tools.syslib.xml"; //$NON-NLS-1$
-	private ArrayList<Library> libraryList = new ArrayList<>();
+    static final String SETTING_XML = "/.settings/org.eclipse.payara.tools.syslib.xml"; //$NON-NLS-1$
+    private ArrayList<Library> libraryList = new ArrayList<>();
 
-	@XmlElement(name = "library")
-	public void setLibraryList(ArrayList<Library> libList) {
-		this.libraryList = libList;
-	}
+    @XmlElement(name = "library")
+    public void setLibraryList(ArrayList<Library> libList) {
+        this.libraryList = libList;
+    }
 
-	public ArrayList<Library> getLibraryList() {
-		return libraryList;
-	}
+    public ArrayList<Library> getLibraryList() {
+        return libraryList;
+    }
 
-	public static SystemLibrariesSetting load(IProject proj) {
-		try{
-			IFile file = proj.getFile(SETTING_XML);
-			JAXBContext context = JAXBContext.newInstance(SystemLibrariesSetting.class);
-			SystemLibrariesSetting settings = null;
-			if (!file.exists()) {
-				return null;
-			}
-			else
-			{
-			    final InputStream stream = file.getContents();
-			    
-			    try
-			    {
-    			    settings = (SystemLibrariesSetting) context.createUnmarshaller().unmarshal( stream );
-			    }
-			    finally
-			    {
-			        try
-			        {
-			            stream.close();
-			        }
-			        catch( final IOException e ) {}
-			    }
-			    
-			    ArrayList<Library> libsList = settings.getLibraryList();
-				if(libsList==null){
-					libsList = new ArrayList<>();
-					settings.setLibraryList(libsList);
-				}
-			}
-	
-			return settings;
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	public static void save(IProject proj, SystemLibrariesSetting settings) {
-		try{
-			IFile file = proj.getFile(SETTING_XML);
-			JAXBContext context = JAXBContext.newInstance(SystemLibrariesSetting.class);
-			Marshaller m = context.createMarshaller();
-			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+    public static SystemLibrariesSetting load(IProject proj) {
+        try {
+            IFile file = proj.getFile(SETTING_XML);
+            JAXBContext context = JAXBContext.newInstance(SystemLibrariesSetting.class);
+            SystemLibrariesSetting settings = null;
+            if (!file.exists()) {
+                return null;
+            } else {
+                final InputStream stream = file.getContents();
 
-			// Write to System.out
-			m.marshal(settings, System.out);
-	
-			// Write to File
-			m.marshal(settings, file.getLocation().toFile());
-			
-			file.refreshLocal(0, new NullProgressMonitor());
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-	}
+                try {
+                    settings = (SystemLibrariesSetting) context.createUnmarshaller().unmarshal(stream);
+                } finally {
+                    try {
+                        stream.close();
+                    } catch (final IOException e) {
+                    }
+                }
 
-	public File getSourcePath(File jar) {
-		for( Library lib : libraryList ){
-			if( jar.equals( new File(lib.getPath() ) )){
-				File f = new File( lib.getSource() );
-				if( f.exists() ) {
+                ArrayList<Library> libsList = settings.getLibraryList();
+                if (libsList == null) {
+                    libsList = new ArrayList<>();
+                    settings.setLibraryList(libsList);
+                }
+            }
+
+            return settings;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static void save(IProject proj, SystemLibrariesSetting settings) {
+        try {
+            IFile file = proj.getFile(SETTING_XML);
+            JAXBContext context = JAXBContext.newInstance(SystemLibrariesSetting.class);
+            Marshaller m = context.createMarshaller();
+            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+
+            // Write to System.out
+            m.marshal(settings, System.out);
+
+            // Write to File
+            m.marshal(settings, file.getLocation().toFile());
+
+            file.refreshLocal(0, new NullProgressMonitor());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public File getSourcePath(File jar) {
+        for (Library lib : libraryList) {
+            if (jar.equals(new File(lib.getPath()))) {
+                File f = new File(lib.getSource());
+                if (f.exists()) {
                     return f;
                 }
-				//Workspace location
-				IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(lib.getSource()));
-				return file.getLocation().toFile();
-			}
-		}
-		return null;
-	}
+                // Workspace location
+                IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(lib.getSource()));
+                return file.getLocation().toFile();
+            }
+        }
+        return null;
+    }
 
 }

@@ -36,40 +36,42 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 /**
  * GlassFish server administration command execution using HTTP interface.
  * <p/>
- * Class implements GlassFish server administration functionality trough HTTP
- * interface.
+ * Class implements GlassFish server administration functionality trough HTTP interface.
  * <p/>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RunnerHttp extends Runner {
-    
-    ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
-    ////////////////////////////////////////////////////////////////////////////
-
-    /** Character used to separate individual items in libraries query
-     *  parameter. */
-    static final char LIBRARY_SEPARATOR = ',';
 
     ////////////////////////////////////////////////////////////////////////////
-    // Static methods                                                         //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Calculate properties length based on properties map. 
+     * Character used to separate individual items in libraries query parameter.
+     */
+    static final char LIBRARY_SEPARATOR = ',';
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Static methods //
+    ////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Calculate properties length based on properties map.
      * <p/>
+     * 
      * @param properties Properties to be added into query string.
-     * @param paramName  Properties parameter name in query string.
+     * @param paramName Properties parameter name in query string.
      * @return Size of properties query string to be added.
      */
-    static int queryPropertiesLength(final Map<String,String> properties,
+    static int queryPropertiesLength(final Map<String, String> properties,
             final String paramName) {
         int propertyLength = 0;
         if (null != properties && properties.size() > 0) {
-            Set<Map.Entry<String,String>> entrySet = properties.entrySet();
+            Set<Map.Entry<String, String>> entrySet = properties.entrySet();
             boolean first = true;
             propertyLength += paramName.length() + 2;
-            for (Map.Entry<String,String> entry : entrySet) {
+            for (Map.Entry<String, String> entry : entrySet) {
                 String key = entry.getKey();
                 String val = entry.getValue();
                 if (key == null) {
@@ -78,8 +80,7 @@ public class RunnerHttp extends Runner {
                 }
                 if (first) {
                     first = false;
-                }
-                else {
+                } else {
                     propertyLength++;
                 }
                 propertyLength += key.length() + 1 +
@@ -90,8 +91,9 @@ public class RunnerHttp extends Runner {
     }
 
     /**
-     * Calculate libraries length based on libraries array. 
+     * Calculate libraries length based on libraries array.
      * <p/>
+     * 
      * @param libraries Libraries to be added into query string.
      * @param paramName Libraries parameter name in query string.
      * @return Size of libraries query string to be added.
@@ -105,8 +107,7 @@ public class RunnerHttp extends Runner {
             for (File library : libraries) {
                 if (first) {
                     first = false;
-                }
-                else {
+                } else {
                     propertyLength++;
                 }
                 propertyLength += library.getPath().length();
@@ -116,33 +117,31 @@ public class RunnerHttp extends Runner {
     }
 
     /**
-     * Append properties to existing query string stored in given
-     * <code>StringBuilder</code>.
+     * Append properties to existing query string stored in given <code>StringBuilder</code>.
      * <p/>
-     * @param sb         Target <code>StringBuilder</code> where to append
-     *                   properties.
+     * 
+     * @param sb Target <code>StringBuilder</code> where to append properties.
      * @param properties Properties to be added into query string.
-     * @param paramName  Properties parameter name in query string.
-     * @param separator  Prepend parameter separator if <code>true</code>
+     * @param paramName Properties parameter name in query string.
+     * @param separator Prepend parameter separator if <code>true</code>
      * @return Target <code>StringBuilder</code> with properties appended.
      */
     static StringBuilder queryPropertiesAppend(StringBuilder sb,
-            final Map<String,String> properties, final String paramName,
+            final Map<String, String> properties, final String paramName,
             final boolean separator) {
         if (null != properties && properties.size() > 0) {
-            Set<Map.Entry<String,String>> entrySet = properties.entrySet();
+            Set<Map.Entry<String, String>> entrySet = properties.entrySet();
             boolean first = true;
             if (separator) {
                 sb.append(PARAM_SEPARATOR);
             }
             sb.append(paramName).append(PARAM_ASSIGN_VALUE);
-            for (Map.Entry<String,String> entry : entrySet) {
+            for (Map.Entry<String, String> entry : entrySet) {
                 String key = entry.getKey();
                 String val = entry.getValue();
                 if (first) {
                     first = false;
-                }
-                else {
+                } else {
                     sb.append(ITEM_SEPARATOR);
                 }
                 sb.append(key);
@@ -156,14 +155,13 @@ public class RunnerHttp extends Runner {
     }
 
     /**
-     * Append libraries to existing query string stored in given
-     * <code>StringBuilder</code>.
+     * Append libraries to existing query string stored in given <code>StringBuilder</code>.
      * <p/>
-     * @param sb        Target <code>StringBuilder</code> where to append
-     *                  properties.
+     * 
+     * @param sb Target <code>StringBuilder</code> where to append properties.
      * @param libraries Libraries to be added into query string.
      * @param paramName Libraries parameter name in query string.
-     * @param separator  Prepend parameter separator if <code>true</code>
+     * @param separator Prepend parameter separator if <code>true</code>
      * @return Target <code>StringBuilder</code> with libraries appended.
      */
     static StringBuilder queryLibrariesAppend(StringBuilder sb,
@@ -178,8 +176,7 @@ public class RunnerHttp extends Runner {
             for (File library : libraries) {
                 if (first) {
                     first = false;
-                }
-                else {
+                } else {
                     sb.append(LIBRARY_SEPARATOR);
                 }
                 sb.append(library.getPath());
@@ -189,12 +186,12 @@ public class RunnerHttp extends Runner {
     }
 
     /**
-     * Check <code>Manifest</code> <i>exit-code<i> attribute for result.
-     * Missing value or any value differed to< code>"FAILED"</code>
-     * is considered as success.
+     * Check <code>Manifest</code> <i>exit-code<i> attribute for result. Missing value or any value
+     * differed to< code>"FAILED"</code> is considered as success.
      * <p/>
      * Response processing helper method. Manifest must contain valid data.
      * <p/>
+     * 
      * @param manifest Manifest from server response.
      * @return <code>true</code> for success and <code>false</code> for failure.
      */
@@ -206,7 +203,7 @@ public class RunnerHttp extends Runner {
 
     private static String getHttpListenerProtocol(String hostname, int port,
             String url) {
-        String retVal = "http";  // NOI18N
+        String retVal = "http"; // NOI18N
         try {
             if (NetUtils.isSecurePort(hostname, port)) {
                 retVal = "https"; // NOI18N
@@ -224,55 +221,53 @@ public class RunnerHttp extends Runner {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Manifest from server response.
      * <p/>
-     * <code>Manifest</code> instance is internal server response holder.
-     * <code>Manifest</code> instance life cycle is started
-     * in <code>readResponse</code> method where manifest returned from server
-     * is read and stored internally.
+     * <code>Manifest</code> instance is internal server response holder. <code>Manifest</code> instance
+     * life cycle is started in <code>readResponse</code> method where manifest returned from server is
+     * read and stored internally.
      */
     Manifest manifest;
 
     /**
      * GlassFish administration command result.
      * <p/>
-     * Result instance life cycle is started with submitting task into
-     * <code>ExecutorService</code>'s queue. method <code>call()</code>
-     * is responsible for correct <code>TaskState</code> and receiveResult value
-     * handling.
+     * Result instance life cycle is started with submitting task into <code>ExecutorService</code>'s
+     * queue. method <code>call()</code> is responsible for correct <code>TaskState</code> and
+     * receiveResult value handling.
      */
     @SuppressWarnings("FieldNameHidesFieldInSuperclass")
     ResultString result;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Constructs an instance of administration command executor using
-     * HTTP interface.
+     * Constructs an instance of administration command executor using HTTP interface.
      * <p/>
-     * @param server  GlassFish server entity object.
+     * 
+     * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
     public RunnerHttp(final GlassFishServer server, final Command command) {
-        this(server, command, (String)null);
+        this(server, command, (String) null);
     }
 
     /**
-     * Constructs an instance of administration command executor using
-     * HTTP interface.
-     * This constructor allows child classes to set their own path. 
+     * Constructs an instance of administration command executor using HTTP interface. This constructor
+     * allows child classes to set their own path.
      * <p/>
      * <b>For use in child classes only.</b>
      * <p/>
-     * @param server  GlassFish server entity object.
+     * 
+     * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
-     * @param query   Query string for this command.
+     * @param query Query string for this command.
      */
     RunnerHttp(final GlassFishServer server, final Command command,
             final String query) {
@@ -280,16 +275,16 @@ public class RunnerHttp extends Runner {
     }
 
     /**
-     * Constructs an instance of administration command executor using
-     * HTTP interface.
-     * This constructor allows child classes to set their own path. 
+     * Constructs an instance of administration command executor using HTTP interface. This constructor
+     * allows child classes to set their own path.
      * <p/>
      * <b>For use in child classes only.</b>
      * <p/>
-     * @param server  GlassFish server entity object.
+     * 
+     * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
-     * @param path    Server command path.
-     * @param query   Query string for this command.
+     * @param path Server command path.
+     * @param query Query string for this command.
      */
     protected RunnerHttp(final GlassFishServer server, final Command command,
             final String path, final String query) {
@@ -298,13 +293,14 @@ public class RunnerHttp extends Runner {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Implemented Abstract Methods                                           //
+    // Implemented Abstract Methods //
     ////////////////////////////////////////////////////////////////////////////
 
-   /**
-     * Create <code>ResultString</code> object corresponding
-     * to <code>String</code>command execution value to be returned.
+    /**
+     * Create <code>ResultString</code> object corresponding to <code>String</code>command execution
+     * value to be returned.
      * <p/>
+     * 
      * @return <code>String</code>command execution value to be returned.
      */
     @Override
@@ -315,8 +311,8 @@ public class RunnerHttp extends Runner {
     /**
      * Do not send information to the server via HTTP POST by default.
      * <p/>
-     * @return <code>true</code> if using HTTP POST to send to server
-     *         or <code>false</code> otherwise
+     * 
+     * @return <code>true</code> if using HTTP POST to send to server or <code>false</code> otherwise
      */
     @Override
     public boolean getDoOutput() {
@@ -326,8 +322,8 @@ public class RunnerHttp extends Runner {
     /**
      * Inform whether this runner implementation accepts gzip format.
      * <p/>
-     * @return <code>true</code> when gzip format is accepted,
-     *         <code>false</code> otherwise.
+     * 
+     * @return <code>true</code> when gzip format is accepted, <code>false</code> otherwise.
      */
     @Override
     public boolean acceptsGzip() {
@@ -335,11 +331,10 @@ public class RunnerHttp extends Runner {
     }
 
     /**
-     * Build GlassFish HTTP command URL.
-     * <o>
+     * Build GlassFish HTTP command URL. <o>
+     * 
      * @return <code>String</code> value containing command URL.
-     * @throws <code>CommandException</code> if there is a problem with building
-     *         command URL.
+     * @throws <code>CommandException</code> if there is a problem with building command URL.
      */
     @Override
     protected String constructCommandUrl() throws CommandException {
@@ -368,20 +363,19 @@ public class RunnerHttp extends Runner {
             throw new CommandException(CommandException.RUNNER_HTTP_URL, use);
         }
         // These characters don't get handled by GF correctly. Best I can tell.
-        return uri.toASCIIString().replace("+", "%2b"); 
+        return uri.toASCIIString().replace("+", "%2b");
     }
 
     /**
-     * Override to change the type of HTTP method used for this command.
-     * Default is GET.
-     * 
+     * Override to change the type of HTTP method used for this command. Default is GET.
+     *
      * @return HTTP method (GET, POST, etc.)
      */
     @Override
     protected String getRequestMethod() {
         return "GET";
     }
-    
+
     /**
      * Handle sending data to server using HTTP command interface.
      * <p/>
@@ -392,15 +386,15 @@ public class RunnerHttp extends Runner {
     }
 
     /**
-     * Reads response from server and stores it into internal
-     * <code>Manifest</code> object. Value of <i>exit-code<i> attribute
-     * is verified to detect if command completed successfully. If not,
-     * <i>message</i> value is checked for "please wait" <code>String</code>
-     * to eventually set <code>retry</code> value to <code>true</code>.
+     * Reads response from server and stores it into internal <code>Manifest</code> object. Value of
+     * <i>exit-code<i> attribute is verified to detect if command completed successfully. If not,
+     * <i>message</i> value is checked for "please wait" <code>String</code> to eventually set
+     * <code>retry</code> value to <code>true</code>.
      * <p/>
-     * Override to read the response data sent by the server.  Do not close
-     * the stream parameter when finished.  Caller will take care of that.
+     * Override to read the response data sent by the server. Do not close the stream parameter when
+     * finished. Caller will take care of that.
      * <p/>
+     * 
      * @param in Stream to read data from.
      * @return true if response was read correctly.
      * @throws CommandException in case of stream error.
@@ -411,8 +405,8 @@ public class RunnerHttp extends Runner {
         manifest = new Manifest();
         try {
             Logger.log(Level.FINEST, "Reading response from {0}:{1}",
-                    new Object[] {server.getHost(),
-                        Integer.toString(server.getAdminPort())});
+                    new Object[] { server.getHost(),
+                            Integer.toString(server.getAdminPort()) });
             manifest.read(in);
         } catch (IOException ioe) {
             throw new CommandException(CommandException.HTTP_RESP_IO_EXCEPTION,
@@ -420,8 +414,7 @@ public class RunnerHttp extends Runner {
         }
         if (successExitCode(manifest)) {
             readResult = true;
-        }
-        else {
+        } else {
             readResult = false;
             String message = getMessage(manifest);
             if (message != null) {
@@ -431,36 +424,36 @@ public class RunnerHttp extends Runner {
                         "javax.security.auth.login.LoginException")) {
                     auth = false;
                 }
-            }            
+            }
         }
         return readResult;
     }
 
     /**
-     * Extracts result value from internal <code>Manifest</code> object.
-     * Value of <i>message</i> attribute in <code>Manifest</code> object is
-     * stored as <i>value</i> into <code>ResultString</code> result object.
+     * Extracts result value from internal <code>Manifest</code> object. Value of <i>message</i>
+     * attribute in <code>Manifest</code> object is stored as <i>value</i> into
+     * <code>ResultString</code> result object.
      * <p/>
-     * @return true if result was extracted correctly. <code>null</code>
-     *         <i>message</i>value is considered as failure.
+     * 
+     * @return true if result was extracted correctly. <code>null</code> <i>message</i>value is
+     * considered as failure.
      */
     @Override
     protected boolean processResponse() {
         result.value = getMessage(manifest);
         result.auth = auth;
         Logger.log(Level.FINEST, "Manifest message: {0}",
-                new Object[] {result.value});
+                new Object[] { result.value });
         return result.value != null;
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Fake Getters                                                           //
+    // Fake Getters //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Override to provide the lastModified date for data source whose
-     * inputstream is returned by getInputStream.  Must not return null if
-     * getInputStream() does not return null;
+     * Override to provide the lastModified date for data source whose inputstream is returned by
+     * getInputStream. Must not return null if getInputStream() does not return null;
      *
      * @return String format of long integer from lastModified date of source.
      */
@@ -469,24 +462,23 @@ public class RunnerHttp extends Runner {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Methods                                                                //
+    // Methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Retrieve <i>message<i> from <code>Manifest</code> object.
      * <p/>
-     * Response processing helper method. Manifest must contain valid data.
-     * <code>Manifest</code> instance is always created in
-     * <code>readResponse</code> method so no <code>null</code> check is
+     * Response processing helper method. Manifest must contain valid data. <code>Manifest</code>
+     * instance is always created in <code>readResponse</code> method so no <code>null</code> check is
      * required here.
      * <p/>
+     * 
      * @param manifest Manifest from server response.
-     * @return Value of <i>message<i> attribute or <code>null</code> if
-     *         no such attribute exists.
+     * @return Value of <i>message<i> attribute or <code>null</code> if no such attribute exists.
      */
     private String getMessage(Manifest manifest) {
         String message = null;
-            String tmp = manifest.getMainAttributes().getValue("message");
+        String tmp = manifest.getMainAttributes().getValue("message");
         if (null != tmp) {
             try {
                 message = URLDecoder.decode(
@@ -504,6 +496,7 @@ public class RunnerHttp extends Runner {
     /**
      * Get extra properties for ZIP entries.
      * <p/>
+     * 
      * @return Extra properties for ZIP entries.
      */
     byte[] getExtraProperties() {
@@ -521,9 +514,9 @@ public class RunnerHttp extends Runner {
     /**
      * Prepare headers for HTTP connection.
      * <p/>
+     * 
      * @param conn Target HTTP connection.
-     * @throws <code>CommandException</code> if there is a problem with setting
-     *         the headers.
+     * @throws <code>CommandException</code> if there is a problem with setting the headers.
      */
     @Override
     protected void prepareHttpConnection(HttpURLConnection conn) throws CommandException {

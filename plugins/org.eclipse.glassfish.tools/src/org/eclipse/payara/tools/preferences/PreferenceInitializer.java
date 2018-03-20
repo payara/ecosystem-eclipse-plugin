@@ -15,22 +15,23 @@ import org.eclipse.payara.tools.GlassfishToolsPlugin;
 
 /**
  * Class used to initialize default preference values.
- * 
- * @author  Ludovic Champenois
+ *
+ * @author Ludovic Champenois
  */
 public class PreferenceInitializer extends AbstractPreferenceInitializer {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer#initializeDefaultPreferences()
-	 */
-	@Override
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer#initializeDefaultPreferences()
+     */
+    @Override
     public void initializeDefaultPreferences() {
-		IPreferenceStore store = GlassfishToolsPlugin.getInstance().getPreferenceStore();
-		store.setDefault(PreferenceConstants.ENABLE_LOG, false);
-		store.setDefault(PreferenceConstants.ENABLE_START_VERBOSE, false);
-		store.setDefault(PreferenceConstants.ENABLE_COLORS_CONSOLE, true);
-	}
+        IPreferenceStore store = GlassfishToolsPlugin.getInstance().getPreferenceStore();
+        store.setDefault(PreferenceConstants.ENABLE_LOG, false);
+        store.setDefault(PreferenceConstants.ENABLE_START_VERBOSE, false);
+        store.setDefault(PreferenceConstants.ENABLE_COLORS_CONSOLE, true);
+    }
 
 }

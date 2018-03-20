@@ -19,12 +19,13 @@ import org.xml.sax.SAXException;
 /**
  * <code>module</code> Java EE configuration XML element reader.
  * <p/>
+ * 
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class JavaEEModuleReader extends AbstractReader {
-    
-   ////////////////////////////////////////////////////////////////////////////
-    // Inner classes                                                          //
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Inner classes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Java EE module values from XML element. */
@@ -39,8 +40,9 @@ public class JavaEEModuleReader extends AbstractReader {
         /**
          * Creates an instance of Java EE module values from XML element.
          * <p/>
-         * @param type    Java EE module type.
-         * @param check   Java EE module check reference.
+         * 
+         * @param type Java EE module type.
+         * @param check Java EE module check reference.
          */
         Module(final String type, final String check) {
             this.type = type;
@@ -50,6 +52,7 @@ public class JavaEEModuleReader extends AbstractReader {
         /**
          * Get Java EE module type.
          * <p/>
+         * 
          * @return Java EE module type.
          */
         public String getType() {
@@ -59,6 +62,7 @@ public class JavaEEModuleReader extends AbstractReader {
         /**
          * Get Java EE module check reference.
          * <p/>
+         * 
          * @return Java EE module check reference.
          */
         public String getCheck() {
@@ -67,7 +71,7 @@ public class JavaEEModuleReader extends AbstractReader {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** <code>javaee</code> XML element name. */
@@ -80,22 +84,21 @@ public class JavaEEModuleReader extends AbstractReader {
     private static final String CHECK_ATTR = "check";
 
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Modules retrieved from XML elements. */
     private List<Module> modules;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Creates an instance of <code>module</code> Java EE configuration
-     * XML element reader.
+     * Creates an instance of <code>module</code> Java EE configuration XML element reader.
      * <p/>
-     * @param pathPrefix Tree parser path prefix to be prepended before
-     *        current XML element.
+     * 
+     * @param pathPrefix Tree parser path prefix to be prepended before current XML element.
      */
     JavaEEModuleReader(final String pathPrefix) throws ServerConfigException {
         super(pathPrefix, NODE);
@@ -103,13 +106,14 @@ public class JavaEEModuleReader extends AbstractReader {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Tree parser methods                                                    //
+    // Tree parser methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Process attributes from current XML element.
      * <p/>
-     * @param qname      Not used.
+     * 
+     * @param qname Not used.
      * @param attributes List of XML attributes.
      * @throws SAXException When any problem occurs.
      */
@@ -121,12 +125,13 @@ public class JavaEEModuleReader extends AbstractReader {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Getters and setters                                                    //
+    // Getters and setters //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Get modules retrieved from XML elements.
      * <p/>
+     * 
      * @return Modules retrieved from XML elements.
      */
     public List<Module> getModules() {
@@ -134,7 +139,7 @@ public class JavaEEModuleReader extends AbstractReader {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Methods                                                                //
+    // Methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**

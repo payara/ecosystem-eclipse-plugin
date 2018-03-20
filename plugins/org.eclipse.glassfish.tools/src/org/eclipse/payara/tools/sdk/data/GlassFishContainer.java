@@ -18,12 +18,13 @@ import java.util.Map;
 /**
  * GlassFish Server Containers.
  * <p>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public enum GlassFishContainer implements Comparator<GlassFishContainer> {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Enum values                                                            //
+    // Enum values //
     ////////////////////////////////////////////////////////////////////////////
 
     /** EAR application. */
@@ -38,38 +39,36 @@ public enum GlassFishContainer implements Comparator<GlassFishContainer> {
     CONNECTOR,
     /** Unknown application. */
     UNKNOWN;
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
-    /**  A <code>String</code> representation of EAR value. */
+    /** A <code>String</code> representation of EAR value. */
     static final String EAR_STR = "ear";
 
-    /**  A <code>String</code> representation of WEB value. */
+    /** A <code>String</code> representation of WEB value. */
     static final String WEB_STR = "web";
 
-    /**  A <code>String</code> representation of EJB value. */
+    /** A <code>String</code> representation of EJB value. */
     static final String EJB_STR = "ejb";
 
-    /**  A <code>String</code> representation of APPCLIENT value. */
+    /** A <code>String</code> representation of APPCLIENT value. */
     static final String APPCLIENT_STR = "appclient";
 
-    /**  A <code>String</code> representation of CONNECTOR value. */
+    /** A <code>String</code> representation of CONNECTOR value. */
     static final String CONNECTOR_STR = "connector";
 
-    /**  A <code>String</code> representation of UNKNOWN value. */
+    /** A <code>String</code> representation of UNKNOWN value. */
     static final String UNKNOWN_STR = "unknown";
 
     /** Version elements separator character. */
     public static final char SEPARATOR = ',';
 
     /**
-     * Stored <code>String</code> values for backward <code>String</code>
-     * conversion.
+     * Stored <code>String</code> values for backward <code>String</code> conversion.
      */
-    private static final Map<String, GlassFishContainer> stringValuesMap
-            = new HashMap(2 * values().length);
+    private static final Map<String, GlassFishContainer> stringValuesMap = new HashMap(2 * values().length);
 
     // Initialize backward String conversion Map.
     static {
@@ -79,17 +78,15 @@ public enum GlassFishContainer implements Comparator<GlassFishContainer> {
     }
 
     /**
-     * Returns a <code>GlassFishContainer</code> with a value represented by
-     * the specified <code>String</code>. The <code>GlassFishContainer</code>
-     * returned represents existing value only if specified <code>String</code>
-     * matches any <code>String</code> returned by <code>toString</code> method.
-     * Otherwise <code>null</code> value is returned.
+     * Returns a <code>GlassFishContainer</code> with a value represented by the specified
+     * <code>String</code>. The <code>GlassFishContainer</code> returned represents existing value only
+     * if specified <code>String</code> matches any <code>String</code> returned by
+     * <code>toString</code> method. Otherwise <code>null</code> value is returned.
      * <p>
-     * @param containerStr Value containing container <code>String</code>
-     *                   representation.
-     * @return <code>GlassFishContainer</code> value represented
-     *         by <code>String</code> or <code>null</code> if value was
-     *         not recognized.
+     * 
+     * @param containerStr Value containing container <code>String</code> representation.
+     * @return <code>GlassFishContainer</code> value represented by <code>String</code> or
+     * <code>null</code> if value was not recognized.
      */
     public static GlassFishContainer toValue(String containerStr) {
         if (containerStr != null) {
@@ -100,40 +97,48 @@ public enum GlassFishContainer implements Comparator<GlassFishContainer> {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Methods                                                                //
+    // Methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Convert <code>GlassFishContainer</code> value to <code>String</code>.
      * <p>
+     * 
      * @return A <code>String</code> representation of the value of this object.
      */
     @Override
     public String toString() {
         switch (this) {
-            case EAR:       return EAR_STR;
-            case WEB:       return WEB_STR;
-            case EJB:       return EJB_STR;
-            case APPCLIENT: return APPCLIENT_STR;
-            case CONNECTOR: return CONNECTOR_STR;
-            case UNKNOWN:   return UNKNOWN_STR;
-            // This is unrecheable. Being here means this class does not handle
-            // all possible values correctly.
-            default: throw new DataException(INVALID_CONTAINER);
+        case EAR:
+            return EAR_STR;
+        case WEB:
+            return WEB_STR;
+        case EJB:
+            return EJB_STR;
+        case APPCLIENT:
+            return APPCLIENT_STR;
+        case CONNECTOR:
+            return CONNECTOR_STR;
+        case UNKNOWN:
+            return UNKNOWN_STR;
+        // This is unrecheable. Being here means this class does not handle
+        // all possible values correctly.
+        default:
+            throw new DataException(INVALID_CONTAINER);
         }
     }
 
     /**
      * Compares its two arguments for order.
      * <p/>
-     * Returns a negative integer, zero,
-     * or a positive integer as the first argument is less than, equal to,
-     * or greater than the second.
+     * Returns a negative integer, zero, or a positive integer as the first argument is less than, equal
+     * to, or greater than the second.
      * <p/>
+     * 
      * @param container1 The first object to be compared.
      * @param container2 The second object to be compared.
-     * @return A negative integer, zero, or a positive integer as the first
-     *         argument is less than, equal to, or greater than the second. 
+     * @return A negative integer, zero, or a positive integer as the first argument is less than, equal
+     * to, or greater than the second.
      */
     @Override
     public int compare(GlassFishContainer container1,
@@ -141,10 +146,10 @@ public enum GlassFishContainer implements Comparator<GlassFishContainer> {
         return container1 != null && container2 != null
                 ? container1.ordinal() - container2.ordinal()
                 : container1 != null
-                    ? container2.ordinal()
-                    : container2 != null
-                        ? -container1.ordinal()
-                        : 0;
+                        ? container2.ordinal()
+                        : container2 != null
+                                ? -container1.ordinal()
+                                : 0;
     }
 
 }

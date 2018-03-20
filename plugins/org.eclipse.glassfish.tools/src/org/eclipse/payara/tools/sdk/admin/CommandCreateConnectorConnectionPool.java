@@ -12,24 +12,24 @@ package org.eclipse.payara.tools.sdk.admin;
 import java.util.Map;
 
 /**
- * Command that creates a pool of connections to an enterprise information
- * system (EIS).
+ * Command that creates a pool of connections to an enterprise information system (EIS).
  * <p/>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
-@RunnerHttpClass(runner=RunnerHttpCreateConnectorConnectionPool.class)
+@RunnerHttpClass(runner = RunnerHttpCreateConnectorConnectionPool.class)
 @RunnerRestClass(runner = RunnerRestCreateConnectorPool.class)
 public class CommandCreateConnectorConnectionPool extends Command {
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Command string for create EIS connection pool command. */
     private static final String COMMAND = "create-connector-connection-pool";
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Connection pool unique name (and ID). */
@@ -41,32 +41,42 @@ public class CommandCreateConnectorConnectionPool extends Command {
     /** The name of the connection definition. */
     final String connectionDefinition;
 
-    /** Optional properties for configuring the pool.
+    /**
+     * Optional properties for configuring the pool.
      * <p/>
      * <table>
-     * <tr><td><b>LazyConnectionEnlistment</b></td><td><i>Deprecated.</i> Use
-     * the equivalent option. Default value is false.</td></tr>
-     * <tr><td><b>LazyConnectionAssociation</b></td><td><i>Deprecated.</i> Use
-     * the equivalent option. Default value is false.</td></tr>
-     * <tr><td><b>AssociateWithThread</b></td><td><i>Deprecated.</i> Use
-     * the equivalent option. Default value is false.</td></tr>
-     * <tr><td><b>MatchConnections</b></td><td><i>Deprecated.</i> Use
-     * the equivalent option. Default value is false.</td></tr>
-     * </table> */
+     * <tr>
+     * <td><b>LazyConnectionEnlistment</b></td>
+     * <td><i>Deprecated.</i> Use the equivalent option. Default value is false.</td>
+     * </tr>
+     * <tr>
+     * <td><b>LazyConnectionAssociation</b></td>
+     * <td><i>Deprecated.</i> Use the equivalent option. Default value is false.</td>
+     * </tr>
+     * <tr>
+     * <td><b>AssociateWithThread</b></td>
+     * <td><i>Deprecated.</i> Use the equivalent option. Default value is false.</td>
+     * </tr>
+     * <tr>
+     * <td><b>MatchConnections</b></td>
+     * <td><i>Deprecated.</i> Use the equivalent option. Default value is false.</td>
+     * </tr>
+     * </table>
+     */
     final Map<String, String> properties;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Constructs an instance of GlassFish server create EIS connection pool
-     * command entity.
+     * Constructs an instance of GlassFish server create EIS connection pool command entity.
      * <p/>
-     * @param poolName             Connection pool unique name (and ID).
-     * @param raName               The name of the resource adapter.
+     * 
+     * @param poolName Connection pool unique name (and ID).
+     * @param raName The name of the resource adapter.
      * @param connectionDefinition The name of the connection definition.
-     * @param properties           Optional properties for configuring the resource.
+     * @param properties Optional properties for configuring the resource.
      */
     public CommandCreateConnectorConnectionPool(final String poolName,
             final String raName, final String connectionDefinition,

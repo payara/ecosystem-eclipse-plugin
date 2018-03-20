@@ -20,99 +20,98 @@ import org.eclipse.jdt.launching.PropertyChangeEvent;
 import org.eclipse.sapphire.DefaultValueService;
 
 /**
- * @author <a href="mailto:konstantin.komissarchik@oracle.com">Konstantin
- *         Komissarchik</a>
+ * @author <a href="mailto:konstantin.komissarchik@oracle.com">Konstantin Komissarchik</a>
  */
 
 public abstract class JavaLocationDefaultValueService extends DefaultValueService {
-	private IVMInstallChangedListener listener;
-	private boolean computing;
+    private IVMInstallChangedListener listener;
+    private boolean computing;
 
-	@Override
+    @Override
 
-	protected void initDefaultValueService() {
-		this.listener = new IVMInstallChangedListener() {
-			@Override
+    protected void initDefaultValueService() {
+        this.listener = new IVMInstallChangedListener() {
+            @Override
 
-			public void vmRemoved(final IVMInstall vm) {
-				update();
-			}
+            public void vmRemoved(final IVMInstall vm) {
+                update();
+            }
 
-			@Override
+            @Override
 
-			public void vmChanged(final PropertyChangeEvent event) {
-				update();
-			}
+            public void vmChanged(final PropertyChangeEvent event) {
+                update();
+            }
 
-			@Override
+            @Override
 
-			public void vmAdded(final IVMInstall vm) {
-				update();
-			}
+            public void vmAdded(final IVMInstall vm) {
+                update();
+            }
 
-			@Override
+            @Override
 
-			public void defaultVMInstallChanged(final IVMInstall previous, final IVMInstall current) {
-				// Not relevant
-			}
-		};
+            public void defaultVMInstallChanged(final IVMInstall previous, final IVMInstall current) {
+                // Not relevant
+            }
+        };
 
-		JavaRuntime.addVMInstallChangedListener(this.listener);
-	}
+        JavaRuntime.addVMInstallChangedListener(this.listener);
+    }
 
-	private synchronized void update() {
-		if (!this.computing) {
-			new Thread() {
-				@Override
+    private synchronized void update() {
+        if (!this.computing) {
+            new Thread() {
+                @Override
                 public void run() {
-					refresh();
-				}
-			}.start();
-		}
-	}
+                    refresh();
+                }
+            }.start();
+        }
+    }
 
-	@Override
+    @Override
 
-	protected synchronized String compute() {
-		this.computing = true;
+    protected synchronized String compute() {
+        this.computing = true;
 
-		try {
-			IVMInstall jvm = null;
+        try {
+            IVMInstall jvm = null;
 
-			for (final IVMInstallType vmInstallType : JavaRuntime.getVMInstallTypes()) {
-				for (final IVMInstall vmInstall : vmInstallType.getVMInstalls()) {
-					if (!internal(vmInstall) && acceptable(vmInstall)) {
-						jvm = newer(jvm, vmInstall);
-					}
-				}
-			}
+            for (final IVMInstallType vmInstallType : JavaRuntime.getVMInstallTypes()) {
+                for (final IVMInstall vmInstall : vmInstallType.getVMInstalls()) {
+                    if (!internal(vmInstall) && acceptable(vmInstall)) {
+                        jvm = newer(jvm, vmInstall);
+                    }
+                }
+            }
 
-			return (jvm == null ? null : jvm.getInstallLocation().getAbsolutePath());
-		} finally {
-			this.computing = false;
-		}
-	}
+            return (jvm == null ? null : jvm.getInstallLocation().getAbsolutePath());
+        } finally {
+            this.computing = false;
+        }
+    }
 
-	private static boolean internal(final IVMInstall jvm) {
-		if (jvm instanceof AbstractVMInstall) {
-			final String internal = ((AbstractVMInstall) jvm).getAttribute("internal");
-			return "true".equals(internal);
-		}
+    private static boolean internal(final IVMInstall jvm) {
+        if (jvm instanceof AbstractVMInstall) {
+            final String internal = ((AbstractVMInstall) jvm).getAttribute("internal");
+            return "true".equals(internal);
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	protected abstract boolean acceptable(IVMInstall vminstall);
+    protected abstract boolean acceptable(IVMInstall vminstall);
 
-	@Override
+    @Override
 
-	public void dispose() {
-		super.dispose();
+    public void dispose() {
+        super.dispose();
 
-		if (this.listener != null) {
-			JavaRuntime.removeVMInstallChangedListener(this.listener);
-			this.listener = null;
-		}
-	}
+        if (this.listener != null) {
+            JavaRuntime.removeVMInstallChangedListener(this.listener);
+            this.listener = null;
+        }
+    }
 
 }

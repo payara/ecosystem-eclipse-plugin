@@ -13,15 +13,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Events that caused state of GlassFish server administration command execution
- * change.
+ * Events that caused state of GlassFish server administration command execution change.
  * <p>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public enum TaskEvent {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Enum values                                                            //
+    // Enum values //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Task queued for execution. */
@@ -44,11 +44,15 @@ public enum TaskEvent {
     CMD_COMPLETED,
     /** Server command failed. */
     CMD_FAILED,
-    /** Authorization failed on HTTP protocol level (401 or 403 response). 
-      * This is usually handled by java.net.Authenticator. */
+    /**
+     * Authorization failed on HTTP protocol level (401 or 403 response). This is usually handled by
+     * java.net.Authenticator.
+     */
     AUTH_FAILED_HTTP,
-    /** Authorization failed on asadmin response level (response
-     *  in Manifest). Here java.net.Authenticator does nothing. */
+    /**
+     * Authorization failed on asadmin response level (response in Manifest). Here
+     * java.net.Authenticator does nothing.
+     */
     AUTH_FAILED,
     /** Empty message received. */
     EMPTY_MESSAGE,
@@ -62,37 +66,37 @@ public enum TaskEvent {
     BAD_GATEWAY;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
-    /**  A <code>String</code> representation of SUBMIT value. */
+    /** A <code>String</code> representation of SUBMIT value. */
     private static final String SUBMIT_STR = "Submit";
 
-    /**  A <code>String</code> representation of START value. */
+    /** A <code>String</code> representation of START value. */
     private static final String START_STR = "Start";
 
-    /**  A <code>String</code> representation of EXCEPTION value. */
+    /** A <code>String</code> representation of EXCEPTION value. */
     private static final String EXCEPTION_STR = "Exception";
 
-    /**  A <code>String</code> representation of ILLEGAL_STATE value. */
+    /** A <code>String</code> representation of ILLEGAL_STATE value. */
     private static final String ILLEGAL_STATE_STR = "IllegalState";
 
-    /**  A <code>String</code> representation of PROCESS_NOT_EXISTS value. */
+    /** A <code>String</code> representation of PROCESS_NOT_EXISTS value. */
     private static final String PROCESS_NOT_EXISTS_STR = "ProcessNotExists";
 
-    /**  A <code>String</code> representation of PROCESS_NOT_RUNNING value. */
+    /** A <code>String</code> representation of PROCESS_NOT_RUNNING value. */
     private static final String PROCESS_NOT_RUNNING_STR = "ProcessNotRunning";
 
-    /**  A <code>String</code> representation of CMD_RUNNING value. */
+    /** A <code>String</code> representation of CMD_RUNNING value. */
     private static final String CMD_RUNNING_STR = "CmdRunning";
 
-    /**  A <code>String</code> representation of CMD_EXCEPTION value. */
+    /** A <code>String</code> representation of CMD_EXCEPTION value. */
     private static final String CMD_EXCEPTION_STR = "CmdException";
 
-    /**  A <code>String</code> representation of CMD_COMPLETED value. */
+    /** A <code>String</code> representation of CMD_COMPLETED value. */
     private static final String CMD_COMPLETED_STR = "CmdCompleted";
 
-    /**  A <code>String</code> representation of CMD_FAILED value. */
+    /** A <code>String</code> representation of CMD_FAILED value. */
     private static final String CMD_FAILED_STR = "CmdFailed";
 
     /** A <code>String</code> representation of AUTH_FAILED_HTTP value. */
@@ -112,16 +116,14 @@ public enum TaskEvent {
 
     /** A <code>String</code> representation of JAVA_VM_EXEC_FAILED value. */
     private static final String JAVA_VM_EXEC_FAILED_STR = "JavaVmExecFailed";
-    
+
     /** A <code>String</code> representation of BAD_GATEWAY value. */
     private static final String BAD_GATEWAY_STR = "BadGateway";
 
-    /** 
-     * Stored <code>String</code> values for backward <code>String</code>
-     * conversion.
+    /**
+     * Stored <code>String</code> values for backward <code>String</code> conversion.
      */
-    private static final Map<String, TaskEvent> stringValuesMap
-            = new HashMap(values().length);
+    private static final Map<String, TaskEvent> stringValuesMap = new HashMap(values().length);
 
     // Initialize backward String conversion <code>Map</code>.
     static {
@@ -131,20 +133,19 @@ public enum TaskEvent {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Static methods                                                         //
+    // Static methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Returns a <code>TaskEvent</code> with a value represented by the
-     * specified <code>String</code>. The <code>TaskEvent</code> returned
-     * represents existing value only if specified <code>String</code>
-     * matches any <code>String</code> returned by <code>toString</code> method.
+     * Returns a <code>TaskEvent</code> with a value represented by the specified <code>String</code>.
+     * The <code>TaskEvent</code> returned represents existing value only if specified
+     * <code>String</code> matches any <code>String</code> returned by <code>toString</code> method.
      * Otherwise <code>null</code> value is returned.
      * <p>
-     * @param eventStr Value containing <code>TaskEvent</code> 
-     *                 <code>toString</code> representation.
-     * @return <code>TaskEvent</code> value represented by <code>String</code>
-     *         or <code>null</code> if value was not recognized.
+     * 
+     * @param eventStr Value containing <code>TaskEvent</code> <code>toString</code> representation.
+     * @return <code>TaskEvent</code> value represented by <code>String</code> or <code>null</code> if
+     * value was not recognized.
      */
     public static TaskEvent toValue(String eventStr) {
         if (eventStr != null) {
@@ -155,37 +156,56 @@ public enum TaskEvent {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Methods                                                                //
+    // Methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Convert <code>TaskEvent</code> value to <code>String</code>.
      * <p>
+     * 
      * @return A <code>String</code> representation of the value of this object.
      */
     @Override
     public String toString() {
         switch (this) {
-            case SUBMIT:              return SUBMIT_STR;
-            case START:               return START_STR;
-            case EXCEPTION:           return EXCEPTION_STR;
-            case ILLEGAL_STATE:       return ILLEGAL_STATE_STR;
-            case PROCESS_NOT_EXISTS:  return PROCESS_NOT_EXISTS_STR;
-            case PROCESS_NOT_RUNNING: return PROCESS_NOT_RUNNING_STR;
-            case CMD_RUNNING:         return CMD_RUNNING_STR;
-            case CMD_EXCEPTION:       return CMD_EXCEPTION_STR;
-            case CMD_COMPLETED:       return CMD_COMPLETED_STR;
-            case CMD_FAILED:          return CMD_FAILED_STR;
-            case AUTH_FAILED_HTTP:    return AUTH_FAILED_HTTP_STR;
-            case AUTH_FAILED:         return AUTH_FAILED_STR;
-            case EMPTY_MESSAGE:       return EMPTY_MESSAGE_STR;
-            case NO_JAVA_VM:          return NO_JAVA_VM_STR;
-            case WRONG_JAVA_VM:       return WRONG_JAVA_VM_STR;
-            case JAVA_VM_EXEC_FAILED: return JAVA_VM_EXEC_FAILED_STR;
-            case BAD_GATEWAY:         return BAD_GATEWAY_STR;
-            // This is unrecheable. Returned null value means that some
-            // enum value is not handled correctly.
-            default:            return null;
+        case SUBMIT:
+            return SUBMIT_STR;
+        case START:
+            return START_STR;
+        case EXCEPTION:
+            return EXCEPTION_STR;
+        case ILLEGAL_STATE:
+            return ILLEGAL_STATE_STR;
+        case PROCESS_NOT_EXISTS:
+            return PROCESS_NOT_EXISTS_STR;
+        case PROCESS_NOT_RUNNING:
+            return PROCESS_NOT_RUNNING_STR;
+        case CMD_RUNNING:
+            return CMD_RUNNING_STR;
+        case CMD_EXCEPTION:
+            return CMD_EXCEPTION_STR;
+        case CMD_COMPLETED:
+            return CMD_COMPLETED_STR;
+        case CMD_FAILED:
+            return CMD_FAILED_STR;
+        case AUTH_FAILED_HTTP:
+            return AUTH_FAILED_HTTP_STR;
+        case AUTH_FAILED:
+            return AUTH_FAILED_STR;
+        case EMPTY_MESSAGE:
+            return EMPTY_MESSAGE_STR;
+        case NO_JAVA_VM:
+            return NO_JAVA_VM_STR;
+        case WRONG_JAVA_VM:
+            return WRONG_JAVA_VM_STR;
+        case JAVA_VM_EXEC_FAILED:
+            return JAVA_VM_EXEC_FAILED_STR;
+        case BAD_GATEWAY:
+            return BAD_GATEWAY_STR;
+        // This is unrecheable. Returned null value means that some
+        // enum value is not handled correctly.
+        default:
+            return null;
         }
     }
 

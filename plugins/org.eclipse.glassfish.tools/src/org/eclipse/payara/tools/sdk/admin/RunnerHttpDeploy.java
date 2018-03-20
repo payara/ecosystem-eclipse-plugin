@@ -24,19 +24,17 @@ import org.eclipse.payara.tools.sdk.utils.Utils;
 import org.eclipse.payara.tools.server.GlassFishServer;
 
 /**
- * GlassFish Server <code>deploy</code> Administration Command Execution
- * using HTTP interface.
+ * GlassFish Server <code>deploy</code> Administration Command Execution using HTTP interface.
  * <p/>
- * Class implements GlassFish server administration functionality trough HTTP
- * interface.
+ * Class implements GlassFish server administration functionality trough HTTP interface.
  * <p/>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RunnerHttpDeploy extends RunnerHttp {
-    
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Logger instance for this class. */
@@ -67,7 +65,7 @@ public class RunnerHttpDeploy extends RunnerHttp {
     private static final boolean FORCE_VALUE = true;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Static methods                                                         //
+    // Static methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
@@ -80,50 +78,49 @@ public class RunnerHttpDeploy extends RunnerHttp {
      * &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ['&' "contextroot" '=' &lt;contextRoot&gt; ] <br/>
      * &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ['&' "properties" '=' &lt;pname&gt; '=' &lt;pvalue&gt;
      *                                                  { ':' &lt;pname&gt; '=' &lt;pvalue&gt;} ]</code>
-     * &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ['&' "libraries" '=' &lt;lname&gt; '=' &lt;lvalue&gt;
-     *                                                  { ':' &lt;lname&gt; '=' &lt;lvalue&gt;} ]</code>
+     * &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ['&' "libraries" '=' &lt;lname&gt; '='
+     * &lt;lvalue&gt; { ':' &lt;lname&gt; '=' &lt;lvalue&gt;} ]</code>
      * <p/>
+     * 
      * @param command GlassFish server administration deploy command entity.
      * @return Deploy query string for given command.
      */
     private static String query(final Command command) {
         // Prepare values
-        String name; 
+        String name;
         String path;
         String target;
         String ctxRoot;
         String force = Boolean.toString(FORCE_VALUE);
         if (command instanceof CommandDeploy) {
-            if (((CommandDeploy)command).path == null) {
+            if (((CommandDeploy) command).path == null) {
                 throw new CommandException(CommandException.ILLEGAL_NULL_VALUE);
             }
-            name = Utils.sanitizeName(((CommandDeploy)command).name);
-            path = ((CommandDeploy)command).path.getAbsolutePath();
-            target =((CommandDeploy)command).target;
-            ctxRoot = ((CommandDeploy)command).contextRoot;
-        }
-        else {
+            name = Utils.sanitizeName(((CommandDeploy) command).name);
+            path = ((CommandDeploy) command).path.getAbsolutePath();
+            target = ((CommandDeploy) command).target;
+            ctxRoot = ((CommandDeploy) command).contextRoot;
+        } else {
             throw new CommandException(
                     CommandException.ILLEGAL_COMAND_INSTANCE);
         }
         // Calculate StringBuilder initial length to avoid resizing
         StringBuilder sb = new StringBuilder(
                 DEFAULT_PARAM.length() + 1 + path.length() +
-                1 + FORCE_PARAM.length() + 1 + force.length()
-                + queryPropertiesLength(
-                        ((CommandDeploy)command).properties, PROPERTIES_PARAM)
-                + queryLibrariesLength(
-                        ((CommandDeploy)command).libraries, LIBRARIES_PARAM)
-                + ( name != null && name.length() > 0
-                        ? 1 + NAME_PARAM.length() + 1 + name.length()
-                        : 0
-                ) + ( target != null
-                        ? 1 + TARGET_PARAM.length() + 1 + target.length()
-                        : 0
-                ) + ( ctxRoot != null && ctxRoot.length() > 0
-                        ? 1 + CTXROOT_PARAM.length() + 1 + ctxRoot.length()
-                        : 0
-                ));
+                        1 + FORCE_PARAM.length() + 1 + force.length()
+                        + queryPropertiesLength(
+                                ((CommandDeploy) command).properties, PROPERTIES_PARAM)
+                        + queryLibrariesLength(
+                                ((CommandDeploy) command).libraries, LIBRARIES_PARAM)
+                        + (name != null && name.length() > 0
+                                ? 1 + NAME_PARAM.length() + 1 + name.length()
+                                : 0)
+                        + (target != null
+                                ? 1 + TARGET_PARAM.length() + 1 + target.length()
+                                : 0)
+                        + (ctxRoot != null && ctxRoot.length() > 0
+                                ? 1 + CTXROOT_PARAM.length() + 1 + ctxRoot.length()
+                                : 0));
         // Build query string
         sb.append(DEFAULT_PARAM).append(PARAM_ASSIGN_VALUE).append(path);
         sb.append(PARAM_SEPARATOR);
@@ -134,23 +131,23 @@ public class RunnerHttpDeploy extends RunnerHttp {
         }
         if (target != null) {
             sb.append(PARAM_SEPARATOR);
-            sb.append(TARGET_PARAM).append(PARAM_ASSIGN_VALUE).append(target);            
+            sb.append(TARGET_PARAM).append(PARAM_ASSIGN_VALUE).append(target);
         }
         if (ctxRoot != null && ctxRoot.length() > 0) {
             sb.append(PARAM_SEPARATOR);
             sb.append(CTXROOT_PARAM).append(PARAM_ASSIGN_VALUE).append(ctxRoot);
         }
         // Add properties into query string.
-        queryPropertiesAppend(sb, ((CommandDeploy)command).properties,
+        queryPropertiesAppend(sb, ((CommandDeploy) command).properties,
                 PROPERTIES_PARAM, true);
-        queryLibrariesAppend(sb, ((CommandDeploy)command).libraries,
+        queryLibrariesAppend(sb, ((CommandDeploy) command).libraries,
                 LIBRARIES_PARAM, true);
-        
+
         return sb.toString();
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Holding data for command execution. */
@@ -158,32 +155,31 @@ public class RunnerHttpDeploy extends RunnerHttp {
     final CommandDeploy command;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Constructs an instance of administration command executor using
-     * HTTP interface.
+     * Constructs an instance of administration command executor using HTTP interface.
      * <p>
-     * @param server  GlassFish server entity object.
+     * 
+     * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
     public RunnerHttpDeploy(final GlassFishServer server,
             final Command command) {
         super(server, command, query(command));
-        this.command = (CommandDeploy)command;
+        this.command = (CommandDeploy) command;
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Implemented Abstract Methods                                           //
+    // Implemented Abstract Methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Send deployed file to the server via HTTP POST when it's not
-     * a directory deployment.
+     * Send deployed file to the server via HTTP POST when it's not a directory deployment.
      * <p/>
-     * @return <code>true</code> if using HTTP POST to send to server
-     *         or <code>false</code> otherwise
+     * 
+     * @return <code>true</code> if using HTTP POST to send to server or <code>false</code> otherwise
      */
     @Override
     public boolean getDoOutput() {
@@ -191,9 +187,9 @@ public class RunnerHttpDeploy extends RunnerHttp {
     }
 
     /**
-     * HTTP request method used for this command is <code>POST</code> for
-     * file deployment and <code>GET</code> for directory deployment.
-     * 
+     * HTTP request method used for this command is <code>POST</code> for file deployment and
+     * <code>GET</code> for directory deployment.
+     *
      * @return HTTP request method used for this command.
      */
     @Override
@@ -204,24 +200,23 @@ public class RunnerHttpDeploy extends RunnerHttp {
     /**
      * Handle sending data to server using HTTP command interface.
      * <p/>
-     * This is based on reading the code of <code>CLIRemoteCommand.java</code>
-     * from the server's code repository. Since some asadmin commands
-     * need to send multiple files, the server assumes the input is a ZIP
-     * stream.
+     * This is based on reading the code of <code>CLIRemoteCommand.java</code> from the server's code
+     * repository. Since some asadmin commands need to send multiple files, the server assumes the input
+     * is a ZIP stream.
      */
     @Override
     protected void handleSend(HttpURLConnection hconn) throws IOException {
         final String METHOD = "handleSend";
         InputStream istream = getInputStream();
-        if(istream != null) {
+        if (istream != null) {
             ZipOutputStream ostream = null;
             try {
                 ostream = new ZipOutputStream(new BufferedOutputStream(
-                        hconn.getOutputStream(), 1024*1024));
+                        hconn.getOutputStream(), 1024 * 1024));
                 ZipEntry e = new ZipEntry(command.path.getName());
                 e.setExtra(getExtraProperties());
                 ostream.putNextEntry(e);
-                byte buffer[] = new byte[1024*1024];
+                byte buffer[] = new byte[1024 * 1024];
                 while (true) {
                     int n = istream.read(buffer);
                     if (n < 0) {
@@ -234,30 +229,29 @@ public class RunnerHttpDeploy extends RunnerHttp {
             } finally {
                 try {
                     istream.close();
-                } catch(IOException ex) {
+                } catch (IOException ex) {
                     LOGGER.log(Level.INFO, METHOD, "ioException", ex);
                 }
-                if(ostream != null) {
+                if (ostream != null) {
                     try {
                         ostream.close();
-                    } catch(IOException ex) {
+                    } catch (IOException ex) {
                         LOGGER.log(Level.INFO, METHOD, "ioException", ex);
                     }
                 }
             }
-        } else if("POST".equalsIgnoreCase(getRequestMethod())) {
+        } else if ("POST".equalsIgnoreCase(getRequestMethod())) {
             LOGGER.log(Level.INFO, METHOD, "noData");
         }
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Fake Getters                                                           //
+    // Fake Getters //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Set the content-type of information sent to the server.
-     * Returns <code>application/zip</code> for file deployment
-     * and <code>null</code> (not set) for directory deployment.
+     * Set the content-type of information sent to the server. Returns <code>application/zip</code> for
+     * file deployment and <code>null</code> (not set) for directory deployment.
      *
      * @return content-type of data sent to server via HTTP POST
      */
@@ -267,9 +261,10 @@ public class RunnerHttpDeploy extends RunnerHttp {
     }
 
     /**
-     * Provide the lastModified date for data source whose
-     * <code>InputStream</code> is returned by getInputStream.
+     * Provide the lastModified date for data source whose <code>InputStream</code> is returned by
+     * getInputStream.
      * <p/>
+     * 
      * @return String format of long integer from lastModified date of source.
      */
     @Override
@@ -280,8 +275,9 @@ public class RunnerHttpDeploy extends RunnerHttp {
     /**
      * Get <code>InputStream</code> object for deployed file.
      * <p/>
-     * @return <code>InputStream</code> object for deployed file
-     *         or <code>null</code> for directory deployment.
+     * 
+     * @return <code>InputStream</code> object for deployed file or <code>null</code> for directory
+     * deployment.
      */
     public InputStream getInputStream() {
         final String METHOD = "getInputStream";

@@ -19,32 +19,32 @@ import org.eclipse.payara.tools.server.GlassFishServer;
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RunnerRestLocation extends RunnerRest {
-    
+
     /** Holding data for command execution. */
     @SuppressWarnings("FieldNameHidesFieldInSuperclass")
     final CommandLocation command;
-    
-    /** Returned value is map where locations are stored under keys specified in
-     * CommandLocation class.
+
+    /**
+     * Returned value is map where locations are stored under keys specified in CommandLocation class.
      */
     @SuppressWarnings("FieldNameHidesFieldInSuperclass")
     ResultMap<String, String> result;
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Constructs an instance of administration command executor using
-     * HTTP interface.
+     * Constructs an instance of administration command executor using HTTP interface.
      * <p/>
-     * @param server  GlassFish server entity object.
+     * 
+     * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
     public RunnerRestLocation(final GlassFishServer server,
             final Command command) {
         super(server, command);
-        this.command = (CommandLocation)command;
+        this.command = (CommandLocation) command;
     }
 
     @Override
@@ -64,5 +64,5 @@ public class RunnerRestLocation extends RunnerRest {
         }
         return true;
     }
-    
+
 }

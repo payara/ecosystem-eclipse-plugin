@@ -14,30 +14,30 @@ import org.eclipse.payara.tools.sdk.utils.OsUtils;
 import org.eclipse.payara.tools.server.GlassFishServer;
 
 /**
- * Change administrator password command execution using local
- * asadmin interface.
+ * Change administrator password command execution using local asadmin interface.
  * <p/>
+ * 
  * @author Tomas Kraus
  */
 public class RunnerAsadminChangeAdminPassword extends RunnerAsadmin {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Logger instance for this class. */
-    private static final Logger LOGGER
-            = new Logger(RunnerAsadminChangeAdminPassword.class);
+    private static final Logger LOGGER = new Logger(RunnerAsadminChangeAdminPassword.class);
 
     /** Specifies the domain of the administrator user. */
     private static final String DOMAIN_NAME_PARAM = "--domain_name";
 
-    /** Specifies the parent directory of the domain specified
-     *  in the --domain_name option. */
+    /**
+     * Specifies the parent directory of the domain specified in the --domain_name option.
+     */
     private static final String DOMAINDIR_PARAM = "--domaindir";
 
     ////////////////////////////////////////////////////////////////////////////
-    // Static methods                                                         //
+    // Static methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
@@ -53,7 +53,7 @@ public class RunnerAsadminChangeAdminPassword extends RunnerAsadmin {
         }
         StringBuilder sb = new StringBuilder(
                 DOMAIN_NAME_PARAM.length() + 1 + domainName.length() + 1
-                + DOMAINDIR_PARAM.length() + 1 + domainsFolder.length());
+                        + DOMAINDIR_PARAM.length() + 1 + domainsFolder.length());
         sb.append(DOMAINDIR_PARAM);
         sb.append(PARAM_ASSIGN_VALUE);
         sb.append(domainsFolder);
@@ -65,7 +65,7 @@ public class RunnerAsadminChangeAdminPassword extends RunnerAsadmin {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Holding data for command execution. */
@@ -73,14 +73,14 @@ public class RunnerAsadminChangeAdminPassword extends RunnerAsadmin {
     final CommandChangeAdminPassword command;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Constructs an instance of administration command executor using
-     * command line asadmin interface.
+     * Constructs an instance of administration command executor using command line asadmin interface.
      * <p/>
-     * @param server  GlassFish server entity object.
+     * 
+     * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
     public RunnerAsadminChangeAdminPassword(final GlassFishServer server,
@@ -88,28 +88,27 @@ public class RunnerAsadminChangeAdminPassword extends RunnerAsadmin {
         super(server, command, query(server, command));
         final String METHOD = "init";
         if (command instanceof CommandChangeAdminPassword) {
-            this.command = (CommandChangeAdminPassword)command;
+            this.command = (CommandChangeAdminPassword) command;
         } else {
             throw new CommandException(
                     LOGGER.excMsg(METHOD, "illegalInstance"));
         }
-            passwordFile.setAdminNewPassword(this.command.password);
+        passwordFile.setAdminNewPassword(this.command.password);
     }
- 
+
     ////////////////////////////////////////////////////////////////////////////
-    // Implemented Abstract Methods                                           //
+    // Implemented Abstract Methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Create internal <code>ProcessIOContent</code> object corresponding
-     * to command execution IO.
+     * Create internal <code>ProcessIOContent</code> object corresponding to command execution IO.
      */
     @Override
     protected ProcessIOContent createProcessIOContent() {
         ProcessIOContent processIOContent = new ProcessIOContent();
         processIOContent.addOutput(
-                new String[] {"Command", "executed successfully"},
-                new String[] {"Command change-admin-password failed"});
+                new String[] { "Command", "executed successfully" },
+                new String[] { "Command change-admin-password failed" });
         return processIOContent;
     }
 

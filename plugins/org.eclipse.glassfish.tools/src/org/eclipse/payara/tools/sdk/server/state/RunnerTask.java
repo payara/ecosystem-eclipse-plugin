@@ -22,22 +22,22 @@ import org.eclipse.payara.tools.sdk.data.GlassFishStatusCheck;
 import org.eclipse.payara.tools.sdk.logging.Logger;
 
 /**
- * Individual server administrator command task to verify if server
- * is responding properly.
+ * Individual server administrator command task to verify if server is responding properly.
  * <p/>
+ * 
  * @author Tomas Kraus
  */
 class RunnerTask extends AbstractTask {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Inner classes                                                          //
+    // Inner classes //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Command execution listener.
      * <p/>
-     * Passes {@link TaskStateListener} arguments to job command task listeners
-     * registered for {@link RunnerTask} class.
+     * Passes {@link TaskStateListener} arguments to job command task listeners registered for
+     * {@link RunnerTask} class.
      */
     private class RunnerListener implements TaskStateListener {
 
@@ -54,34 +54,35 @@ class RunnerTask extends AbstractTask {
         /**
          * Get notification about state change in {@link Runner} task.
          * <p/>
-         * This is being called in {@link Runner#call()} method execution
-         * context. 
+         * This is being called in {@link Runner#call()} method execution context.
          * <p/>
          * <code>String</codce> arguments passed to state listener:<ul>
          *   <li><code>args[0]</code> server name</li>
-         *   <li><code>args[1]</code> administration command</li>
-         *   <li><code>args[2]</code> exception message</li>
-         *   <li><code>args[3]</code> display message in GUI</li></ul>
+         * <li><code>args[1]</code> administration command</li>
+         * <li><code>args[2]</code> exception message</li>
+         * <li><code>args[3]</code> display message in GUI</li>
+         * </ul>
          * <p/>
+         * 
          * @param newState New command execution state.
-         * @param event    Event related to execution state change.
-         * @param args     Additional String arguments.
+         * @param event Event related to execution state change.
+         * @param args Additional String arguments.
          */
         @Override
         public void operationStateChanged(final TaskState newState,
-        final TaskEvent event, final String... args) {
+                final TaskEvent event, final String... args) {
             runnerTask.handleStateChange(newState, event, args);
         }
-        
+
     }
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Logger instance for this class. */
     private static final Logger LOGGER = new Logger(RunnerTask.class);
-    
+
     /** Server administration command to be executed. */
     private final Command cmd;
 
@@ -91,7 +92,8 @@ class RunnerTask extends AbstractTask {
     /**
      * Constructs an instance of individual server administrator command task.
      * <p/>
-     * @param job  Server status check job internal data.
+     * 
+     * @param job Server status check job internal data.
      * @param task Individual status check task data.
      * @param type Server status check type.
      */
@@ -103,7 +105,7 @@ class RunnerTask extends AbstractTask {
     }
 
     ////////////////////////////////////////////////////////////////////////
-    // Runnable run() method                                              //
+    // Runnable run() method //
     ////////////////////////////////////////////////////////////////////////
 
     /**
@@ -119,26 +121,26 @@ class RunnerTask extends AbstractTask {
             throw new IllegalStateException(LOGGER.excMsg(METHOD, "cancelled"));
         }
         LOGGER.log(Level.FINER, METHOD, "started", new String[] {
-            job.getStatus().getServer().getName(), jobState.toString()});
+                job.getStatus().getServer().getName(), jobState.toString() });
         TaskStateListener[] listeners = task.getListeners();
         AdminFactory af = AdminFactory.getInstance(
                 job.getStatus().getServer().getAdminInterface());
         Runner runner = af.getRunner(job.getStatus().getServer(), cmd);
         if (listeners != null) {
-            for (int i = 0 ; i < listeners.length ; i++) {
+            for (int i = 0; i < listeners.length; i++) {
                 if (listeners[i] instanceof StatusJob.Listener) {
-                    ((StatusJob.Listener)listeners[i]).setRunner(runner);
+                    ((StatusJob.Listener) listeners[i]).setRunner(runner);
                 }
             }
         }
         runner.setStateListeners(
-                new TaskStateListener[] {new RunnerListener(this)});
+                new TaskStateListener[] { new RunnerListener(this) });
         runner.setReadyState();
         result = runner.call();
         if (listeners != null) {
-            for (int i = 0 ; i < listeners.length ; i++) {
+            for (int i = 0; i < listeners.length; i++) {
                 if (listeners[i] instanceof StatusJob.Listener) {
-                    ((StatusJob.Listener)listeners[i]).clearRunner();
+                    ((StatusJob.Listener) listeners[i]).clearRunner();
                 }
             }
         }

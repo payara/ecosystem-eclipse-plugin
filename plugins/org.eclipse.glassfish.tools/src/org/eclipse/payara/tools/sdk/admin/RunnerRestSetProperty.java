@@ -18,38 +18,38 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 /**
  * Runner executes set property command via REST interface.
  * <p/>
+ * 
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class RunnerRestSetProperty extends RunnerRest {
 
-
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
     /**
-     * Constructs an instance of administration command executor using
-     * REST interface.
+     * Constructs an instance of administration command executor using REST interface.
      * <p/>
-     * @param server  GlassFish server entity object.
+     * 
+     * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
     public RunnerRestSetProperty(final GlassFishServer server,
             final Command command) {
         super(server, command, "/command/", null);
     }
-    
+
     @Override
     protected void handleSend(HttpURLConnection hconn) throws IOException {
-         OutputStreamWriter wr = new OutputStreamWriter(hconn.getOutputStream());
-         CommandSetProperty spCommand = (CommandSetProperty) command;
-         StringBuilder data = new StringBuilder();
-         data.append("values=");
-         data.append(spCommand.property);
-         data.append("=\"");
-         data.append(spCommand.value);
-         data.append("\"");
-         wr.write(data.toString());
-         wr.flush();
-         wr.close();
+        OutputStreamWriter wr = new OutputStreamWriter(hconn.getOutputStream());
+        CommandSetProperty spCommand = (CommandSetProperty) command;
+        StringBuilder data = new StringBuilder();
+        data.append("values=");
+        data.append(spCommand.property);
+        data.append("=\"");
+        data.append(spCommand.value);
+        data.append("\"");
+        wr.write(data.toString());
+        wr.flush();
+        wr.close();
     }
 }

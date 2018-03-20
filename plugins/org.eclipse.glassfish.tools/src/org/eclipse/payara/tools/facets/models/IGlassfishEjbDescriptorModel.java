@@ -17,14 +17,15 @@ import org.eclipse.sapphire.modeling.xml.annotations.CustomXmlRootBinding;
 @CustomXmlRootBinding(GlassfishEJBDescriptorRootController.class)
 public interface IGlassfishEjbDescriptorModel extends Element {
 
-	ElementType TYPE = new ElementType( IGlassfishEjbDescriptorModel.class );
-	
-//	@Type( base = ElementType.class )
-//	@Label( standard = "enterprise beans definitions" )
-//	@XmlListBinding( mappings = { @XmlListBinding.Mapping( element = "ejb", type = Element.class ) } )
-//
-//	ListProperty PROP_ENTERPRISE_BEANS = new ListProperty( TYPE, "EnterpriseBeans" ); //$NON-NLS-1$;
-//    
-//    ElementList<Element> getEnterpriseBeans();
-	
+    ElementType TYPE = new ElementType(IGlassfishEjbDescriptorModel.class);
+
+    // @Type( base = ElementType.class )
+    // @Label( standard = "enterprise beans definitions" )
+    // @XmlListBinding( mappings = { @XmlListBinding.Mapping( element = "ejb", type = Element.class ) }
+    // )
+    //
+    // ListProperty PROP_ENTERPRISE_BEANS = new ListProperty( TYPE, "EnterpriseBeans" ); //$NON-NLS-1$;
+    //
+    // ElementList<Element> getEnterpriseBeans();
+
 }

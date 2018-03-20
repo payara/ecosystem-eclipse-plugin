@@ -15,37 +15,39 @@ import java.util.Map;
 /**
  * Common library configuration XML elements reader.
  * <p/>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public abstract class ConfigReader implements XMLReader {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** <code>fileset</code> XML element reader. */
     final FilesetReader filesetReader = new FilesetReader();
 
     /** <code>file</code> XML element reader. */
-    final PathReader pathReader
-            = new PathReader("/server/library/classpath");
+    final PathReader pathReader = new PathReader("/server/library/classpath");
 
     ////////////////////////////////////////////////////////////////////////////
-    // Getters and setters                                                    //
+    // Getters and setters //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Get file sets retrieved from XML elements.
      * <p/>
+     * 
      * @return File sets retrieved from XML elements.
      */
     Map<String, List<String>> getFilesets() {
         return filesetReader.getFilesets();
     }
-    
+
     /**
      * Get paths retrieved from XML elements.
      * <p/>
+     * 
      * @return Paths sets retrieved from XML elements.
      */
     List<String> getPaths() {
@@ -53,7 +55,7 @@ public abstract class ConfigReader implements XMLReader {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Methods                                                                //
+    // Methods //
     ////////////////////////////////////////////////////////////////////////////
 
     /**

@@ -12,19 +12,22 @@ package org.eclipse.payara.tools.sdk.admin;
 /**
  * Represents response returned from server after command execution.
  * <p>
- * Inspired by ActionReport class from module GF Admin Rest Service.
- * In our case the interface allows just read-only access.
+ * Inspired by ActionReport class from module GF Admin Rest Service. In our case the interface
+ * allows just read-only access.
  * <p>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
 public interface ActionReport {
 
-    public enum ExitCode { SUCCESS, WARNING, FAILURE };
+    public enum ExitCode {
+        SUCCESS, WARNING, FAILURE
+    };
 
     public ExitCode getExitCode();
 
     public String getMessage();
 
     public String getCommand();
-    
+
 }

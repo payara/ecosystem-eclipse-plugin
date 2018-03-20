@@ -19,13 +19,13 @@ import org.eclipse.wst.server.core.IServer;
 
 public class OpenServerHomeHandler extends AbstractGlassfishSelectionHandler {
 
-	@Override
-	public void processSelection(IServer server) {
-		try {
-			showURI(getServerHomeURI(load(server, GlassFishServerBehaviour.class).getGlassfishServerDelegate()));
-		} catch (Exception e) {
-			logMessage("Error opening folder in desktop " + e.getMessage());
-		}
-	}
+    @Override
+    public void processSelection(IServer server) {
+        try {
+            showURI(getServerHomeURI(load(server, GlassFishServerBehaviour.class).getGlassfishServerDelegate()));
+        } catch (Exception e) {
+            logMessage("Error opening folder in desktop " + e.getMessage());
+        }
+    }
 
 }

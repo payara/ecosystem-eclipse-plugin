@@ -22,21 +22,22 @@ import org.eclipse.sapphire.modeling.xml.annotations.XmlBinding;
 
 public interface IGlassfishDeploymentDescriptorModel extends Element {
 
-    ElementType TYPE = new ElementType( IGlassfishDeploymentDescriptorModel.class );
-	
-	@Label( standard = "context root" )
-    @XmlBinding( path = "context-root" )
+    ElementType TYPE = new ElementType(IGlassfishDeploymentDescriptorModel.class);
 
-	ValueProperty PROP_CONTEXT_ROOT = new ValueProperty( TYPE, "ContextRoot" ); //$NON-NLS-1$;
-    
+    @Label(standard = "context root")
+    @XmlBinding(path = "context-root")
+
+    ValueProperty PROP_CONTEXT_ROOT = new ValueProperty(TYPE, "ContextRoot"); //$NON-NLS-1$ ;
+
     Value<String> getContextRoot();
-    void setContextRoot( String contextRoot );
-    
-    
-    @Label( standard = "jsp config" )
-    @XmlBinding( path = "jsp-config" )
-	ValueProperty PROP_JSP_CONFIG = new ValueProperty( TYPE, "JspConfig" ); //$NON-NLS-1$;
-    
+
+    void setContextRoot(String contextRoot);
+
+    @Label(standard = "jsp config")
+    @XmlBinding(path = "jsp-config")
+    ValueProperty PROP_JSP_CONFIG = new ValueProperty(TYPE, "JspConfig"); //$NON-NLS-1$ ;
+
     Value<String> getJspConfig();
-    void setJspConfig( String jspConfig );
+
+    void setJspConfig(String jspConfig);
 }

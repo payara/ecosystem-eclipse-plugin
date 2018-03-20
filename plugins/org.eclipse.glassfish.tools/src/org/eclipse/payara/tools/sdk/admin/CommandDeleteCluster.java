@@ -14,26 +14,28 @@ package org.eclipse.payara.tools.sdk.admin;
  * <p/>
  * Holds data for command. Objects of this class are created by API user.
  * <p/>
+ * 
  * @author Tomas Kraus, Peter Benedikovic
  */
-@RunnerHttpClass(runner=RunnerHttpTarget.class)
-@RunnerRestClass(runner=RunnerRestDeleteCluster.class)
+@RunnerHttpClass(runner = RunnerHttpTarget.class)
+@RunnerRestClass(runner = RunnerRestDeleteCluster.class)
 public class CommandDeleteCluster extends CommandTarget {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Class attributes                                                       //
+    // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Command string for delete-cluster command. */
     private static final String COMMAND = "delete-cluster";
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Constructs an instance of GlassFish server delete-cluster command entity.
      * <p/>
+     * 
      * @param target Target GlassFish instance.
      */
     public CommandDeleteCluster(String target) {

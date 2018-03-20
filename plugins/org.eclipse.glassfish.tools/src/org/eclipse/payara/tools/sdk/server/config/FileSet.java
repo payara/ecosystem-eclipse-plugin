@@ -15,12 +15,13 @@ import java.util.Map;
 /**
  * Library content set for library content for GlassFish features configuration.
  * <p/>
+ * 
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class FileSet {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes                                                    //
+    // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
     /** Paths retrieved from XML elements. */
@@ -36,17 +37,17 @@ public class FileSet {
     private final List<String> lookups;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Constructors                                                           //
+    // Constructors //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Creates an instance of Library content for GlassFish libraries
-     * configuration.
+     * Creates an instance of Library content for GlassFish libraries configuration.
      * <p/>
-     * @param paths    Paths retrieved from XML elements.
-     * @param links    Links retrieved from XML elements.
+     * 
+     * @param paths Paths retrieved from XML elements.
+     * @param links Links retrieved from XML elements.
      * @param filesets File sets retrieved from XML elements.
-     * @param lookups  Lookups retrieved from XML elements.
+     * @param lookups Lookups retrieved from XML elements.
      */
     public FileSet(final List<String> paths, final List<String> links,
             final Map<String, List<String>> filesets,
@@ -58,26 +59,27 @@ public class FileSet {
     }
 
     /**
-     * Creates an instance of Library content for GlassFish libraries
-     * configuration.
+     * Creates an instance of Library content for GlassFish libraries configuration.
      * <p/>
      * Content of links and lookups is set to <code>null</code>.
      * <p/>
-     * @param paths    Paths retrieved from XML elements.
+     * 
+     * @param paths Paths retrieved from XML elements.
      * @param filesets File sets retrieved from XML elements.
      */
     public FileSet(final List<String> paths,
             final Map<String, List<String>> filesets) {
         this(paths, null, filesets, null);
     }
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    // Getters and setters                                                    //
+    // Getters and setters //
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Get paths retrieved from XML elements.
      * <p/>
+     * 
      * @return Paths sets retrieved from XML elements.
      */
     public List<String> getPaths() {
@@ -87,6 +89,7 @@ public class FileSet {
     /**
      * Get links retrieved from XML elements.
      * <p/>
+     * 
      * @return Links sets retrieved from XML elements.
      */
     public List<String> getLinks() {
@@ -96,15 +99,17 @@ public class FileSet {
     /**
      * Get file sets retrieved from XML elements.
      * <p/>
+     * 
      * @return File sets retrieved from XML elements.
      */
     public Map<String, List<String>> getFilesets() {
         return filesets;
     }
-    
+
     /**
      * Get lookups retrieved from XML elements.
      * <p/>
+     * 
      * @return Links sets retrieved from XML elements.
      */
     public List<String> getLookups() {
