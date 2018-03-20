@@ -38,137 +38,137 @@ import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.core.internal.Server;
 
 /**
- * Properties that are being shown for the Payara / GlassFish server when e.g. the server is right clicked
- * in the Servers view and "Properties" is chosen from the context menu. 
+ * Properties that are being shown for the Payara / GlassFish server when e.g. the server is right
+ * clicked in the Servers view and "Properties" is chosen from the context menu.
  *
  */
 @SuppressWarnings("restriction")
 public class ServerPropertyPage extends PropertyPage {
 
-	IServerWorkingCopy serverWC;
-	GlassFishServer sunserver;
-	IGlassfishServerModel model;
+    IServerWorkingCopy serverWC;
+    GlassFishServer sunserver;
+    IGlassfishServerModel model;
 
-	FilteredListener<PropertyValidationEvent> listener = new FilteredListener<PropertyValidationEvent>() {
-		@Override
-		protected void handleTypedEvent(PropertyValidationEvent event) {
-			refreshStatus();
-		}
-	};
+    FilteredListener<PropertyValidationEvent> listener = new FilteredListener<PropertyValidationEvent>() {
+        @Override
+        protected void handleTypedEvent(PropertyValidationEvent event) {
+            refreshStatus();
+        }
+    };
 
-	@Override
-	protected Control createContents(Composite parent) {
+    @Override
+    protected Control createContents(Composite parent) {
 
-		IServer server = (IServer) getElement();
-		if (server instanceof IServerWorkingCopy) {
+        IServer server = (IServer) getElement();
+        if (server instanceof IServerWorkingCopy) {
             serverWC = (IServerWorkingCopy) server;
         } else {
             serverWC = server.createWorkingCopy();
         }
 
-		sunserver = (GlassFishServer) serverWC.loadAdapter(GlassFishServer.class, new NullProgressMonitor());
-		model = sunserver.getModel();
+        sunserver = (GlassFishServer) serverWC.loadAdapter(GlassFishServer.class, new NullProgressMonitor());
+        model = sunserver.getModel();
 
-		model.attach(listener, "*");
+        model.attach(listener, "*");
 
-		final SapphireForm control = new SapphireForm(parent, model,
-				DefinitionLoader.context(BaseWizardFragment.class)
-						.sdef("org.eclipse.payara.tools.ui.GlassfishUI")
-						.form("payara.server"));
+        final SapphireForm control = new SapphireForm(parent, model,
+                DefinitionLoader.context(BaseWizardFragment.class)
+                        .sdef("org.eclipse.payara.tools.ui.GlassfishUI")
+                        .form("payara.server"));
 
-		control.setLayoutData(new GridData(FILL, FILL, true, true));
+        control.setLayoutData(new GridData(FILL, FILL, true, true));
 
-		refreshStatus();
+        refreshStatus();
 
-		return control;
+        return control;
 
-	}
+    }
 
-	private void refreshStatus() {
-		Status status = model.validation();
+    private void refreshStatus() {
+        Status status = model.validation();
 
-		if (status.severity() == Severity.ERROR) {
-			setMessage(status.message(), ERROR);
-			setValid(false);
-		} else if (status.severity() == Severity.WARNING) {
-			setMessage(status.message(), WARNING);
-			setValid(true);
-		} else {
-			setMessage(null, NONE);
-			setValid(true);
-		}
+        if (status.severity() == Severity.ERROR) {
+            setMessage(status.message(), ERROR);
+            setValid(false);
+        } else if (status.severity() == Severity.WARNING) {
+            setMessage(status.message(), WARNING);
+            setValid(true);
+        } else {
+            setMessage(null, NONE);
+            setValid(true);
+        }
 
-	}
+    }
 
-	// note that this is currently not working due to issue 140
-	// public void propertyChange(PropertyChangeEvent evt) {
-	// if (AbstractGlassfishServer.DOMAINUPDATE == evt.getPropertyName()) {
-	// username.setText(sunserver.getAdminUser());
-	// password.setText(sunserver.getAdminPassword());
-	// adminServerPortNumber.setText(Integer.toString(sunserver.getAdminPort()));
-	// serverPortNumber.setText(Integer.toString(sunserver.getPort()));
-	// }
-	// }
+    // note that this is currently not working due to issue 140
+    // public void propertyChange(PropertyChangeEvent evt) {
+    // if (AbstractGlassfishServer.DOMAINUPDATE == evt.getPropertyName()) {
+    // username.setText(sunserver.getAdminUser());
+    // password.setText(sunserver.getAdminPassword());
+    // adminServerPortNumber.setText(Integer.toString(sunserver.getAdminPort()));
+    // serverPortNumber.setText(Integer.toString(sunserver.getPort()));
+    // }
+    // }
 
-	@Override
-	public boolean isValid() {
-		return super.isValid();
-	}
+    @Override
+    public boolean isValid() {
+        return super.isValid();
+    }
 
-	@Override
-	public boolean performCancel() {
-		model.detach(listener, "*");
-		return super.performCancel();
-	}
+    @Override
+    public boolean performCancel() {
+        model.detach(listener, "*");
+        return super.performCancel();
+    }
 
-	@Override
-	protected void performApply() {
-		IProgressMonitor monitor = new NullProgressMonitor();
-		try {
-			final IServer server = serverWC.save(true, monitor);
+    @Override
+    protected void performApply() {
+        IProgressMonitor monitor = new NullProgressMonitor();
+        try {
+            final IServer server = serverWC.save(true, monitor);
 
-			Job job = new Job("Update Glassfish server state") { //$NON-NLS-1$
-				@Override
-				protected IStatus run(IProgressMonitor monitor) {
-					try {
-						GlassFishServerBehaviour serverBehavior = (GlassFishServerBehaviour) serverWC
-								.loadAdapter(GlassFishServerBehaviour.class, monitor);
-						serverBehavior.updateServerStatus();
+            Job job = new Job("Update Glassfish server state") { //$NON-NLS-1$
+                @Override
+                protected IStatus run(IProgressMonitor monitor) {
+                    try {
+                        GlassFishServerBehaviour serverBehavior = (GlassFishServerBehaviour) serverWC
+                                .loadAdapter(GlassFishServerBehaviour.class, monitor);
+                        serverBehavior.updateServerStatus();
 
-						Server gfServer = (Server) server;
-						gfServer.setServerPublishState(PUBLISH_CLEAN);
+                        Server gfServer = (Server) server;
+                        gfServer.setServerPublishState(PUBLISH_CLEAN);
 
-					} catch (Exception e) {
-						((Server) server).setServerState(STATE_STOPPED);
-					}
-					return OK_STATUS;
-				}
-			};
+                    } catch (Exception e) {
+                        ((Server) server).setServerState(STATE_STOPPED);
+                    }
+                    return OK_STATUS;
+                }
+            };
 
-			job.schedule();
-		} catch (CoreException e) {
-			// no-op
-			e.printStackTrace();
-		}
-	}
+            job.schedule();
+        } catch (CoreException e) {
+            // no-op
+            e.printStackTrace();
+        }
+    }
 
-	@Override
-	public boolean performOk() {
-		model.detach(listener, "*");
-		performApply();
-		return true;
-	}
+    @Override
+    public boolean performOk() {
+        model.detach(listener, "*");
+        performApply();
+        return true;
+    }
 
-	@Override
-	protected void performDefaults() {
-		super.performDefaults();
-		serverWC.setAttribute(GlassFishServer.ATTR_ADMIN, "");
-		serverWC.setAttribute(GlassFishServer.ATTR_ADMINPASS, "");
-		serverWC.setAttribute(GlassFishServer.ATTR_DOMAINPATH,
-				GlassFishServer.getDefaultDomainDir(serverWC.getRuntime().getLocation()).toString());
-		serverWC.setAttribute(GlassFishServer.ATTR_ADMINPORT, "");
-		serverWC.setAttribute(GlassFishServer.ATTR_DEBUG_PORT, "");
-		model.refresh();
-	}
+    @Override
+    protected void performDefaults() {
+        super.performDefaults();
+        serverWC.setAttribute(GlassFishServer.ATTR_ADMIN, "");
+        serverWC.setAttribute(GlassFishServer.ATTR_ADMINPASS, "");
+        serverWC.setAttribute(GlassFishServer.ATTR_DOMAINPATH,
+                GlassFishServer.getDefaultDomainDir(serverWC.getRuntime().getLocation()).toString());
+        serverWC.setAttribute(GlassFishServer.ATTR_ADMINPORT, "");
+        serverWC.setAttribute(GlassFishServer.ATTR_DEBUG_PORT, "");
+        model.refresh();
+    }
 
 }

@@ -34,8 +34,9 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 
 /**
- * Action that's available on the new server wizard that allows testing the connection to a remote server.
- * 
+ * Action that's available on the new server wizard that allows testing the connection to a remote
+ * server.
+ *
  * <p>
  * Note that is only available for remote servers, not for local servers.
  * </p>
@@ -44,77 +45,77 @@ import org.eclipse.wst.server.core.IServerWorkingCopy;
 @SuppressWarnings("restriction")
 public class TestRemotePayaraConnectionAction extends SapphireActionHandler {
 
-	@Override
-	protected Object run(Presentation context) {
-		IServerWorkingCopy wc = context.part().getModelElement().adapt(IServerWorkingCopy.class);
-		GlassFishServer glassfish = load(wc, GlassFishServer.class);
-		
-		ServerStatus serverStatus = checkServerStatus(glassfish);
+    @Override
+    protected Object run(Presentation context) {
+        IServerWorkingCopy wc = context.part().getModelElement().adapt(IServerWorkingCopy.class);
+        GlassFishServer glassfish = load(wc, GlassFishServer.class);
 
-		if (!serverStatus.equals(RUNNING_DOMAIN_MATCHING)) {
-			StringBuilder errorMessage = new StringBuilder();
-			errorMessage.append("Cannot communicate with ")
-						.append(glassfish.getServer().getHost())
-						.append(":")
-						.append(glassfish.getAdminPort())
-						.append(" remote server.");
+        ServerStatus serverStatus = checkServerStatus(glassfish);
 
-			// Give some hints
-			if (serverStatus.equals(STOPPED_NOT_LISTENING)) {
-				errorMessage.append(" Is it up?");
-			} else if (serverStatus.equals(RUNNING_REMOTE_NOT_SECURE)) {
-				errorMessage	.append(" Is it secure? (Hint: run asadmin enable-secure-admin)");
-			} else if (serverStatus.equals(RUNNING_CREDENTIAL_PROBLEM)) {
-				errorMessage	.append(" Wrong user name or password. Check your credentials.");
-			} else if (serverStatus.equals(RUNNING_PROXY_ERROR)) {
-				errorMessage.append(" Check your proxy settings.");
-			} else if (serverStatus.equals(RUNNING_CONNECTION_ERROR)) {
-				// Add all possible hints
-				errorMessage.append(" Is it up?")
-							.append(" Is it secure? (Hint: run asadmin enable-secure-admin)");
-			}
+        if (!serverStatus.equals(RUNNING_DOMAIN_MATCHING)) {
+            StringBuilder errorMessage = new StringBuilder();
+            errorMessage.append("Cannot communicate with ")
+                    .append(glassfish.getServer().getHost())
+                    .append(":")
+                    .append(glassfish.getAdminPort())
+                    .append(" remote server.");
 
-			openMessage(
-				Display.getDefault().getActiveShell(), 
-				"Error", "Error connecting to remote server", 
-				new Status(ERROR, SYMBOLIC_NAME, errorMessage.toString()));
-		
-		} else {
-			
-			// Check server version
-			
-			String remoteServerVersion = GlassFishServerBehaviour.getVersion(glassfish);
-			String thisServerVersion = wc.getRuntime()
-										 .getAdapter(GlassFishRuntime.class)
-										 .getVersion()
-										 .toString();
-			
-			int n = thisServerVersion.indexOf(".X");
-			if (n > 0) {
-				thisServerVersion = thisServerVersion.substring(0, n + 1);
-			}
-			
-			if (remoteServerVersion != null && remoteServerVersion.indexOf(thisServerVersion) < 0) {
-				
-				openMessage(
-					Display.getDefault().getActiveShell(), 
-					"Error", 
-					versionsNotMatching, 	
-					new Status(ERROR, SYMBOLIC_NAME, "The remote server version is " + remoteServerVersion));
-				
-			} else {
-				
-				// Everything seems to be OK
-				openMessage(
-					Display.getDefault().getActiveShell(), 
-					"Connection successful",
-					"Connection to server was successful", 
-					new Status(INFO, SYMBOLIC_NAME, "Connection to server was successful"));
-			}
-		}
-		
-		return null;
-		
-	}
+            // Give some hints
+            if (serverStatus.equals(STOPPED_NOT_LISTENING)) {
+                errorMessage.append(" Is it up?");
+            } else if (serverStatus.equals(RUNNING_REMOTE_NOT_SECURE)) {
+                errorMessage.append(" Is it secure? (Hint: run asadmin enable-secure-admin)");
+            } else if (serverStatus.equals(RUNNING_CREDENTIAL_PROBLEM)) {
+                errorMessage.append(" Wrong user name or password. Check your credentials.");
+            } else if (serverStatus.equals(RUNNING_PROXY_ERROR)) {
+                errorMessage.append(" Check your proxy settings.");
+            } else if (serverStatus.equals(RUNNING_CONNECTION_ERROR)) {
+                // Add all possible hints
+                errorMessage.append(" Is it up?")
+                        .append(" Is it secure? (Hint: run asadmin enable-secure-admin)");
+            }
+
+            openMessage(
+                    Display.getDefault().getActiveShell(),
+                    "Error", "Error connecting to remote server",
+                    new Status(ERROR, SYMBOLIC_NAME, errorMessage.toString()));
+
+        } else {
+
+            // Check server version
+
+            String remoteServerVersion = GlassFishServerBehaviour.getVersion(glassfish);
+            String thisServerVersion = wc.getRuntime()
+                    .getAdapter(GlassFishRuntime.class)
+                    .getVersion()
+                    .toString();
+
+            int n = thisServerVersion.indexOf(".X");
+            if (n > 0) {
+                thisServerVersion = thisServerVersion.substring(0, n + 1);
+            }
+
+            if (remoteServerVersion != null && remoteServerVersion.indexOf(thisServerVersion) < 0) {
+
+                openMessage(
+                        Display.getDefault().getActiveShell(),
+                        "Error",
+                        versionsNotMatching,
+                        new Status(ERROR, SYMBOLIC_NAME, "The remote server version is " + remoteServerVersion));
+
+            } else {
+
+                // Everything seems to be OK
+                openMessage(
+                        Display.getDefault().getActiveShell(),
+                        "Connection successful",
+                        "Connection to server was successful",
+                        new Status(INFO, SYMBOLIC_NAME, "Connection to server was successful"));
+            }
+        }
+
+        return null;
+
+    }
 
 }

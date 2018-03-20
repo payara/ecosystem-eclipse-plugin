@@ -18,31 +18,31 @@ import org.eclipse.ui.console.TextConsole;
 
 public class GlassfishConsoleTracker implements IPatternMatchListenerDelegate {
 
-	/**
-	 * The console associated with this line tracker
-	 */
-	private TextConsole gfConsole;
+    /**
+     * The console associated with this line tracker
+     */
+    private TextConsole gfConsole;
 
-	@Override
-	public void connect(TextConsole console) {
-		gfConsole = console;
-	}
+    @Override
+    public void connect(TextConsole console) {
+        gfConsole = console;
+    }
 
-	@Override
-	public void disconnect() {
-		gfConsole = null;
-	}
+    @Override
+    public void disconnect() {
+        gfConsole = null;
+    }
 
-	@Override
-	public void matchFound(PatternMatchEvent event) {
-		try {
-			int offset = event.getOffset();
-			int length = event.getLength();
-			IHyperlink link = new JavaStackTraceHyperlink(gfConsole);
-			gfConsole.addHyperlink(link, offset + 1, length - 2);
-		} catch (BadLocationException e) {
-			// Ignore
-		}
-	}
+    @Override
+    public void matchFound(PatternMatchEvent event) {
+        try {
+            int offset = event.getOffset();
+            int length = event.getLength();
+            IHyperlink link = new JavaStackTraceHyperlink(gfConsole);
+            gfConsole.addHyperlink(link, offset + 1, length - 2);
+        } catch (BadLocationException e) {
+            // Ignore
+        }
+    }
 
 }

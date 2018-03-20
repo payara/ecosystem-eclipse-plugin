@@ -9,18 +9,16 @@
 
 package org.eclipse.payara.tools.ui.rest.wizards;
 
-
-
 public class Messages extends org.eclipse.osgi.util.NLS {
     static {
         org.eclipse.osgi.util.NLS.initializeMessages(
                 "org.eclipse.payara.tools.ui.rest.wizards.Messages", Messages.class);
     }
-    
-	public static String ProjectName;
+
+    public static String ProjectName;
     public static String sessionWizardTitle;
     public static String errorBusinessInterfaceMissing;
-    
+
     public static String timerWizardTitle;
     public static String timerWizardDescription;
     public static String timerScheduleLabel;

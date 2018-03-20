@@ -28,72 +28,75 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModelProvider;
 @SuppressWarnings("restriction")
 public class AddGenericResourceWizard extends NewWebArtifactWizard {
 
-	public AddGenericResourceWizard() {
-		this(null);
-	}
+    public AddGenericResourceWizard() {
+        this(null);
+    }
 
-	public AddGenericResourceWizard(IDataModel model) {
-		super(model);
-		setWindowTitle(Messages.genericResourceWizardTitle);
-	}
+    public AddGenericResourceWizard(IDataModel model) {
+        super(model);
+        setWindowTitle(Messages.genericResourceWizardTitle);
+    }
 
-	@Override
-	protected void doAddPages() {
-		AddGenericResourceWizardPage page1 = new AddGenericResourceWizardPage(getDataModel(),
-				"page1", Messages.genericResourceWizardDescription, //$NON-NLS-1$
-				Messages.genericResourceWizardTitle, J2EEProjectUtilities.DYNAMIC_WEB);
-		addPage(page1);
-	}
+    @Override
+    protected void doAddPages() {
+        AddGenericResourceWizardPage page1 = new AddGenericResourceWizardPage(getDataModel(),
+                "page1", Messages.genericResourceWizardDescription, //$NON-NLS-1$
+                Messages.genericResourceWizardTitle, J2EEProjectUtilities.DYNAMIC_WEB);
+        addPage(page1);
+    }
 
-	@Override
-	protected IDataModelProvider getDefaultProvider() {
-		return new AddGenericResourceDataModelProvider();
-	}
+    @Override
+    protected IDataModelProvider getDefaultProvider() {
+        return new AddGenericResourceDataModelProvider();
+    }
 
-	@Override
-	protected ImageDescriptor getImage() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    protected ImageDescriptor getImage() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	protected String getTitle() {
-		return Messages.genericResourceWizardTitle;
-	}
+    @Override
+    protected String getTitle() {
+        return Messages.genericResourceWizardTitle;
+    }
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.wst.common.frameworks.internal.datamodel.ui.DataModelWizard#postPerformFinish()
-	 */
-	@Override
-	protected void postPerformFinish() throws InvocationTargetException {
-		openJavaClass();
-		super.postPerformFinish();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.wst.common.frameworks.internal.datamodel.ui.DataModelWizard#postPerformFinish()
+     */
+    @Override
+    protected void postPerformFinish() throws InvocationTargetException {
+        openJavaClass();
+        super.postPerformFinish();
+    }
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jst.servlet.ui.internal.wizard.NewWebArtifactWizard#openJavaClass()
-	 */
-	@Override
-	protected void openJavaClass() {
-		IDataModel model = getDataModel();
-		if (model.getBooleanProperty(AddGenericResourceDataModelProvider.IN_CONTAINER_CLASS)) {
-			try {
-				String className = model.getStringProperty(AddGenericResourceDataModelProvider.ORIGINAL_CLASS_NAME);
-				String packageName = model.getStringProperty(JAVA_PACKAGE);
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.jst.servlet.ui.internal.wizard.NewWebArtifactWizard#openJavaClass()
+     */
+    @Override
+    protected void openJavaClass() {
+        IDataModel model = getDataModel();
+        if (model.getBooleanProperty(AddGenericResourceDataModelProvider.IN_CONTAINER_CLASS)) {
+            try {
+                String className = model.getStringProperty(AddGenericResourceDataModelProvider.ORIGINAL_CLASS_NAME);
+                String packageName = model.getStringProperty(JAVA_PACKAGE);
 
-				if (packageName != null && packageName.trim().length() > 0)
-                 {
+                if (packageName != null && packageName.trim().length() > 0) {
                     className = packageName + "." + className; //$NON-NLS-1$
                 }
 
-				IProject p = (IProject) model.getProperty(PROJECT);
-				IJavaProject javaProject = J2EEEditorUtility.getJavaProject(p);
-				IFile file = (IFile) javaProject.findType(className).getResource();
-				openEditor(file);
-			} catch (Exception cantOpen) {
-				ServletUIPlugin.log(cantOpen);
-			}	
-		}
-		super.openJavaClass();
-	}
+                IProject p = (IProject) model.getProperty(PROJECT);
+                IJavaProject javaProject = J2EEEditorUtility.getJavaProject(p);
+                IFile file = (IFile) javaProject.findType(className).getResource();
+                openEditor(file);
+            } catch (Exception cantOpen) {
+                ServletUIPlugin.log(cantOpen);
+            }
+        }
+        super.openJavaClass();
+    }
 }

@@ -42,108 +42,108 @@ import org.eclipse.wst.server.ui.internal.ServerUIPlugin;
 
 @SuppressWarnings("restriction")
 public class UndeployAction extends Action {
-	
-	ISelection selection;
-	ICommonActionExtensionSite actionSite;
 
-	public UndeployAction(ISelection selection, ICommonActionExtensionSite actionSite) {
-		setText("Undeploy");
-		
-		ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
-		setImageDescriptor(sharedImages.getImageDescriptor(IMG_TOOL_DELETE));
-		setDisabledImageDescriptor(sharedImages.getImageDescriptor(IMG_TOOL_DELETE_DISABLED));
-		setActionDefinitionId(EDIT_DELETE);
+    ISelection selection;
+    ICommonActionExtensionSite actionSite;
 
-		this.selection = selection;
-		this.actionSite = actionSite;
-	}
+    public UndeployAction(ISelection selection, ICommonActionExtensionSite actionSite) {
+        setText("Undeploy");
 
-	@Override
+        ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
+        setImageDescriptor(sharedImages.getImageDescriptor(IMG_TOOL_DELETE));
+        setDisabledImageDescriptor(sharedImages.getImageDescriptor(IMG_TOOL_DELETE_DISABLED));
+        setActionDefinitionId(EDIT_DELETE);
+
+        this.selection = selection;
+        this.actionSite = actionSite;
+    }
+
+    @Override
     public void runWithEvent(Event event) {
-		if (selection instanceof TreeSelection) {
-			TreeSelection ts = (TreeSelection) selection;
-			Object obj = ts.getFirstElement();
-			if (obj instanceof TreeNode) {
-				final TreeNode module = (TreeNode) obj;
-				final DeployedApplicationsNode target = (DeployedApplicationsNode) module.getParent();
+        if (selection instanceof TreeSelection) {
+            TreeSelection ts = (TreeSelection) selection;
+            Object obj = ts.getFirstElement();
+            if (obj instanceof TreeNode) {
+                final TreeNode module = (TreeNode) obj;
+                final DeployedApplicationsNode target = (DeployedApplicationsNode) module.getParent();
 
-				try {
-					final GlassFishServerBehaviour be = target.getServer().getServerBehaviourAdapter();
-					IRunnableWithProgress op = new IRunnableWithProgress() {
-						@Override
+                try {
+                    final GlassFishServerBehaviour be = target.getServer().getServerBehaviourAdapter();
+                    IRunnableWithProgress op = new IRunnableWithProgress() {
+                        @Override
                         public void run(IProgressMonitor monitor) {
-							try {
+                            try {
 
-								IServer server = be.getServer();
+                                IServer server = be.getServer();
 
-								IModule[] im = server.getModules();
-								IModule imodule = null;
-								for (int i = 0; i < im.length; i++) {
-									if (im[i].getName().equals(module.getName())) {
-										imodule = im[i];
+                                IModule[] im = server.getModules();
+                                IModule imodule = null;
+                                for (int i = 0; i < im.length; i++) {
+                                    if (im[i].getName().equals(module.getName())) {
+                                        imodule = im[i];
 
-									}
-								}
-								if (imodule == null) {
-									// undeploy and return
-									// TODO review undeploy functionality
-									be.undeploy(module.getName(), monitor);
-									return;
-								}
-								try {
-									IServerWorkingCopy wc = server.createWorkingCopy();
-									wc.modifyModules(null, new IModule[] { imodule }, monitor);
-									server = wc.save(true, monitor);
+                                    }
+                                }
+                                if (imodule == null) {
+                                    // undeploy and return
+                                    // TODO review undeploy functionality
+                                    be.undeploy(module.getName(), monitor);
+                                    return;
+                                }
+                                try {
+                                    IServerWorkingCopy wc = server.createWorkingCopy();
+                                    wc.modifyModules(null, new IModule[] { imodule }, monitor);
+                                    server = wc.save(true, monitor);
 
-								} catch (CoreException e) {
-									e.printStackTrace();
-								}
-								
-								if (server.getServerState() != STATE_STOPPED
-										&& ServerUIPlugin.getPreferences().getPublishOnAddRemoveModule()) {
-									final IAdaptable info = new IAdaptable() {
-										@Override
+                                } catch (CoreException e) {
+                                    e.printStackTrace();
+                                }
+
+                                if (server.getServerState() != STATE_STOPPED
+                                        && ServerUIPlugin.getPreferences().getPublishOnAddRemoveModule()) {
+                                    final IAdaptable info = new IAdaptable() {
+                                        @Override
                                         public <T> T getAdapter(final Class<T> adapter) {
-											if (Shell.class.equals(adapter)) {
-												return adapter.cast(Display.getDefault().getActiveShell());
-											}
+                                            if (Shell.class.equals(adapter)) {
+                                                return adapter.cast(Display.getDefault().getActiveShell());
+                                            }
 
-											return null;
-										}
-									};
-									server.publish(PUBLISH_INCREMENTAL, null, info, null);
-								}
+                                            return null;
+                                        }
+                                    };
+                                    server.publish(PUBLISH_INCREMENTAL, null, info, null);
+                                }
 
-							} catch (Exception e) {
-								e.printStackTrace();
+                            } catch (Exception e) {
+                                e.printStackTrace();
 
-							}
-						}
-					};
-					
-					Shell shell = Display.getDefault().getActiveShell();
-					if (shell != null) {
-						new ProgressMonitorDialog(shell).run(true, false, op);
-					}
-					target.refresh();
-					StructuredViewer view = actionSite.getStructuredViewer();
-					view.refresh(target);
+                            }
+                        }
+                    };
 
-					// set to FULL to tell the system a full deploy is
-					// needed.
-					Server server = (Server) be.getServer();
-					server.setModulePublishState(server.getModules(), PUBLISH_STATE_FULL);
+                    Shell shell = Display.getDefault().getActiveShell();
+                    if (shell != null) {
+                        new ProgressMonitorDialog(shell).run(true, false, op);
+                    }
+                    target.refresh();
+                    StructuredViewer view = actionSite.getStructuredViewer();
+                    view.refresh(target);
 
-				} catch (Exception e) {
-				}
-			}
-		}
-		super.run();
-	}
+                    // set to FULL to tell the system a full deploy is
+                    // needed.
+                    Server server = (Server) be.getServer();
+                    server.setModulePublishState(server.getModules(), PUBLISH_STATE_FULL);
 
-	@Override
-	public void run() {
-		this.runWithEvent(null);
-	}
+                } catch (Exception e) {
+                }
+            }
+        }
+        super.run();
+    }
+
+    @Override
+    public void run() {
+        this.runWithEvent(null);
+    }
 
 }

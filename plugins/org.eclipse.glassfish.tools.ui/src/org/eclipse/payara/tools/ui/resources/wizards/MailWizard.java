@@ -38,163 +38,160 @@ import org.eclipse.ui.ide.IDE;
  */
 
 public class MailWizard extends ResourceWizard {
-	private MailResourceWizardPage page;
-	
-	/**
-	 * Constructor for MailWizard.
-	 */
-	public MailWizard() {
-		super();
-		setNeedsProgressMonitor(true);
-	}
+    private MailResourceWizardPage page;
 
-	/**
-	 * Adding the page to the wizard.
-	 */
+    /**
+     * Constructor for MailWizard.
+     */
+    public MailWizard() {
+        super();
+        setNeedsProgressMonitor(true);
+    }
 
-	@Override
-	public void addPages() {
-		IContainer containerResource = getContainerResource();
-		IProject selectedProject = ((containerResource != null) ? containerResource.getProject() : null);
-		page = new MailResourceWizardPage(selectedProject, getGlassFishAndSailfinProjects());
-		addPage(page);
-	}
-	
-	/**
-	 * This method is called when 'Finish' button is pressed in
-	 * the wizard. We will create an operation and run it
-	 * using wizard as execution context.
-	 */
-	@Override
-	public boolean performFinish() {
-		final String jndiName = page.getJNDIName();
-		final MailInfo mailInfo = page.getMailInfo();
-		final IProject selectedProject = page.getSelectedProject();
-		
-		IRunnableWithProgress op = new IRunnableWithProgress() {
-			@Override
+    /**
+     * Adding the page to the wizard.
+     */
+
+    @Override
+    public void addPages() {
+        IContainer containerResource = getContainerResource();
+        IProject selectedProject = ((containerResource != null) ? containerResource.getProject() : null);
+        page = new MailResourceWizardPage(selectedProject, getGlassFishAndSailfinProjects());
+        addPage(page);
+    }
+
+    /**
+     * This method is called when 'Finish' button is pressed in the wizard. We will create an operation
+     * and run it using wizard as execution context.
+     */
+    @Override
+    public boolean performFinish() {
+        final String jndiName = page.getJNDIName();
+        final MailInfo mailInfo = page.getMailInfo();
+        final IProject selectedProject = page.getSelectedProject();
+
+        IRunnableWithProgress op = new IRunnableWithProgress() {
+            @Override
             public void run(IProgressMonitor monitor) throws InvocationTargetException {
-				try {
-					doFinish(jndiName, mailInfo, selectedProject, monitor);
-				} catch (CoreException e) {
-					throw new InvocationTargetException(e);
-				} finally {
-					monitor.done();
-				}
-			}
-		};
-		try {
-			getContainer().run(true, false, op);
-		} catch (InterruptedException e) {
-			return false;
-		} catch (InvocationTargetException e) {
-			Throwable realException = e.getTargetException();
-			String message = realException.getMessage();
-			if (message == null) {
-				message = Messages.errorUnknown;
-			}
-			MessageDialog.openError(getShell(), Messages.ErrorTitle, message);
-			return false;
-		}
-		return true;
-	}
-	
-	/**
-	 * The worker method. It will find the container, create the
-	 * file and open the editor on the newly created file.  If the 
-	 * file already exists, show an error
-	 */
+                try {
+                    doFinish(jndiName, mailInfo, selectedProject, monitor);
+                } catch (CoreException e) {
+                    throw new InvocationTargetException(e);
+                } finally {
+                    monitor.done();
+                }
+            }
+        };
+        try {
+            getContainer().run(true, false, op);
+        } catch (InterruptedException e) {
+            return false;
+        } catch (InvocationTargetException e) {
+            Throwable realException = e.getTargetException();
+            String message = realException.getMessage();
+            if (message == null) {
+                message = Messages.errorUnknown;
+            }
+            MessageDialog.openError(getShell(), Messages.ErrorTitle, message);
+            return false;
+        }
+        return true;
+    }
 
-	private void doFinish(String jndiName, MailInfo mailInfo, IProject selectedProject, IProgressMonitor monitor) throws CoreException {
-		checkDir(selectedProject);
-		
-		monitor.beginTask("Creating " + ResourceUtils.RESOURCE_FILE_NAME, 2); 
+    /**
+     * The worker method. It will find the container, create the file and open the editor on the newly
+     * created file. If the file already exists, show an error
+     */
 
-		final IFile file = folder.getFile(new Path(ResourceUtils.RESOURCE_FILE_NAME));
-		
-		try {
-			String fragment = createFragment(jndiName, mailInfo);
-			InputStream stream = ResourceUtils.appendResource(file, fragment);
-			if (!folder.exists()) {
-				folder.create(true, true, monitor);
-			}
-			if (file.exists()) {
-				file.setContents(stream, true, true, monitor);
-			} else {
-				file.create(stream, true, monitor);
-			}
-			stream.close();
-		} catch (IOException e) {
-		}
-		monitor.worked(1);
-		monitor.setTaskName("Opening file for editing...");
-		getShell().getDisplay().asyncExec(new Runnable() {
-			@Override
+    private void doFinish(String jndiName, MailInfo mailInfo, IProject selectedProject, IProgressMonitor monitor) throws CoreException {
+        checkDir(selectedProject);
+
+        monitor.beginTask("Creating " + ResourceUtils.RESOURCE_FILE_NAME, 2);
+
+        final IFile file = folder.getFile(new Path(ResourceUtils.RESOURCE_FILE_NAME));
+
+        try {
+            String fragment = createFragment(jndiName, mailInfo);
+            InputStream stream = ResourceUtils.appendResource(file, fragment);
+            if (!folder.exists()) {
+                folder.create(true, true, monitor);
+            }
+            if (file.exists()) {
+                file.setContents(stream, true, true, monitor);
+            } else {
+                file.create(stream, true, monitor);
+            }
+            stream.close();
+        } catch (IOException e) {
+        }
+        monitor.worked(1);
+        monitor.setTaskName("Opening file for editing...");
+        getShell().getDisplay().asyncExec(new Runnable() {
+            @Override
             public void run() {
-				IWorkbenchPage page =
-					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-				try {
-					IDE.openEditor(page, file, true);
-				} catch (PartInitException e) {
-				}
-			}
-		});
-		monitor.worked(1);
-	}
+                IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+                try {
+                    IDE.openEditor(page, file, true);
+                } catch (PartInitException e) {
+                }
+            }
+        });
+        monitor.worked(1);
+    }
 
-	/**
-	 * Initialize the file contents to contents of the given resource.
-	 */
-	public static String createFragment(String jndiName, MailInfo mailInfo)
-		throws CoreException {
+    /**
+     * Initialize the file contents to contents of the given resource.
+     */
+    public static String createFragment(String jndiName, MailInfo mailInfo)
+            throws CoreException {
 
-		/* We want to be truly OS-agnostic */
-		final String newline = System.getProperty("line.separator"); //$NON-NLS-1$
+        /* We want to be truly OS-agnostic */
+        final String newline = System.getProperty("line.separator"); //$NON-NLS-1$
 
-		String line;
-		StringBuilder sb = new StringBuilder();
-		final String mailHost = mailInfo.getMailHost();
-		final String mailUser = mailInfo.getMailUser();
-		final String mailFrom = mailInfo.getMailFrom();
-		
-		boolean matchStart = false;
-		boolean matchEnd = false;
-		
-		try {
-			InputStream input = MailInfo.class.getResourceAsStream(ResourceUtils.RESOURCE_FILE_TEMPLATE);
-			BufferedReader reader = new BufferedReader( new InputStreamReader( input, StandardCharsets.UTF_8 ) );
-			try {
-				while ((line = reader.readLine()) != null) {
-					if( line.indexOf("<mail-resource") != -1) { //$NON-NLS-1$
-						matchStart = true;
-					}
-					if ( (matchStart) && (! matchEnd) ) {
-						line = line.replaceAll("\\$\\{jndiName\\}", jndiName); //$NON-NLS-1$
-						line = line.replaceAll("\\$\\{mailHost\\}", mailHost); //$NON-NLS-1$
-						line = line.replaceAll("\\$\\{mailUser\\}", mailUser); //$NON-NLS-1$
-						line = line.replaceAll("\\$\\{mailFrom\\}", mailFrom); //$NON-NLS-1$
+        String line;
+        StringBuilder sb = new StringBuilder();
+        final String mailHost = mailInfo.getMailHost();
+        final String mailUser = mailInfo.getMailUser();
+        final String mailFrom = mailInfo.getMailFrom();
 
-						if (line != null) {
-							sb.append(line);
-							sb.append(newline);
-						}
-						if(line.indexOf("</mail-resource>") != -1) { //$NON-NLS-1$
-							matchEnd = true;
-						}
-					}
-				}
-				
-			} finally {
-				reader.close();
-			}
-		} catch (IOException ioe) {
-			IStatus status = new Status(IStatus.ERROR, "MailWizard", IStatus.OK, //$NON-NLS-1$
-					ioe.getLocalizedMessage(), null);
-			throw new CoreException(status);
-		}
+        boolean matchStart = false;
+        boolean matchEnd = false;
 
-		return sb.toString();
+        try {
+            InputStream input = MailInfo.class.getResourceAsStream(ResourceUtils.RESOURCE_FILE_TEMPLATE);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
+            try {
+                while ((line = reader.readLine()) != null) {
+                    if (line.indexOf("<mail-resource") != -1) { //$NON-NLS-1$
+                        matchStart = true;
+                    }
+                    if ((matchStart) && (!matchEnd)) {
+                        line = line.replaceAll("\\$\\{jndiName\\}", jndiName); //$NON-NLS-1$
+                        line = line.replaceAll("\\$\\{mailHost\\}", mailHost); //$NON-NLS-1$
+                        line = line.replaceAll("\\$\\{mailUser\\}", mailUser); //$NON-NLS-1$
+                        line = line.replaceAll("\\$\\{mailFrom\\}", mailFrom); //$NON-NLS-1$
 
-	}
+                        if (line != null) {
+                            sb.append(line);
+                            sb.append(newline);
+                        }
+                        if (line.indexOf("</mail-resource>") != -1) { //$NON-NLS-1$
+                            matchEnd = true;
+                        }
+                    }
+                }
+
+            } finally {
+                reader.close();
+            }
+        } catch (IOException ioe) {
+            IStatus status = new Status(IStatus.ERROR, "MailWizard", IStatus.OK, //$NON-NLS-1$
+                    ioe.getLocalizedMessage(), null);
+            throw new CoreException(status);
+        }
+
+        return sb.toString();
+
+    }
 
 }

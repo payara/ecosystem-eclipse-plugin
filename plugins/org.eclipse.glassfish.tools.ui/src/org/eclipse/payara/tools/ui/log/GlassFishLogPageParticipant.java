@@ -17,29 +17,29 @@ import org.eclipse.ui.part.IPageBookViewPage;
 
 public class GlassFishLogPageParticipant implements IConsolePageParticipant {
 
-	@Override
+    @Override
     public void init(IPageBookViewPage page, IConsole console) {
-		if (page.getControl() instanceof StyledText) {
-			StyledText viewer = (StyledText) (page.getControl());
-			viewer.addLineStyleListener(new LogStyle(((TextConsole) console).getDocument()));
-		}
-	}
+        if (page.getControl() instanceof StyledText) {
+            StyledText viewer = (StyledText) (page.getControl());
+            viewer.addLineStyleListener(new LogStyle(((TextConsole) console).getDocument()));
+        }
+    }
 
-	@Override
+    @Override
     public void activated() {
-	}
+    }
 
-	@Override
+    @Override
     public void deactivated() {
-	}
+    }
 
-	@Override
+    @Override
     public void dispose() {
-	}
+    }
 
-	@Override
+    @Override
     public <T> T getAdapter(Class<T> adapter) {
-		return null;
-	}
+        return null;
+    }
 
 }

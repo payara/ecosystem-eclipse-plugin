@@ -13,62 +13,63 @@ import org.eclipse.datatools.connectivity.IConnectionProfile;
 import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCDriverDefinitionConstants;
 
 public class JDBCInfo {
-	private IConnectionProfile connectionProfile;
-	private UrlData urlDataParser;
+    private IConnectionProfile connectionProfile;
+    private UrlData urlDataParser;
 
-	/**
-	 * Constructor for JDBCInfo.
-	 * 
-	 * @param profile
-	 */
-	public JDBCInfo(IConnectionProfile profile) {
-		connectionProfile = profile;
-		urlDataParser = new UrlData(getURL());
-	}
+    /**
+     * Constructor for JDBCInfo.
+     * 
+     * @param profile
+     */
+    public JDBCInfo(IConnectionProfile profile) {
+        connectionProfile = profile;
+        urlDataParser = new UrlData(getURL());
+    }
 
-	private String getProperty(String propName) {
-		if (connectionProfile != null) {
-			return connectionProfile.getBaseProperties().getProperty(propName);
-		}
-		return null;
-	}	
-	public String getUserName() {
-		return getProperty(IJDBCDriverDefinitionConstants.USERNAME_PROP_ID);
-	}
+    private String getProperty(String propName) {
+        if (connectionProfile != null) {
+            return connectionProfile.getBaseProperties().getProperty(propName);
+        }
+        return null;
+    }
 
-	public String getUserPassword() {
-		return getProperty(IJDBCDriverDefinitionConstants.PASSWORD_PROP_ID);
-	}
+    public String getUserName() {
+        return getProperty(IJDBCDriverDefinitionConstants.USERNAME_PROP_ID);
+    }
 
-	public String getURL() {
-		return getProperty(IJDBCDriverDefinitionConstants.URL_PROP_ID);
-	}
+    public String getUserPassword() {
+        return getProperty(IJDBCDriverDefinitionConstants.PASSWORD_PROP_ID);
+    }
 
-	public String getDriverClass() {
-		return getProperty(IJDBCDriverDefinitionConstants.DRIVER_CLASS_PROP_ID);
-	}
+    public String getURL() {
+        return getProperty(IJDBCDriverDefinitionConstants.URL_PROP_ID);
+    }
 
-	public String getDatasourceClass() {
-		return DriverMaps.getDSClassName(getURL());
-	}
+    public String getDriverClass() {
+        return getProperty(IJDBCDriverDefinitionConstants.DRIVER_CLASS_PROP_ID);
+    }
 
-	public String getDatabaseVendor() {
-		return getProperty(IJDBCDriverDefinitionConstants.DATABASE_VENDOR_PROP_ID);
-	}
+    public String getDatasourceClass() {
+        return DriverMaps.getDSClassName(getURL());
+    }
 
-	public String getPort() {
-		return urlDataParser.getPort();
-	}
+    public String getDatabaseVendor() {
+        return getProperty(IJDBCDriverDefinitionConstants.DATABASE_VENDOR_PROP_ID);
+    }
 
-	public String getServerName() {
-		return urlDataParser.getHostName();
-	}
+    public String getPort() {
+        return urlDataParser.getPort();
+    }
 
-	public String getDatabaseName() {
-		return getProperty(IJDBCDriverDefinitionConstants.DATABASE_NAME_PROP_ID);
-	}
-	
-	public String getAlternateDatabaseName() {
-		return urlDataParser.getAlternateDBName();
-	}
+    public String getServerName() {
+        return urlDataParser.getHostName();
+    }
+
+    public String getDatabaseName() {
+        return getProperty(IJDBCDriverDefinitionConstants.DATABASE_NAME_PROP_ID);
+    }
+
+    public String getAlternateDatabaseName() {
+        return urlDataParser.getAlternateDBName();
+    }
 }

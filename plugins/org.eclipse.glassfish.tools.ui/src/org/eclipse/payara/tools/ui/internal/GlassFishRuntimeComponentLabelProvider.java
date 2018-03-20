@@ -14,28 +14,27 @@ import org.eclipse.wst.common.project.facet.core.runtime.IRuntimeComponent;
 import org.eclipse.wst.common.project.facet.ui.IRuntimeComponentLabelProvider;
 
 /**
- * @author <a href="mailto:konstantin.komissarchik@oracle.com">Konstantin
- *         Komissarchik</a>
+ * @author <a href="mailto:konstantin.komissarchik@oracle.com">Konstantin Komissarchik</a>
  */
 
 public final class GlassFishRuntimeComponentLabelProvider implements IRuntimeComponentLabelProvider {
-	private final IRuntimeComponent rc;
+    private final IRuntimeComponent rc;
 
-	public GlassFishRuntimeComponentLabelProvider(IRuntimeComponent rc) {
-		this.rc = rc;
-	}
+    public GlassFishRuntimeComponentLabelProvider(IRuntimeComponent rc) {
+        this.rc = rc;
+    }
 
-	@Override
+    @Override
     public String getLabel() {
-		return Resources.bind(Resources.label, rc.getRuntimeComponentVersion().getVersionString());
-	}
+        return Resources.bind(Resources.label, rc.getRuntimeComponentVersion().getVersionString());
+    }
 
-	private static final class Resources extends NLS {
-		public static String label;
+    private static final class Resources extends NLS {
+        public static String label;
 
-		static {
-			initializeMessages(GlassFishRuntimeComponentLabelProvider.class.getName(), Resources.class);
-		}
-	}
+        static {
+            initializeMessages(GlassFishRuntimeComponentLabelProvider.class.getName(), Resources.class);
+        }
+    }
 
 }

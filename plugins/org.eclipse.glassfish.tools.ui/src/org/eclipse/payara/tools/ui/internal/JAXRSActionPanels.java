@@ -16,15 +16,17 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 /**
- * See <code>plug-in.xml</code> <code>org.eclipse.jst.common.project.facet.ui.libraryProviderActionPanels</code>
+ * See <code>plug-in.xml</code>
+ * <code>org.eclipse.jst.common.project.facet.ui.libraryProviderActionPanels</code>
+ * 
  * @author arjan
  *
  */
 public class JAXRSActionPanels extends LibraryProviderOperationPanel {
-	
-	@Override
-	public Control createControl(Composite c) {
-		return new Composite(c, NONE);
-	}
+
+    @Override
+    public Control createControl(Composite c) {
+        return new Composite(c, NONE);
+    }
 
 }

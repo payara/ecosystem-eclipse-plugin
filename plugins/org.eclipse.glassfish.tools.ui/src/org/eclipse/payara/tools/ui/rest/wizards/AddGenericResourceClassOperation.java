@@ -26,84 +26,85 @@ import org.eclipse.wst.common.frameworks.internal.enablement.nonui.WFTWrappedExc
 @SuppressWarnings("restriction")
 public class AddGenericResourceClassOperation extends NewWebClassOperation {
 
-	/**
-	 * folder location of the Generic Resource creation templates directory
-	 */
-	protected static final String TEMPLATE_FILE = "/templates/genericresource.javajet"; //$NON-NLS-1$
+    /**
+     * folder location of the Generic Resource creation templates directory
+     */
+    protected static final String TEMPLATE_FILE = "/templates/genericresource.javajet"; //$NON-NLS-1$
 
-	public AddGenericResourceClassOperation(IDataModel dataModel) {
-		super(dataModel);
-	}
+    public AddGenericResourceClassOperation(IDataModel dataModel) {
+        super(dataModel);
+    }
 
-	@Override
+    @Override
     protected void generateUsingTemplates(IProgressMonitor monitor,
-			IPackageFragment fragment) throws WFTWrappedException,
-			CoreException {
-		// Create the template model
-		AddGenericResourceTemplateModel tempModel = new AddGenericResourceTemplateModel(model);
-		// Using the WTPJetEmitter, generate the java source
-		// template model
-		try {
-			if (fragment != null) {
-				// Create the Generic Resource java file
-				doGeneration(monitor, fragment, GenericResourceTemplate.create(null), tempModel);
-				// also generate the second class if necessary
-				if (!tempModel.isSimplePattern()) {
-					tempModel.setIsContainerClass();
-					doGeneration(monitor, fragment, ContainerResourceTemplate.create(null), tempModel);
-				}
-			}
-		} catch (Exception e) {
-			throw new WFTWrappedException(e);
-		}
-	}
-
-	private void doGeneration(IProgressMonitor monitor, IPackageFragment fragment, 
-			Object tempImpl, AddGenericResourceTemplateModel tempModel) throws JavaModelException, JETException {
-		try {
-			Method method = tempImpl.getClass().getMethod("generate", //$NON-NLS-1$
-					new Class[] { Object.class });
-			String source = (String) method.invoke(tempImpl, tempModel);
-			String javaFileName = tempModel.getClassName() + ".java"; //$NON-NLS-1$
-			createJavaFile(monitor, fragment, source, javaFileName);
-		} catch (SecurityException e) {
-			throw new JETException(e);
-		} catch (NoSuchMethodException e) {
-			throw new JETException(e);
-		} catch (IllegalArgumentException e) {
-			throw new JETException(e);
-		} catch (IllegalAccessException e) {
-			throw new JETException(e);
-		} catch (InvocationTargetException e) {
-			throw new JETException(e);
-		}
-	}
-
-	protected IFile createJavaFile(IProgressMonitor monitor, IPackageFragment fragment, String source, String className) throws JavaModelException {
-		if (fragment != null) {
-			ICompilationUnit cu = fragment.getCompilationUnit(className);
-			// Add the compilation unit to the java file
-			if (cu == null || !cu.exists()) {
-                cu = fragment.createCompilationUnit(className, source,
-						true, monitor);
+            IPackageFragment fragment) throws WFTWrappedException,
+            CoreException {
+        // Create the template model
+        AddGenericResourceTemplateModel tempModel = new AddGenericResourceTemplateModel(model);
+        // Using the WTPJetEmitter, generate the java source
+        // template model
+        try {
+            if (fragment != null) {
+                // Create the Generic Resource java file
+                doGeneration(monitor, fragment, GenericResourceTemplate.create(null), tempModel);
+                // also generate the second class if necessary
+                if (!tempModel.isSimplePattern()) {
+                    tempModel.setIsContainerClass();
+                    doGeneration(monitor, fragment, ContainerResourceTemplate.create(null), tempModel);
+                }
             }
-			return (IFile) cu.getResource();
-		}
-		return null;
-	}
+        } catch (Exception e) {
+            throw new WFTWrappedException(e);
+        }
+    }
 
-	@Override
-	protected AddGenericResourceTemplateModel createTemplateModel() {
-		return new AddGenericResourceTemplateModel(model);
-	}
+    private void doGeneration(IProgressMonitor monitor, IPackageFragment fragment,
+            Object tempImpl, AddGenericResourceTemplateModel tempModel) throws JavaModelException, JETException {
+        try {
+            Method method = tempImpl.getClass().getMethod("generate", //$NON-NLS-1$
+                    new Class[] { Object.class });
+            String source = (String) method.invoke(tempImpl, tempModel);
+            String javaFileName = tempModel.getClassName() + ".java"; //$NON-NLS-1$
+            createJavaFile(monitor, fragment, source, javaFileName);
+        } catch (SecurityException e) {
+            throw new JETException(e);
+        } catch (NoSuchMethodException e) {
+            throw new JETException(e);
+        } catch (IllegalArgumentException e) {
+            throw new JETException(e);
+        } catch (IllegalAccessException e) {
+            throw new JETException(e);
+        } catch (InvocationTargetException e) {
+            throw new JETException(e);
+        }
+    }
 
-	@Override
-	protected String getTemplateFile() {
-		return TEMPLATE_FILE;
-	}
+    protected IFile createJavaFile(IProgressMonitor monitor, IPackageFragment fragment, String source, String className)
+            throws JavaModelException {
+        if (fragment != null) {
+            ICompilationUnit cu = fragment.getCompilationUnit(className);
+            // Add the compilation unit to the java file
+            if (cu == null || !cu.exists()) {
+                cu = fragment.createCompilationUnit(className, source,
+                        true, monitor);
+            }
+            return (IFile) cu.getResource();
+        }
+        return null;
+    }
 
-	@Override
-	protected Object getTemplateImplementation() {
-		return GenericResourceTemplate.create(null);
-	}
+    @Override
+    protected AddGenericResourceTemplateModel createTemplateModel() {
+        return new AddGenericResourceTemplateModel(model);
+    }
+
+    @Override
+    protected String getTemplateFile() {
+        return TEMPLATE_FILE;
+    }
+
+    @Override
+    protected Object getTemplateImplementation() {
+        return GenericResourceTemplate.create(null);
+    }
 }

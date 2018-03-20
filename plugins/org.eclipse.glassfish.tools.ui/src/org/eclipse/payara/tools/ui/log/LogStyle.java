@@ -27,73 +27,73 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 
 public class LogStyle implements LineStyleListener, IPropertyChangeListener {
-	Display display = Display.getCurrent();
+    Display display = Display.getCurrent();
 
-	IPreferenceStore store = GlassfishToolsPlugin.getInstance().getPreferenceStore();
-	boolean colorInConsole = store.getBoolean(ENABLE_COLORS_CONSOLE);
+    IPreferenceStore store = GlassfishToolsPlugin.getInstance().getPreferenceStore();
+    boolean colorInConsole = store.getBoolean(ENABLE_COLORS_CONSOLE);
 
-	// private IDocument document;
+    // private IDocument document;
 
-	public LogStyle(IDocument document) {
-		store.addPropertyChangeListener(this);
-	}
+    public LogStyle(IDocument document) {
+        store.addPropertyChangeListener(this);
+    }
 
-	@Override
+    @Override
     public void lineGetStyle(LineStyleEvent event) {
-		StyleRange styleRange = null;
-		String buf = event.lineText;
-		int start;
+        StyleRange styleRange = null;
+        String buf = event.lineText;
+        int start;
 
-		if (colorInConsole) {
-			if ((start = buf.indexOf(Level.WARNING.getName())) != -1) {
-				styleRange = new StyleRange();
-				styleRange.start = event.lineOffset + start;
-				styleRange.length = 6;
-				styleRange.foreground = display.getSystemColor(SWT.COLOR_DARK_YELLOW);
-			} else if ((start = buf.indexOf(Level.SEVERE.getName())) != -1) {
-				// Makr severe error and exception stack trace as error color
-				styleRange = new StyleRange();
-				String errorColorName = org.eclipse.jface.preference.JFacePreferences.ERROR_COLOR;
-				styleRange.foreground = PlatformUI.getWorkbench().getThemeManager().getCurrentTheme().getColorRegistry()
-						.get(errorColorName);
-				styleRange.start = event.lineOffset + start;
-				styleRange.length = 5;
-				styleRange.fontStyle = SWT.BOLD;
-			} else if ((start = buf.indexOf("FATAL")) != -1) {
-				styleRange = new StyleRange();
-				String errorColorName = org.eclipse.jface.preference.JFacePreferences.ERROR_COLOR;
-				styleRange.foreground = PlatformUI.getWorkbench().getThemeManager().getCurrentTheme().getColorRegistry()
-						.get(errorColorName);
-				styleRange.start = event.lineOffset + start;
-				styleRange.length = 4;
-				styleRange.fontStyle = SWT.BOLD;
-			}
+        if (colorInConsole) {
+            if ((start = buf.indexOf(Level.WARNING.getName())) != -1) {
+                styleRange = new StyleRange();
+                styleRange.start = event.lineOffset + start;
+                styleRange.length = 6;
+                styleRange.foreground = display.getSystemColor(SWT.COLOR_DARK_YELLOW);
+            } else if ((start = buf.indexOf(Level.SEVERE.getName())) != -1) {
+                // Makr severe error and exception stack trace as error color
+                styleRange = new StyleRange();
+                String errorColorName = org.eclipse.jface.preference.JFacePreferences.ERROR_COLOR;
+                styleRange.foreground = PlatformUI.getWorkbench().getThemeManager().getCurrentTheme().getColorRegistry()
+                        .get(errorColorName);
+                styleRange.start = event.lineOffset + start;
+                styleRange.length = 5;
+                styleRange.fontStyle = SWT.BOLD;
+            } else if ((start = buf.indexOf("FATAL")) != -1) {
+                styleRange = new StyleRange();
+                String errorColorName = org.eclipse.jface.preference.JFacePreferences.ERROR_COLOR;
+                styleRange.foreground = PlatformUI.getWorkbench().getThemeManager().getCurrentTheme().getColorRegistry()
+                        .get(errorColorName);
+                styleRange.start = event.lineOffset + start;
+                styleRange.length = 4;
+                styleRange.fontStyle = SWT.BOLD;
+            }
 
-			if (styleRange != null) {
-				StyleRange[] styles;
-				if (event.styles != null) {
-					styles = Arrays.copyOf(event.styles, event.styles.length + 1);
-				} else {
-					styles = new StyleRange[1];
-				}
-				styles[styles.length - 1] = styleRange;
+            if (styleRange != null) {
+                StyleRange[] styles;
+                if (event.styles != null) {
+                    styles = Arrays.copyOf(event.styles, event.styles.length + 1);
+                } else {
+                    styles = new StyleRange[1];
+                }
+                styles[styles.length - 1] = styleRange;
 
-				// Set the styles for the line
-				event.styles = styles;
-			}
-		}
-	}
+                // Set the styles for the line
+                event.styles = styles;
+            }
+        }
+    }
 
-	@Override
+    @Override
     public void propertyChange(PropertyChangeEvent event) {
-		if (event.getProperty().equals(ENABLE_COLORS_CONSOLE)) {
-			colorInConsole = store.getBoolean(ENABLE_COLORS_CONSOLE);
-		}
-	}
-	
-	@Override
-	protected void finalize() throws Throwable {
-		store.removePropertyChangeListener(this);
-		super.finalize();
-	}
+        if (event.getProperty().equals(ENABLE_COLORS_CONSOLE)) {
+            colorInConsole = store.getBoolean(ENABLE_COLORS_CONSOLE);
+        }
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        store.removePropertyChangeListener(this);
+        super.finalize();
+    }
 }

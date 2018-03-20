@@ -30,107 +30,111 @@ import org.eclipse.wst.server.ui.wizard.WizardFragment;
 
 public abstract class BaseWizardFragment extends WizardFragment {
 
-	private IWizardHandle wizard;
-	private Composite composite;
-	private SapphireForm form;
+    private IWizardHandle wizard;
+    private Composite composite;
+    private SapphireForm form;
 
-	public BaseWizardFragment() {
-		setComplete(false);
-	}
+    public BaseWizardFragment() {
+        setComplete(false);
+    }
 
-	@Override
+    @Override
     public final boolean hasComposite() {
-		return true;
-	}
+        return true;
+    }
 
-	protected abstract String getTitle();
-	protected abstract String getDescription();
-	protected abstract Element getModel();
-	protected abstract String getUserInterfaceDef();
-	protected abstract String getInitialFocus();
+    protected abstract String getTitle();
 
-	@Override
-	public Composite createComposite(final Composite parent, final IWizardHandle handle) {
-		this.wizard = handle;
+    protected abstract String getDescription();
 
-		this.wizard.setTitle(getTitle());
-		this.wizard.setDescription(getDescription());
-		this.wizard.setImageDescriptor(getImageDescriptor());
+    protected abstract Element getModel();
 
-		this.composite = new Composite(parent, SWT.NONE);
-		this.composite.setLayout(glayout(1, 0, 0));
+    protected abstract String getUserInterfaceDef();
 
-		render();
+    protected abstract String getInitialFocus();
 
-		return this.composite;
-	}
+    @Override
+    public Composite createComposite(final Composite parent, final IWizardHandle handle) {
+        this.wizard = handle;
 
-	@Override
-	public void enter() {
-		super.enter();
+        this.wizard.setTitle(getTitle());
+        this.wizard.setDescription(getDescription());
+        this.wizard.setImageDescriptor(getImageDescriptor());
 
-		// We need to render new UI every time the page is entered since switching host
-		// between
-		// localhost and remote on the server type selection screen after initially
-		// entering
-		// this page will associated a new server working copy with this page. That is,
-		// we cannot
-		// depend on the working copy being constant between repeated invocations of
-		// this method
-		// as users navigates backwards in the wizard and re-enters this page.
+        this.composite = new Composite(parent, SWT.NONE);
+        this.composite.setLayout(glayout(1, 0, 0));
 
-		render();
-	}
+        render();
 
-	protected Composite render() {
-		if (this.form != null) {
-			this.form.dispose();
-		}
+        return this.composite;
+    }
 
-		this.form = new SapphireForm(this.composite, getModel(),
-				DefinitionLoader.context(BaseWizardFragment.class)
-						.sdef("org.eclipse.payara.tools.ui.GlassfishUI").form(getUserInterfaceDef()));
+    @Override
+    public void enter() {
+        super.enter();
 
-		this.form.part().attach(new FilteredListener<PartValidationEvent>() {
-			@Override
-			protected void handleTypedEvent(final PartValidationEvent event) {
-				Display.getDefault().asyncExec(new Runnable() {
-					@Override
-					public void run() {
-						refreshStatus();
-					}
-				});
-			}
-		});
+        // We need to render new UI every time the page is entered since switching host
+        // between
+        // localhost and remote on the server type selection screen after initially
+        // entering
+        // this page will associated a new server working copy with this page. That is,
+        // we cannot
+        // depend on the working copy being constant between repeated invocations of
+        // this method
+        // as users navigates backwards in the wizard and re-enters this page.
 
-		this.form.setLayoutData(gdfill());
-		this.form.part().setFocus(getInitialFocus());
-		this.composite.layout(true, true);
+        render();
+    }
 
-		refreshStatus();
+    protected Composite render() {
+        if (this.form != null) {
+            this.form.dispose();
+        }
 
-		return this.form;
-	}
+        this.form = new SapphireForm(this.composite, getModel(),
+                DefinitionLoader.context(BaseWizardFragment.class)
+                        .sdef("org.eclipse.payara.tools.ui.GlassfishUI").form(getUserInterfaceDef()));
 
-	private void refreshStatus() {
-		final Status status = this.form.part().validation();
+        this.form.part().attach(new FilteredListener<PartValidationEvent>() {
+            @Override
+            protected void handleTypedEvent(final PartValidationEvent event) {
+                Display.getDefault().asyncExec(new Runnable() {
+                    @Override
+                    public void run() {
+                        refreshStatus();
+                    }
+                });
+            }
+        });
 
-		if (status.severity() == Severity.ERROR) {
-			this.wizard.setMessage(status.message(), IMessageProvider.ERROR);
-			setComplete(false);
-		} else if (status.severity() == Severity.WARNING) {
-			this.wizard.setMessage(status.message(), IMessageProvider.WARNING);
-			setComplete(true);
-		} else {
-			this.wizard.setMessage(null, IMessageProvider.NONE);
-			setComplete(true);
-		}
+        this.form.setLayoutData(gdfill());
+        this.form.part().setFocus(getInitialFocus());
+        this.composite.layout(true, true);
 
-		this.wizard.update();
-	}
+        refreshStatus();
 
-	protected ImageDescriptor getImageDescriptor() {
-		return GlassfishToolsUIPlugin.getInstance().getImageRegistry().getDescriptor(GlassfishToolsUIPlugin.GF_WIZARD);
-	}
+        return this.form;
+    }
+
+    private void refreshStatus() {
+        final Status status = this.form.part().validation();
+
+        if (status.severity() == Severity.ERROR) {
+            this.wizard.setMessage(status.message(), IMessageProvider.ERROR);
+            setComplete(false);
+        } else if (status.severity() == Severity.WARNING) {
+            this.wizard.setMessage(status.message(), IMessageProvider.WARNING);
+            setComplete(true);
+        } else {
+            this.wizard.setMessage(null, IMessageProvider.NONE);
+            setComplete(true);
+        }
+
+        this.wizard.update();
+    }
+
+    protected ImageDescriptor getImageDescriptor() {
+        return GlassfishToolsUIPlugin.getInstance().getImageRegistry().getDescriptor(GlassfishToolsUIPlugin.GF_WIZARD);
+    }
 
 }

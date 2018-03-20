@@ -12,8 +12,8 @@ package org.eclipse.payara.tools.ui.serverview.dynamicnodes;
 import java.util.HashMap;
 
 public class NodeTypes {
-    
-	// Contract provider constants (identify the different containers in V3)
+
+    // Contract provider constants (identify the different containers in V3)
     public static final String EAR_CONTAINER = "ear"; // NOI18N
     public static final String WEB_CONTAINER = "web"; // NOI18N
     public static final String EJB_CONTAINER = "ejb"; // NOI18N
@@ -33,7 +33,7 @@ public class NodeTypes {
 
     public static final String JAVAMAIL = "JAVAMAIL"; // NOI18N
     public static final String JAVAMAIL_RESOURCE = "javamail-resource"; // NOI18N
-    
+
     private static HashMap<String, String[]> nodeTree;
 
     public static final String APPLICATIONS = "APPLICATIONS";
@@ -41,20 +41,20 @@ public class NodeTypes {
     public static final String WEBAPPS = "WEBAPPS";
     public static final String EJBS = "EJBS";
     public static final String APPCLIENTS = "APPCLIENTS";
-    
+
     public static final String RESOURCES = "RESOURCES";
-            
+
     private static final String[] APPLICATIONS_TREE = {
-        EARS, WEBAPPS, EJBS, APPCLIENTS };
+            EARS, WEBAPPS, EJBS, APPCLIENTS };
     private static final String[] RESOURCES_TREE = {
-        JDBC, CONNECTORS, JAVAMAIL };
+            JDBC, CONNECTORS, JAVAMAIL };
     private static final String[] JDBC_TREE = {
-        JDBC_RESOURCE, JDBC_CONNECTION_POOL };
+            JDBC_RESOURCE, JDBC_CONNECTION_POOL };
     private static final String[] CONNECTORS_TREE = {
-        CONN_RESOURCE, CONN_CONNECTION_POOL, ADMINOBJECT_RESOURCE };
+            CONN_RESOURCE, CONN_CONNECTION_POOL, ADMINOBJECT_RESOURCE };
     private static final String[] JAVAMAIL_TREE = {
-        JAVAMAIL_RESOURCE };
-    
+            JAVAMAIL_RESOURCE };
+
     static {
         nodeTree = new HashMap<>();
         nodeTree.put(APPLICATIONS, APPLICATIONS_TREE);
@@ -64,18 +64,18 @@ public class NodeTypes {
         nodeTree.put(JAVAMAIL, JAVAMAIL_TREE);
     }
 
-    private NodeTypes() { }
-    
+    private NodeTypes() {
+    }
+
     /**
-     * Returns an array of tree children as strings given a particular
-     * parent name.
+     * Returns an array of tree children as strings given a particular parent name.
      *
      * @param type The node from which children types are derived.
      *
      * @return All the children types for the node name passed.
      */
-    static String[] getChildTypes(String type){
+    static String[] getChildTypes(String type) {
         return nodeTree.get(type);
     }
-        
+
 }

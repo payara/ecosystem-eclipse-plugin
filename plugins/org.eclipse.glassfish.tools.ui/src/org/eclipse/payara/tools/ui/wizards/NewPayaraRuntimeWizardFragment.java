@@ -25,85 +25,86 @@ import org.eclipse.wst.server.core.TaskModel;
 import org.eclipse.wst.server.core.internal.RuntimeWorkingCopy;
 
 /**
- * This wizard fragment plugs-in the wizard flow when <code>Servers -> New Server -> Payara -> Payara</code>
- * is selected and subsequently the <code>next</code> button is pressed when no runtime exists yet,  or the 
- * <code>add</code> button next to <code>Server runtime environment</code> is pressed.
- * 
+ * This wizard fragment plugs-in the wizard flow when
+ * <code>Servers -> New Server -> Payara -> Payara</code> is selected and subsequently the
+ * <code>next</code> button is pressed when no runtime exists yet, or the <code>add</code> button
+ * next to <code>Server runtime environment</code> is pressed.
+ *
  * <p>
- * This fragment essentially causes the screen with <code>Name</code>, <code>Payara location</code>, <code>Java Location</code>
- * etc to be rendered, although a lot of the actual work is delegated by the {@link BaseWizardFragment} to Sapphire. 
- * The UI layout for this wizard fragment is specified in the file <code>GlassfishUI.sdef</code> in the "glassfish.runtime"
- * section.
+ * This fragment essentially causes the screen with <code>Name</code>, <code>Payara location</code>,
+ * <code>Java Location</code> etc to be rendered, although a lot of the actual work is delegated by
+ * the {@link BaseWizardFragment} to Sapphire. The UI layout for this wizard fragment is specified
+ * in the file <code>GlassfishUI.sdef</code> in the "glassfish.runtime" section.
  *
  */
 @SuppressWarnings("restriction")
 public class NewPayaraRuntimeWizardFragment extends BaseWizardFragment {
 
-	@Override
-	protected String getTitle() {
-		return 
-			((IRuntimeWorkingCopy) getTaskModel().getObject(TASK_RUNTIME))
-												 .getRuntimeType()
-												 .getName();
-	}
+    @Override
+    protected String getTitle() {
+        return ((IRuntimeWorkingCopy) getTaskModel().getObject(TASK_RUNTIME))
+                .getRuntimeType()
+                .getName();
+    }
 
-	@Override
-	protected String getDescription() {
-		return wzdRuntimeDescription;
-	}
-	
-	/**
-	 * The section in <code>GlassfishUI.sdef</code> that contains the UI layout for this wizard fragment.
-	 */
-	@Override
-	protected String getUserInterfaceDef() {
-		return "glassfish.runtime";
-	}
+    @Override
+    protected String getDescription() {
+        return wzdRuntimeDescription;
+    }
 
-	@Override
-	protected Element getModel() {
-		IRuntimeWorkingCopy runtime = (IRuntimeWorkingCopy) getTaskModel().getObject(TASK_RUNTIME);
-		final GlassFishRuntime runtimeDelegate = (GlassFishRuntime) runtime.loadAdapter(GlassFishRuntime.class, null);
-		IGlassfishRuntimeModel model = runtimeDelegate.getModel();
+    /**
+     * The section in <code>GlassfishUI.sdef</code> that contains the UI layout for this wizard
+     * fragment.
+     */
+    @Override
+    protected String getUserInterfaceDef() {
+        return "glassfish.runtime";
+    }
 
-		return model;
-	}
+    @Override
+    protected Element getModel() {
+        IRuntimeWorkingCopy runtime = (IRuntimeWorkingCopy) getTaskModel().getObject(TASK_RUNTIME);
+        final GlassFishRuntime runtimeDelegate = (GlassFishRuntime) runtime.loadAdapter(GlassFishRuntime.class, null);
+        IGlassfishRuntimeModel model = runtimeDelegate.getModel();
 
-	@Override
-	public void setTaskModel(final TaskModel taskModel) {
-		super.setTaskModel(taskModel);
-		
-		IRuntimeWorkingCopy runtime = (IRuntimeWorkingCopy) getTaskModel().getObject(TASK_RUNTIME);
-		if (runtime.getOriginal() == null) {
-			try {
-				runtime.setName(createUniqueRuntimeName(runtime.getRuntimeType().getName()));
-			} catch (UniqueNameNotFound e) {
-				// Set the type name and let the user handle validation error
-				runtime.setName(runtime.getRuntimeType().getName());
-			}
-		}
-	}
+        return model;
+    }
 
-	@Override
-	public void performFinish(IProgressMonitor monitor) throws CoreException {
-		super.performFinish(monitor);
-		
-		IRuntimeWorkingCopy runtime = (IRuntimeWorkingCopy) getTaskModel().getObject(TASK_RUNTIME);
-		runtime.save(true, monitor);
-		((RuntimeWorkingCopy) runtime).dispose();
-	}
+    @Override
+    public void setTaskModel(final TaskModel taskModel) {
+        super.setTaskModel(taskModel);
 
-	@Override
-	public void performCancel(final IProgressMonitor monitor) throws CoreException {
-		super.performCancel(monitor);
-		
-		IRuntimeWorkingCopy runtime = (IRuntimeWorkingCopy) getTaskModel().getObject(TASK_RUNTIME);
-		((RuntimeWorkingCopy) runtime).dispose();
-	}
+        IRuntimeWorkingCopy runtime = (IRuntimeWorkingCopy) getTaskModel().getObject(TASK_RUNTIME);
+        if (runtime.getOriginal() == null) {
+            try {
+                runtime.setName(createUniqueRuntimeName(runtime.getRuntimeType().getName()));
+            } catch (UniqueNameNotFound e) {
+                // Set the type name and let the user handle validation error
+                runtime.setName(runtime.getRuntimeType().getName());
+            }
+        }
+    }
 
-	@Override
-	protected String getInitialFocus() {
-		return PROP_NAME.name();
-	}
+    @Override
+    public void performFinish(IProgressMonitor monitor) throws CoreException {
+        super.performFinish(monitor);
+
+        IRuntimeWorkingCopy runtime = (IRuntimeWorkingCopy) getTaskModel().getObject(TASK_RUNTIME);
+        runtime.save(true, monitor);
+        ((RuntimeWorkingCopy) runtime).dispose();
+    }
+
+    @Override
+    public void performCancel(final IProgressMonitor monitor) throws CoreException {
+        super.performCancel(monitor);
+
+        IRuntimeWorkingCopy runtime = (IRuntimeWorkingCopy) getTaskModel().getObject(TASK_RUNTIME);
+        ((RuntimeWorkingCopy) runtime).dispose();
+    }
+
+    @Override
+    protected String getInitialFocus() {
+        return PROP_NAME.name();
+    }
 
 }

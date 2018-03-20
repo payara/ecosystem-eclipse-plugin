@@ -9,16 +9,15 @@
 
 package org.eclipse.payara.tools.ui.wizards;
 
-
 public class GlassfishWizardResources extends org.eclipse.osgi.util.NLS {
-    
-	static {
+
+    static {
         initializeMessages(
-            "org.eclipse.payara.tools.ui.wizards.GlassfishWizardResources", 
-            GlassfishWizardResources.class);
+                "org.eclipse.payara.tools.ui.wizards.GlassfishWizardResources",
+                GlassfishWizardResources.class);
     }
-	
-	public static String wzdRuntimeDescription;
-	public static String wzdServerDescription;
-	
+
+    public static String wzdRuntimeDescription;
+    public static String wzdServerDescription;
+
 }

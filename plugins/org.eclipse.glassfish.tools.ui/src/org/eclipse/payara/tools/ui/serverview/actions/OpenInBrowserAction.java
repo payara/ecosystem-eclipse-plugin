@@ -33,52 +33,52 @@ import org.eclipse.ui.browser.IWebBrowser;
 import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 
 public class OpenInBrowserAction extends Action {
-	
-	ISelection selection;
 
-	public OpenInBrowserAction(ISelection selection) {
-		setText("Open in Browser");
-		
-		ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
-		setImageDescriptor(sharedImages.getImageDescriptor(IMG_TOOL_FORWARD));
-		setDisabledImageDescriptor(sharedImages.getImageDescriptor(IMG_TOOL_FORWARD_DISABLED));
-		setActionDefinitionId(FILE_PRINT);
+    ISelection selection;
 
-		this.selection = selection;
-	}
+    public OpenInBrowserAction(ISelection selection) {
+        setText("Open in Browser");
 
-	@Override
+        ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
+        setImageDescriptor(sharedImages.getImageDescriptor(IMG_TOOL_FORWARD));
+        setDisabledImageDescriptor(sharedImages.getImageDescriptor(IMG_TOOL_FORWARD_DISABLED));
+        setActionDefinitionId(FILE_PRINT);
+
+        this.selection = selection;
+    }
+
+    @Override
     public void runWithEvent(Event event) {
-		if (selection instanceof TreeSelection) {
-			TreeSelection ts = (TreeSelection) selection;
-			Object obj = ts.getFirstElement();
-			if (obj instanceof TreeNode) {
-				TreeNode module = (TreeNode) obj;
-				DeployedApplicationsNode target = (DeployedApplicationsNode) module.getParent();
+        if (selection instanceof TreeSelection) {
+            TreeSelection ts = (TreeSelection) selection;
+            Object obj = ts.getFirstElement();
+            if (obj instanceof TreeNode) {
+                TreeNode module = (TreeNode) obj;
+                DeployedApplicationsNode target = (DeployedApplicationsNode) module.getParent();
 
-				try {
-					GlassFishServerBehaviour be = target.getServer().getServerBehaviourAdapter();
+                try {
+                    GlassFishServerBehaviour be = target.getServer().getServerBehaviourAdapter();
 
-					IWorkbenchBrowserSupport browserSupport = PlatformUI.getWorkbench().getBrowserSupport();
-					IWebBrowser browser = browserSupport.createBrowser(LOCATION_BAR | NAVIGATION_BAR, null, null, null);
-					GlassFishServer server = be.getGlassfishServerDelegate();
-					String host = server.getServer().getHost();
-					int port = server.getPort();
+                    IWorkbenchBrowserSupport browserSupport = PlatformUI.getWorkbench().getBrowserSupport();
+                    IWebBrowser browser = browserSupport.createBrowser(LOCATION_BAR | NAVIGATION_BAR, null, null, null);
+                    GlassFishServer server = be.getGlassfishServerDelegate();
+                    String host = server.getServer().getHost();
+                    int port = server.getPort();
 
-					URI uri = new URI(getHttpListenerProtocol(host, port), null, host, port, 	"/" + module.getName(), null, null); // NOI18N
-					browser.openURL(uri.toURL());
+                    URI uri = new URI(getHttpListenerProtocol(host, port), null, host, port, "/" + module.getName(), null, null); // NOI18N
+                    browser.openURL(uri.toURL());
 
-				} catch (Exception e) {
-					GlassfishToolsPlugin.logMessage("Error opening browser: " + e.getMessage());
-				}
-			}
-			super.run();
-		}
-	}
+                } catch (Exception e) {
+                    GlassfishToolsPlugin.logMessage("Error opening browser: " + e.getMessage());
+                }
+            }
+            super.run();
+        }
+    }
 
-	@Override
-	public void run() {
-		this.runWithEvent(null);
-	}
+    @Override
+    public void run() {
+        this.runWithEvent(null);
+    }
 
 }

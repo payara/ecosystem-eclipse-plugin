@@ -41,99 +41,95 @@ import org.eclipse.wst.server.core.IRuntime;
 @SuppressWarnings("restriction")
 public abstract class ResourceWizard extends Wizard implements INewWizard {
 
-	protected IStructuredSelection selection;
-	protected String dirName;
-	protected IFolder folder;
-	
-	/**
-	 * Constructor 
-	 */
-	public ResourceWizard() {
-		super();
-		setNeedsProgressMonitor(true);
-	}
+    protected IStructuredSelection selection;
+    protected String dirName;
+    protected IFolder folder;
 
-	protected void checkDir(IProject selectedProject) throws CoreException {
-		dirName = ResourceUtils.getResourceLocation(selectedProject);
-		if(dirName == null) {
-			IStatus status = new Status(IStatus.ERROR, getClass().getName(), IStatus.OK, 
-					NLS.bind(Messages.errorFolderNull, dirName), null);
-			throw new CoreException(status);
-		}
-		IContainer containerResource = selectedProject;
-		folder = containerResource.getFolder(new Path(dirName));
-		if (!folder.exists()) {
-			IStatus status = new Status(IStatus.ERROR, getClass().getName(), IStatus.OK, 
-					NLS.bind(Messages.errorFolderMissing, dirName), null);
-			throw new CoreException(status);
-		}
-	}
+    /**
+     * Constructor
+     */
+    public ResourceWizard() {
+        super();
+        setNeedsProgressMonitor(true);
+    }
 
-	
-	protected static String replaceOrRemove(String originalLine, String pattern, String value) {
-		String containsPattern = ".*" + pattern + ".*"; //$NON-NLS-1$ //$NON-NLS-2$
-		if ((originalLine != null) && Pattern.matches(containsPattern, originalLine)) {
-			return (((value == null) || (value.length() == 0)) ? null : 
-				originalLine.replaceAll(pattern, value));
-		}
-		return originalLine;
-	}
+    protected void checkDir(IProject selectedProject) throws CoreException {
+        dirName = ResourceUtils.getResourceLocation(selectedProject);
+        if (dirName == null) {
+            IStatus status = new Status(IStatus.ERROR, getClass().getName(), IStatus.OK,
+                    NLS.bind(Messages.errorFolderNull, dirName), null);
+            throw new CoreException(status);
+        }
+        IContainer containerResource = selectedProject;
+        folder = containerResource.getFolder(new Path(dirName));
+        if (!folder.exists()) {
+            IStatus status = new Status(IStatus.ERROR, getClass().getName(), IStatus.OK,
+                    NLS.bind(Messages.errorFolderMissing, dirName), null);
+            throw new CoreException(status);
+        }
+    }
 
-	protected IContainer getContainerResource() {
-		if (selection != null && selection.isEmpty() == false) {
-			IStructuredSelection ssel =  selection;
-			if (ssel.size() > 1) {
+    protected static String replaceOrRemove(String originalLine, String pattern, String value) {
+        String containsPattern = ".*" + pattern + ".*"; //$NON-NLS-1$ //$NON-NLS-2$
+        if ((originalLine != null) && Pattern.matches(containsPattern, originalLine)) {
+            return (((value == null) || (value.length() == 0)) ? null : originalLine.replaceAll(pattern, value));
+        }
+        return originalLine;
+    }
+
+    protected IContainer getContainerResource() {
+        if (selection != null && selection.isEmpty() == false) {
+            IStructuredSelection ssel = selection;
+            if (ssel.size() > 1) {
                 return null;
             }
-			Object obj = ssel.getFirstElement();
-			if (obj instanceof IResource) {
-				IContainer containerResource;
-				if (obj instanceof IContainer) {
+            Object obj = ssel.getFirstElement();
+            if (obj instanceof IResource) {
+                IContainer containerResource;
+                if (obj instanceof IContainer) {
                     containerResource = (IContainer) obj;
                 } else {
                     containerResource = ((IResource) obj).getParent();
                 }
-				
-				return ((containerResource != null) ? containerResource.getProject() : null);
-			}
-		}
-		return null;
-	}
 
-	protected List<IProject> getGlassFishAndSailfinProjects() {
-		IProject[] allProjects = ProjectUtilities.getAllProjects();
-		List<IProject> returnProjects = new ArrayList<>();
+                return ((containerResource != null) ? containerResource.getProject() : null);
+            }
+        }
+        return null;
+    }
 
-		for (IProject project2 : allProjects) {
-			try {
-				if (FacetedProjectFramework.hasProjectFacet(project2, "sun.facet")) { //$NON-NLS-1$
-					returnProjects.add(project2);
-				} else {
-					IRuntime runtime = J2EEProjectUtilities.getServerRuntime(project2);
-					if (runtime != null) {
-						String runtimeId = runtime.getRuntimeType().getId();
-						
-						if( runtimeId.equals( GlassFishRuntime.TYPE_ID ) )
-						{
-						    returnProjects.add(project2);
-						}
+    protected List<IProject> getGlassFishAndSailfinProjects() {
+        IProject[] allProjects = ProjectUtilities.getAllProjects();
+        List<IProject> returnProjects = new ArrayList<>();
+
+        for (IProject project2 : allProjects) {
+            try {
+                if (FacetedProjectFramework.hasProjectFacet(project2, "sun.facet")) { //$NON-NLS-1$
+                    returnProjects.add(project2);
+                } else {
+                    IRuntime runtime = J2EEProjectUtilities.getServerRuntime(project2);
+                    if (runtime != null) {
+                        String runtimeId = runtime.getRuntimeType().getId();
+
+                        if (runtimeId.equals(GlassFishRuntime.TYPE_ID)) {
+                            returnProjects.add(project2);
+                        }
                     }
-				}
-			} catch (CoreException e) {
-				// just skip from list
-			}
-		}
-		return returnProjects;
-	}
+                }
+            } catch (CoreException e) {
+                // just skip from list
+            }
+        }
+        return returnProjects;
+    }
 
-
-	/**
-	 * We will accept the selection in the workbench to see if
-	 * we can initialize from it.
-	 * @see IWorkbenchWizard#init(IWorkbench, IStructuredSelection)
-	 */
-	@Override
+    /**
+     * We will accept the selection in the workbench to see if we can initialize from it.
+     * 
+     * @see IWorkbenchWizard#init(IWorkbench, IStructuredSelection)
+     */
+    @Override
     public void init(IWorkbench workbench, IStructuredSelection selection) {
-		this.selection = selection;
-	}
+        this.selection = selection;
+    }
 }

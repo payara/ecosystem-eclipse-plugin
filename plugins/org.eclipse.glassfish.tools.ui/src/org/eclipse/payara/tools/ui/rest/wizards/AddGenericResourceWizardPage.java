@@ -45,280 +45,282 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 @SuppressWarnings("restriction")
 public class AddGenericResourceWizardPage extends NewWebClassWizardPage {
 
-	private Combo patternTypeCombo;
-	private Text pathText;
-	private Combo mimeTypeCombo;
-	private Text repText;
-	private Text containerRepText;
-	private Button containerRepButton;
-	private Text containerPathText;
+    private Combo patternTypeCombo;
+    private Text pathText;
+    private Combo mimeTypeCombo;
+    private Text repText;
+    private Text containerRepText;
+    private Button containerRepButton;
+    private Text containerPathText;
 
-	private static final Map<String, String> patternStringToObject;
-	
-	static {
-		patternStringToObject= new HashMap<>();
-		patternStringToObject.put(Messages.patternTypeSimpleValue, AddGenericResourceTemplateModel.SIMPLE_PATTERN);
-		patternStringToObject.put(Messages.patternTypeContainerValue, AddGenericResourceTemplateModel.CONTAINER_PATTERN);
-		patternStringToObject.put(Messages.patternTypeClientContainerValue, AddGenericResourceTemplateModel.CLIENT_CONTAINER_PATTERN);
-	}
+    private static final Map<String, String> patternStringToObject;
 
-	public AddGenericResourceWizardPage(IDataModel model, String pageName,
-			String pageDesc, String pageTitle, String moduleType) {
-		super(model, pageName, pageDesc, pageTitle, moduleType);
-	}
+    static {
+        patternStringToObject = new HashMap<>();
+        patternStringToObject.put(Messages.patternTypeSimpleValue, AddGenericResourceTemplateModel.SIMPLE_PATTERN);
+        patternStringToObject.put(Messages.patternTypeContainerValue, AddGenericResourceTemplateModel.CONTAINER_PATTERN);
+        patternStringToObject.put(Messages.patternTypeClientContainerValue, AddGenericResourceTemplateModel.CLIENT_CONTAINER_PATTERN);
+    }
 
-	@Override
+    public AddGenericResourceWizardPage(IDataModel model, String pageName,
+            String pageDesc, String pageTitle, String moduleType) {
+        super(model, pageName, pageDesc, pageTitle, moduleType);
+    }
+
+    @Override
     protected Composite createTopLevelComposite(Composite parent) {
-		Composite composite = super.createTopLevelComposite(parent);
-		Label typeLabel = new Label(composite, SWT.NONE);
-		GridData data = new GridData();
+        Composite composite = super.createTopLevelComposite(parent);
+        Label typeLabel = new Label(composite, SWT.NONE);
+        GridData data = new GridData();
 
-		typeLabel.setText(Messages.patternTypeLabel);
-		typeLabel.setLayoutData(data);
-		patternTypeCombo = new Combo(composite, SWT.BORDER | SWT.READ_ONLY);
-		data = new GridData(GridData.FILL_HORIZONTAL);
-		data.horizontalSpan = 1;
-		patternTypeCombo.setLayoutData(data);
-		patternTypeCombo.addSelectionListener(new SelectionListener() {
+        typeLabel.setText(Messages.patternTypeLabel);
+        typeLabel.setLayoutData(data);
+        patternTypeCombo = new Combo(composite, SWT.BORDER | SWT.READ_ONLY);
+        data = new GridData(GridData.FILL_HORIZONTAL);
+        data.horizontalSpan = 1;
+        patternTypeCombo.setLayoutData(data);
+        patternTypeCombo.addSelectionListener(new SelectionListener() {
 
-			@Override
+            @Override
             public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
+                // TODO Auto-generated method stub
 
-			@Override
+            }
+
+            @Override
             public void widgetSelected(SelectionEvent e) {
-				Combo combo = (Combo) e.getSource();
-				String patternName = combo.getItem(combo.getSelectionIndex());
-				String patternObject = patternStringToObject.get(patternName);
+                Combo combo = (Combo) e.getSource();
+                String patternName = combo.getItem(combo.getSelectionIndex());
+                String patternObject = patternStringToObject.get(patternName);
 
-				model.setProperty(AddGenericResourceDataModelProvider.PATTERN, 
-						patternObject);
-				model.setProperty(AddGenericResourceDataModelProvider.PATH, 
-						model.getDefaultProperty(AddGenericResourceDataModelProvider.PATH));
-				model.notifyPropertyChange(AddGenericResourceDataModelProvider.PATTERN, DataModelEvent.ENABLE_CHG);
-				updateEnablementFromPattern();
-				validatePage();
-			}
-		
-		});
-		new Label(composite, SWT.NONE);	// placeholder so layout is correct
-		
-		typeLabel = new Label(composite, SWT.NONE);
-		typeLabel.setText(Messages.pathLabel);
-		data = new GridData();
-		typeLabel.setLayoutData(data);
-		pathText = new Text(composite, SWT.SINGLE | SWT.BORDER);
-		pathText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		synchHelper.synchText(pathText, AddGenericResourceDataModelProvider.PATH, null);
-		new Label(composite, SWT.NONE);	// placeholder so layout is correct
+                model.setProperty(AddGenericResourceDataModelProvider.PATTERN,
+                        patternObject);
+                model.setProperty(AddGenericResourceDataModelProvider.PATH,
+                        model.getDefaultProperty(AddGenericResourceDataModelProvider.PATH));
+                model.notifyPropertyChange(AddGenericResourceDataModelProvider.PATTERN, DataModelEvent.ENABLE_CHG);
+                updateEnablementFromPattern();
+                validatePage();
+            }
 
-		typeLabel = new Label(composite, SWT.NONE);
-		typeLabel.setText(Messages.mimeTypeLabel);
-		data = new GridData();
-		typeLabel.setLayoutData(data);
-		mimeTypeCombo = new Combo(composite, SWT.BORDER | SWT.READ_ONLY);
-		data = new GridData(GridData.FILL_HORIZONTAL);
-		data.widthHint = 300;
-		data.horizontalSpan = 1;
-		mimeTypeCombo.setLayoutData(data);
-		synchHelper.synchCombo(mimeTypeCombo,
-				AddGenericResourceDataModelProvider.MIME_TYPE, null);
-		populateCombos();
-		new Label(composite, SWT.NONE);	// placeholder so layout is correct
+        });
+        new Label(composite, SWT.NONE); // placeholder so layout is correct
 
-		addRepresentationClassGroup(composite);
-		addContainerRepresentationClassGroup(composite);
-		
-		typeLabel = new Label(composite, SWT.NONE);
-		typeLabel.setText(Messages.containerPathLabel);
-		data = new GridData();
-		typeLabel.setLayoutData(data);
-		containerPathText = new Text(composite, SWT.SINGLE | SWT.BORDER);
-		containerPathText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		synchHelper.synchText(containerPathText, AddGenericResourceDataModelProvider.CONTAINER_PATH, null);
-		classText.addModifyListener(new ModifyListener() {
-			@Override
+        typeLabel = new Label(composite, SWT.NONE);
+        typeLabel.setText(Messages.pathLabel);
+        data = new GridData();
+        typeLabel.setLayoutData(data);
+        pathText = new Text(composite, SWT.SINGLE | SWT.BORDER);
+        pathText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        synchHelper.synchText(pathText, AddGenericResourceDataModelProvider.PATH, null);
+        new Label(composite, SWT.NONE); // placeholder so layout is correct
+
+        typeLabel = new Label(composite, SWT.NONE);
+        typeLabel.setText(Messages.mimeTypeLabel);
+        data = new GridData();
+        typeLabel.setLayoutData(data);
+        mimeTypeCombo = new Combo(composite, SWT.BORDER | SWT.READ_ONLY);
+        data = new GridData(GridData.FILL_HORIZONTAL);
+        data.widthHint = 300;
+        data.horizontalSpan = 1;
+        mimeTypeCombo.setLayoutData(data);
+        synchHelper.synchCombo(mimeTypeCombo,
+                AddGenericResourceDataModelProvider.MIME_TYPE, null);
+        populateCombos();
+        new Label(composite, SWT.NONE); // placeholder so layout is correct
+
+        addRepresentationClassGroup(composite);
+        addContainerRepresentationClassGroup(composite);
+
+        typeLabel = new Label(composite, SWT.NONE);
+        typeLabel.setText(Messages.containerPathLabel);
+        data = new GridData();
+        typeLabel.setLayoutData(data);
+        containerPathText = new Text(composite, SWT.SINGLE | SWT.BORDER);
+        containerPathText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        synchHelper.synchText(containerPathText, AddGenericResourceDataModelProvider.CONTAINER_PATH, null);
+        classText.addModifyListener(new ModifyListener() {
+            @Override
             public void modifyText(ModifyEvent e) {
-				model.setProperty(AddGenericResourceDataModelProvider.CONTAINER_PATH, 
-						model.getDefaultProperty(AddGenericResourceDataModelProvider.CONTAINER_PATH));
-			}
-		});
+                model.setProperty(AddGenericResourceDataModelProvider.CONTAINER_PATH,
+                        model.getDefaultProperty(AddGenericResourceDataModelProvider.CONTAINER_PATH));
+            }
+        });
 
-		// remove entire existing class section
-		hideControl(existingClassButton);
-		hideControl(existingClassLabel);
-		hideControl(existingClassText);
-		hideControl(existingButton);
+        // remove entire existing class section
+        hideControl(existingClassButton);
+        hideControl(existingClassLabel);
+        hideControl(existingClassText);
+        hideControl(existingButton);
 
-		updateEnablementFromPattern();
+        updateEnablementFromPattern();
 
-		return composite;
-	}
+        return composite;
+    }
 
-	/**
-	 * Add representation class group to the composite
-	 */
-	private void addRepresentationClassGroup(Composite composite) {
-		repText = addRepresentationClassLabelAndTextGroup(composite, Messages.representationClassLabel, 
-				AddGenericResourceDataModelProvider.REPRESENTATION_CLASS);
-		addRepresentationClassButton(composite, Messages.representationClassDialogTitle, 
-				Messages.representationClassDialogLabel, repText);
-	}
+    /**
+     * Add representation class group to the composite
+     */
+    private void addRepresentationClassGroup(Composite composite) {
+        repText = addRepresentationClassLabelAndTextGroup(composite, Messages.representationClassLabel,
+                AddGenericResourceDataModelProvider.REPRESENTATION_CLASS);
+        addRepresentationClassButton(composite, Messages.representationClassDialogTitle,
+                Messages.representationClassDialogLabel, repText);
+    }
 
-	/**
-	 * Add container representation class group to the composite
-	 */
-	private void addContainerRepresentationClassGroup(Composite composite) {
-		containerRepText = addRepresentationClassLabelAndTextGroup(composite, Messages.containerRepresentationClassLabel, 
-				AddGenericResourceDataModelProvider.CONTAINER_REPRESENTATION_CLASS);
-		containerRepButton = addRepresentationClassButton(composite, Messages.containerRepresentationClassDialogTitle, 
-				Messages.containerRepresentationClassDialogLabel, containerRepText);
-	}
+    /**
+     * Add container representation class group to the composite
+     */
+    private void addContainerRepresentationClassGroup(Composite composite) {
+        containerRepText = addRepresentationClassLabelAndTextGroup(composite, Messages.containerRepresentationClassLabel,
+                AddGenericResourceDataModelProvider.CONTAINER_REPRESENTATION_CLASS);
+        containerRepButton = addRepresentationClassButton(composite, Messages.containerRepresentationClassDialogTitle,
+                Messages.containerRepresentationClassDialogLabel, containerRepText);
+    }
 
-	/**
-	 * Utility method for adding representation class groups
-	 */
-	private Text addRepresentationClassLabelAndTextGroup(Composite composite, String repLabelString, String propertyName) {
-		Label repLabel = new Label(composite, SWT.LEFT);
-		repLabel.setText(repLabelString);
-		repLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
+    /**
+     * Utility method for adding representation class groups
+     */
+    private Text addRepresentationClassLabelAndTextGroup(Composite composite, String repLabelString, String propertyName) {
+        Label repLabel = new Label(composite, SWT.LEFT);
+        repLabel.setText(repLabelString);
+        repLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
 
-		Text repTextField = new Text(composite, SWT.SINGLE | SWT.BORDER);
-		repTextField.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		synchHelper.synchText(repTextField, propertyName, null);
+        Text repTextField = new Text(composite, SWT.SINGLE | SWT.BORDER);
+        repTextField.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        synchHelper.synchText(repTextField, propertyName, null);
 
-		return repTextField;
-	}
+        return repTextField;
+    }
 
-	/**
-	 * Utility method for adding representation class groups
-	 */
-	private Button addRepresentationClassButton(Composite composite, final String dialogTitle, final String dialogLabel, 
-			final Text repTextField) {
-		Button repButton = new Button(composite, SWT.PUSH);
-		repButton.setText(J2EEUIMessages.BROWSE_BUTTON_LABEL);
-		repButton.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
-		repButton.addSelectionListener(new SelectionListener() {
-			@Override
+    /**
+     * Utility method for adding representation class groups
+     */
+    private Button addRepresentationClassButton(Composite composite, final String dialogTitle, final String dialogLabel,
+            final Text repTextField) {
+        Button repButton = new Button(composite, SWT.PUSH);
+        repButton.setText(J2EEUIMessages.BROWSE_BUTTON_LABEL);
+        repButton.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
+        repButton.addSelectionListener(new SelectionListener() {
+            @Override
             public void widgetSelected(SelectionEvent e) {
-				handleRepButtonPressed(dialogTitle, dialogLabel, repTextField);
-			}
+                handleRepButtonPressed(dialogTitle, dialogLabel, repTextField);
+            }
 
-			@Override
+            @Override
             public void widgetDefaultSelected(SelectionEvent e) {
-				// Do nothing
-			}
-		});
-		return repButton;
-	}
+                // Do nothing
+            }
+        });
+        return repButton;
+    }
 
-	protected void handleRepButtonPressed(String dialogTitle, String dialogLabel, Text repTextField) {
-		getControl().setCursor(new Cursor(getShell().getDisplay(), SWT.CURSOR_WAIT));
-		IPackageFragmentRoot packRoot = (IPackageFragmentRoot) model.getProperty(INewJavaClassDataModelProperties.JAVA_PACKAGE_FRAGMENT_ROOT);
-		if (packRoot == null) {
+    protected void handleRepButtonPressed(String dialogTitle, String dialogLabel, Text repTextField) {
+        getControl().setCursor(new Cursor(getShell().getDisplay(), SWT.CURSOR_WAIT));
+        IPackageFragmentRoot packRoot = (IPackageFragmentRoot) model
+                .getProperty(INewJavaClassDataModelProperties.JAVA_PACKAGE_FRAGMENT_ROOT);
+        if (packRoot == null) {
             return;
         }
 
-		// this eliminates the non-exported classpath entries
-		final IJavaSearchScope scope = TypeSearchEngine.createJavaSearchScopeForAProject(packRoot.getJavaProject(), true, true);
+        // this eliminates the non-exported classpath entries
+        final IJavaSearchScope scope = TypeSearchEngine.createJavaSearchScopeForAProject(packRoot.getJavaProject(), true, true);
 
-		FilteredTypesSelectionDialog dialog = new FilteredTypesSelectionDialog(getShell(),false, getWizard().getContainer(), scope, IJavaSearchConstants.CLASS);
-		dialog.setTitle(dialogTitle);
-		dialog.setMessage(dialogLabel);
+        FilteredTypesSelectionDialog dialog = new FilteredTypesSelectionDialog(getShell(), false, getWizard().getContainer(), scope,
+                IJavaSearchConstants.CLASS);
+        dialog.setTitle(dialogTitle);
+        dialog.setMessage(dialogLabel);
 
-		if (dialog.open() == Window.OK) {
-			IType type = (IType) dialog.getFirstResult();
-			String repClassFullPath = J2EEUIMessages.EMPTY_STRING;
-			if (type != null) {
-				repClassFullPath = type.getFullyQualifiedName();
-			}
-			repTextField.setText(repClassFullPath);
-			getControl().setCursor(null);
-			return;
-		}
-		getControl().setCursor(null);
-	}
+        if (dialog.open() == Window.OK) {
+            IType type = (IType) dialog.getFirstResult();
+            String repClassFullPath = J2EEUIMessages.EMPTY_STRING;
+            if (type != null) {
+                repClassFullPath = type.getFullyQualifiedName();
+            }
+            repTextField.setText(repClassFullPath);
+            getControl().setCursor(null);
+            return;
+        }
+        getControl().setCursor(null);
+    }
 
-	private void updateEnablementFromPattern() {
-		boolean enableExtras = !model.getProperty(AddGenericResourceDataModelProvider.PATTERN).equals(
-				AddGenericResourceTemplateModel.SIMPLE_PATTERN);
+    private void updateEnablementFromPattern() {
+        boolean enableExtras = !model.getProperty(AddGenericResourceDataModelProvider.PATTERN).equals(
+                AddGenericResourceTemplateModel.SIMPLE_PATTERN);
 
-		containerPathText.setEnabled(enableExtras);
-		containerRepText.setEnabled(enableExtras);
-		containerRepButton.setEnabled(enableExtras);
-	}
+        containerPathText.setEnabled(enableExtras);
+        containerRepText.setEnabled(enableExtras);
+        containerRepButton.setEnabled(enableExtras);
+    }
 
-	private void populateCombos() {
-		mimeTypeCombo.add(AddGenericResourceTemplateModel.TYPE_APP_XML);
-		mimeTypeCombo.add(AddGenericResourceTemplateModel.TYPE_APP_JSON);
-		mimeTypeCombo.add(AddGenericResourceTemplateModel.TYPE_TEXT_PLAIN);
-		mimeTypeCombo.add(AddGenericResourceTemplateModel.TYPE_TEXT_HTML);
-		mimeTypeCombo.select(0);
+    private void populateCombos() {
+        mimeTypeCombo.add(AddGenericResourceTemplateModel.TYPE_APP_XML);
+        mimeTypeCombo.add(AddGenericResourceTemplateModel.TYPE_APP_JSON);
+        mimeTypeCombo.add(AddGenericResourceTemplateModel.TYPE_TEXT_PLAIN);
+        mimeTypeCombo.add(AddGenericResourceTemplateModel.TYPE_TEXT_HTML);
+        mimeTypeCombo.select(0);
 
-		patternTypeCombo.add(Messages.patternTypeSimpleValue);
-		patternTypeCombo.add(Messages.patternTypeContainerValue);
-		patternTypeCombo.add(Messages.patternTypeClientContainerValue);
-		patternTypeCombo.select(0);
-	}
+        patternTypeCombo.add(Messages.patternTypeSimpleValue);
+        patternTypeCombo.add(Messages.patternTypeContainerValue);
+        patternTypeCombo.add(Messages.patternTypeClientContainerValue);
+        patternTypeCombo.select(0);
+    }
 
-	@Override
-	protected String[] getValidationPropertyNames() {
-		String[] base = super.getValidationPropertyNames();
-		String[] result = new String[base.length + 5];
-		System.arraycopy(base, 0, result, 0, base.length);
-		result[base.length] = AddGenericResourceDataModelProvider.PATH;
-		result[base.length + 1] = AddGenericResourceDataModelProvider.MIME_TYPE;
-		result[base.length + 2] = AddGenericResourceDataModelProvider.REPRESENTATION_CLASS;
-		result[base.length + 3] = AddGenericResourceDataModelProvider.CONTAINER_REPRESENTATION_CLASS;
-		result[base.length + 4] = AddGenericResourceDataModelProvider.CONTAINER_PATH;
+    @Override
+    protected String[] getValidationPropertyNames() {
+        String[] base = super.getValidationPropertyNames();
+        String[] result = new String[base.length + 5];
+        System.arraycopy(base, 0, result, 0, base.length);
+        result[base.length] = AddGenericResourceDataModelProvider.PATH;
+        result[base.length + 1] = AddGenericResourceDataModelProvider.MIME_TYPE;
+        result[base.length + 2] = AddGenericResourceDataModelProvider.REPRESENTATION_CLASS;
+        result[base.length + 3] = AddGenericResourceDataModelProvider.CONTAINER_REPRESENTATION_CLASS;
+        result[base.length + 4] = AddGenericResourceDataModelProvider.CONTAINER_PATH;
 
-		return result;
-	}
+        return result;
+    }
 
-	@Override
-	protected boolean isProjectValid(IProject project) {
-		if (super.isProjectValid(project)) {
-			return WizardUtil.hasGF3Runtime(project);
-		}
-		return false;
-	}
-	
-	@Override
-	protected IProject getExtendedSelectedProject(Object selection) {
-		if (selection instanceof WebAppProvider) {
-			return ((WebAppProvider) selection).getProject();
-		}
-		
-		return super.getExtendedSelectedProject(selection);
-	}
+    @Override
+    protected boolean isProjectValid(IProject project) {
+        if (super.isProjectValid(project)) {
+            return WizardUtil.hasGF3Runtime(project);
+        }
+        return false;
+    }
 
-	@Override
-	protected String getUseExistingCheckboxText() {
-		// this is for the existing class browse button, which we have hidden
-		return "Unused"; //$NON-NLS-1$
-	}
+    @Override
+    protected IProject getExtendedSelectedProject(Object selection) {
+        if (selection instanceof WebAppProvider) {
+            return ((WebAppProvider) selection).getProject();
+        }
 
-	@Override
-	protected String getUseExistingProperty() {
-		// this is for the existing class browse button, which we have hidden
-		return INewWebClassDataModelProperties.USE_EXISTING_CLASS;
-	}
+        return super.getExtendedSelectedProject(selection);
+    }
 
-	@Override
-	protected void handleClassButtonSelected() {
-		// this is for the existing class browse button, which we have hidden
-	}
+    @Override
+    protected String getUseExistingCheckboxText() {
+        // this is for the existing class browse button, which we have hidden
+        return "Unused"; //$NON-NLS-1$
+    }
 
-	private void hideControl(Control control) {
-		if (control != null) {
-			control.setVisible(false);
-			GridData data = new GridData();
-		    data.exclude = true;
-		    data.horizontalSpan = 2;
-		    data.horizontalAlignment = SWT.FILL;
-		    control.setLayoutData(data);
-		}
-	}
+    @Override
+    protected String getUseExistingProperty() {
+        // this is for the existing class browse button, which we have hidden
+        return INewWebClassDataModelProperties.USE_EXISTING_CLASS;
+    }
+
+    @Override
+    protected void handleClassButtonSelected() {
+        // this is for the existing class browse button, which we have hidden
+    }
+
+    private void hideControl(Control control) {
+        if (control != null) {
+            control.setVisible(false);
+            GridData data = new GridData();
+            data.exclude = true;
+            data.horizontalSpan = 2;
+            data.horizontalAlignment = SWT.FILL;
+            control.setLayoutData(data);
+        }
+    }
 }
