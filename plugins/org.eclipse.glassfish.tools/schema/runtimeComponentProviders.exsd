@@ -6,7 +6,7 @@
          <meta.schema plugin="org.eclipse.payara.tools" id="runtimeComponentProviders" name="Runtime Component Providers Extension Point"/>
       </appInfo>
       <documentation>
-         Allows registration of runtime component providers that can be used to extends the composition of the GlassFish Server runtimes.
+         Allows registration of runtime component providers that can be used to extends the composition of the Payara Server runtimes.
       </documentation>
    </annotation>
 

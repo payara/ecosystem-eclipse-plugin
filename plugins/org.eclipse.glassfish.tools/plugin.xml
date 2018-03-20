@@ -114,7 +114,7 @@
 	    <with variable="targetedRuntimes">
 	      <count value="+"/>
 	      <iterate operator="and">
-            <test property="org.eclipse.payara.tools.containsRuntimeComponentType" value="glassfish:3.1" forcePluginActivation="true"/>
+            <test property="org.eclipse.payara.tools.internal.containsRuntimeComponentType" value="payara.runtime:3.1" forcePluginActivation="true"/>
 	      </iterate>
 	    </with>     
       </enablement>
@@ -133,7 +133,7 @@
 	    <with variable="targetedRuntimes">
 	      <count value="+"/>
 	      <iterate operator="and">
-            <test property="org.eclipse.payara.tools.containsRuntimeComponentType" value="glassfish:3.1" forcePluginActivation="true"/>
+            <test property="org.eclipse.payara.tools.internal.containsRuntimeComponentType" value="payara.runtime:3.1" forcePluginActivation="true"/>
 	      </iterate>
 	    </with>     
       </enablement>
@@ -152,7 +152,7 @@
 	    <with variable="targetedRuntimes">
 	      <count value="+"/>
 	      <iterate operator="and">
-            <test property="org.eclipse.payara.tools.containsRuntimeComponentType" value="glassfish:4,5" forcePluginActivation="true"/>
+            <test property="org.eclipse.payara.tools.internal.containsRuntimeComponentType" value="payara.runtime:4,5" forcePluginActivation="true"/>
 	      </iterate>
 	    </with>     
       </enablement>
@@ -171,7 +171,7 @@
 	    <with variable="targetedRuntimes">
 	      <count value="+"/>
 	      <iterate operator="and">
-            <test property="org.eclipse.payara.tools.containsRuntimeComponentType" value="glassfish:4,5" forcePluginActivation="true"/>
+            <test property="org.eclipse.payara.tools.internal.containsRuntimeComponentType" value="payara.runtime:4,5" forcePluginActivation="true"/>
 	      </iterate>
 	    </with>     
       </enablement>
@@ -659,7 +659,7 @@
 	    		<with variable="targetedRuntimes">
 	      			<count value="+"/>
 	      			<iterate operator="and">
-            			<test property="org.eclipse.payara.tools.containsRuntimeComponentType" value="glassfish:[3.1" forcePluginActivation="true"/>
+            			<test property="org.eclipse.payara.tools.internal.containsRuntimeComponentType" value="payara.runtime:[3.1" forcePluginActivation="true"/>
 	      			</iterate>
 	    		</with>     
             </enablement>
