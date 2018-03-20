@@ -1,4 +1,4 @@
-<%@ jet package="org.eclipse.glassfish.tools.v3.wizards" 
+<%@ jet package="org.eclipse.payara.tools.v3.wizards" 
 	imports="java.util.* org.eclipse.jst.j2ee.internal.common.operations.*" 
 	class="ContainerResourceTemplate" 
 	skeleton="generator.skeleton"

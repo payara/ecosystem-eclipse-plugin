@@ -1,4 +1,4 @@
-Eclipse GlassFish Tools
+Eclipse Payara Tools
 
 * Project home: https://projects.eclipse.org/projects/webtools.glassfish-tools
 

@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
-Bundle-SymbolicName: org.eclipse.glassfish.tools;singleton:=true
+Bundle-SymbolicName: org.eclipse.payara.tools;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Localization: plugin
-Bundle-Activator: org.eclipse.glassfish.tools.GlassfishToolsPlugin
+Bundle-Activator: org.eclipse.payara.tools.GlassfishToolsPlugin
 Bundle-Vendor: %providerName
 Require-Bundle: org.apache.xerces,
  org.apache.ant,
@@ -36,7 +36,8 @@ Require-Bundle: org.apache.xerces,
  org.eclipse.sapphire.platform,
  org.eclipse.jem.util;bundle-version="2.1.200"
 Bundle-ActivationPolicy: lazy
-Export-Package: org.eclipse.glassfish.tools;
+Import-Package: javax.xml.bind; version="0.0.0"
+Export-Package: org.eclipse.payara.tools;
   uses:="org.eclipse.debug.core,
    org.eclipse.core.runtime,
    org.eclipse.sapphire,
@@ -46,7 +47,7 @@ Export-Package: org.eclipse.glassfish.tools;
    org.eclipse.jst.server.generic.core.internal,
    org.eclipse.wst.server.core.util,
    org.eclipse.osgi.util,
-   org.eclipse.glassfish.tools.sdk.data,
+   org.eclipse.payara.tools.sdk.data,
    org.eclipse.jdt.launching,
    org.eclipse.jdt.core,
    org.eclipse.core.commands.operations,
@@ -54,8 +55,8 @@ Export-Package: org.eclipse.glassfish.tools;
    org.eclipse.wst.common.project.facet.core,
    org.osgi.framework,
    org.eclipse.wst.server.core",
- org.eclipse.glassfish.tools.exceptions,
- org.eclipse.glassfish.tools.handlers;
+ org.eclipse.payara.tools.exceptions,
+ org.eclipse.payara.tools.handlers;
   uses:="org.eclipse.jface.action,
    org.eclipse.jface.resource,
    org.eclipse.core.expressions,
@@ -65,28 +66,28 @@ Export-Package: org.eclipse.glassfish.tools;
    org.eclipse.core.commands,
    org.eclipse.wst.server.core,
    org.eclipse.swt.widgets",
- org.eclipse.glassfish.tools.preferences,
- org.eclipse.glassfish.tools.sapphire,
- org.eclipse.glassfish.tools.sdk,
- org.eclipse.glassfish.tools.sdk.admin,
- org.eclipse.glassfish.tools.sdk.admin.cloud,
- org.eclipse.glassfish.tools.sdk.admin.response,
- org.eclipse.glassfish.tools.sdk.data,
- org.eclipse.glassfish.tools.sdk.data.cloud,
- org.eclipse.glassfish.tools.sdk.logging,
- org.eclipse.glassfish.tools.sdk.server,
- org.eclipse.glassfish.tools.sdk.server.config,
- org.eclipse.glassfish.tools.sdk.server.parser,
- org.eclipse.glassfish.tools.sdk.utils,
- org.eclipse.glassfish.tools.server,
- org.eclipse.glassfish.tools.server.deploying,
- org.eclipse.glassfish.tools.serverview,
- org.eclipse.glassfish.tools.utils;
-  uses:="org.eclipse.glassfish.tools.sdk.server.parser,
-   org.eclipse.glassfish.tools.sdk.data,
+ org.eclipse.payara.tools.preferences,
+ org.eclipse.payara.tools.sapphire,
+ org.eclipse.payara.tools.sdk,
+ org.eclipse.payara.tools.sdk.admin,
+ org.eclipse.payara.tools.sdk.admin.cloud,
+ org.eclipse.payara.tools.sdk.admin.response,
+ org.eclipse.payara.tools.sdk.data,
+ org.eclipse.payara.tools.sdk.data.cloud,
+ org.eclipse.payara.tools.sdk.logging,
+ org.eclipse.payara.tools.sdk.server,
+ org.eclipse.payara.tools.sdk.server.config,
+ org.eclipse.payara.tools.sdk.server.parser,
+ org.eclipse.payara.tools.sdk.utils,
+ org.eclipse.payara.tools.server,
+ org.eclipse.payara.tools.server.deploying,
+ org.eclipse.payara.tools.serverview,
+ org.eclipse.payara.tools.utils;
+  uses:="org.eclipse.payara.tools.sdk.server.parser,
+   org.eclipse.payara.tools.sdk.data,
    org.eclipse.jface.resource,
    org.eclipse.core.resources,
-   org.eclipse.glassfish.tools"
+   org.eclipse.payara.tools"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ClassPath: .
 

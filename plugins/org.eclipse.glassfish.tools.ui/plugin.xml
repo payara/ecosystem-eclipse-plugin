@@ -10,11 +10,11 @@
      -->
     <extension point="org.eclipse.wst.server.ui.wizardFragments">
        <fragment
-             class="org.eclipse.glassfish.tools.ui.wizards.NewPayaraRuntimeWizardFragment"
+             class="org.eclipse.payara.tools.ui.wizards.NewPayaraRuntimeWizardFragment"
              typeIds="payara.runtime">
        </fragment>
        <fragment
-             class="org.eclipse.glassfish.tools.ui.wizards.NewPayaraServerWizardFragment"
+             class="org.eclipse.payara.tools.ui.wizards.NewPayaraServerWizardFragment"
              typeIds="payara.server">
        </fragment>
     </extension>
@@ -45,7 +45,7 @@
     <extension point="org.eclipse.wst.common.project.facet.core.runtimes">
         <adapter>
             <runtime-component id="payara.runtime"/>
-            <factory class="org.eclipse.glassfish.tools.ui.internal.GlassFishRuntimeComponentLabelProviderFactory"/>
+            <factory class="org.eclipse.payara.tools.ui.internal.GlassFishRuntimeComponentLabelProviderFactory"/>
             <type class="org.eclipse.wst.common.project.facet.ui.IRuntimeComponentLabelProvider"/>
         </adapter>
     </extension>
@@ -57,8 +57,8 @@
     -->
     <extension point="org.eclipse.ui.preferencePages">
        <page
-             id="org.eclipse.glassfish.tools.preferences.GlassFishPreferencePage"
-             class="org.eclipse.glassfish.tools.ui.preferences.GlassFishPreferencePage"
+             id="org.eclipse.payara.tools.preferences.GlassFishPreferencePage"
+             class="org.eclipse.payara.tools.ui.preferences.GlassFishPreferencePage"
              name="GlassFish Preferences">
        </page>
     </extension>
@@ -71,13 +71,13 @@
     <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
        <launchConfigurationTabGroup
              id="org.glassfish.jst.server.launchConfigurationTabGroup"
-             class="org.eclipse.glassfish.tools.ui.editorsections.LaunchConfigurationTabGroup"
+             class="org.eclipse.payara.tools.ui.editorsections.LaunchConfigurationTabGroup"
              type="org.glassfish.jst.server.GlassfishServerLaunchConfigurationType">
        </launchConfigurationTabGroup>
     </extension>
     <extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
        <launchConfigurationTypeImage 
-             id="org.eclipse.glassfish.tools.ui.launchConfigurationTypeImage"
+             id="org.eclipse.payara.tools.ui.launchConfigurationTypeImage"
              configTypeID="org.glassfish.jst.server.GlassfishServerLaunchConfigurationType"
              icon="icons/obj16/glassfishserver.gif">
        </launchConfigurationTypeImage>
@@ -90,7 +90,7 @@
     -->
     <extension point="org.eclipse.wst.server.ui.editorPageSections">
        <section
-             class="org.eclipse.glassfish.tools.ui.editorsections.ServerSection"
+             class="org.eclipse.payara.tools.ui.editorsections.ServerSection"
              typeIds="payara.server"
              insertionId="org.eclipse.wst.server.editor.overview.left"
              order="10">
@@ -105,35 +105,35 @@
     
     <extension point="org.eclipse.ui.commands">
         <category
-              id="org.eclipse.glassfish.tools.commands.category"
+              id="org.eclipse.payara.tools.commands.category"
               name="glassfish-commands">
         </category>
         
         <command
-              id="org.eclipse.glassfish.tools.commands.ViewLogCommand"
+              id="org.eclipse.payara.tools.commands.ViewLogCommand"
               name="%menu.viewlogfile"
               description="%menu.viewlogfile">
         </command>
         <command
-              id="org.eclipse.glassfish.tools.commands.ViewAdminConsoleCommand"
+              id="org.eclipse.payara.tools.commands.ViewAdminConsoleCommand"
               name="%menu.viewadminconsole"
               description="%menu.viewadminconsole">
         </command>
         <command
-              id="org.eclipse.glassfish.tools.commands.OpenUrlCommand"
+              id="org.eclipse.payara.tools.commands.OpenUrlCommand"
               name="OpenUrlCommand">
            <commandParameter
-                 id="org.eclipse.glassfish.tools.commands.urlParam"
+                 id="org.eclipse.payara.tools.commands.urlParam"
                  name="url"
                  optional="false">
            </commandParameter>
         </command>
         <command
-              id="org.eclipse.glassfish.tools.commands.OpenServerHomeCommand"
+              id="org.eclipse.payara.tools.commands.OpenServerHomeCommand"
               name="OpenServerHomeCommand">
         </command>
         <command
-              id="org.eclipse.glassfish.tools.commands.OpenDomainHomeCommand"
+              id="org.eclipse.payara.tools.commands.OpenDomainHomeCommand"
               name="OpenDomainHomeCommand">
         </command>
      </extension>
@@ -144,35 +144,35 @@
            allPopups="false"
            locationURI="popup:org.eclipse.wst.server.ui.ServersView?after=additions">
         <menu
-              id="org.eclipse.glassfish.tools.actions.subMenu"
+              id="org.eclipse.payara.tools.actions.subMenu"
               icon="icons/obj16/glassfishserver.gif"
               label="%menu.payaratopmenu">
            <separator name="group1"/>
            <visibleWhen checkEnabled="false">
-              <reference definitionId="org.eclipse.glassfish.tools.moreGlassfishSelected"/>
+              <reference definitionId="org.eclipse.payara.tools.moreGlassfishSelected"/>
            </visibleWhen>
            
            <command
-                 commandId="org.eclipse.glassfish.tools.commands.ViewAdminConsoleCommand"
+                 commandId="org.eclipse.payara.tools.commands.ViewAdminConsoleCommand"
                  icon="icons/obj16/glassfishserver.gif"
                  style="push">
            </command>
            <command
-                 commandId="org.eclipse.glassfish.tools.commands.ViewLogCommand"
+                 commandId="org.eclipse.payara.tools.commands.ViewLogCommand"
                  icon="icons/obj16/logfile.gif"
                  style="push">
            </command>
            <command
-                 commandId="org.eclipse.glassfish.tools.commands.OpenServerHomeCommand"
+                 commandId="org.eclipse.payara.tools.commands.OpenServerHomeCommand"
                  icon="icons/obj16/folder_open.gif"
                  label="%menu.openserverhome"
                  style="push">
               <visibleWhen checkEnabled="false">
-                 <reference definitionId="org.eclipse.glassfish.tools.oneGlassfishSelected"/>
+                 <reference definitionId="org.eclipse.payara.tools.oneGlassfishSelected"/>
               </visibleWhen>
            </command>
            <command
-                 commandId="org.eclipse.glassfish.tools.commands.OpenDomainHomeCommand"
+                 commandId="org.eclipse.payara.tools.commands.OpenDomainHomeCommand"
                  icon="icons/obj16/folder_open.gif"
                  label="%menu.opendomainhome"
                  style="push">
@@ -187,47 +187,47 @@
 	<extension point="org.eclipse.ui.handlers">
      
 		<handler
-		      class="org.eclipse.glassfish.tools.handlers.ViewLogHandler"
-	          commandId="org.eclipse.glassfish.tools.commands.ViewLogCommand">
+		      class="org.eclipse.payara.tools.handlers.ViewLogHandler"
+	          commandId="org.eclipse.payara.tools.commands.ViewLogCommand">
 	        <enabledWhen>
 				<or>
 					<not>
-						<reference definitionId="org.eclipse.glassfish.tools.isRemoteGlassfish"/>
+						<reference definitionId="org.eclipse.payara.tools.isRemoteGlassfish"/>
 					</not>
-					<reference definitionId="org.eclipse.glassfish.tools.oneRunningGlassfishSelected"/>
+					<reference definitionId="org.eclipse.payara.tools.oneRunningGlassfishSelected"/>
 				</or>
 			</enabledWhen>
 		</handler>
      
 		 <handler 
-		      class="org.eclipse.glassfish.tools.handlers.ViewAdminConsoleHandler"
-		      commandId="org.eclipse.glassfish.tools.commands.ViewAdminConsoleCommand">
+		      class="org.eclipse.payara.tools.handlers.ViewAdminConsoleHandler"
+		      commandId="org.eclipse.payara.tools.commands.ViewAdminConsoleCommand">
 			  <enabledWhen>
-		   		<reference definitionId="org.eclipse.glassfish.tools.oneRunningGlassfishSelected"/>
+		   		<reference definitionId="org.eclipse.payara.tools.oneRunningGlassfishSelected"/>
 			  </enabledWhen>
 		 </handler>
 		   
 		<handler
-           class="org.eclipse.glassfish.tools.handlers.ShowURLHandler"
-           commandId="org.eclipse.glassfish.tools.commands.OpenUrlCommand">
+           class="org.eclipse.payara.tools.handlers.ShowURLHandler"
+           commandId="org.eclipse.payara.tools.commands.OpenUrlCommand">
         </handler>
 		   
 		<handler
-		   class="org.eclipse.glassfish.tools.handlers.OpenServerHomeHandler"
-		   commandId="org.eclipse.glassfish.tools.commands.OpenServerHomeCommand">
+		   class="org.eclipse.payara.tools.handlers.OpenServerHomeHandler"
+		   commandId="org.eclipse.payara.tools.commands.OpenServerHomeCommand">
 			 <enabledWhen>
-			 	<reference definitionId="org.eclipse.glassfish.tools.oneGlassfishSelected"/>
+			 	<reference definitionId="org.eclipse.payara.tools.oneGlassfishSelected"/>
 			 </enabledWhen>  
 		 </handler>
 		 
-		 <handler class="org.eclipse.glassfish.tools.handlers.OpenDomainHomeHandler"
-		   commandId="org.eclipse.glassfish.tools.commands.OpenDomainHomeCommand">
+		 <handler class="org.eclipse.payara.tools.handlers.OpenDomainHomeHandler"
+		   commandId="org.eclipse.payara.tools.commands.OpenDomainHomeCommand">
 			<enabledWhen>
         			<and>
 	 				<not>    
-	           			<reference definitionId="org.eclipse.glassfish.tools.isRemoteGlassfish"/>
+	           			<reference definitionId="org.eclipse.payara.tools.isRemoteGlassfish"/>
            			</not>
-           			<reference definitionId="org.eclipse.glassfish.tools.oneGlassfishSelected"/>
+           			<reference definitionId="org.eclipse.payara.tools.oneGlassfishSelected"/>
            		</and>
         		</enabledWhen>
      	</handler>
@@ -240,13 +240,13 @@
     -->
     <extension point="org.eclipse.ui.propertyPages">
         <page
-           id="oorg.eclipse.glassfish.tools.ui.server.properties.glassfish"
+           id="oorg.eclipse.payara.tools.ui.server.properties.glassfish"
            name="GlassFish"
-           class="org.eclipse.glassfish.tools.ui.properties.ServerPropertyPage">
+           class="org.eclipse.payara.tools.ui.properties.ServerPropertyPage">
            <enabledWhen>
                <and>
                     <adapt type="org.eclipse.wst.server.core.IServer" />
-                    <reference definitionId="org.eclipse.glassfish.tools.isGlassfish"/>
+                    <reference definitionId="org.eclipse.payara.tools.isGlassfish"/>
                </and>
            </enabledWhen>
        </page>  
@@ -265,27 +265,27 @@
     <extension point="org.eclipse.ui.navigator.navigatorContent">
        <navigatorContent
              id="glassfish31.serverview.contentprovider"
-             contentProvider="org.eclipse.glassfish.tools.ui.serverview.ServerViewDynamicNodeProvider"
+             contentProvider="org.eclipse.payara.tools.ui.serverview.ServerViewDynamicNodeProvider"
              name="Payara Management Nodes"
              icon="icons/obj16/sunappsrv.gif"
-             labelProvider="org.eclipse.glassfish.tools.ui.serverview.ServerViewLabelProvider"
+             labelProvider="org.eclipse.payara.tools.ui.serverview.ServerViewLabelProvider"
              activeByDefault="true"
              priority="highest">
           <triggerPoints>
                 <instanceof value="org.eclipse.wst.server.core.IServer"/>
           </triggerPoints>
           <possibleChildren>
-                <instanceof value="org.eclipse.glassfish.tools.ui.serverview.dynamicnodes.TreeNode"/>
+                <instanceof value="org.eclipse.payara.tools.ui.serverview.dynamicnodes.TreeNode"/>
           </possibleChildren>
           <!-- This adds the "unregister" action when you right click on a resource such as a JDBC data source -->
           <actionProvider
-                id="org.eclipse.glassfish.tools.ui.serverview.ServerViewActionProvider"
-                class="org.eclipse.glassfish.tools.ui.serverview.ServerViewActionProvider"
+                id="org.eclipse.payara.tools.ui.serverview.ServerViewActionProvider"
+                class="org.eclipse.payara.tools.ui.serverview.ServerViewActionProvider"
                 priority="highest">
              <enablement>
                 <or>
                    <instanceof value="org.eclipse.wst.server.core.IServer"/>
-                   <instanceof value="org.eclipse.glassfish.tools.ui.serverview.dynamicnodes.TreeNode"/>
+                   <instanceof value="org.eclipse.payara.tools.ui.serverview.dynamicnodes.TreeNode"/>
                    <adapt type="java.util.Collection"><count value="0"/></adapt>
                 </or>
              </enablement>
@@ -293,9 +293,9 @@
        </navigatorContent>
        
        <commonWizard
-             menuGroupId="org.eclipse.glassfish.tools.v3.wizards"
+             menuGroupId="org.eclipse.payara.tools.v3.wizards"
              type="new"
-             wizardId="org.eclipse.glassfish.tools.v3.wizards.AddGenericResourceWizard">
+             wizardId="org.eclipse.payara.tools.v3.wizards.AddGenericResourceWizard">
           <enablement>
              <adapt type="org.eclipse.core.resources.IResource">
                 <test
@@ -313,18 +313,18 @@
     -->
     <extension point="org.eclipse.ui.console.consolePageParticipants">
        <consolePageParticipant
-             id="org.eclipse.glassfish.tools.log.GlassFishLogPageParticipant"
-             class="org.eclipse.glassfish.tools.ui.log.GlassFishLogPageParticipant">
+             id="org.eclipse.payara.tools.log.GlassFishLogPageParticipant"
+             class="org.eclipse.payara.tools.ui.log.GlassFishLogPageParticipant">
           <enablement>
-             <instanceof value="org.eclipse.glassfish.tools.log.GlassfishConsole"/>
+             <instanceof value="org.eclipse.payara.tools.log.GlassfishConsole"/>
           </enablement>
        </consolePageParticipant>
     </extension>
     
     <extension point="org.eclipse.ui.console.consolePatternMatchListeners">
         <consolePatternMatchListener
-           id="org.eclipse.glassfish.tools.ui.consolePatternMatchListener"
-           class="org.eclipse.glassfish.tools.ui.log.GlassfishConsoleTracker"
+           id="org.eclipse.payara.tools.ui.consolePatternMatchListener"
+           class="org.eclipse.payara.tools.ui.log.GlassfishConsoleTracker"
            qualifier="${java_extensions_regex}"
            regex="\(\S*${java_extensions_regex}\S*\)">
         <enablement></enablement>
@@ -333,21 +333,21 @@
 
     <extension point="org.eclipse.ui.perspectiveExtensions">
         <perspectiveExtension targetID="org.eclipse.jst.j2ee.J2EEPerspective">
-            <newWizardShortcut id="org.eclipse.glassfish.tools.v3.wizards.AddGenericResourceWizard"/>
+            <newWizardShortcut id="org.eclipse.payara.tools.v3.wizards.AddGenericResourceWizard"/>
         </perspectiveExtension>
     </extension>
   
       <extension
           point="org.eclipse.ui.newWizards">
        <category
-             id="org.eclipse.glassfish.tools"
+             id="org.eclipse.payara.tools"
              name="%sunappserver.wizardcategory">
        </category>
        <wizard
-             category="org.eclipse.glassfish.tools"
-             class="org.eclipse.glassfish.tools.ui.resources.wizards.JDBCWizard"
+             category="org.eclipse.payara.tools"
+             class="org.eclipse.payara.tools.ui.resources.wizards.JDBCWizard"
              icon="icons/obj16/glassfishserver.gif"
-             id="org.eclipse.glassfish.tools.ui.resources.wizards.JDBCWizard"
+             id="org.eclipse.payara.tools.ui.resources.wizards.JDBCWizard"
              name="%sunappserver.sunresourceslabel">
           <description>
              %sunappserver.sunresources.BeanWebRegionWizard.description
@@ -357,10 +357,10 @@
           </selection>
        </wizard>
        <wizard
-             category="org.eclipse.glassfish.tools"
-             class="org.eclipse.glassfish.tools.ui.resources.wizards.MailWizard"
+             category="org.eclipse.payara.tools"
+             class="org.eclipse.payara.tools.ui.resources.wizards.MailWizard"
              icon="icons/obj16/glassfishserver.gif"
-             id="org.eclipse.glassfish.tools.ui.resources.wizards.MailWizard"
+             id="org.eclipse.payara.tools.ui.resources.wizards.MailWizard"
              name="%sunappserver.mailresourceslabel">
           <description>
              %sunappserver.mailresources.BeanWebRegionWizard.description
@@ -370,10 +370,10 @@
           </selection>
        </wizard>
        <wizard
-             category="org.eclipse.glassfish.tools"
-             class="org.eclipse.glassfish.tools.ui.resources.wizards.JMSWizard"
+             category="org.eclipse.payara.tools"
+             class="org.eclipse.payara.tools.ui.resources.wizards.JMSWizard"
              icon="icons/obj16/glassfishserver.gif"
-             id="org.eclipse.glassfish.tools.ui.resources.wizards.JMSWizard"
+             id="org.eclipse.payara.tools.ui.resources.wizards.JMSWizard"
              name="%sunappserver.jmsresourceslabel">
           <description>
              %sunappserver.jmsresources.BeanWebRegionWizard.description
@@ -383,10 +383,10 @@
           </selection>
        </wizard>
        <wizard
-             category="org.eclipse.glassfish.tools"
-             class="org.eclipse.glassfish.tools.ui.rest.wizards.AddGenericResourceWizard"
+             category="org.eclipse.payara.tools"
+             class="org.eclipse.payara.tools.ui.rest.wizards.AddGenericResourceWizard"
              icon="icons/obj16/glassfishserver.gif"
-             id="org.eclipse.glassfish.tools.v3.wizards.AddGenericResourceWizard"
+             id="org.eclipse.payara.tools.v3.wizards.AddGenericResourceWizard"
              name="%sunappserver.restfulfrompatternlabel">
           <description>
              %sunappserver.restfulfrompattern.BeanWebRegionWizard.description
@@ -398,8 +398,8 @@
   
    <extension point="org.eclipse.jst.common.project.facet.ui.libraryProviderActionPanels">
        <panel
-             class="org.eclipse.glassfish.tools.ui.internal.JAXRSActionPanels"
-             provider="org.eclipse.glassfish.tools.jaxrsLibraryproviderID">
+             class="org.eclipse.payara.tools.ui.internal.JAXRSActionPanels"
+             provider="org.eclipse.payara.tools.jaxrsLibraryproviderID">
        </panel>
     </extension>
     
@@ -408,8 +408,8 @@
   
   <extension point="org.eclipse.wst.server.core.runtimeLocators">
     <runtimeLocator
-      id="org.eclipse.glassfish.tools"
-      class="org.eclipse.glassfish.tools.ui.internal.GlassFishRuntimeLocatorDelegate"
+      id="org.eclipse.payara.tools"
+      class="org.eclipse.payara.tools.ui.internal.GlassFishRuntimeLocatorDelegate"
 	  typeIds="payara.runtime"/>
   </extension> 
 

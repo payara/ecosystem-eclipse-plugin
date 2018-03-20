@@ -25,7 +25,7 @@
         <launchConfigurationType
             id="org.glassfish.jst.server.GlassfishServerLaunchConfigurationType"
             name="%glassfish.runConfigurationName"
-            delegate="org.eclipse.glassfish.tools.server.starting.GlassfishServerLaunchDelegate"
+            delegate="org.eclipse.payara.tools.server.starting.GlassfishServerLaunchDelegate"
             modes="run, debug"
             sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector"
             sourcePathComputerId="org.eclipse.jst.server.generic.core.sourcePathComputer"/>
@@ -35,7 +35,7 @@
     <extension point="org.eclipse.wst.server.core.launchableAdapters">
       <launchableAdapter
             id="org.glassfish.launchableAdapter"
-            class="org.eclipse.glassfish.tools.server.archives.EclipseToPayaraArchiveConverter"
+            class="org.eclipse.payara.tools.server.archives.EclipseToPayaraArchiveConverter"
             priority="999"
             typeIds="payara.server"/>
     </extension>
@@ -43,7 +43,7 @@
     <extension point="org.eclipse.wst.server.core.runtimeTypes">
         <runtimeType
              id="payara.runtime"
-             class="org.eclipse.glassfish.tools.server.GlassFishRuntime"
+             class="org.eclipse.payara.tools.server.GlassFishRuntime"
              name="%runtimeTypeNameglassfish"
              description="%runtimeTypeDescriptionglassfish"
              vendor="%runtimeTypeGlassFishVendor">
@@ -59,8 +59,8 @@
     <extension point="org.eclipse.wst.server.core.serverTypes">
         <serverType
              id="payara.server"
-             class="org.eclipse.glassfish.tools.server.GlassFishServer"
-             behaviourClass="org.eclipse.glassfish.tools.server.deploying.GlassFishServerBehaviour"
+             class="org.eclipse.payara.tools.server.GlassFishServer"
+             behaviourClass="org.eclipse.payara.tools.server.deploying.GlassFishServerBehaviour"
              name="%serverTypeNameglassfish"
              description="%serverTypeDescriptionglassfish"
              hasConfiguration="false"
@@ -86,20 +86,20 @@
 
   <extension point="org.eclipse.jdt.core.classpathContainerInitializer">
     <classpathContainerInitializer
-      id="org.eclipse.glassfish.tools.lib.system"
-      class="org.eclipse.glassfish.tools.internal.SystemLibrariesContainer$Initializer"/>
+      id="org.eclipse.payara.tools.lib.system"
+      class="org.eclipse.payara.tools.internal.SystemLibrariesContainer$Initializer"/>
   </extension>
   
   <extension point="org.eclipse.wst.common.project.facet.core.runtimes">
     <adapter>
       <runtime-component id="payara.runtime"/>
-      <factory class="org.eclipse.glassfish.tools.internal.GlassFishClasspathProvider$Factory"/>
+      <factory class="org.eclipse.payara.tools.internal.GlassFishClasspathProvider$Factory"/>
       <type class="org.eclipse.jst.common.project.facet.core.IClasspathProvider"/>
     </adapter>
   </extension>
   
   <extension point="org.eclipse.jst.j2ee.classpathdep">
-    <filteredClasspathContainer containerID="org.eclipse.glassfish.tools.lib.system"/>
+    <filteredClasspathContainer containerID="org.eclipse.payara.tools.lib.system"/>
   </extension>
   
   <extension point="org.eclipse.jst.common.project.facet.core.libraryProviders">
@@ -114,7 +114,7 @@
 	    <with variable="targetedRuntimes">
 	      <count value="+"/>
 	      <iterate operator="and">
-            <test property="org.eclipse.glassfish.tools.containsRuntimeComponentType" value="glassfish:3.1" forcePluginActivation="true"/>
+            <test property="org.eclipse.payara.tools.containsRuntimeComponentType" value="glassfish:3.1" forcePluginActivation="true"/>
 	      </iterate>
 	    </with>     
       </enablement>
@@ -133,7 +133,7 @@
 	    <with variable="targetedRuntimes">
 	      <count value="+"/>
 	      <iterate operator="and">
-            <test property="org.eclipse.glassfish.tools.containsRuntimeComponentType" value="glassfish:3.1" forcePluginActivation="true"/>
+            <test property="org.eclipse.payara.tools.containsRuntimeComponentType" value="glassfish:3.1" forcePluginActivation="true"/>
 	      </iterate>
 	    </with>     
       </enablement>
@@ -152,7 +152,7 @@
 	    <with variable="targetedRuntimes">
 	      <count value="+"/>
 	      <iterate operator="and">
-            <test property="org.eclipse.glassfish.tools.containsRuntimeComponentType" value="glassfish:4,5" forcePluginActivation="true"/>
+            <test property="org.eclipse.payara.tools.containsRuntimeComponentType" value="glassfish:4,5" forcePluginActivation="true"/>
 	      </iterate>
 	    </with>     
       </enablement>
@@ -171,7 +171,7 @@
 	    <with variable="targetedRuntimes">
 	      <count value="+"/>
 	      <iterate operator="and">
-            <test property="org.eclipse.glassfish.tools.containsRuntimeComponentType" value="glassfish:4,5" forcePluginActivation="true"/>
+            <test property="org.eclipse.payara.tools.containsRuntimeComponentType" value="glassfish:4,5" forcePluginActivation="true"/>
 	      </iterate>
 	    </with>     
       </enablement>
@@ -191,8 +191,8 @@
     
 	<extension point="org.eclipse.wst.common.project.facet.core.runtimeBridges">	
 		<bridge
-			id="org.eclipse.glassfish.tools.bridge"
- 			class="org.eclipse.glassfish.tools.internal.GlassFishRuntimeBridge"/>
+			id="org.eclipse.payara.tools.bridge"
+ 			class="org.eclipse.payara.tools.internal.GlassFishRuntimeBridge"/>
 	</extension>
     
     <extension point="org.eclipse.wst.common.project.facet.core.facets">
@@ -209,10 +209,10 @@
         
         <project-facet-version facet="glassfish.web" version="3.1">
             <action type="INSTALL">
-                <delegate class="org.eclipse.glassfish.tools.facets.GlassfishWebFacetInstallDelegate"/>
+                <delegate class="org.eclipse.payara.tools.facets.GlassfishWebFacetInstallDelegate"/>
             </action>
             <action  type="UNINSTALL">
-                <delegate class="org.eclipse.glassfish.tools.facets.GlassfishWebFacetUninstallDelegate"/>
+                <delegate class="org.eclipse.payara.tools.facets.GlassfishWebFacetUninstallDelegate"/>
             </action>   
             <constraint>
                 <requires facet="jst.web"/>
@@ -221,10 +221,10 @@
         
         <project-facet-version facet="glassfish.web" version="4.0">
             <action type="INSTALL">
-                <delegate class="org.eclipse.glassfish.tools.facets.GlassfishWebFacetInstallDelegate"/>
+                <delegate class="org.eclipse.payara.tools.facets.GlassfishWebFacetInstallDelegate"/>
             </action>
             <action  type="UNINSTALL">
-                <delegate class="org.eclipse.glassfish.tools.facets.GlassfishWebFacetUninstallDelegate"/>
+                <delegate class="org.eclipse.payara.tools.facets.GlassfishWebFacetUninstallDelegate"/>
             </action>   
             <constraint>
                 <requires facet="jst.web"/>
@@ -233,10 +233,10 @@
         
         <project-facet-version facet="glassfish.web" version="5">
             <action type="INSTALL">
-                <delegate class="org.eclipse.glassfish.tools.facets.GlassfishWebFacetInstallDelegate"/>
+                <delegate class="org.eclipse.payara.tools.facets.GlassfishWebFacetInstallDelegate"/>
             </action>
             <action  type="UNINSTALL">
-                <delegate class="org.eclipse.glassfish.tools.facets.GlassfishWebFacetUninstallDelegate"/>
+                <delegate class="org.eclipse.payara.tools.facets.GlassfishWebFacetUninstallDelegate"/>
             </action>   
             <constraint>
                 <requires facet="jst.web"/>
@@ -245,10 +245,10 @@
         
         <project-facet-version facet="glassfish.ejb" version="3.1">
             <action type="INSTALL">
-                <delegate class="org.eclipse.glassfish.tools.facets.GlassfishEjbFacetInstallDelegate"/>
+                <delegate class="org.eclipse.payara.tools.facets.GlassfishEjbFacetInstallDelegate"/>
             </action>
             <action  type="UNINSTALL">
-                <delegate class="org.eclipse.glassfish.tools.facets.GlassfishEjbFacetUninstallDelegate"/>
+                <delegate class="org.eclipse.payara.tools.facets.GlassfishEjbFacetUninstallDelegate"/>
             </action>   
             <constraint>
                 <requires facet="jst.ejb"/>
@@ -257,10 +257,10 @@
         
         <project-facet-version facet="glassfish.ejb" version="4.0">
             <action type="INSTALL">
-                <delegate class="org.eclipse.glassfish.tools.facets.GlassfishEjbFacetInstallDelegate"/>
+                <delegate class="org.eclipse.payara.tools.facets.GlassfishEjbFacetInstallDelegate"/>
             </action>
             <action  type="UNINSTALL">
-                <delegate class="org.eclipse.glassfish.tools.facets.GlassfishEjbFacetUninstallDelegate"/>
+                <delegate class="org.eclipse.payara.tools.facets.GlassfishEjbFacetUninstallDelegate"/>
             </action>   
             <constraint>
                 <requires facet="jst.ejb"/>
@@ -269,10 +269,10 @@
         
         <project-facet-version facet="glassfish.ejb" version="5">
             <action type="INSTALL">
-                <delegate class="org.eclipse.glassfish.tools.facets.GlassfishEjbFacetInstallDelegate"/>
+                <delegate class="org.eclipse.payara.tools.facets.GlassfishEjbFacetInstallDelegate"/>
             </action>
             <action  type="UNINSTALL">
-                <delegate class="org.eclipse.glassfish.tools.facets.GlassfishEjbFacetUninstallDelegate"/>
+                <delegate class="org.eclipse.payara.tools.facets.GlassfishEjbFacetUninstallDelegate"/>
             </action>   
             <constraint>
                 <requires facet="jst.ejb"/>
@@ -635,13 +635,13 @@
     <extension
           point="org.eclipse.core.runtime.preferences">
         <initializer
-             class="org.eclipse.glassfish.tools.preferences.PreferenceInitializer">
+             class="org.eclipse.payara.tools.preferences.PreferenceInitializer">
         </initializer>
     </extension>
 
 
     <extension point="org.eclipse.jst.common.project.facet.core.libraryProviders">
-        <provider id="org.eclipse.glassfish.tools.jaxrsLibraryproviderID">
+        <provider id="org.eclipse.payara.tools.jaxrsLibraryproviderID">
             <enablement>
                 <with variable="requestingProjectFacet">
                     <test
@@ -659,15 +659,15 @@
 	    		<with variable="targetedRuntimes">
 	      			<count value="+"/>
 	      			<iterate operator="and">
-            			<test property="org.eclipse.glassfish.tools.containsRuntimeComponentType" value="glassfish:[3.1" forcePluginActivation="true"/>
+            			<test property="org.eclipse.payara.tools.containsRuntimeComponentType" value="glassfish:[3.1" forcePluginActivation="true"/>
 	      			</iterate>
 	    		</with>     
             </enablement>
             <action type="INSTALL">
-                <operation class="org.eclipse.glassfish.tools.internal.InstallJAXRS"/>
+                <operation class="org.eclipse.payara.tools.internal.InstallJAXRS"/>
             </action>
             <action type="UNINSTALL">
-                <operation class="org.eclipse.glassfish.tools.internal.InstallJAXRS"/>
+                <operation class="org.eclipse.payara.tools.internal.InstallJAXRS"/>
             </action>
             <label>JAX-RS GlassFish Library</label>
             <priority>10000</priority>
@@ -677,7 +677,7 @@
 
     <extension id="MyJAXRSLibraryProvider" point="org.eclipse.jst.ws.jaxrs.core.jaxrsLibraryProvider" >
         <jaxrsLibraryprovider
-        		libraryProviderID="org.eclipse.glassfish.tools.jaxrsLibraryproviderID" 
+        		libraryProviderID="org.eclipse.payara.tools.jaxrsLibraryproviderID" 
         		showUpdateDD="true"
 			updateDDSelected="true" 
 			sevletClassName="com.sun.jersey.spi.container.servlet.ServletContainer"/>
@@ -686,18 +686,18 @@
 
   <extension point="org.eclipse.core.expressions.definitions">
      <definition
-           id="org.eclipse.glassfish.tools.oneGlassfishSelected">
+           id="org.eclipse.payara.tools.oneGlassfishSelected">
         <and>
            <count value="1"/>
            <iterate ifEmpty="false">
                  <or>
-           			<reference definitionId="org.eclipse.glassfish.tools.isGlassfish"/>
+           			<reference definitionId="org.eclipse.payara.tools.isGlassfish"/>
            		</or>
            	</iterate>
         </and>
      </definition>
      
-     <definition id="org.eclipse.glassfish.tools.isGlassfish">
+     <definition id="org.eclipse.payara.tools.isGlassfish">
               <adapt type="org.eclipse.wst.server.core.IServer">
                  <and>
                        <test
@@ -708,37 +708,37 @@
               </adapt>
      </definition>
      
-     <definition id="org.eclipse.glassfish.tools.moreGlassfishSelected">
+     <definition id="org.eclipse.payara.tools.moreGlassfishSelected">
            <iterate ifEmpty="false">
              	<or>
-           			<reference definitionId="org.eclipse.glassfish.tools.isGlassfish"/>
+           			<reference definitionId="org.eclipse.payara.tools.isGlassfish"/>
            		</or>
            </iterate>
      </definition>
      
-     <definition id="org.eclipse.glassfish.tools.oneRunningGlassfishSelected">
+     <definition id="org.eclipse.payara.tools.oneRunningGlassfishSelected">
            <and>
            <count value="1"/>
            <iterate ifEmpty="false">
                 <and>
              	<or>
-           			<reference definitionId="org.eclipse.glassfish.tools.isGlassfish"/>
+           			<reference definitionId="org.eclipse.payara.tools.isGlassfish"/>
            		</or>
-           		<test property="org.eclipse.glassfish.tools.isRunning"/>
+           		<test property="org.eclipse.payara.tools.isRunning"/>
                   </and>
            </iterate>     
          </and>
      </definition>
      
-     <definition id="org.eclipse.glassfish.tools.isRemoteGlassfish">
+     <definition id="org.eclipse.payara.tools.isRemoteGlassfish">
            <and>
            <count value="1"/>
            <iterate ifEmpty="false">
                  <and>
 	             	<or>
-	           			<reference definitionId="org.eclipse.glassfish.tools.isGlassfish"/>
+	           			<reference definitionId="org.eclipse.payara.tools.isGlassfish"/>
 	           		</or>
-	           		<test property="org.eclipse.glassfish.tools.isRemote"/>
+	           		<test property="org.eclipse.payara.tools.isRemote"/>
                 </and>
            </iterate>     
          </and>
@@ -748,16 +748,16 @@
   <extension
         point="org.eclipse.core.expressions.propertyTesters">
      <propertyTester
-           class="org.eclipse.glassfish.tools.handlers.GlassFishStateTester"
-           id="org.eclipse.glassfish.tools.GlassFishStateTester"
-           namespace="org.eclipse.glassfish.tools"
+           class="org.eclipse.payara.tools.handlers.GlassFishStateTester"
+           id="org.eclipse.payara.tools.GlassFishStateTester"
+           namespace="org.eclipse.payara.tools"
            properties="isRunning,isRemote"
            type="org.eclipse.wst.server.core.IServer">
      </propertyTester>
      <propertyTester
-           class="org.eclipse.glassfish.tools.handlers.GlassFishVersionTester"
-           id="org.eclipse.glassfish.tools.GlassFishVersionTester"
-           namespace="org.eclipse.glassfish.tools"
+           class="org.eclipse.payara.tools.handlers.GlassFishVersionTester"
+           id="org.eclipse.payara.tools.GlassFishVersionTester"
+           namespace="org.eclipse.payara.tools"
            properties="v3Test"
            type="org.eclipse.wst.server.core.IServer">
      </propertyTester>
@@ -765,18 +765,18 @@
 
   <extension point="org.eclipse.core.expressions.propertyTesters">
     <propertyTester
-      id="org.eclipse.glassfish.tools.internal.ContainsRuntimeComponentTypeForRuntime"
+      id="org.eclipse.payara.tools.internal.ContainsRuntimeComponentTypeForRuntime"
       type="org.eclipse.wst.common.project.facet.core.runtime.IRuntime"
-      namespace="org.eclipse.glassfish.tools"
+      namespace="org.eclipse.payara.tools"
       properties="containsRuntimeComponentType"
-      class="org.eclipse.glassfish.tools.internal.ContainsRuntimeComponentType">
+      class="org.eclipse.payara.tools.internal.ContainsRuntimeComponentType">
     </propertyTester>
     <propertyTester
-      id="org.eclipse.glassfish.tools.internal.ContainsRuntimeComponentTypeForCollection"
+      id="org.eclipse.payara.tools.internal.ContainsRuntimeComponentTypeForCollection"
       type="java.util.Collection"
-      namespace="org.eclipse.glassfish.tools"
+      namespace="org.eclipse.payara.tools"
       properties="containsRuntimeComponentType"
-      class="org.eclipse.glassfish.tools.internal.ContainsRuntimeComponentType">
+      class="org.eclipse.payara.tools.internal.ContainsRuntimeComponentType">
     </propertyTester>
   </extension>
 

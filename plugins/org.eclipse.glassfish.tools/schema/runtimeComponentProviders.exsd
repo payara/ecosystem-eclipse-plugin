@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.eclipse.glassfish.tools" xmlns="http://www.w3.org/2001/XMLSchema">
+<schema targetNamespace="org.eclipse.payara.tools" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.eclipse.glassfish.tools" id="runtimeComponentProviders" name="Runtime Component Providers Extension Point"/>
+         <meta.schema plugin="org.eclipse.payara.tools" id="runtimeComponentProviders" name="Runtime Component Providers Extension Point"/>
       </appInfo>
       <documentation>
          Allows registration of runtime component providers that can be used to extends the composition of the GlassFish Server runtimes.
@@ -55,7 +55,7 @@
                   
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn="org.eclipse.glassfish.tools.internal.RuntimeComponentProvider"/>
+                  <meta.attribute kind="java" basedOn="org.eclipse.payara.tools.internal.RuntimeComponentProvider"/>
                </appInfo>
             </annotation>
          </attribute>

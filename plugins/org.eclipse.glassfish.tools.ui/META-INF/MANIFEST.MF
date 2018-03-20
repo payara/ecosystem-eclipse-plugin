@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
-Bundle-SymbolicName: org.eclipse.glassfish.tools.ui;singleton:=true
+Bundle-SymbolicName: org.eclipse.payara.tools.ui;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
@@ -36,5 +36,5 @@ Require-Bundle: org.eclipse.debug.ui,
  org.eclipse.text,
  org.eclipse.sapphire.modeling,
  org.eclipse.sapphire.ui,
- org.eclipse.glassfish.tools
-Bundle-Activator: org.eclipse.glassfish.tools.ui.GlassfishToolsUIPlugin
+ org.eclipse.payara.tools
+Bundle-Activator: org.eclipse.payara.tools.ui.GlassfishToolsUIPlugin

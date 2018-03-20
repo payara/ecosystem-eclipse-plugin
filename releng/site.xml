@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site associateSitesURL="associate-sites.xml">
 
-    <description>Eclipse GlassFish Tools</description>
+    <description>Eclipse Payara Tools</description>
     
-    <category-def name="org.eclipse.glassfish.tools" label="Eclipse GlassFish Tools">
+    <category-def name="org.eclipse.payara.tools" label="Eclipse Payara Tools">
         <description>
             Tools for developing applications for GlassFish.
         </description>
     </category-def>
 
-    <feature url="features/org.eclipse.glassfish.tools_##version##.jar" id="org.eclipse.glassfish.tools" version="##version##">
-        <category name="org.eclipse.glassfish.tools"/>
+    <feature url="features/org.eclipse.payara.tools_##version##.jar" id="org.eclipse.payara.tools" version="##version##">
+        <category name="org.eclipse.payara.tools"/>
     </feature>
 
-    <feature url="features/org.eclipse.glassfish.tools.source_##version##.jar" id="org.eclipse.glassfish.tools.source" version="##version##">
-        <category name="org.eclipse.glassfish.tools"/>
+    <feature url="features/org.eclipse.payara.tools.source_##version##.jar" id="org.eclipse.payara.tools.source" version="##version##">
+        <category name="org.eclipse.payara.tools"/>
     </feature>
 
 </site>
