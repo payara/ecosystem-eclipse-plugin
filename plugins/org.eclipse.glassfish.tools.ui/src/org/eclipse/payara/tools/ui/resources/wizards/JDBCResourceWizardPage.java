@@ -73,7 +73,7 @@ public class JDBCResourceWizardPage extends WizardPage {
 
     /**
      * Constructor for JDBCResourceWizardPage.
-     * 
+     *
      * @param selection
      */
     public JDBCResourceWizardPage(IProject project, List<IProject> projects) {

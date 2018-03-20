@@ -140,7 +140,7 @@ public class GenericResourceTemplate {
          * This Content is provided under the terms and conditions of the Eclipse Public License Version 1.0
          * ("EPL"). A copy of the EPL is available at http://www.eclipse.org/org/documents/epl-v10.php For
          * purposes of the EPL, "Program" will mean the Content.
-         * 
+         *
          * Copied from org.eclipse.jst.j2ee.ejb plugin.
          */
 
@@ -150,7 +150,7 @@ public class GenericResourceTemplate {
          * This Content is provided under the terms and conditions of the Eclipse Public License Version 1.0
          * ("EPL"). A copy of the EPL is available at http://www.eclipse.org/org/documents/epl-v10.php For
          * purposes of the EPL, "Program" will mean the Content.
-         * 
+         *
          * Copied from org.eclipse.jst.j2ee.ejb plugin.
          */
 
@@ -167,7 +167,7 @@ public class GenericResourceTemplate {
          * This Content is provided under the terms and conditions of the Eclipse Public License Version 1.0
          * ("EPL"). A copy of the EPL is available at http://www.eclipse.org/org/documents/epl-v10.php For
          * purposes of the EPL, "Program" will mean the Content.
-         * 
+         *
          * Copied from org.eclipse.jst.j2ee.ejb plugin.
          */
 
@@ -190,7 +190,7 @@ public class GenericResourceTemplate {
          * This Content is provided under the terms and conditions of the Eclipse Public License Version 1.0
          * ("EPL"). A copy of the EPL is available at http://www.eclipse.org/org/documents/epl-v10.php For
          * purposes of the EPL, "Program" will mean the Content.
-         * 
+         *
          * Copied from org.eclipse.jst.j2ee.ejb plugin.
          */
 
@@ -265,7 +265,7 @@ public class GenericResourceTemplate {
              * This Content is provided under the terms and conditions of the Eclipse Public License Version 1.0
              * ("EPL"). A copy of the EPL is available at http://www.eclipse.org/org/documents/epl-v10.php For
              * purposes of the EPL, "Program" will mean the Content.
-             * 
+             *
              * Copied from org.eclipse.jst.j2ee.ejb plugin.
              */
 
@@ -305,7 +305,7 @@ public class GenericResourceTemplate {
          * This Content is provided under the terms and conditions of the Eclipse Public License Version 1.0
          * ("EPL"). A copy of the EPL is available at http://www.eclipse.org/org/documents/epl-v10.php For
          * purposes of the EPL, "Program" will mean the Content.
-         * 
+         *
          * Copied from org.eclipse.jst.j2ee.ejb plugin.
          */
 

@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Control;
 /**
  * See <code>plug-in.xml</code>
  * <code>org.eclipse.jst.common.project.facet.ui.libraryProviderActionPanels</code>
- * 
+ *
  * @author arjan
  *
  */

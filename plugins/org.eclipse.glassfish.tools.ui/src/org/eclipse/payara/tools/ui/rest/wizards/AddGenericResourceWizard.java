@@ -63,7 +63,7 @@ public class AddGenericResourceWizard extends NewWebArtifactWizard {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.wst.common.frameworks.internal.datamodel.ui.DataModelWizard#postPerformFinish()
      */
     @Override
@@ -74,7 +74,7 @@ public class AddGenericResourceWizard extends NewWebArtifactWizard {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jst.servlet.ui.internal.wizard.NewWebArtifactWizard#openJavaClass()
      */
     @Override

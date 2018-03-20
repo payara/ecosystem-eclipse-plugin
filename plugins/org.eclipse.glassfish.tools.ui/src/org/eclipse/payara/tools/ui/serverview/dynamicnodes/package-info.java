@@ -2,12 +2,12 @@
 /**
  * This package contains the tree nodes that are rendered underneath a running Payara / GlassFish
  * server in the Servers view.
- * 
+ *
  * <p>
  * The following depicts an example of this:
  * </p>
  * <p>
- * 
+ *
  * <pre>
  * Payara 5 [domain1]
  * |- GlassFish Management

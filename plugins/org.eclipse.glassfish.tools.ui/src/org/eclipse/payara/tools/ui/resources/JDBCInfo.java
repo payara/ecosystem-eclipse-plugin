@@ -18,7 +18,7 @@ public class JDBCInfo {
 
     /**
      * Constructor for JDBCInfo.
-     * 
+     *
      * @param profile
      */
     public JDBCInfo(IConnectionProfile profile) {

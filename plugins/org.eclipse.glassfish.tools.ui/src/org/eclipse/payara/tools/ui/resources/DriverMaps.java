@@ -67,7 +67,7 @@ public class DriverMaps {
 
     /**
      * Gets the URL prefix fiven a Datasource Classname
-     * 
+     *
      * @param inClass Datasource Classname
      * @return URL prefix for given Datasource Classname
      */

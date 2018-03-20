@@ -62,7 +62,7 @@ public class AddGenericResourceDataModelProvider extends
     /**
      * Subclasses may extend this method to add their own data model's properties as valid base
      * properties.
-     * 
+     *
      * @see org.eclipse.wst.common.frameworks.datamodel.IDataModelProvider#getPropertyNames()
      */
     @SuppressWarnings("unchecked")
@@ -86,10 +86,10 @@ public class AddGenericResourceDataModelProvider extends
     /**
      * Subclasses may extend this method to provide their own default values for any of the properties
      * in the data model hierarchy. This method does not accept a null parameter. It may return null.
-     * 
+     *
      * @see NewJavaClassDataModelProvider#getDefaultProperty(String)
      * @see IDataModelProvider#getDefaultProperty(String)
-     * 
+     *
      * @param propertyName
      * @return Object default value of property
      */
@@ -124,7 +124,7 @@ public class AddGenericResourceDataModelProvider extends
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.eclipse.jst.j2ee.internal.web.operations.NewWebClassDataModelProvider#isPropertyEnabled(java.
      * lang.String)
