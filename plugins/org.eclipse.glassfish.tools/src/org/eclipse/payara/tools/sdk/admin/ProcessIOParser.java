@@ -21,7 +21,7 @@ import org.eclipse.payara.tools.sdk.utils.OsUtils;
 /**
  * Parse process IO and verify it against content verification data.
  * <p/>
- * 
+ *
  * @author Tomas Kraus
  */
 public class ProcessIOParser {
@@ -57,7 +57,7 @@ public class ProcessIOParser {
             /**
              * Get input class value for provided character.
              * <p/>
-             * 
+             *
              * @param c Character to check tor input class.
              * @return Input class of provided character.
              */
@@ -106,7 +106,7 @@ public class ProcessIOParser {
             /**
              * State machine transition.
              * <p/>
-             * 
+             *
              * @param s Current machine state.
              * @param i current input class.
              * @return Next machine state.
@@ -144,7 +144,7 @@ public class ProcessIOParser {
         /**
          * Creates an instance of process output parser.
          * <p/>
-         * 
+         *
          * @param content Content to verify on server administration command execution IO.
          */
         protected Parser(ProcessIOContent content) {
@@ -162,7 +162,7 @@ public class ProcessIOParser {
         /**
          * Parses content of process output.
          * <p/>
-         * 
+         *
          * @param buff Buffer with incoming process standard output data.
          * @param len Data length in process standard output buffer.
          */
@@ -182,7 +182,7 @@ public class ProcessIOParser {
         /**
          * Get content verification result.
          * <p/>
-         * 
+         *
          * @return Content verification result.
          */
         protected ProcessIOResult result() {
@@ -192,7 +192,7 @@ public class ProcessIOParser {
         /**
          * Run parser action based on current state and character class.
          * <p/>
-         * 
+         *
          * @param c Current character being processed from {@link Reader} buffer.
          * @return Next state transition based on current state and character class.
          */
@@ -239,7 +239,7 @@ public class ProcessIOParser {
         /**
          * Clear line content and append first character.
          * <p/>
-         * 
+         *
          * @param c Current character from buffer.
          */
         protected void firstChar(final char c) {
@@ -250,7 +250,7 @@ public class ProcessIOParser {
         /**
          * Append next character.
          * <p/>
-         * 
+         *
          * @param c Current character from buffer.
          */
         protected void nextChar(final char c) {
@@ -260,7 +260,7 @@ public class ProcessIOParser {
         /**
          * Append next character after CR.
          * <p/>
-         * 
+         *
          * @param c Current character from buffer.
          */
         protected void nextCharWithCR(final char c) {
@@ -271,7 +271,7 @@ public class ProcessIOParser {
         /**
          * Handle end of line.
          * <p/>
-         * 
+         *
          * @param c Current character from buffer (not used).
          */
         protected void endOfLine(final char c) {
@@ -308,7 +308,7 @@ public class ProcessIOParser {
         /**
          * Build output string from stored process output lines.
          * <p/>
-         * 
+         *
          * @return Process output string.
          */
         protected String getOutputString() {
@@ -374,7 +374,7 @@ public class ProcessIOParser {
     /**
      * Creates an instance of process IO verification parser.
      * <p/>
-     * 
+     *
      * @param stdIn Process standard input.
      * @param stdOut Process standard output.
      * @param ioContent Content to verify on server administration command execution IO.
@@ -397,7 +397,7 @@ public class ProcessIOParser {
      * Verify process output streams against content verification data provided in constructor as
      * <code>ioContent</code> argument.
      * <p/>
-     * 
+     *
      * @return Process output streams verification result.
      * @throws IOException When there is an issue with reading process output streams.
      */
@@ -414,7 +414,7 @@ public class ProcessIOParser {
     /**
      * Return process output as {@link String}.
      * <p/>
-     * 
+     *
      * @return Process output as {@link String}.
      */
     public String getOutput() {

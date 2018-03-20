@@ -78,7 +78,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
  * </ul>
  * </ul>
  * <p/>
- * 
+ *
  * @author Tomas Kraus
  */
 public enum GlassFishStatus {
@@ -153,7 +153,7 @@ public enum GlassFishStatus {
      * <code>String</code> matches any <code>String</code> returned by <code>toString</code> method.
      * Otherwise <code>null</code> value is returned.
      * <p>
-     * 
+     *
      * @param name Value containing <code>GlassFishStatus</code> <code>toString</code> representation.
      * @return <code>GlassFishStatus</code> value represented by <code>String</code> or
      * <code>null</code> if value was not recognized.
@@ -171,7 +171,7 @@ public enum GlassFishStatus {
      * <p/>
      * This method must be called before adding first GlassFisg server instance into scheduler.
      * <p/>
-     * 
+     *
      * @param executor External executor to be used in scheduler.
      */
     public static void initScheduler(
@@ -185,7 +185,7 @@ public enum GlassFishStatus {
      * It is possible to call this method for the same GlassFisg server instance many times. Server
      * instance will be added only if it is not already registered.
      * <p/>
-     * 
+     *
      * @param srv GlassFish server instance to be registered.
      * @return Value of <code>true</code> when server instance was successfully added into scheduler and
      * status checking job was started or <code>false</code> otherwise.
@@ -207,7 +207,7 @@ public enum GlassFishStatus {
      * It is possible to call this method for the same GlassFisg server instance many times. Server
      * instance and listener will be added only if it is not already registered.
      * <p/>
-     * 
+     *
      * @param srv GlassFish server instance to be registered.
      * @param listener Server status listener to be registered.
      * @param currentState Notify about current server status after every check when <code>true</code>.
@@ -234,7 +234,7 @@ public enum GlassFishStatus {
      * When status checking is disabled, it will restart it and return current status which is probably
      * <code>UNKNOWN</code>.
      * <p/>
-     * 
+     *
      * @param srv GlassFish server instance to be searched.
      * @return GlassFish server instance status. Returns <code>UNKNOWN</code> value for unregistered
      * server instance.
@@ -252,7 +252,7 @@ public enum GlassFishStatus {
      * notification following status checking restart. This listener won't be unregistered automatically
      * so caller should handle it properly.
      * <p/>
-     * 
+     *
      * @param srv GlassFish server instance to be searched.
      * @param listener Server status listener to be registered when status checking is being restarted.
      * @return GlassFish server instance status. Returns <code>UNKNOWN</code> value for unregistered
@@ -270,7 +270,7 @@ public enum GlassFishStatus {
      * When status checking is disabled, it will restart it and return current status which is probably
      * <code>UNKNOWN</code>.
      * <p/>
-     * 
+     *
      * @param srv GlassFish server instance to be searched.
      * @return GlassFish server status {@link GlassFishServerStatus} object. Returns <code>null</code>
      * value for unregistered server instance.
@@ -287,7 +287,7 @@ public enum GlassFishStatus {
      * notification following status checking restart. This listener won't be unregistered automatically
      * so caller should handle it properly.
      * <p/>
-     * 
+     *
      * @param srv GlassFish server instance to be searched.
      * @param listener Server status listener to be registered when status checking is being restarted.
      * @return GlassFish server status {@link GlassFishServerStatus} object. Returns <code>null</code>
@@ -303,7 +303,7 @@ public enum GlassFishStatus {
      * <p/>
      * This will switch status monitoring into startup mode where server is being checked more often.
      * <p/>
-     * 
+     *
      * @param srv GlassFish server instance to be switched into startup mode.
      * @param force Force startup mode for GlassFish server instance from any state then
      * <code>true</code>.
@@ -325,7 +325,7 @@ public enum GlassFishStatus {
      * <p/>
      * This will switch status monitoring into startup mode where server is being checked more often.
      * <p/>
-     * 
+     *
      * @param srv GlassFish server instance to be switched into startup mode.
      * @return Value of <code>true</code> when server instance was successfully added into scheduler and
      * status checking job was started or <code>false</code> otherwise.
@@ -339,7 +339,7 @@ public enum GlassFishStatus {
      * <p/>
      * This will switch status monitoring into shutdown mode where server is being checked more often.
      * <p/>
-     * 
+     *
      * @param srv GlassFish server instance to be switched into shutdown mode.
      * @return Value of <code>true</code> when server instance was successfully added into scheduler and
      * status checking job was started or <code>false</code> otherwise.
@@ -354,7 +354,7 @@ public enum GlassFishStatus {
      * It is possible to call this method for the same GlassFisg server instance many times. Server
      * instance will be removed only if it is registered.
      * <p/>
-     * 
+     *
      * @param srv GlassFish server instance to be removed.
      * @return Value of <code>true</code> when server instance was successfully removed from scheduler
      * and status checking job was stopped or <code>false</code> when server instance was not
@@ -367,7 +367,7 @@ public enum GlassFishStatus {
     /**
      * Suspend server status monitoring for GlassFisg server instance.
      * <p/>
-     * 
+     *
      * @param srv GlassFish server instance for which to suspend monitoring.
      * @return Value of <code>true</code> when server instance monitoring was suspended or
      * <code>false</code> when server instance is not registered.
@@ -379,7 +379,7 @@ public enum GlassFishStatus {
     /**
      * Register server status listener to be notified about current server status after every check.
      * <p/>
-     * 
+     *
      * @param srv GlassFish server instance being monitored.
      * @param listener Server status listener to be registered.
      * @return Value of <code>true</code> when listener was added or <code>false</code> when this
@@ -398,7 +398,7 @@ public enum GlassFishStatus {
     /**
      * Register server status listener to be notified about server status change.
      * <p/>
-     * 
+     *
      * @param srv GlassFish server instance being monitored.
      * @param listener Server status listener to be registered.
      * @param newState Notify about server status change for new states provided as this argument.
@@ -420,7 +420,7 @@ public enum GlassFishStatus {
     /**
      * Register server status listener to be notified about server status change.
      * <p/>
-     * 
+     *
      * @param srv GlassFish server instance being monitored.
      * @param listener Server status listener to be registered.
      * @return Value of <code>true</code> when listener was added in at least one list or
@@ -440,7 +440,7 @@ public enum GlassFishStatus {
     /**
      * Register server status listener.
      * <p/>
-     * 
+     *
      * @param srv GlassFish server instance being monitored.
      * @param listener Server status listener to be registered.
      * @param currentState Notify about current server status after every check when <code>true</code>.
@@ -463,7 +463,7 @@ public enum GlassFishStatus {
     /**
      * Unregister server status listener.
      * <p/>
-     * 
+     *
      * @param srv GlassFish server instance being monitored.
      * @param listener Server status listener to be unregistered.
      * @return Value of <code>true</code> when listener was found and removed or <code>false</code> when
@@ -487,7 +487,7 @@ public enum GlassFishStatus {
     /**
      * Convert <code>GlassFishStatus</code> value to <code>String</code>.
      * <p/>
-     * 
+     *
      * @return A <code>String</code> representation of the value of this object.
      */
     @Override

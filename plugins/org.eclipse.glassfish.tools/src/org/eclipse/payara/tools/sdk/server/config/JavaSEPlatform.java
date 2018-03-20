@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * JavaSE platforms supported by Glassfish.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public enum JavaSEPlatform {
@@ -97,7 +97,7 @@ public enum JavaSEPlatform {
      * specified <code>String</code> matches any <code>String</code> returned by <code>toString</code>
      * method. Otherwise <code>null</code> value is returned.
      * <p>
-     * 
+     *
      * @param platformName Value containing <code>JavaSEPlatform</code> <code>toString</code>
      * representation.
      * @return <code>JavaSEPlatform</code> value represented by <code>String</code> or <code>null</code>
@@ -118,7 +118,7 @@ public enum JavaSEPlatform {
     /**
      * Convert JavaEE platform version value to <code>String</code>.
      * <p/>
-     * 
+     *
      * @return A <code>String</code> representation of the value of this object.
      */
     @Override

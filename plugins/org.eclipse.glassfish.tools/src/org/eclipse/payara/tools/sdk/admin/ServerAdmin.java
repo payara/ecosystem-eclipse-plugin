@@ -42,7 +42,7 @@ public class ServerAdmin {
      * <p/>
      * This method must be called before first usage of <code>Runner.call()</code> method.
      * <p/>
-     * 
+     *
      * @param authenticator External authenticator for GlassFish servers to be supplied.
      */
     public static void init(final Authenticator authenticator) {
@@ -54,7 +54,7 @@ public class ServerAdmin {
      * <p>
      * Execution of administration command is serialized using internal executor.
      * <p>
-     * 
+     *
      * @param srv Target GlassFish server.
      * @param cmd Server administration command to me executed.
      * @param ide IDE Context object (not used).
@@ -73,7 +73,7 @@ public class ServerAdmin {
      * <p>
      * Execution of administration command is serialized using internal executor.
      * <p>
-     * 
+     *
      * @param srv Target GlassFish server.
      * @param cmd Server administration command to me executed.
      * @param ide IDE Context object (not used).
@@ -94,7 +94,7 @@ public class ServerAdmin {
      * <p/>
      * This allows to execute tasks in parallel using provided executor.
      * <p/>
-     * 
+     *
      * @param size Thread pool size (how many tasks to execute in parallel)..
      * @return Individual <code>Executor</code> instance.
      */
@@ -107,7 +107,7 @@ public class ServerAdmin {
      * <p>
      * This allows to execute tasks in parallel using provided executor.
      * <p/>
-     * 
+     *
      * @param executor Executor service used to start task.
      * @param srv Target GlassFish server.
      * @param cmd Server administration command to me executed.
@@ -125,7 +125,7 @@ public class ServerAdmin {
     /**
      * Execute remote administration command on GlassFish server.
      * <p>
-     * 
+     *
      * @param executor Executor service used to start task.
      * @param srv Target GlassFish server.
      * @param cmd Server administration command to me executed.
@@ -147,7 +147,7 @@ public class ServerAdmin {
      * <p>
      * Execution of administration command is serialized using internal executor.
      * <p>
-     * 
+     *
      * @param srv Target GlassFish server.
      * @param cmd Server administration command to me executed.
      */
@@ -219,7 +219,7 @@ public class ServerAdmin {
      * <p>
      * Execution of administration command is serialized using internal executor.
      * <p>
-     * 
+     *
      * @param srv Target GlassFish server.
      * @param cmd Server administration command to me executed.
      * @param listeners Listeners that are called when command execution status changes.
@@ -237,7 +237,7 @@ public class ServerAdmin {
      * <p>
      * This allows to execute tasks in parallel using provided executor.
      * <p/>
-     * 
+     *
      * @param executor Executor service used to start task.
      * @param srv Target GlassFish server.
      * @param cmd Server administration command to me executed.
@@ -252,7 +252,7 @@ public class ServerAdmin {
     /**
      * Execute remote administration command on GlassFish server.
      * <p>
-     * 
+     *
      * @param executor Executor service used to start task.
      * @param srv Target GlassFish server.
      * @param cmd Server administration command to me executed.

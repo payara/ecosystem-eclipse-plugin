@@ -24,7 +24,7 @@ import org.eclipse.payara.tools.sdk.utils.JavaUtils;
  * <p>
  * Facade to access IDE Logger methods.
  * <p>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class Logger {
@@ -48,7 +48,7 @@ public class Logger {
      * and it will configured to also send logging output to its parent's Handlers. It will be
      * registered in the LogManager global name space.
      * <p>
-     * 
+     *
      * @return GlassFish IDE SDK Logger
      * @deprecated Instantiate Logger class!
      */
@@ -61,7 +61,7 @@ public class Logger {
      * Check if a message of the given level would actually be logged by this logger. This check is
      * based on the Loggers effective level, which may be inherited from its parent.
      * <p>
-     * 
+     *
      * @param level A message logging level.
      * @return <code>true</code> if the given message level is currently being logged or
      * <code>false</code> otherwise.
@@ -82,7 +82,7 @@ public class Logger {
      * LogRecord parameters property. Thus is it processed specially by output Formatters and is not
      * treated as a formatting parameter to the LogRecord message property.
      * <p>
-     * 
+     *
      * @param level One of the message level identifiers, e.g., SEVERE.
      * @param msg The string message (or a key in the message catalog).
      * @param thrown <code>Throwable</code> associated with log message.
@@ -99,7 +99,7 @@ public class Logger {
      * If the logger is currently enabled for the given message level then a corresponding LogRecord is
      * created and forwarded to all the registered output Handler objects.
      * <p>
-     * 
+     *
      * @param level One of the message level identifiers, e.g. SEVERE.
      * @param msg The string message (or a key in the message catalog).
      * @param param Parameter to the message.
@@ -116,7 +116,7 @@ public class Logger {
      * If the logger is currently enabled for the given message level then a corresponding LogRecord is
      * created and forwarded to all the registered output Handler objects.
      * <p>
-     * 
+     *
      * @param level One of the message level identifiers, e.g. SEVERE.
      * @param msg The string message (or a key in the message catalog).
      * @param params Array of parameters to the message.
@@ -156,7 +156,7 @@ public class Logger {
     /**
      * Build properties file name with suffix.
      * <p/>
-     * 
+     *
      * @param file Messages catalog file name.
      * @param locales Add locale suffix when <code>true</code> or do not add it when <code>false</code>.
      * @return Messages catalog file name with properties file suffix.
@@ -175,7 +175,7 @@ public class Logger {
      * <p/>
      * Properties catalog for package of provided class will be loaded from provided file when missing.
      * <p/>
-     * 
+     *
      * @param file Messages catalog file name.
      * @param propsMap Package to properties catalog mapping.
      * @param c Class to determine properties file package.
@@ -215,7 +215,7 @@ public class Logger {
     /**
      * Return message from log messages properties file with given key.
      * <p/>
-     * 
+     *
      * @param c Class to determine properties file package.
      * @param key Exception message properties key.
      * @return Message from log messages properties file with given key.
@@ -227,7 +227,7 @@ public class Logger {
     /**
      * Return message from exception messages properties file with given key.
      * <p/>
-     * 
+     *
      * @param c Class to determine properties file package.
      * @param key Exception message properties key.
      * @return Message from exception messages properties file with given key.
@@ -256,7 +256,7 @@ public class Logger {
     /**
      * Creates an instance of library internal logger.
      * <p/>
-     * 
+     *
      * @param c Class where logger instance was created.
      */
     public Logger(final Class c) {
@@ -272,7 +272,7 @@ public class Logger {
     /**
      * Builds message key as <code>&lt;class_name&gt;.&lt;method_name&gt;.&lt;key&gt;</code>.
      * <p/>
-     * 
+     *
      * @param method The message string method key.
      * @param key The message string key.
      * @return Message key as <code>&lt;class_name&gt;.&lt;method_name&gt;.&lt;key&gt;</code>.
@@ -295,7 +295,7 @@ public class Logger {
     /**
      * Return message from exception messages properties file with given key.
      * <p/>
-     * 
+     *
      * @param method The message string method key.
      * @param key The message string key.
      * @return Message from exception messages properties file with given key.
@@ -307,7 +307,7 @@ public class Logger {
     /**
      * Return message from exception messages properties file with given key and attributes.
      * <p/>
-     * 
+     *
      * @param method The message string method key.
      * @param key The message string key.
      * @param attrs Message attributes.
@@ -324,7 +324,7 @@ public class Logger {
      * Check if a message of the given level would actually be logged by this logger. This check is
      * based on the Loggers effective level, which may be inherited from its parent.
      * <p>
-     * 
+     *
      * @param level A message logging level.
      * @return <code>true</code> if the given message level is currently being logged or
      * <code>false</code> otherwise.
@@ -339,7 +339,7 @@ public class Logger {
      * If the logger is currently enabled for the given message level then the given message is
      * forwarded to all the registered output Handler objects.
      * <p>
-     * 
+     *
      * @param level One of the message level identifiers, e.g., SEVERE.
      * @param method The message string method key.
      * @param key The message string key.
@@ -358,7 +358,7 @@ public class Logger {
      * LogRecord parameters property. Thus is it processed specially by output Formatters and is not
      * treated as a formatting parameter to the LogRecord message property.
      * <p>
-     * 
+     *
      * @param level One of the message level identifiers, e.g., SEVERE.
      * @param method The message string method key.
      * @param key The message string key.
@@ -375,7 +375,7 @@ public class Logger {
      * If the logger is currently enabled for the given message level then a corresponding LogRecord is
      * created and forwarded to all the registered output Handler objects.
      * <p>
-     * 
+     *
      * @param level One of the message level identifiers, e.g. SEVERE.
      * @param method The message string method key.
      * @param key The message string key.
@@ -392,7 +392,7 @@ public class Logger {
      * If the logger is currently enabled for the given message level then a corresponding LogRecord is
      * created and forwarded to all the registered output Handler objects.
      * <p>
-     * 
+     *
      * @param level One of the message level identifiers, e.g. SEVERE.
      * @param method The message string method key.
      * @param key The message string key.
@@ -405,7 +405,7 @@ public class Logger {
 
     /**
      * Log an exception message as is.
-     * 
+     *
      * @param level One of the message level identifiers, e.g. SEVERE.
      * @param message The message to be logged as is.
      */

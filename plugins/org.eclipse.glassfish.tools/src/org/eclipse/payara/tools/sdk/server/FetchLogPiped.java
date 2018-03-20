@@ -35,7 +35,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
  * <p/>
  * Data are fetched in service thread and passed into <code>PipedOutputStream</code>.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public abstract class FetchLogPiped
@@ -64,7 +64,7 @@ public abstract class FetchLogPiped
      * Decision if server is local or remote depends on domains folder and domain name attributes stored
      * in <code>GlassFishServer</code> object.
      * <p/>
-     * 
+     *
      * @param server GlassFish server for fetching server log.
      * @param skip Skip to the end of the log file.
      * @return Newly created <code>FetchLog</code> instance.
@@ -86,7 +86,7 @@ public abstract class FetchLogPiped
      * in <code>GlassFishServer</code> object. Log file is passed whole as is without skipping to the
      * end.
      * <p/>
-     * 
+     *
      * @param server GlassFish server for fetching server log.
      * @return Newly created <code>FetchLog</code> instance.
      */
@@ -101,7 +101,7 @@ public abstract class FetchLogPiped
      * Decision if server is local or remote depends on domains folder and domain name attributes stored
      * in <code>GlassFishServer</code> object.
      * <p/>
-     * 
+     *
      * @param executor Executor service used to start task.
      * @param server GlassFish server for fetching server log.
      * @param skip Skip to the end of the log file.
@@ -125,7 +125,7 @@ public abstract class FetchLogPiped
      * in <code>GlassFishServer</code> object. Log file is passed whole as is without skipping to the
      * end.
      * <p/>
-     * 
+     *
      * @param executor Executor service used to start task.
      * @param server GlassFish server for fetching server log.
      * @return Newly created <code>FetchLog</code> instance.
@@ -169,7 +169,7 @@ public abstract class FetchLogPiped
      * executed. Here we can simply connect already initialized <code>PipedInputStream</code> with newly
      * created <code>PipedInputStream</code>.
      * <p/>
-     * 
+     *
      * @param server GlassFish server for fetching server log.
      * @param skip Skip to the end of the log file.
      */
@@ -207,7 +207,7 @@ public abstract class FetchLogPiped
      * executed. Here we can simply connect already initialized <code>PipedInputStream</code> with newly
      * created <code>PipedInputStream</code>.
      * <p/>
-     * 
+     *
      * @param executor Executor service used to start task.
      * @param server GlassFish server for fetching server log.
      * @param skip Skip to the end of the log file.
@@ -242,7 +242,7 @@ public abstract class FetchLogPiped
      * exists when <code>FetchLogRemote</code> constructor is running so it may be used as argument for
      * local <code>PipedOutputStream</code> initialization.
      * <p/>
-     * 
+     *
      * @return <code>PipedInputStream</code> where log lines received from server will be available to
      * read.
      */
@@ -258,7 +258,7 @@ public abstract class FetchLogPiped
     /**
      * Add GlassFish log fetcher state change listener at the end of listeners list.
      * <p/>
-     * 
+     *
      * @param listener Listener for state change events in GlassFish log fetcher to be added. Value
      * shall not be <code>null</code>.
      * @throws FetchLogException When <code>listener</code> parameter is <code>null</code>.
@@ -277,7 +277,7 @@ public abstract class FetchLogPiped
     /**
      * Remove all occurrences of log fetcher state change listener from listeners list.
      * <p/>
-     * 
+     *
      * @param listener Listener for state change events in GlassFish log fetcher to be removed. Value
      * shall not be <code>null</code>.
      * @return Value of <code>true</code> when at least one listener was removed or <code>false</code>
@@ -310,7 +310,7 @@ public abstract class FetchLogPiped
     /**
      * Notify all GlassFish log fetcher state change listeners about state change event.
      * <p/>
-     * 
+     *
      * @param state Current GlassFish log fetcher state.
      * @return Current GlassFish log fetcher state.
      */
@@ -342,7 +342,7 @@ public abstract class FetchLogPiped
     /**
      * Stop running task if it's still running.
      * <p/>
-     * 
+     *
      * @return Task execution result.
      */
     private TaskState stop() {
@@ -396,7 +396,7 @@ public abstract class FetchLogPiped
     /**
      * Check if log lines reading task is running.
      * <p/>
-     * 
+     *
      * @return Returns <code>true</code> when task is still running or <code>false></code> otherwise.
      */
     public boolean isRunning() {

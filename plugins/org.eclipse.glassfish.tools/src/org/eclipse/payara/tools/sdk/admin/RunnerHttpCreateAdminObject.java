@@ -18,7 +18,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
  * Contains code for create administered object command. Class implements GlassFish server
  * administration functionality trough HTTP interface.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RunnerHttpCreateAdminObject extends RunnerHttp {
@@ -66,7 +66,7 @@ public class RunnerHttpCreateAdminObject extends RunnerHttp {
      * { ':' &lt;pname&gt; '=' &lt;pvalue&gt;} ]</code> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
      * ['&' "enabled" '=' true|false ]<br/>
      * <p/>
-     * 
+     *
      * @param command GlassFish server administration command entity.
      * <code>CommandCreateAdminObject</code> instance is expected.
      * @return Create JDBC connection pool query string for given command.
@@ -126,7 +126,7 @@ public class RunnerHttpCreateAdminObject extends RunnerHttp {
     /**
      * Constructs an instance of administration command executor using HTTP interface.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */

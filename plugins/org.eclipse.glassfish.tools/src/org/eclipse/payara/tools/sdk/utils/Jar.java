@@ -22,7 +22,7 @@ import java.util.jar.Manifest;
  * This class is a stream wrapper. {@link #close} method should be called before class instance is
  * abandoned like when working with streams.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class Jar {
@@ -47,7 +47,7 @@ public class Jar {
     /**
      * Creates an instance of JAR file.
      * <p/>
-     * 
+     *
      * @param jarfile JAR file to be opened.
      */
     public Jar(File jarfile) {
@@ -64,7 +64,7 @@ public class Jar {
     /**
      * Creates an instance of JAR file.
      * <p/>
-     * 
+     *
      * @param jarfile JAR file to be opened.
      */
     public Jar(String jarfile) {
@@ -85,7 +85,7 @@ public class Jar {
     /**
      * Returns the <code>Manifest</code> for this JAR file, or <code>null</code> if none.
      * <p/>
-     * 
+     *
      * @return The <code>Manifest</code> for this JAR file, or <code>null</code> if none.
      */
     public Manifest getManifest() {
@@ -95,7 +95,7 @@ public class Jar {
     /**
      * Returns the bundle version string from Manifest file.
      * <p/>
-     * 
+     *
      * @return Bundle version string from Manifest file or <code>null</code> when no such attribute
      * exists.
      */

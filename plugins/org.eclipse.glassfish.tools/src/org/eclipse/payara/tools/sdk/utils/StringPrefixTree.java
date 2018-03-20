@@ -18,7 +18,7 @@ import java.util.TreeMap;
  * This class is not thread safe so external synchronization may be needed in multi threaded
  * environment.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class StringPrefixTree<Type> {
@@ -45,7 +45,7 @@ public class StringPrefixTree<Type> {
          * Create <code>Character</code> object from given char value and apply case sensitive settings on
          * it.
          * <p/>
-         * 
+         *
          * @param c Character to be used as <Character</code> object value.
          * @return <code>Character</code> object containing given char value with case sensitive settings
          * rules applied.
@@ -66,7 +66,7 @@ public class StringPrefixTree<Type> {
         /**
          * Creates an instance of internal tree node in final state and stored value.
          * <p/>
-         * 
+         *
          * @param value Value to be stored into node.
          */
         Node(Type value) {
@@ -94,7 +94,7 @@ public class StringPrefixTree<Type> {
          * <p/>
          * Old value is overwritten if exists.
          * <p/>
-         * 
+         *
          * @param value Value to be stored into node.
          */
         void setValue(Type value) {
@@ -104,7 +104,7 @@ public class StringPrefixTree<Type> {
         /**
          * Retrieve value from node.
          * <p/>
-         * 
+         *
          * @return Value stored in node or <code>null</code> if no value is stored.
          */
         Type getValue() {
@@ -114,7 +114,7 @@ public class StringPrefixTree<Type> {
         /**
          * Get node state.
          * <p/>
-         * 
+         *
          * @return Value of <code>true</code> for final state or <code>false</code> for inner state.
          */
         boolean isFinal() {
@@ -124,7 +124,7 @@ public class StringPrefixTree<Type> {
         /**
          * Add next state on transition for given character.
          * <p/>
-         * 
+         *
          * @param c Character to set transition to next state.
          * @param node <code>Node</code> representing next transition.
          */
@@ -135,7 +135,7 @@ public class StringPrefixTree<Type> {
         /**
          * Remove next state on transition for given character.
          * <p/>
-         * 
+         *
          * @param c Character to remove transition to next state.
          */
         Node remove(char c) {
@@ -145,7 +145,7 @@ public class StringPrefixTree<Type> {
         /**
          * Get next state on transition for given character.
          * <p/>
-         * 
+         *
          * @param c Character to get transition to next state.
          * @return <code>Node</code> representing next transition or <code>null</code> if there is no
          * transition.
@@ -157,7 +157,7 @@ public class StringPrefixTree<Type> {
         /**
          * Get number of transitions to next states from this node.
          * <p/>
-         * 
+         *
          * @return Number of transitions to next states from this node.
          */
         int size() {
@@ -214,7 +214,7 @@ public class StringPrefixTree<Type> {
         /**
          * Creates an instance of stack item (stack data storage).
          * <p/>
-         * 
+         *
          * @param node Tree node to be processed.
          */
         StackItem(Node node) {
@@ -259,7 +259,7 @@ public class StringPrefixTree<Type> {
      * <p/>
      * This method will modify node that represents last character in newly added <code>String</code>.
      * <p/>
-     * 
+     *
      * @param node Node to be marked as final and used to store value.
      * @param value Value to be stored into node.
      */
@@ -274,7 +274,7 @@ public class StringPrefixTree<Type> {
      * <p/>
      * This method will modify node that represents last character of <code>String</code> being removed.
      * <p/>
-     * 
+     *
      * @param node Node to be marked as inner and to remove its value
      */
     private void removeValuefromString(Node node) {
@@ -290,7 +290,7 @@ public class StringPrefixTree<Type> {
      * This method adds new node representing last character in newly added <code>String</code> under
      * given node which represents character before last one or nodes root.
      * <p/>
-     * 
+     *
      * @param node Node where new node with last character will be attached.
      * @param value Value to be stored into newly attached node.
      */
@@ -331,7 +331,7 @@ public class StringPrefixTree<Type> {
      * <p/>
      * <code>null</code> value of <code>str</code> argument is considered as empty string.
      * <p/>
-     * 
+     *
      * @param str <code>String</code> to be added into prefix tree.
      * @param value Value mapped to newly added <code>String</code>.
      * @return Value of <code>true</code> if given <code>String</code> has been added or
@@ -375,7 +375,7 @@ public class StringPrefixTree<Type> {
     /**
      * Remove <code>String</code> from prefix tree and remove value mapped to this string.
      * <P/>
-     * 
+     *
      * @param str <code>String</code> to be removed from prefix tree.
      * @return Value mapped to removed node.
      */
@@ -422,7 +422,7 @@ public class StringPrefixTree<Type> {
      * <code>null</code> value of <code>str</code> argument is considered as empty string. Matching is
      * done from the beginning of given <code>String</code> argument.
      * <p/>
-     * 
+     *
      * @param str String to match against tree.
      * @return Value of matching <code>String</code> or <code>null</code> if no matching
      * <code>String</code> was found.
@@ -438,7 +438,7 @@ public class StringPrefixTree<Type> {
      * <code>null</code> value of <code>str</code> argument is considered as empty string. Matching is
      * done from the beginning of given <code>String</code> argument.
      * <p/>
-     * 
+     *
      * @param str String to match against tree.
      * @param offset Beginning index for searching.
      * @return Value of matching <code>String</code> or <code>null</code> if no matching
@@ -470,7 +470,7 @@ public class StringPrefixTree<Type> {
      * are compared and longest possible <code>String</code> stored in prefix tree is evaluated as
      * matching. Zero length is evaluated as empty string.
      * <p/>
-     * 
+     *
      * @param buff Cyclic buffer containing source string.
      * @param len Length of string to be compared.
      * @param beg Index of beginning of the string (1st character) in cyclic buffer.
@@ -503,7 +503,7 @@ public class StringPrefixTree<Type> {
      * <code>null</code> value of <code>str</code> argument is considered as empty string. Matching is
      * done from the beginning of given <code>String</code> argument.
      * <p/>
-     * 
+     *
      * @param str <code>String</code> used to prefixMatch prefix tree against.
      * @return Value of longest possible <code>String</code> stored in prefix tree that is matching
      * given <code>String</code> argument prefix or <code>null</code> if no such stored
@@ -520,7 +520,7 @@ public class StringPrefixTree<Type> {
      * <code>null</code> value of <code>str</code> argument is considered as empty string. Matching is
      * done from the beginning of given <code>String</code> argument.
      * <p/>
-     * 
+     *
      * @param offset Beginning index for searching.
      * @param str <code>String</code> used to prefixMatch prefix tree against.
      * @return Value of longest possible <code>String</code> stored in prefix tree that is matching
@@ -547,7 +547,7 @@ public class StringPrefixTree<Type> {
     /**
      * Get number of strings stored in prefix tree.
      * <p/>
-     * 
+     *
      * @return Number of strings stored in prefix tree.
      */
     public int size() {

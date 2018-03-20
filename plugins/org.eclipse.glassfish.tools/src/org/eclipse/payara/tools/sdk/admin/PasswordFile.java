@@ -80,7 +80,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
  * <li><code>AS_ADMIN_SSHKEYPASSPHRASE=${ALIAS=ssh-key-passphrase-alias}</code></li>
  * </ul>
  * <p/>
- * 
+ *
  * @author Tomas Kraus
  */
 public class PasswordFile {
@@ -164,7 +164,7 @@ public class PasswordFile {
      * Content of password file is not read from file so at least administrator password from
      * {@link GlassFishServer} must be provided.
      * <p/>
-     * 
+     *
      * @param server GlassFish server instance.
      */
     PasswordFile(final GlassFishServer server) {
@@ -188,7 +188,7 @@ public class PasswordFile {
     /**
      * Get administrator password value (mandatory).
      * <p/>
-     * 
+     *
      * @return Administrator password value (mandatory).
      */
     public String getAdminPassword() {
@@ -198,7 +198,7 @@ public class PasswordFile {
     /**
      * Get administrator password value (mandatory).
      * <p/>
-     * 
+     *
      * @param adminPassword Administrator password value (mandatory).
      */
     public void setAdminPassword(String adminPassword) {
@@ -208,7 +208,7 @@ public class PasswordFile {
     /**
      * Get master password value (optional).
      * <p/>
-     * 
+     *
      * @return Master password value (optional).
      */
     public String getMasterPassword() {
@@ -218,7 +218,7 @@ public class PasswordFile {
     /**
      * Get master password value (optional).
      * <p/>
-     * 
+     *
      * @param masterPassword Master password value (optional).
      */
     public void setMasterPassword(String masterPassword) {
@@ -228,7 +228,7 @@ public class PasswordFile {
     /**
      * Get new administrator password to be set (optional).
      * <p/>
-     * 
+     *
      * @return New administrator password to be set (optional).
      */
     public String getAdminNewPassword() {
@@ -238,7 +238,7 @@ public class PasswordFile {
     /**
      * Get new administrator password to be set (optional).
      * <p/>
-     * 
+     *
      * @param adminNewPassword New administrator password to be set (optional).
      */
     public void setAdminNewPassword(String adminNewPassword) {
@@ -252,7 +252,7 @@ public class PasswordFile {
     /**
      * Build password file content to be written into file.
      * <p/>
-     * 
+     *
      * @return Password file content.
      */
     private String dataToWrite() {
@@ -282,7 +282,7 @@ public class PasswordFile {
     /**
      * Create password file to be written with access permissions to read and write by user only.
      * <p/>
-     * 
+     *
      * @return Value of <code>true</code> if new file was created or <code>false</code> otherwise
      */
     private boolean createFilePosix() {
@@ -331,7 +331,7 @@ public class PasswordFile {
      * <p/>
      * Attempts to set file access permissions to read by user only.
      * <p/>
-     * 
+     *
      * @return Value of <code>true</code> when file was successfully written or <code>false</code>
      * otherwise.
      */

@@ -38,7 +38,7 @@ import org.eclipse.payara.tools.sdk.logging.Logger;
 /**
  * Networking utilities
  * <p/>
- * 
+ *
  * @author Tomas Kraus
  */
 public class NetUtils {
@@ -56,7 +56,7 @@ public class NetUtils {
         /**
          * Compares values of <code>InetAddr</code> instances.
          * <p/>
-         * 
+         *
          * @param ip1 First <code>InetAddr</code> instance to be compared.
          * @param ip2 Second <code>InetAddr</code> instance to be compared.
          * @return A negative integer, zero, or a positive integer as the first argument is less than, equal
@@ -132,7 +132,7 @@ public class NetUtils {
     /**
      * Finds out if server is running on remote host by connecting to remote host and port.
      * <p/>
-     * 
+     *
      * @param host Server host.
      * @param port Server port.
      * @param timeout Network connection timeout [ms].
@@ -167,7 +167,7 @@ public class NetUtils {
     /**
      * Finds out if server is running on remote host by connecting to remote host and port.
      * <p/>
-     * 
+     *
      * @param host Server host.
      * @param port Server port.
      * @return Returns <code>true</code> when server port is accepting connections or <code>false</code>
@@ -181,7 +181,7 @@ public class NetUtils {
     /**
      * Finds out if server is running on local host by binding to local port.
      * <p/>
-     * 
+     *
      * @param host Server host or <code>null</code> value for address of the loopback interface.
      * @param port Server port.
      * @return Returns <code>true</code> when server port is accepting connections or <code>false</code>
@@ -226,7 +226,7 @@ public class NetUtils {
      * <p/>
      * Dealing only with simple cases.
      * <p/>
-     * 
+     *
      * @param host Host name to be checked.
      */
     public static boolean isLocahost(String host) {
@@ -265,7 +265,7 @@ public class NetUtils {
      * GlassFish cases. No Harm, just an annoying warning, so we need to use this call only when really
      * needed.
      * <p/>
-     * 
+     *
      * @param hostname The host for the HTTP listener.
      * @param port The port for the HTTP listener.
      * @throws IOException
@@ -286,7 +286,7 @@ public class NetUtils {
      * GlassFish cases. No Harm, just an annoying warning, so we need to use this call only when really
      * needed.
      * <p/>
-     * 
+     *
      * @param hostname The host for the HTTP listener.
      * @param port The port for the HTTP listener.
      * @param depth Method calling depth.
@@ -362,7 +362,7 @@ public class NetUtils {
     /**
      * Retrieve {@link Set} of IP addresses of this host.
      * <p/>
-     * 
+     *
      * @return {@link Set} of IP addresses of this host.
      * @throws GlassFishIdeException if addresses of this host could not be retrieved.
      */
@@ -388,7 +388,7 @@ public class NetUtils {
     /**
      * Retrieve {@link Set} of IPv4 addresses of this host.
      * <p/>
-     * 
+     *
      * @return {@link Set} of IPv4 addresses of this host.
      */
     public static Set<Inet4Address> getHostIP4s() {
@@ -416,7 +416,7 @@ public class NetUtils {
     /**
      * Retrieve {@link Set} of IPv6 addresses of this host.
      * <p/>
-     * 
+     *
      * @return {@link Set} of IPv6 addresses of this host.
      */
     public static Set<Inet6Address> getHostIP6s() {

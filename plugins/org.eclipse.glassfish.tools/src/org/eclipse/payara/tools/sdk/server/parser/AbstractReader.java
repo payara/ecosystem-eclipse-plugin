@@ -12,7 +12,7 @@ package org.eclipse.payara.tools.sdk.server.parser;
 /**
  * Abstract XML element reader.
  * <p/>
- * 
+ *
  * @author Peter Benedikovic, Tomas Kraus
  */
 public abstract class AbstractReader extends TreeParser.NodeListener {
@@ -31,7 +31,7 @@ public abstract class AbstractReader extends TreeParser.NodeListener {
     /**
      * Creates an instance of Java EE platform check configuration XML element reader.
      * <p/>
-     * 
+     *
      * @param pathPrefix Tree parser path prefix to be prepended before current XML element.
      * @param node XML element name.
      */
@@ -54,7 +54,7 @@ public abstract class AbstractReader extends TreeParser.NodeListener {
     /**
      * Get current element tree parser path.
      * <p/>
-     * 
+     *
      * @return Current element tree parser path.
      */
     String getPath() {

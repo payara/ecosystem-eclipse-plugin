@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * Library content set for library content for GlassFish features configuration.
  * <p/>
- * 
+ *
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class FileSet {
@@ -43,7 +43,7 @@ public class FileSet {
     /**
      * Creates an instance of Library content for GlassFish libraries configuration.
      * <p/>
-     * 
+     *
      * @param paths Paths retrieved from XML elements.
      * @param links Links retrieved from XML elements.
      * @param filesets File sets retrieved from XML elements.
@@ -63,7 +63,7 @@ public class FileSet {
      * <p/>
      * Content of links and lookups is set to <code>null</code>.
      * <p/>
-     * 
+     *
      * @param paths Paths retrieved from XML elements.
      * @param filesets File sets retrieved from XML elements.
      */
@@ -79,7 +79,7 @@ public class FileSet {
     /**
      * Get paths retrieved from XML elements.
      * <p/>
-     * 
+     *
      * @return Paths sets retrieved from XML elements.
      */
     public List<String> getPaths() {
@@ -89,7 +89,7 @@ public class FileSet {
     /**
      * Get links retrieved from XML elements.
      * <p/>
-     * 
+     *
      * @return Links sets retrieved from XML elements.
      */
     public List<String> getLinks() {
@@ -99,7 +99,7 @@ public class FileSet {
     /**
      * Get file sets retrieved from XML elements.
      * <p/>
-     * 
+     *
      * @return File sets retrieved from XML elements.
      */
     public Map<String, List<String>> getFilesets() {
@@ -109,7 +109,7 @@ public class FileSet {
     /**
      * Get lookups retrieved from XML elements.
      * <p/>
-     * 
+     *
      * @return Links sets retrieved from XML elements.
      */
     public List<String> getLookups() {

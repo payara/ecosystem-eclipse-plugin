@@ -18,7 +18,7 @@ import java.util.Map;
  * Stores administration command result values and command execution state. Result value is
  * <code>Map</code>.
  * <p>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class ResultMap<K, V> extends Result<Map<K, V>> {
@@ -48,7 +48,7 @@ public class ResultMap<K, V> extends Result<Map<K, V>> {
 
     /**
      * Get value returned by administration command execution.
-     * 
+     *
      * @return Value returned by administration command execution.
      */
     @Override

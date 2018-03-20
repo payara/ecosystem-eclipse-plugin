@@ -18,7 +18,7 @@ import org.xml.sax.SAXException;
 /**
  * <code>link</code> library configuration XML element reader.
  * <p/>
- * 
+ *
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class LinkReader extends TreeParser.NodeListener {
@@ -37,7 +37,7 @@ public class LinkReader extends TreeParser.NodeListener {
     /**
      * Process attributes from current XML element.
      * <p/>
-     * 
+     *
      * @param qname Not used.
      * @param attributes List of XML attributes.
      * @throws SAXException When any problem occurs.
@@ -55,7 +55,7 @@ public class LinkReader extends TreeParser.NodeListener {
     /**
      * Get links retrieved from XML elements.
      * <p/>
-     * 
+     *
      * @return Links sets retrieved from XML elements.
      */
     public List<String> getLinks() {

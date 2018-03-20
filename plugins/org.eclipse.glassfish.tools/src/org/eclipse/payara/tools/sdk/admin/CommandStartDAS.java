@@ -55,7 +55,7 @@ public class CommandStartDAS extends CommandJavaClassPath {
 
     /**
      * Constructs an instance of GlassFish server start DAS command entity.
-     * 
+     *
      * @param javaHome Java SE home used to select JRE for GlassFish server.
      * @param classPath Java SE class path.
      * @param javaOptions JVM options to be passed to java executable.

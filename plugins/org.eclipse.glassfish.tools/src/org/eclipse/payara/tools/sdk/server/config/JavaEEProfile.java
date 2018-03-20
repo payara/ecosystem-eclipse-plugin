@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * JavaEE profiles supported by Glassfish.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public enum JavaEEProfile {
@@ -65,7 +65,7 @@ public enum JavaEEProfile {
         /**
          * Creates an instance of JavaEE profile type.
          * <p/>
-         * 
+         *
          * @param name JavaEE profile type name.
          */
         private Type(final String name) {
@@ -75,7 +75,7 @@ public enum JavaEEProfile {
         /**
          * Converts JavaEE profile type value to <code>String</code>.
          * <p/>
-         * 
+         *
          * @return A <code>String</code> representation of the value of this object.
          */
         @Override
@@ -105,7 +105,7 @@ public enum JavaEEProfile {
         /**
          * Creates an instance of JavaEE profile type.
          * <p/>
-         * 
+         *
          * @param name JavaEE profile type name.
          */
         private Version(final String name) {
@@ -115,7 +115,7 @@ public enum JavaEEProfile {
         /**
          * Converts JavaEE profile type value to <code>String</code>.
          * <p/>
-         * 
+         *
          * @return A <code>String</code> representation of the value of this object.
          */
         @Override
@@ -156,7 +156,7 @@ public enum JavaEEProfile {
     /**
      * Create JavaEE profile names to be recognized.
      * <p/>
-     * 
+     *
      * @param profile JavaEE profile.
      * @return Array of names.
      * @throws ServerConfigException when JavaEE profile type is not recognized.
@@ -195,7 +195,7 @@ public enum JavaEEProfile {
      * specified <code>String</code> matches any <code>String</code> returned by <code>toString</code>
      * method. Otherwise <code>null</code> value is returned.
      * <p>
-     * 
+     *
      * @param name Value containing <code>JavaEEProfile</code> <code>toString</code> representation.
      * @return <code>JavaEEProfile</code> value represented by <code>String</code> or <code>null</code>
      * if value was not recognized.
@@ -215,7 +215,7 @@ public enum JavaEEProfile {
      * <code>String</code> returned by <code>toString</code> method. Otherwise <code>null</code> value
      * is returned.
      * <p>
-     * 
+     *
      * @param version Value containing <code>JavaEEProfile</code> version <code>toString</code>
      * representation.
      * @param type Value containing <code>JavaEEProfile</code> type <code>toString</code>
@@ -256,7 +256,7 @@ public enum JavaEEProfile {
     /**
      * Creates an instance of JavaEE profiles supported by Glassfish.
      * <p/>
-     * 
+     *
      * @param version JavaEE profile version.
      * @param type JavaEE profile type.
      * @param name Name of JavaEE profile value.
@@ -275,7 +275,7 @@ public enum JavaEEProfile {
     /**
      * Converts JavaEE profile version value to <code>String</code>.
      * <p/>
-     * 
+     *
      * @return A <code>String</code> representation of the value of this object.
      */
     @Override
@@ -286,7 +286,7 @@ public enum JavaEEProfile {
     /**
      * Get profile type.
      * <p/>
-     * 
+     *
      * @return Profile type.
      */
     public Type getType() {

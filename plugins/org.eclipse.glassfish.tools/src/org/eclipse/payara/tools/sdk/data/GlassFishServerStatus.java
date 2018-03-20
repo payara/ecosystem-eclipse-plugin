@@ -17,7 +17,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
  * <p/>
  * GlassFish Server entity interface allows to use foreign entity classes.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public interface GlassFishServerStatus {
@@ -29,7 +29,7 @@ public interface GlassFishServerStatus {
     /**
      * Get GlassFish server entity.
      * <p/>
-     * 
+     *
      * @return GlassFish server entity.
      */
     public GlassFishServer getServer();
@@ -37,7 +37,7 @@ public interface GlassFishServerStatus {
     /**
      * Get current GlassFish server status.
      * <p/>
-     * 
+     *
      * @return Current GlassFish server status.
      */
     public GlassFishStatus getStatus();

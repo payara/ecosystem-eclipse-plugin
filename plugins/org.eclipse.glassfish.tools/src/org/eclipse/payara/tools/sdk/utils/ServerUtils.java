@@ -55,7 +55,7 @@ public class ServerUtils {
         /**
          * Test whether or not the specified pathname is GlassFish server subdirectory.
          * <p/>
-         * 
+         *
          * @param path Pathname to be tested.
          * @return Returns <code>true</code> when given <code>File</code> should be included or
          * <code>false</code> otherwise.
@@ -87,7 +87,7 @@ public class ServerUtils {
         /**
          * Creates an instance of GlassFish servers file name pattern filter.
          * <p/>
-         * 
+         *
          * @param namePattern GlassFish servers file name pattern.
          */
         public VersionFilter(final String namePattern) {
@@ -98,7 +98,7 @@ public class ServerUtils {
         /**
          * Test whether or not the specified pathname is valid GlassFish server.
          * <p/>
-         * 
+         *
          * @param path Pathname to be tested.
          * @return Returns <code>true</code> when given <code>File</code> should be included or
          * <code>false</code> otherwise.
@@ -275,7 +275,7 @@ public class ServerUtils {
      * Search for <code>.jar</code> file matching given pattern in
      * <code>&lt;serverHome&gt;/modules</code> directory tree.
      * <p/>
-     * 
+     *
      * @param serverHome GlassFish server home.
      * @param pattern File name pattern.
      * @return <code>File</code> object containing full <code>.jar<code> file
@@ -288,7 +288,7 @@ public class ServerUtils {
     /**
      * Search for <code>.jar</code> file matching given pattern in given directory tree.
      * <p/>
-     * 
+     *
      * @param serverHome GlassFish server home.
      * @param pattern File name pattern.
      * @param dir Directory tree root to be searched for <code>.jar<code> file.
@@ -303,7 +303,7 @@ public class ServerUtils {
     /**
      * Search for file matching given <code>pattern</code> in given <code>dir</code>ectory tree.
      * <p/>
-     * 
+     *
      * @param pattern Name pattern to search for.
      * @param dir Directory tree root to be searched for pattern.
      * @return <code>File</code> object that matches given <code>pattern</code> or <code>null</code>
@@ -340,7 +340,7 @@ public class ServerUtils {
      * Append next path element to existing path in <code>StringBuilder</code>. Path separator is added
      * only when there is no one at the end of existing path.
      * <p/>
-     * 
+     *
      * @param rootPath Already existing path in <code>StringBuilder</code>.
      * @param next Path to be appended at the end of already existing path.
      */
@@ -356,7 +356,7 @@ public class ServerUtils {
     /**
      * Build path to the <code>common-util.jar</code> file in GlassFish modules directory.
      * <p/>
-     * 
+     *
      * @param serverHome GlassFish server home directory.
      * @return Path to the <code>common-util.jar</code> file in GlassFish modules directory.
      */
@@ -372,7 +372,7 @@ public class ServerUtils {
     /**
      * Build path to the supplied <code>.jar</code> file in GlassFish modules directory.
      * <p/>
-     * 
+     *
      * @param serverHome GlassFish server home directory. This argument should not be <code>null</code>.
      * @param jarName Supplied JAR file name. This argument should not be <code>null</code>.
      * @return Path to the <code>.jar</code> file in GlassFish modules directory.
@@ -394,7 +394,7 @@ public class ServerUtils {
      * and returns <code>File</code> that was found or <code>null</code> when no such a file exists and
      * is readable.
      * <p/>
-     * 
+     *
      * @param serverHome GlassFish server home directory. This argument should not be <code>null</code>.
      */
     public static File getJerseyCommonJarInModules(final String serverHome) {
@@ -413,7 +413,7 @@ public class ServerUtils {
     /**
      * Build path to the supplied <code>verifier.jar</code> library in GlassFish modules directory.
      * <p/>
-     * 
+     *
      * @param serverHome GlassFish server home directory. This argument should not be <code>null</code>.
      * @return Path to the <code>verifier.ja</code> file in GlassFish modules directory.
      */
@@ -437,7 +437,7 @@ public class ServerUtils {
     /**
      * Build path to the supplied <code>javahelp.jar</code> library in GlassFish modules directory.
      * <p/>
-     * 
+     *
      * @param serverHome GlassFish server home directory. This argument should not be <code>null</code>.
      * @return Path to the <code>javahelp.jar</code> file in GlassFish libraries directory.
      */
@@ -462,7 +462,7 @@ public class ServerUtils {
      * Build path to the <code>glassfish-embedded-static-shell.jar</code> library in embedded libraries
      * directory.
      * <p/>
-     * 
+     *
      * @param serverHome GlassFish server home directory. This argument should not be <code>null</code>.
      * @return Path to the <code>glassfish-embedded-static-shell.jar</code> file in GlassFish embedded
      * libraries directory.
@@ -489,7 +489,7 @@ public class ServerUtils {
     /**
      * Retrieve Jersey version string from GlassFish modules.
      * <p/>
-     * 
+     *
      * @param serverHome GlassFish server home directory. This argument should not be <code>null</code>.
      * @return Jersey version string from GlassFish modules.
      */
@@ -508,7 +508,7 @@ public class ServerUtils {
     /**
      * Retrieve version numbers substring from full version string.
      * <p/>
-     * 
+     *
      * @param fullVersionString GlassFish server full version string, e.g.
      * <code>GlassFish Server Open Source Edition
      *                          3.1.2.2 (build 5)</code>
@@ -533,7 +533,7 @@ public class ServerUtils {
      * no guaranty for this to work forever. However GlassFish development team promised to keep this
      * API working the same way in GlassFish 3 and 4.
      * <p/>
-     * 
+     *
      * @param serverHome GlassFish server home directory.
      * @return GlassFish server version.
      */
@@ -582,7 +582,7 @@ public class ServerUtils {
     /**
      * Decode <code>Manifest</code> string to remove EOL sequences.
      * <p/>
-     * 
+     *
      * @param str String to be decoded.
      */
     public static String manifestDecode(final String str) {
@@ -596,7 +596,7 @@ public class ServerUtils {
      * Build HTTP Basic authorization base64 encoded credentials argument containing user name and
      * password.
      * <p/>
-     * 
+     *
      * @param user Username to be stored into encoded argument.
      * @param password Password to be stored into encoded argument.
      */
@@ -611,7 +611,7 @@ public class ServerUtils {
     /**
      * Tests if the server listener port is occupied.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity
      * @return Value of <code>true</code> when server listener port is occupied or <code>false</code>
      * otherwise.
@@ -624,7 +624,7 @@ public class ServerUtils {
     /**
      * Tests if the server listener port is occupied.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity
      * @param timeout Network timeout [ms].
      * @return Value of <code>true</code> when server listener port is occupied or <code>false</code>
@@ -638,7 +638,7 @@ public class ServerUtils {
     /**
      * Tests if the server administrator's port is occupied.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity.
      * @return Value of <code>true</code> when server administrator port is occupied or
      * <code>false</code> otherwise.
@@ -651,7 +651,7 @@ public class ServerUtils {
     /**
      * Tests if the server administrator's port is occupied.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity.
      * @param timeout Network timeout [ms].
      * @return Value of <code>true</code> when server administrator port is occupied or
@@ -666,7 +666,7 @@ public class ServerUtils {
      * Builds command line argument containing argument identifier, space and argument value, e.g.
      * <code>--name value</code>.
      * <p/>
-     * 
+     *
      * @param name Command line argument name including dashes at the beginning.
      * @param value Value to be appended prefixed with single space.
      * @return Command line argument concatenated together.
@@ -686,7 +686,7 @@ public class ServerUtils {
      * Component records: <code>&lt;name&gt; '&lt;' &lt;container&gt;
      * [',' &lt;container&gt;] '&gt;'</code>
      * </p>
-     * 
+     *
      * @param map Map where new component is stored under it's container key.
      * @param component Component record retrieved from server.
      * @throws <code>NullPointerException</code> when provided map argument is <code>null</code>.
@@ -724,7 +724,7 @@ public class ServerUtils {
     /**
      * Build GlassFish server log file sub path under domains root directory.
      * <p/>
-     * 
+     *
      * @return GlassFish server log file path under domains root directory.
      */
     public static String serverLogFileRelativePath() {
@@ -739,7 +739,7 @@ public class ServerUtils {
     /**
      * Get GlassFish server domain root full path.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity
      * @return GlassFish server domain root full path or <code>null</code> when server domains root
      * folder or domain name is not set.
@@ -762,7 +762,7 @@ public class ServerUtils {
     /**
      * Get GlassFish server domain configuration directory full path from domain root.
      * <p/>
-     * 
+     *
      * @param domainDir GlassFish server domain root full path.
      * @return GlassFish server domain configuration directory full path
      */
@@ -786,7 +786,7 @@ public class ServerUtils {
      * Get GlassFish server domain configuration file (domain.xml) full path from domains root and
      * domain name.
      * <p/>
-     * 
+     *
      * @param domainsRoot GlassFish server domains root full path.
      * @param domainName GlassFish server domain name.
      * @return GlassFish server domain configuration file full path
@@ -812,7 +812,7 @@ public class ServerUtils {
     /**
      * Get GlassFish server log {@link File} object.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity.
      * @return GlassFish server log {@link File} object.
      */
@@ -823,7 +823,7 @@ public class ServerUtils {
     /**
      * Get GlassFish server derby root full path.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity
      * @return GlassFish server derby root full path or <code>null</code> when server server
      * installation directory is not set.
@@ -844,7 +844,7 @@ public class ServerUtils {
     /**
      * Get GlassFish server Java VM root property.
      * <p/>
-     * 
+     *
      * @param javaHome Java VM root (home) directory to be set as property value.
      * @return GlassFish server Java VM root property to be passed to server startup command.
      */
@@ -856,7 +856,7 @@ public class ServerUtils {
      * Check if given message is the one returned by GlassFish server service response while server is
      * not yet ready.
      * <p/>
-     * 
+     *
      * @param msg Message to be checked.
      * @return Returns <code>true</code> if given message is server service response while server is not
      * yet ready or <code>false</code> otherwise.

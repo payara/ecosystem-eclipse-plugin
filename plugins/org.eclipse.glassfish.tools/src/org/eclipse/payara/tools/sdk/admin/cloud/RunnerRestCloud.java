@@ -18,7 +18,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
  * <p/>
  * Class implements GlassFish cloud administration functionality trough REST interface.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 class RunnerRestCloud extends RunnerRest {
@@ -29,7 +29,7 @@ class RunnerRestCloud extends RunnerRest {
      * This constructor prototype is called from factory class and should remain public in all child
      * classes.
      * <p/>
-     * 
+     *
      * @param server GlassFish cloud entity object.
      * @param command GlassFish server administration command entity.
      */
@@ -41,7 +41,7 @@ class RunnerRestCloud extends RunnerRest {
     /**
      * Constructs an instance of administration command executor using REST interface.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      * @param query Query string for this command.
@@ -54,7 +54,7 @@ class RunnerRestCloud extends RunnerRest {
     /**
      * Constructs an instance of administration command executor using REST interface.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      * @param path Path which builds URL we speak to.

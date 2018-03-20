@@ -12,7 +12,7 @@ package org.eclipse.payara.tools.sdk.server;
 /**
  * Listens for events in GlassFish log fetcher.
  * <p/>
- * 
+ *
  * @author Tomas Kraus
  */
 public interface FetchLogEventListener {
@@ -20,7 +20,7 @@ public interface FetchLogEventListener {
     /**
      * Notification method called when log fetcher state was changed.
      * <p/>
-     * 
+     *
      * @param event GlassFish log fetcher state change event.
      */
     public void stateChanged(final FetchLogEvent event);

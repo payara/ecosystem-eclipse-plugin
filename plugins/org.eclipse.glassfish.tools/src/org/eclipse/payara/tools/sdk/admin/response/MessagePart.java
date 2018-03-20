@@ -18,7 +18,7 @@ import java.util.Properties;
  * This part can be repeated in server response. It includes string message and can have other
  * properties. It can be nesting also other message parts.
  * <p>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class MessagePart {

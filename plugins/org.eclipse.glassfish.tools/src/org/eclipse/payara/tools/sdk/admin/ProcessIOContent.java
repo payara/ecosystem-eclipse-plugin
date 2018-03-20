@@ -17,7 +17,7 @@ import org.eclipse.payara.tools.sdk.utils.StringPrefixTree;
  * Content to verify on server administration command execution standard output and data to send on
  * standard input.
  * <p/>
- * 
+ *
  * @author Tomas Kraus
  */
 public class ProcessIOContent {
@@ -39,7 +39,7 @@ public class ProcessIOContent {
         /**
          * Creates an instance of prefix tree final node content.
          * <p/>
-         * 
+         *
          * @param index Match array index.
          * @param result Response result.
          */
@@ -73,7 +73,7 @@ public class ProcessIOContent {
         /**
          * Create an instance of abstract token expecting set of strings on standard output.
          * <p/>
-         * 
+         *
          * @param inputSuccess Array of input strings considered as successful response to be matched before
          * prompt.
          * @param inputError Array of input strings considered as error response to be matched before
@@ -108,7 +108,7 @@ public class ProcessIOContent {
         /**
          * Get process input prompt different from global input prompt.
          * <p/>
-         * 
+         *
          * @return Always returns <code>null</code>.
          */
         protected String getPrompt() {
@@ -118,7 +118,7 @@ public class ProcessIOContent {
         /**
          * Returns status of success matching.
          * <p/>
-         * 
+         *
          * @return Value of <code>true</code> when all successful input strings were matched or
          * <coe>false</code> otherwise.
          */
@@ -132,7 +132,7 @@ public class ProcessIOContent {
 
         /**
          * Array of match indicators for individual error input strings. This value shall not be null.
-         * 
+         *
          * @return the matchError
          */
         protected boolean[] getMatchError() {
@@ -142,7 +142,7 @@ public class ProcessIOContent {
         /**
          * Get strings to be matched on standard output stored in prefix tree.
          * <p/>
-         * 
+         *
          * @return Strings to be matched on standard output stored in prefix tree.
          */
         protected StringPrefixTree<TreeNode> getOutputStrings() {
@@ -152,7 +152,7 @@ public class ProcessIOContent {
         /**
          * Get maximum length of all stored strings.
          * <p/>
-         * 
+         *
          * @return Maximum length of all stored strings.
          */
         protected int getMaxLen() {
@@ -162,7 +162,7 @@ public class ProcessIOContent {
         /**
          * Search for tokens in provided string.
          * <p/>
-         * 
+         *
          * @param str String to be compared with stored tokens.
          * @param offset Beginning index for searching.
          * @return Search result.
@@ -193,7 +193,7 @@ public class ProcessIOContent {
         /**
          * Create an instance of output token expecting set of strings on standard output.
          * <p/>
-         * 
+         *
          * @param inputSuccess Array of input strings considered as successful response to be matched before
          * prompt.
          * @param inputError Array of input strings considered as error response to be matched before
@@ -217,7 +217,7 @@ public class ProcessIOContent {
          * Create an instance of input token expecting custom input prompt and set of strings on standard
          * output.
          * <p/>
-         * 
+         *
          * @param prompt Process input prompt different from global input prompt.
          * @param input Array of input strings to be matched before prompt.
          * @param output Output to be sent after all input strings are matched and prompt is received.
@@ -231,7 +231,7 @@ public class ProcessIOContent {
         /**
          * Get process input prompt different from global input prompt.
          * <p/>
-         * 
+         *
          * @return Process input prompt different from global input prompt or <code>null</code> when no such
          * prompt is set.
          */
@@ -269,7 +269,7 @@ public class ProcessIOContent {
     /**
      * Creates an instance of server administration command execution content.
      * <p/>
-     * 
+     *
      * @param prompt Process input prompt.
      */
     public ProcessIOContent(final String prompt) {
@@ -293,7 +293,7 @@ public class ProcessIOContent {
     /**
      * Get global process input prompt.
      * <p/>
-     * 
+     *
      * @return Global process input prompt.
      */
     public String getPrompt() {
@@ -303,7 +303,7 @@ public class ProcessIOContent {
     /**
      * Get current input prompt.
      * <p/>
-     * 
+     *
      * @return Current input prompt.
      */
     public String getCurrentPrompt() {
@@ -322,7 +322,7 @@ public class ProcessIOContent {
      * All strings in <code>inputSuccess</code> array must be matched for successful evaluation. Any
      * matching string from <code>inputError</code> will cause evaluation as error.
      * <p/>
-     * 
+     *
      * @param inputSuccess Array of input strings considered as successful response to be matched before
      * prompt.
      * @param inputError Array of input strings considered as error response to be matched before
@@ -338,7 +338,7 @@ public class ProcessIOContent {
      * <p/>
      * All strings in <code>inputSuccess</code> array must be matched for successful evaluation.
      * <p/>
-     * 
+     *
      * @param inputSuccess Array of input strings considered as successful response to be matched before
      * prompt.
      */
@@ -352,7 +352,7 @@ public class ProcessIOContent {
      * All strings in <code>inputSuccess</code> array must be matched for successful evaluation. Any
      * matching string from <code>inputError</code> will cause evaluation as error.
      * <p/>
-     * 
+     *
      * @param prompt Process input prompt different from global input prompt.
      * @param input Array of input strings to be matched before prompt.
      * @param output Output to be sent after all input strings are matched and prompt is received.
@@ -368,7 +368,7 @@ public class ProcessIOContent {
      * <code>inputSuccess</code> string must be matched for successful evaluation. Any matching string
      * from <code>inputError</code> will cause evaluation as error.
      * <p/>
-     * 
+     *
      * @param prompt Process input prompt different from global input prompt.
      * @param input Input string to be matched before prompt.
      * @param output Output to be sent after all input strings are matched and prompt is received.
@@ -384,7 +384,7 @@ public class ProcessIOContent {
      * All strings in <code>inputSuccess</code> array must be matched for successful evaluation. Any
      * matching string from <code>inputError</code> will cause evaluation as error.
      * <p/>
-     * 
+     *
      * @param input Array of input strings to be matched before prompt.
      * @param output Output to be sent after all input strings are matched and prompt is received.
      */
@@ -398,7 +398,7 @@ public class ProcessIOContent {
      * <code>inputSuccess</code> string must be matched for successful evaluation. Any matching string
      * from <code>inputError</code> will cause evaluation as error.
      * <p/>
-     * 
+     *
      * @param input Input string to be matched before prompt.
      * @param output Output to be sent after all input strings are matched and prompt is received.
      */
@@ -409,7 +409,7 @@ public class ProcessIOContent {
     /**
      * Get first token to be processed from list.
      * <p/>
-     * 
+     *
      * @return First token from list or <code>null</code> when list is empty.
      */
     public Token firstToken() {

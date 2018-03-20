@@ -16,7 +16,7 @@ import org.xml.sax.SAXException;
 /**
  * <code>asadmin</code> tool configuration XML element reader.
  * <p/>
- * 
+ *
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class ToolsAsadminReader extends AbstractReader {
@@ -45,7 +45,7 @@ public class ToolsAsadminReader extends AbstractReader {
     /**
      * Creates an instance of <code>asadmin</code> tool configuration XML element reader.
      * <p/>
-     * 
+     *
      * @param pathPrefix Tree parser path prefix to be prepended before current XML element.
      */
     ToolsAsadminReader(final String pathPrefix) throws ServerConfigException {
@@ -60,7 +60,7 @@ public class ToolsAsadminReader extends AbstractReader {
     /**
      * Process attributes from current XML element.
      * <p/>
-     * 
+     *
      * @param qname Not used.
      * @param attributes List of XML attributes.
      * @throws SAXException When any problem occurs.
@@ -78,7 +78,7 @@ public class ToolsAsadminReader extends AbstractReader {
     /**
      * Get asadmin tool JAR.
      * <p/>
-     * 
+     *
      * @return Asadmin tool JAR.
      */
     String getJar() {

@@ -19,7 +19,7 @@ import org.xml.sax.SAXException;
 /**
  * <code>module</code> Java EE configuration XML element reader.
  * <p/>
- * 
+ *
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class JavaEEModuleReader extends AbstractReader {
@@ -40,7 +40,7 @@ public class JavaEEModuleReader extends AbstractReader {
         /**
          * Creates an instance of Java EE module values from XML element.
          * <p/>
-         * 
+         *
          * @param type Java EE module type.
          * @param check Java EE module check reference.
          */
@@ -52,7 +52,7 @@ public class JavaEEModuleReader extends AbstractReader {
         /**
          * Get Java EE module type.
          * <p/>
-         * 
+         *
          * @return Java EE module type.
          */
         public String getType() {
@@ -62,7 +62,7 @@ public class JavaEEModuleReader extends AbstractReader {
         /**
          * Get Java EE module check reference.
          * <p/>
-         * 
+         *
          * @return Java EE module check reference.
          */
         public String getCheck() {
@@ -97,7 +97,7 @@ public class JavaEEModuleReader extends AbstractReader {
     /**
      * Creates an instance of <code>module</code> Java EE configuration XML element reader.
      * <p/>
-     * 
+     *
      * @param pathPrefix Tree parser path prefix to be prepended before current XML element.
      */
     JavaEEModuleReader(final String pathPrefix) throws ServerConfigException {
@@ -112,7 +112,7 @@ public class JavaEEModuleReader extends AbstractReader {
     /**
      * Process attributes from current XML element.
      * <p/>
-     * 
+     *
      * @param qname Not used.
      * @param attributes List of XML attributes.
      * @throws SAXException When any problem occurs.
@@ -131,7 +131,7 @@ public class JavaEEModuleReader extends AbstractReader {
     /**
      * Get modules retrieved from XML elements.
      * <p/>
-     * 
+     *
      * @return Modules retrieved from XML elements.
      */
     public List<Module> getModules() {

@@ -17,7 +17,7 @@ package org.eclipse.payara.tools.sdk.utils;
  * <p/>
  * List is not thread safe.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class LinkedList<V> {
@@ -53,7 +53,7 @@ public class LinkedList<V> {
          * <p/>
          * Pointers to <code>previous</code> and <code>next</code> element are set to <code>null</code>.
          * <p/>
-         * 
+         *
          * @param value Stored value object.
          */
         Element(V value) {
@@ -64,7 +64,7 @@ public class LinkedList<V> {
          * Constructs an instance of linked list element and sets it's stored <code>value</code> object and
          * pointers to <code>previous</code> and <code>next/<code> element.
          * <p/>
-         * 
+         *
          * @param value Stored value object.
          */
         Element(V value, Element<V> previous, Element<V> next) {
@@ -140,7 +140,7 @@ public class LinkedList<V> {
      * <li>won't be changed when list is not empty</li> or
      * <li>will be set to newly added element when list is empty.</li>
      * </ul>
-     * 
+     *
      * @param value New value to be added at the end of the list.
      */
     public void addLast(V value) {
@@ -161,7 +161,7 @@ public class LinkedList<V> {
      * <li>won't be changed when list is not empty</li> or
      * <li>will be set to newly added element when list is empty.</li>
      * </ul>
-     * 
+     *
      * @param value New value to be added at the end of the list.
      */
     public void addFirst(V value) {
@@ -182,7 +182,7 @@ public class LinkedList<V> {
      * <li>won't be changed when it is not tail of the list</li> or
      * <li>will be set to previous element when it is tail of the list.</li>
      * </ul>
-     * 
+     *
      * @return Data stored in removed last element of the list. Returns <code>null</code> when list is
      * empty.
      */
@@ -215,7 +215,7 @@ public class LinkedList<V> {
      * <li>won't be changed when it is not head of the list</li> or
      * <li>will be set to next element when it is head of the list.</li>
      * </ul>
-     * 
+     *
      * @return Data stored in removed last element of the list. Returns <code>null</code> when list is
      * empty.
      */
@@ -250,7 +250,7 @@ public class LinkedList<V> {
      * </ul>
      * Tail is moved to newly added element when current element is tail.
      * <p/>
-     * 
+     *
      * @param value New value to be added at the end of the list.
      */
     public void addNext(V value) {
@@ -278,7 +278,7 @@ public class LinkedList<V> {
      * </ul>
      * Head is moved to newly added element when current element is head.
      * <p/>
-     * 
+     *
      * @param value New value to be added at the end of the list.
      */
     public void addPrevious(V value) {
@@ -300,7 +300,7 @@ public class LinkedList<V> {
      * Remove current element and set current element to previous one if exists or <code>null</code> if
      * there is no previous element.
      * <p/>
-     * 
+     *
      * @return Data stored in removed current element of the list. Returns <code>null</code> when list
      * is empty.
      */
@@ -332,7 +332,7 @@ public class LinkedList<V> {
      * Remove current element and set current element to next one if exists or <code>null</code> if
      * there is no next element.
      * <p/>
-     * 
+     *
      * @return Data stored in removed current element of the list. Returns <code>null</code> when list
      * is empty.
      */
@@ -367,7 +367,7 @@ public class LinkedList<V> {
      * Current element should not be <code>null</code> except when list is empty. Additional check may
      * be required to see which direction current element was moved.
      * <p/>
-     * 
+     *
      * @return Data stored in removed current element of the list. Returns <code>null</code> when list
      * is empty.
      */
@@ -402,7 +402,7 @@ public class LinkedList<V> {
      * Current element should not be <code>null</code> except when list is empty. Additional check may
      * be required to see which direction current element was moved.
      * <p/>
-     * 
+     *
      * @return Data stored in removed current element of the list. Returns <code>null</code> when list
      * is empty.
      */
@@ -433,7 +433,7 @@ public class LinkedList<V> {
     /**
      * Set current element to the first (head) element.
      * <p/>
-     * 
+     *
      * @return Value of <code>true</code> if first element exists or <code>false</code> otherwise.
      */
     public boolean first() {
@@ -443,7 +443,7 @@ public class LinkedList<V> {
     /**
      * Set current element to the last (tail) element.
      * <p/>
-     * 
+     *
      * @return Value of <code>true</code> if last element exists or <code>false</code> otherwise.
      */
     public boolean last() {
@@ -455,7 +455,7 @@ public class LinkedList<V> {
      * <p/>
      * Current pointer will be moved only if there is an element after current one.
      * <p/>
-     * 
+     *
      * @return Value of <code>true</code> if current pointer was moved to next element or
      * <code>false</code> otherwise.
      */
@@ -473,7 +473,7 @@ public class LinkedList<V> {
      * <p/>
      * Current pointer will be moved only if there is an element before current one.
      * <p/>
-     * 
+     *
      * @return Value of <code>true</code> if current pointer was moved to previous element or
      * <code>false</code> otherwise.
      */
@@ -489,7 +489,7 @@ public class LinkedList<V> {
     /**
      * Check if list is empty.
      * <p/>
-     * 
+     *
      * @return Value of <code>true</code> when list is empty (contains no elements) or
      * <code>false</code> otherwise.
      */
@@ -500,7 +500,7 @@ public class LinkedList<V> {
     /**
      * Check if there is a current element.
      * <p/>
-     * 
+     *
      * @return Value of <code>true</code> when there is a current element or <code>false</code>
      * otherwise.
      */
@@ -511,7 +511,7 @@ public class LinkedList<V> {
     /**
      * Check if there is an element after current element.
      * <p/>
-     * 
+     *
      * @return Value of <code>true</code> if there is an element after current element or
      * <code>false</code> otherwise.
      */
@@ -522,7 +522,7 @@ public class LinkedList<V> {
     /**
      * Check if there is an element before current element.
      * <p/>
-     * 
+     *
      * @return Value of <code>true</code> if there is an element before current element or
      * <code>false</code> otherwise.
      */
@@ -533,7 +533,7 @@ public class LinkedList<V> {
     /**
      * Get current size of list.
      * <p/>
-     * 
+     *
      * @return Current size of list.
      */
     public int size() {
@@ -543,7 +543,7 @@ public class LinkedList<V> {
     /**
      * Get value stored in current element.
      * <p/>
-     * 
+     *
      * @return Value stored in current element or <code>null</code> when list is empty.
      */
     public V getCurrent() {
@@ -557,7 +557,7 @@ public class LinkedList<V> {
     /**
      * Get value stored in first (head) element.
      * <p/>
-     * 
+     *
      * @return Value stored in first (head) element or <code>null</code> when list is empty.
      */
     public V getFirst() {
@@ -571,7 +571,7 @@ public class LinkedList<V> {
     /**
      * Get value stored in last (tail) element.
      * <p/>
-     * 
+     *
      * @return Value stored in last (tail) element or <code>null</code> when list is empty.
      */
     public V getLast() {
@@ -585,7 +585,7 @@ public class LinkedList<V> {
     /**
      * Get value stored in next element (after current).
      * <p/>
-     * 
+     *
      * @return Value stored in next element or <code>null</code> when list is empty or current element
      * is tail.
      */
@@ -600,7 +600,7 @@ public class LinkedList<V> {
     /**
      * Get value stored in previous element (before current).
      * <p/>
-     * 
+     *
      * @return Value stored in previous element or <code>null</code> when list is empty or current
      * element is head.
      */
@@ -617,7 +617,7 @@ public class LinkedList<V> {
      * </P>
      * This iteration over the list won't affect current pointer.
      * <p/>
-     * 
+     *
      * @return <code>String</code> representation of all list element from head to tail.
      */
     @Override

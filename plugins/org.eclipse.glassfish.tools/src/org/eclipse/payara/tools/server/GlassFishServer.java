@@ -401,7 +401,7 @@ public final class GlassFishServer extends ServerDelegate implements IURLProvide
 
     /**
      * Add a property change listener to this server.
-     * 
+     *
      * @param listener java.beans.PropertyChangeListener
      */
     public void addPropertyChangeListener(PropertyChangeListener listener) {
@@ -414,7 +414,7 @@ public final class GlassFishServer extends ServerDelegate implements IURLProvide
 
     /**
      * Remove a property change listener from this server.
-     * 
+     *
      * @param listener java.beans.PropertyChangeListener
      */
     public void removePropertyChangeListener(PropertyChangeListener listener) {
@@ -425,7 +425,7 @@ public final class GlassFishServer extends ServerDelegate implements IURLProvide
 
     /**
      * Fire a property change event.
-     * 
+     *
      * @param propertyName a property name
      * @param oldValue the old value
      * @param newValue the new value
@@ -927,7 +927,7 @@ public final class GlassFishServer extends ServerDelegate implements IURLProvide
 
     /**
      * Return the context root of a web module in ther parent EAR.
-     * 
+     *
      * @param module: the web module
      * @param parent: the EAR module
      * @return

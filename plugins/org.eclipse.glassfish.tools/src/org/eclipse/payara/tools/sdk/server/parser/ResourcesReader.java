@@ -23,7 +23,7 @@ import org.xml.sax.SAXException;
  * Reads resources from domain.xml. User has to specify an {@link ResourceType} which specifies path
  * and name of attribute value of which will be the key in returned map.
  * <p/>
- * 
+ *
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class ResourcesReader extends NodeListener implements

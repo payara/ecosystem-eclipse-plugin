@@ -27,7 +27,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
  * Command runner for deploying directory or file.
  * <p>
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RunnerRestDeploy extends RunnerRest {
@@ -43,7 +43,7 @@ public class RunnerRestDeploy extends RunnerRest {
     /**
      * Constructs an instance of administration command executor using REST interface.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
@@ -178,7 +178,7 @@ public class RunnerRestDeploy extends RunnerRest {
     /**
      * Get <code>InputStream</code> object for deployed file.
      * <p/>
-     * 
+     *
      * @return <code>InputStream</code> object for deployed file or <code>null</code> for directory
      * deployment.
      */

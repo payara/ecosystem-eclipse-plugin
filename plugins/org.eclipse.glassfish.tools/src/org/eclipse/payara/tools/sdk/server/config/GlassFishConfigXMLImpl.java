@@ -25,7 +25,7 @@ import org.eclipse.payara.tools.sdk.server.parser.TreeParser;
  * XML configuration file reader is called only once. Any subsequent configuration values access
  * will return values cached from first attempt.
  * <p/>
- * 
+ *
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class GlassFishConfigXMLImpl implements GlassFishConfig {
@@ -52,7 +52,7 @@ public class GlassFishConfigXMLImpl implements GlassFishConfig {
     /**
      * Creates an instance of Payara configuration API.
      * <p/>
-     * 
+     *
      * @param configFile Payara configuration XML file.
      */
     public GlassFishConfigXMLImpl(final URL configFile) {
@@ -67,7 +67,7 @@ public class GlassFishConfigXMLImpl implements GlassFishConfig {
     /**
      * Get Payara libraries configuration.
      * <p/>
-     * 
+     *
      * @return Payara libraries configuration.
      */
     @Override
@@ -79,7 +79,7 @@ public class GlassFishConfigXMLImpl implements GlassFishConfig {
     /**
      * Get Payara JavaEE configuration.
      * <p/>
-     * 
+     *
      * @return Payara JavaEE configuration.
      */
     @Override
@@ -91,7 +91,7 @@ public class GlassFishConfigXMLImpl implements GlassFishConfig {
     /**
      * Get Payara JavaSE configuration.
      * <p/>
-     * 
+     *
      * @return Payara JavaSE configuration.
      */
     @Override
@@ -103,7 +103,7 @@ public class GlassFishConfigXMLImpl implements GlassFishConfig {
     /**
      * Get Payara tools configuration.
      * <p/>
-     * 
+     *
      * @return Payara tools configuration.
      */
     @Override

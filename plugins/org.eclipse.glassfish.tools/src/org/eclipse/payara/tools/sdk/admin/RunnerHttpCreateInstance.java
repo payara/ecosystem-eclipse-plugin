@@ -23,7 +23,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
  * string. Individual child classes are not needed at this stage. Class implements GlassFish server
  * administration functionality trough HTTP interface.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RunnerHttpCreateInstance extends RunnerHttp {
@@ -54,7 +54,7 @@ public class RunnerHttpCreateInstance extends RunnerHttp {
      * <code>QUERY :: "DEFAULT" '=' &lt;name&gt; '&' "node" '=' &lt;node&gt;
      *                ['&' "cluster" '=' &lt;cluster&gt; ]</code>
      * <p/>
-     * 
+     *
      * @param command GlassFish Server Admin Command Entity. <code>CommandDisable</code> instance is
      * expected.
      * @return Enable/Disable query string for given command.
@@ -99,7 +99,7 @@ public class RunnerHttpCreateInstance extends RunnerHttp {
     /**
      * Constructs an instance of administration command executor using HTTP interface.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
@@ -117,7 +117,7 @@ public class RunnerHttpCreateInstance extends RunnerHttp {
      * attribute in <code>Manifest</code> object is stored as <i>value</i> into
      * <code>ResultString</code> result object.
      * <p/>
-     * 
+     *
      * @return true if result was extracted correctly. <code>null</code> <i>message</i>value is
      * considered as failure.
      */

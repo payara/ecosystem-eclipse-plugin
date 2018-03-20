@@ -17,7 +17,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
  * Contains code for create connector resource command. Class implements GlassFish server
  * administration functionality trough HTTP interface.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RunnerHttpCreateConnector extends RunnerHttp {
@@ -55,7 +55,7 @@ public class RunnerHttpCreateConnector extends RunnerHttp {
      * { ':' &lt;pname&gt; '=' &lt;pvalue&gt;} ]</code> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
      * ['&' "enabled" '=' true|false ]<br/>
      * <p/>
-     * 
+     *
      * @param command GlassFish server administration command entity.
      * <code>CommandCreateConnector</code> instance is expected.
      * @return Create connector resource query string for given command.
@@ -105,7 +105,7 @@ public class RunnerHttpCreateConnector extends RunnerHttp {
     /**
      * Constructs an instance of administration command executor using HTTP interface.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */

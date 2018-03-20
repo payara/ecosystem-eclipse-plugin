@@ -25,7 +25,7 @@ import org.eclipse.payara.tools.sdk.utils.ServerUtils;
 /**
  * Container of GlassFish JavaEE features configuration.
  * <p/>
- * 
+ *
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class JavaEESet extends JavaSet {
@@ -53,7 +53,7 @@ public class JavaEESet extends JavaSet {
     /**
      * Creates an instance of container of GlassFish JavaEE features configuration.
      * <p/>
-     * 
+     *
      * @param modules Modules retrieved from XML elements.
      * @param profiles Profiles retrieved from XML elements.
      * @param version Highest JavaEE specification version implemented.
@@ -80,7 +80,7 @@ public class JavaEESet extends JavaSet {
     /**
      * Get modules retrieved from XML elements.
      * <p/>
-     * 
+     *
      * @return Modules retrieved from XML elements.
      */
     public List<JavaEEModuleReader.Module> getModules() {
@@ -90,7 +90,7 @@ public class JavaEESet extends JavaSet {
     /**
      * Get profiles retrieved from XML elements.
      * <p/>
-     * 
+     *
      * @return Profiles retrieved from XML elements.
      */
     public List<JavaEEProfileReader.Profile> getProfiles() {
@@ -107,7 +107,7 @@ public class JavaEESet extends JavaSet {
      * Cached check results depends on provided <code>classpathHome</code> and they should be reset
      * before <code>classpathHome</code> will be changed.
      * <p/>
-     * 
+     *
      * @param name Name of check to be run.
      * @param classpathHome Classpath search prefix.
      */
@@ -145,7 +145,7 @@ public class JavaEESet extends JavaSet {
     /**
      * Build {@link Set} of {@link ModuleType} for known module types retrieved from XML elements.
      * <p/>
-     * 
+     *
      * @param classpathHome Classpath search prefix.
      * @return {@link Set} of {@link ModuleType} for known module types.
      */
@@ -166,7 +166,7 @@ public class JavaEESet extends JavaSet {
     /**
      * Build {@link Set} of {@link JavaEEProfile} for known JavaEE profiles retrieved from XML elements.
      * <p/>
-     * 
+     *
      * @param classpathHome Classpath search prefix.
      * @return {@link Set} of {@link ModuleType} for known profiles.
      */

@@ -12,7 +12,7 @@ package org.eclipse.payara.tools.sdk.server.config;
 /**
  * GlassFish tool.
  * <p/>
- * 
+ *
  * @author Peter Benedikovic, Tomas Kraus
  */
 public abstract class GlassFishTool {
@@ -31,7 +31,7 @@ public abstract class GlassFishTool {
     /**
      * Creates an instance of GlassFish tool.
      * <p/>
-     * 
+     *
      * @param lib Tools library directory (relative under GlassFish home).
      */
     public GlassFishTool(final String lib) {
@@ -45,7 +45,7 @@ public abstract class GlassFishTool {
     /**
      * Get tools library directory (relative under GlassFish home).
      * <p/>
-     * 
+     *
      * @return Tools library directory (relative under GlassFish home).
      */
     public String getLib() {

@@ -18,7 +18,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 /**
  * Command runner for commands that retrieve some kind of list.
  * <p>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RunnerRestList extends RunnerRest {
@@ -38,7 +38,7 @@ public class RunnerRestList extends RunnerRest {
     /**
      * Constructs an instance of administration command executor using REST interface.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */

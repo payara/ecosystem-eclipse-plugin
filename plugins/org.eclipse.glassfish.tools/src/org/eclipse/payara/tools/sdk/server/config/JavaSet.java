@@ -12,7 +12,7 @@ package org.eclipse.payara.tools.sdk.server.config;
 /**
  * Abstract Container of GlassFish Java features configuration.
  * <p/>
- * 
+ *
  * @author Peter Benedikovic, Tomas Kraus
  */
 public abstract class JavaSet {
@@ -31,7 +31,7 @@ public abstract class JavaSet {
     /**
      * Creates an instance of container of GlassFish Java features configuration.
      * <p/>
-     * 
+     *
      * @param version Highest JavaEE specification version implemented.
      */
     public JavaSet(final String version) {
@@ -45,7 +45,7 @@ public abstract class JavaSet {
     /**
      * Get highest JavaEE specification version implemented.
      * <p/>
-     * 
+     *
      * @return Highest JavaEE specification version implemented.
      */
     public String getVersion() {

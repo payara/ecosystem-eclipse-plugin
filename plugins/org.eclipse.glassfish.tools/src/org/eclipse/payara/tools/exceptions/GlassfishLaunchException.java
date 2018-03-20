@@ -12,7 +12,7 @@ package org.eclipse.payara.tools.exceptions;
 public class GlassfishLaunchException extends Exception {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = -3931653934641477601L;
 

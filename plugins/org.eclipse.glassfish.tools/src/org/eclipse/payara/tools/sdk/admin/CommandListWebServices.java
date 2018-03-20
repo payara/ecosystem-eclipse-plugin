@@ -12,7 +12,7 @@ package org.eclipse.payara.tools.sdk.admin;
 /**
  * Command that retrieves list of web services defined on server.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 @RunnerHttpClass(runner = RunnerHttpListWebServices.class)

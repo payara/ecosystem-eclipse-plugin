@@ -28,7 +28,7 @@ public class RunnerRestUndeploy extends RunnerRest {
     /**
      * Constructs an instance of administration command executor using REST interface.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */

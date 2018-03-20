@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
 /**
  * Common utilities.
  * <p/>
- * 
+ *
  * @author Vince Kraemer, Tomas Kraus, Peter Benedikovic
  */
 public class Utils {
@@ -33,7 +33,7 @@ public class Utils {
     /**
      * Get system default line separator.
      * <p/>
-     * 
+     *
      * @return System default line separator.
      */
     public static String lineSeparator() {
@@ -47,7 +47,7 @@ public class Utils {
     /**
      * Sanitize module name for use as Glassfish query parameter.
      * <p/>
-     * 
+     *
      * @param name Glassfish module name.
      * @return Sanitized Glassfish module name.
      */
@@ -64,7 +64,7 @@ public class Utils {
      * <p/>
      * Note: does not handle generalized white space (tabs, localized white space, etc.)
      * <p/>
-     * 
+     *
      * @param path File path in string form.
      * @return Quoted path if it contains any space characters, otherwise same.
      */
@@ -161,7 +161,7 @@ public class Utils {
      * Concatenate elements of {@link String} array as a single <code>String</code> containing all
      * elements separated by <code>,</code>.
      * <p/>
-     * 
+     *
      * @param array {2see String} array containing elements to be concatenated.
      * @return {2see String} containing all elements concatenated and separated by <code>,</code> or
      * <code>null</code> when <code>array</code> is <code>null</code>.

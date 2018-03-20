@@ -17,7 +17,7 @@ import org.eclipse.payara.tools.sdk.logging.Logger;
 /**
  * Server status check type.
  * <p/>
- * 
+ *
  * @author Tomas Kraus
  */
 public enum GlassFishStatusCheck {
@@ -76,7 +76,7 @@ public enum GlassFishStatusCheck {
      * <code>String</code> matches any <code>String</code> returned by <code>toString</code> method.
      * Otherwise <code>null</code> value is returned.
      * <p>
-     * 
+     *
      * @param name Value containing <code>GlassFishStatusCheck</code> <code>toString</code>
      * representation.
      * @return <code>GlassFishStatusCheck</code> value represented by <code>String</code> or
@@ -97,7 +97,7 @@ public enum GlassFishStatusCheck {
     /**
      * Convert <code>GlassFishStatusCheck</code> value to <code>String</code>.
      * <p/>
-     * 
+     *
      * @return A <code>String</code> representation of the value of this object.
      */
     @Override

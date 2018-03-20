@@ -20,7 +20,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
  * <p/>
  * Class implements GlassFish server administration functionality trough HTTP interface.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RunnerHttpRestartDAS extends RunnerHttp {
@@ -41,7 +41,7 @@ public class RunnerHttpRestartDAS extends RunnerHttp {
      * <p/>
      * <code>debug=true|false&force=true|false&kill=true|false</code>
      * <p/>
-     * 
+     *
      * @param command GlassFish Server Administration Command Entity. <code>CommandRestartDAS</code>
      * instance is expected.
      * @return Restart DAS query string for given command.
@@ -71,7 +71,7 @@ public class RunnerHttpRestartDAS extends RunnerHttp {
     /**
      * Constructs an instance of administration command executor using HTTP interface.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */

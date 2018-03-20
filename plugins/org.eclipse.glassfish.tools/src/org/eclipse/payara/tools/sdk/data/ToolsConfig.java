@@ -12,7 +12,7 @@ package org.eclipse.payara.tools.sdk.data;
 /**
  * Payara tools.
  * <p/>
- * 
+ *
  * @author Peter Benedikovic, Tomas Kraus
  */
 public interface ToolsConfig {
@@ -24,7 +24,7 @@ public interface ToolsConfig {
     /**
      * Get asadmin tool.
      * <p/>
-     * 
+     *
      * @return Asadmin tool.
      */
     public ToolConfig getAsadmin();

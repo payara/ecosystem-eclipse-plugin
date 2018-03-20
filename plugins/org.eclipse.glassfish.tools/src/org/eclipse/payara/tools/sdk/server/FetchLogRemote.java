@@ -27,7 +27,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 /**
  * Fetch GlassFish log from remote server.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class FetchLogRemote extends FetchLogPiped {
@@ -51,7 +51,7 @@ public class FetchLogRemote extends FetchLogPiped {
      * executed. Here we can simply connect already initialized <code>PipedInputStream</code> with newly
      * created <code>PipedInputStream</code>.
      * <p/>
-     * 
+     *
      * @param server GlassFish server for fetching server log.
      * @param skip Skip to the end of the log file.
      */
@@ -68,7 +68,7 @@ public class FetchLogRemote extends FetchLogPiped {
      * executed. Here we can simply connect already initialized <code>PipedInputStream</code> with newly
      * created <code>PipedInputStream</code>.
      * <p/>
-     * 
+     *
      * @param executor Executor service used to start task.
      * @param server GlassFish server for fetching server log.
      * @param skip Skip to the end of the log file.
@@ -88,7 +88,7 @@ public class FetchLogRemote extends FetchLogPiped {
      * Reads new log lines from server using GlassFish remote administration API and sends them into
      * pipe (<code>PipedInputStream</code>).
      * <p/>
-     * 
+     *
      * @return <code>TaskState.COMPLETED</code> when remote administration API stopped responding or
      * <code>TaskState.FAILED</code> when exception was caught.
      */

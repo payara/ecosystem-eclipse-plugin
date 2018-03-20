@@ -20,7 +20,7 @@ import org.xml.sax.SAXException;
 /**
  * <code>fileset</code> library configuration XML element reader.
  * <p/>
- * 
+ *
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class FilesetReader extends TreeParser.NodeListener {
@@ -42,7 +42,7 @@ public class FilesetReader extends TreeParser.NodeListener {
     /**
      * Process attributes from current XML element.
      * <p/>
-     * 
+     *
      * @param qname Not used.
      * @param attributes List of XML attributes.
      * @throws SAXException When any problem occurs.
@@ -60,7 +60,7 @@ public class FilesetReader extends TreeParser.NodeListener {
     /**
      * Process child elements from current XML element.
      * <p/>
-     * 
+     *
      * @param qname Not used.
      * @param attributes List of XML attributes.
      * @throws SAXException When any problem occurs.
@@ -78,7 +78,7 @@ public class FilesetReader extends TreeParser.NodeListener {
     /**
      * Get file sets retrieved from XML elements.
      * <p/>
-     * 
+     *
      * @return File sets retrieved from XML elements.
      */
     public Map<String, List<String>> getFilesets() {

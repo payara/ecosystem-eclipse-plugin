@@ -90,7 +90,7 @@ public abstract class Runner implements Callable<Result> {
         /**
          * Constructs an instance of state change request data.
          * <p/>
-         * 
+         *
          * @param runner GlassFish server administration command runner.
          * @param taskState New task execution state.
          * @param taskEvent Event related to execution state change.
@@ -112,7 +112,7 @@ public abstract class Runner implements Callable<Result> {
          * Update task state value in <code>Result</code> object and notify all registered command execution
          * state listeners about command execution state change.
          * <p/>
-         * 
+         *
          * @return GlassFish administration command receiveResult with updated task execution state.
          */
         protected Result handleStateChange() {
@@ -169,7 +169,7 @@ public abstract class Runner implements Callable<Result> {
      * <p/>
      * <code>Executor</code> instance is handled internally.
      * <p/>
-     * 
+     *
      * @return Shared <code>Executor</code> instance.
      */
     static ExecutorService serializedExecutor() {
@@ -189,7 +189,7 @@ public abstract class Runner implements Callable<Result> {
      * <p/>
      * This method must be called before first usage of <code>call()</code> method.
      * <p/>
-     * 
+     *
      * @param authenticator External authenticator for GlassFish servers to be supplied.
      */
     public static void init(final Authenticator authenticator) {
@@ -204,7 +204,7 @@ public abstract class Runner implements Callable<Result> {
 
     /**
      * Get external <code>Authenticator</code> if set.
-     * 
+     *
      * @return External <code>Authenticator</code> for GlassFish servers or <code>null</code> if no
      * external <code>Authenticator</code> was set.
      */
@@ -216,7 +216,7 @@ public abstract class Runner implements Callable<Result> {
      * Returns individual <code>Executor</code> instance to run administration commands passed to
      * GlassFish server in parallel.
      * <p/>
-     * 
+     *
      * @param size Thread pool size.
      * @return Individual <code>Executor</code> instance.
      */
@@ -227,7 +227,7 @@ public abstract class Runner implements Callable<Result> {
     /**
      * Convert <code>boolean</code> value to <code>String</code> constant.
      * <p/>
-     * 
+     *
      * @param value <code>boolean</code> value to be converted.
      * @return <code>String</code> constant.
      */
@@ -239,7 +239,7 @@ public abstract class Runner implements Callable<Result> {
      * Convert <code>String</code> constant representing <code>boolean</code> value to it's original
      * <code>boolean</code> value.
      * <p/>
-     * 
+     *
      * @param constant Constant representing <code>boolean</code> value.
      * @return Original <code>boolean</code> value.
      * @throws CommandException when constant representing <code>boolean</code> value is not recognized.
@@ -323,7 +323,7 @@ public abstract class Runner implements Callable<Result> {
     /**
      * Send information to the server via HTTP POST.
      * <p/>
-     * 
+     *
      * @return <code>true</code> if using HTTP POST to send to server or <code>false</code> otherwise
      */
     public abstract boolean getDoOutput();
@@ -331,7 +331,7 @@ public abstract class Runner implements Callable<Result> {
     /**
      * Inform whether this runner implementation accepts gzip format.
      * <p/>
-     * 
+     *
      * @return <code>true</code> when gzip format is accepted, <code>false</code> otherwise.
      */
     public abstract boolean acceptsGzip();
@@ -339,7 +339,7 @@ public abstract class Runner implements Callable<Result> {
     /**
      * Template method to allow descendants to implement creation of command url.
      * <p/>
-     * 
+     *
      * @return url to connect to
      */
     protected abstract String constructCommandUrl() throws CommandException;
@@ -347,7 +347,7 @@ public abstract class Runner implements Callable<Result> {
     /**
      * Override to change the type of HTTP method used for this command. Default is GET.
      * <p/>
-     * 
+     *
      * @return HTTP method (GET, POST, etc.)
      */
     protected abstract String getRequestMethod();
@@ -357,7 +357,7 @@ public abstract class Runner implements Callable<Result> {
      * <p/>
      * In some cases command has to send data to server. To do that, override this method.
      * <p/>
-     * 
+     *
      * @param hconn
      * @throws IOException
      */
@@ -369,7 +369,7 @@ public abstract class Runner implements Callable<Result> {
      * Override to read the response data sent by the server. Do not close the stream parameter when
      * finished. Caller will take care of that.
      * <p/>
-     * 
+     *
      * @param in Stream to read data from.
      * @return true if response was read correctly.
      * @throws java.io.IOException in case of stream error.
@@ -380,7 +380,7 @@ public abstract class Runner implements Callable<Result> {
      * Override to parse, validate, and/or format any data read from the server in readResponse() /
      * readManifest().
      * <p/>
-     * 
+     *
      * @return true if data was processed correctly.
      */
     protected abstract boolean processResponse();
@@ -392,7 +392,7 @@ public abstract class Runner implements Callable<Result> {
     /**
      * Constructs an instance of administration command executor using HTTP interface.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity object.
      * @param command GlassFish Server HTTP Administration Command Entity.
      * @param path Server command path.
@@ -404,7 +404,7 @@ public abstract class Runner implements Callable<Result> {
     /**
      * Constructs an instance of administration command executor using HTTP interface.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity object.
      * @param command GlassFish Server HTTP Administration Command Entity.
      * @param path Server command path.
@@ -424,7 +424,7 @@ public abstract class Runner implements Callable<Result> {
     /**
      * Returns the query string for this command. Value is set in constructor.
      * <p/>
-     * 
+     *
      * @return query string for this command.
      */
     String getQuery() {
@@ -434,7 +434,7 @@ public abstract class Runner implements Callable<Result> {
     /**
      * Get GlassFish server administration command entity.
      * <p/>
-     * 
+     *
      * @return GlassFish server administration command entity.
      */
     Command getCommand() {
@@ -444,7 +444,7 @@ public abstract class Runner implements Callable<Result> {
     /**
      * Get command execution result after task is finished.
      * <p/>
-     * 
+     *
      * @return GlassFish administration command execution result.
      */
     public Result getResult() {
@@ -456,7 +456,7 @@ public abstract class Runner implements Callable<Result> {
      * <p/>
      * SDK Exception functional test.
      * <p/>
-     * 
+     *
      * @return The silentFailureAllowed.
      */
     protected boolean isSilentFailureAllowed() {
@@ -466,7 +466,7 @@ public abstract class Runner implements Callable<Result> {
     /**
      * Set whether we allow commands to fail without a big message.
      * <p/>
-     * 
+     *
      * @param silentFailureAllowed The silentFailureAllowed to set.
      */
     public void setSilentFailureAllowed(final boolean silentFailureAllowed) {
@@ -478,7 +478,7 @@ public abstract class Runner implements Callable<Result> {
      * <p/>
      * Listeners must be set before task is executed.
      * <p/>
-     * 
+     *
      * @param listeners Listeners to notify about task state changes.
      */
     public void setStateListeners(final TaskStateListener[] listeners) {
@@ -492,7 +492,7 @@ public abstract class Runner implements Callable<Result> {
     /**
      * Override to set the content-type of information sent to the server. Default is null (not set).
      * <p/>
-     * 
+     *
      * @return content-type of data sent to server via HTTP POST
      */
     public String getContentType() {
@@ -503,7 +503,7 @@ public abstract class Runner implements Callable<Result> {
      * Construct string containing <code>Command</code> string with <code>query</code> parameters
      * appended.
      * <p/>
-     * 
+     *
      * @return <code>Command</code> string with <code>query</code> parameters appended.
      */
     String getCommandWithQuery() {
@@ -533,7 +533,7 @@ public abstract class Runner implements Callable<Result> {
      * <li><code>args[3]</code> display message in GUI</li>
      * </ul>
      * <p/>
-     * 
+     *
      * @param exMessage Exception message.
      * @param display Display this event in GUI (Transformed to <code>String</code> value containing
      * <code>"true"</code> value when user should be notified or <code>"true"</code> or
@@ -550,7 +550,7 @@ public abstract class Runner implements Callable<Result> {
      * Send <code>false</code> display argument to operationStateChanged method to not display GUI
      * message about this event.
      * <p/>
-     * 
+     *
      * @param exMessage Exception message.
      * @return Arguments for operationStateChanged method listening for state changes.
      */
@@ -566,7 +566,7 @@ public abstract class Runner implements Callable<Result> {
      * is used after task is submitted into <code>ExecutorService</code>'s queue and Result object is
      * initialized.
      * <p/>
-     * 
+     *
      * @param newTaskState New task execution state.
      * @param taskEvent Event related to execution state change.
      * @param args Additional arguments.
@@ -597,7 +597,7 @@ public abstract class Runner implements Callable<Result> {
     /**
      * Execute an arbitrary server command.
      * <p/>
-     * 
+     *
      * @return <code>Future</code> object to retrieve receiveResult of asynchronous execution.
      */
     Future<? extends Result> execute() {
@@ -608,7 +608,7 @@ public abstract class Runner implements Callable<Result> {
     /**
      * Execute an arbitrary server command using provided executor.
      * <p/>
-     * 
+     *
      * @param executor {@link ExecutorService} instance used to run this task.
      * @return <code>Future</code> object to retrieve receiveResult of asynchronous execution.
      */
@@ -621,7 +621,7 @@ public abstract class Runner implements Callable<Result> {
      * Prepare headers for HTTP connection. This handles all common headers for all implemented command
      * interfaces (REST, HTTP, ...).
      * <p/>
-     * 
+     *
      * @param conn Target HTTP connection.
      * @throws <code>CommandException</code> if there is a problem with setting the headers.
      */
@@ -748,7 +748,7 @@ public abstract class Runner implements Callable<Result> {
      * Depending on GlassFisg Tooling Library configuration proxy usage for loopback addresses may be
      * suppressed.
      * <p/>
-     * 
+     *
      * @param urlToConnectTo GlassFish server administration interface URL.
      * @return lassFish server administration interface URL connection.
      * @throws IOException IOException if an I/O error occurs while opening the connection.
@@ -771,7 +771,7 @@ public abstract class Runner implements Callable<Result> {
     /**
      * Handle HTTP connections to server.
      * <p/>
-     * 
+     *
      * @return State change request when <code>call()</code> method should exit.
      */
     private StateChange handleHTTPConnection() throws IOException {
@@ -807,7 +807,7 @@ public abstract class Runner implements Callable<Result> {
     /**
      * Handle HTTP response from server.
      * <p/>
-     * 
+     *
      * @param responseCode HTTP Response code.
      * @return State change request when <code>call()</code> method should exit.
      */
@@ -838,7 +838,7 @@ public abstract class Runner implements Callable<Result> {
     /**
      * Log administration command failure.
      * <p/>
-     * 
+     *
      * @param method Method component of log message key.
      */
     private void logCommandFailure(final String method) {
@@ -871,7 +871,7 @@ public abstract class Runner implements Callable<Result> {
      * GlassFish server administration command execution call. This is an entry point from
      * <code>executor<code>'s serialization queue.
      * <p/>
-     * 
+     *
      * @return Task execution state.
      */
     @SuppressWarnings("SleepWhileInLoop")

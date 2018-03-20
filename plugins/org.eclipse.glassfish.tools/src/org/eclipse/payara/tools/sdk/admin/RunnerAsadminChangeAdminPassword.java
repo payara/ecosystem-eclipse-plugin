@@ -16,7 +16,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 /**
  * Change administrator password command execution using local asadmin interface.
  * <p/>
- * 
+ *
  * @author Tomas Kraus
  */
 public class RunnerAsadminChangeAdminPassword extends RunnerAsadmin {
@@ -79,7 +79,7 @@ public class RunnerAsadminChangeAdminPassword extends RunnerAsadmin {
     /**
      * Constructs an instance of administration command executor using command line asadmin interface.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */

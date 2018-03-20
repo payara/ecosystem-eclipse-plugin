@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * <code>sources</code> library configuration XML element reader.
  * <p/>
- * 
+ *
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class ConfigReaderSources extends ConfigReader {
@@ -29,7 +29,7 @@ public class ConfigReaderSources extends ConfigReader {
      * <p/>
      * Sets readers for internal <code>javadocs</code> elements.
      * <p/>
-     * 
+     *
      * @return Paths that the reader listens to.
      */
     @Override

@@ -15,7 +15,7 @@ import org.eclipse.payara.tools.sdk.utils.OsUtils;
 /**
  * GlassFish asadmin tool.
  * <p/>
- * 
+ *
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class AsadminTool extends GlassFishTool implements ToolConfig {
@@ -34,7 +34,7 @@ public class AsadminTool extends GlassFishTool implements ToolConfig {
     /**
      * Creates an instance of GlassFish asadmin tool.
      * <p/>
-     * 
+     *
      * @param lib Tools library directory (relative under GlassFish home).
      * @param jar Asadmin tool JAR (relative under tools library directory).
      */
@@ -50,7 +50,7 @@ public class AsadminTool extends GlassFishTool implements ToolConfig {
     /**
      * Get asadmin tool JAR path (relative under GlassFish home)
      * <p/>
-     * 
+     *
      * @return Asadmin tool JAR path (relative under GlassFish home)
      */
     @Override

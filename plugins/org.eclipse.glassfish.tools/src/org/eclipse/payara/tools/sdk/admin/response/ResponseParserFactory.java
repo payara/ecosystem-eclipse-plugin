@@ -15,7 +15,7 @@ import org.eclipse.payara.tools.sdk.GlassFishIdeException;
  * Factory that returns appropriate response parser implementation based on content type of the
  * response.
  * <p>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class ResponseParserFactory {

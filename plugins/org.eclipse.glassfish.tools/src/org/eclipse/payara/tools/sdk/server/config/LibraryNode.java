@@ -12,7 +12,7 @@ package org.eclipse.payara.tools.sdk.server.config;
 /**
  * Internal library node element.
  * <p/>
- * 
+ *
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class LibraryNode {
@@ -40,7 +40,7 @@ public class LibraryNode {
     /**
      * Creates an instance of internal library node element.
      * <p/>
-     * 
+     *
      * @param libraryID Library ID.
      * @param classpath Class path file set
      * @param javadocs Java doc file set.

@@ -25,7 +25,7 @@ import org.eclipse.payara.tools.sdk.server.config.JavaSEPlatform;
 /**
  * Java related utilities
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class JavaUtils {
@@ -110,7 +110,7 @@ public class JavaUtils {
         /**
          * Constructs an instance of Java VM version number.
          * <p/>
-         * 
+         *
          * @param major
          */
         public JavaVersion(int major, int minor, int revision, int patch) {
@@ -127,7 +127,7 @@ public class JavaUtils {
         /**
          * Compares this <code>JavaVersion</code> object against another one.
          * <p/>
-         * 
+         *
          * @param version <code>JavaVersion</code> object to compare with <code>this</code> object.
          * @return Compare result:
          * <ul>
@@ -152,7 +152,7 @@ public class JavaUtils {
         /**
          * Return <code>String</code> representation of Java VM version object.
          * <p/>
-         * 
+         *
          * @return Java VM version string.
          */
         @Override
@@ -171,7 +171,7 @@ public class JavaUtils {
         /**
          * Return {@link JavaSEPlatform} matching this Java SE version.
          * <p/>
-         * 
+         *
          * @return {@link JavaSEPlatform} matching this Java SE version.
          */
         public JavaSEPlatform toPlatform() {
@@ -263,7 +263,7 @@ public class JavaUtils {
     /**
      * Build Java VM executable full path from Java Home directory.
      * <p/>
-     * 
+     *
      * @param javaHome Full path to Java Home directory.
      * @return Java VM executable full path.
      */
@@ -296,7 +296,7 @@ public class JavaUtils {
      * Build quoted Java VM system property name by prefixing property name with <code>-D</code> as
      * <code>-D"&lt;name&gt;"</code>.
      * <p/>
-     * 
+     *
      * @param name Java VM system property name to be prefixed.
      */
     public static String systemPropertyName(String name) {
@@ -309,7 +309,7 @@ public class JavaUtils {
      * Build quoted Java VM system property name by prefixing property name with <code>-D</code> as
      * <code>-D"&lt;name&gt;"</code> into {@link StringBuilder} instance.
      * <p/>
-     * 
+     *
      * @param sb {@link StringBuilder} instance where to append Java VM system property.
      * @param name Java VM system property name to be prefixed.
      */
@@ -324,7 +324,7 @@ public class JavaUtils {
     /**
      * Build quoted Java VM system property <code>-D"&lt;name&gt;=&lt;value&gt;"</code>.
      * <p/>
-     * 
+     *
      * @param name Java VM system property name.
      * @param value Java VM system property value.
      */
@@ -338,7 +338,7 @@ public class JavaUtils {
      * Append quoted Java VM system property <code>-D"&lt;name&gt;=&lt;value&gt;"</code> into
      * {@link StringBuilder} instance.
      * <p/>
-     * 
+     *
      * @param sb {@link StringBuilder} instance where to append Java VM system property.
      * @param name Java VM system property name.
      * @param value Java VM system property value.
@@ -357,7 +357,7 @@ public class JavaUtils {
     /**
      * Get URL to access properties file in the same package as given class.
      * <p/>
-     * 
+     *
      * @param c Class to determine package.
      * @param file Properties file name (e.g. <code>Messages.properties</code>).
      * @return URL to access properties file.

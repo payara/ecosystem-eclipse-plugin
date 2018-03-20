@@ -42,7 +42,7 @@ import org.eclipse.sapphire.Version;
  * <p/>
  * Administration commands and port check are run in parallel to reduce delay.
  * <p/>
- * 
+ *
  * @author Tomas Kraus
  */
 public class ServerStatus implements Closeable {
@@ -80,7 +80,7 @@ public class ServerStatus implements Closeable {
         /**
          * Convert <code>Status</code> value to <code>String</code>.
          * <p/>
-         * 
+         *
          * @return A <code>String</code> representation of the value of this object.
          */
         @Override
@@ -141,7 +141,7 @@ public class ServerStatus implements Closeable {
          * <p/>
          * IO Exception caught in asynchronous task is stored.
          * <p/>
-         * 
+         *
          * @param status Individual server status returned.
          * @param ioe IO Exception caught in asynchronous task.
          * @param failureEvent Failure cause.
@@ -164,7 +164,7 @@ public class ServerStatus implements Closeable {
          * <p/>
          * Common Exception caught is stored.
          * <p/>
-         * 
+         *
          * @param status Individual server status returned.
          * @param ex Common Exception caught.
          * @param failureEvent Failure cause.
@@ -187,7 +187,7 @@ public class ServerStatus implements Closeable {
          * <p/>
          * No additional value except result is stored.
          * <p/>
-         * 
+         *
          * @param status Individual server status returned.
          * @param failureEvent Failure cause.
          * @param serverName Target GlassFish server name.
@@ -208,7 +208,7 @@ public class ServerStatus implements Closeable {
          * <p/>
          * IO Exception caught in asynchronous task is stored.
          * <p/>
-         * 
+         *
          * @param status Individual server status returned.
          * @param ioe IO Exception caught in asynchronous task.
          */
@@ -221,7 +221,7 @@ public class ServerStatus implements Closeable {
          * <p/>
          * Common Exception caught is stored.
          * <p/>
-         * 
+         *
          * @param status Individual server status returned.
          * @param ex Common Exception caught.
          */
@@ -234,7 +234,7 @@ public class ServerStatus implements Closeable {
          * <p/>
          * No additional value except result is stored.
          * <p/>
-         * 
+         *
          * @param status Individual server status returned.
          */
         Result(final Status status) {
@@ -248,7 +248,7 @@ public class ServerStatus implements Closeable {
         /**
          * Get individual check task status.
          * <p/>
-         * 
+         *
          * @return Individual check task status.
          */
         public Status getStatus() {
@@ -258,7 +258,7 @@ public class ServerStatus implements Closeable {
         /**
          * Get task failure event.
          * <p/>
-         * 
+         *
          * @return Task failure event.
          */
         public TaskEvent getFailureEvent() {
@@ -268,7 +268,7 @@ public class ServerStatus implements Closeable {
         /**
          * Get server name.
          * <p/>
-         * 
+         *
          * @return Server name.
          */
         public String getServerName() {
@@ -278,7 +278,7 @@ public class ServerStatus implements Closeable {
         /**
          * Get exception message.
          * <p/>
-         * 
+         *
          * @return Exception message.
          */
         public String getExceptionMeasage() {
@@ -314,7 +314,7 @@ public class ServerStatus implements Closeable {
          * <p/>
          * Command <code>__locations</code> result is stored.
          * <p/>
-         * 
+         *
          * @param status Individual server status returned.
          * @param failureEvent Failure cause.
          * @param serverName Target GlassFish server name.
@@ -332,7 +332,7 @@ public class ServerStatus implements Closeable {
          * <p/>
          * Common Exception caught is stored.
          * <p/>
-         * 
+         *
          * @param status Individual server status returned.
          * @param ex Common Exception caught.
          * @param failureEvent Failure cause.
@@ -351,7 +351,7 @@ public class ServerStatus implements Closeable {
          * <p/>
          * No additional value except result is stored.
          * <p/>
-         * 
+         *
          * @param status Individual server status returned.
          * @param failureEvent Failure cause.
          * @param serverName Target GlassFish server name.
@@ -370,7 +370,7 @@ public class ServerStatus implements Closeable {
         /**
          * Get <code>__locations</code> command execution result.
          * <p/>
-         * 
+         *
          * @return <code>__locations</code> command execution result.
          */
         public ResultMap<String, String> getResult() {
@@ -407,7 +407,7 @@ public class ServerStatus implements Closeable {
          * <p/>
          * Command <code>version</code> result is stored.
          * <p/>
-         * 
+         *
          * @param status Individual server status returned.
          * @param failureEvent Failure cause.
          * @param serverName Target GlassFish server name.
@@ -425,7 +425,7 @@ public class ServerStatus implements Closeable {
          * <p/>
          * Common Exception caught is stored.
          * <p/>
-         * 
+         *
          * @param status Individual server status returned.
          * @param ex Common Exception caught.
          * @param failureEvent Failure cause.
@@ -444,7 +444,7 @@ public class ServerStatus implements Closeable {
          * <p/>
          * No additional value except result is stored.
          * <p/>
-         * 
+         *
          * @param status Individual server status returned.
          * @param failureEvent Failure cause.
          * @param serverName Target GlassFish server name.
@@ -463,7 +463,7 @@ public class ServerStatus implements Closeable {
         /**
          * Get <code>version</code> command execution result.
          * <p/>
-         * 
+         *
          * @return <code>version</code> command execution result.
          */
         public ResultString getResult() {
@@ -485,7 +485,7 @@ public class ServerStatus implements Closeable {
          * Format time value in miliseconds to be printed as value in seconds and miliseconds
          * <code>s.ms<code>.
          * <p/>
-         * 
+         *
          * @param tm Time value in miliseconds
          * @return Time string formated as econds and miliseconds <code>s.ms<code>.
          */
@@ -526,7 +526,7 @@ public class ServerStatus implements Closeable {
         /**
          * Creates an instance of common individual server status check.
          * <p/>
-         * 
+         *
          * @param server GlassFish server to be checked.
          */
         Task(final GlassFishServer server) {
@@ -546,7 +546,7 @@ public class ServerStatus implements Closeable {
          * Compute task result waiting timeout based on task start time, actual time and minimal timeout
          * limit.
          * <p/>
-         * 
+         *
          * @param startup Startup mode to select longer timeout.
          * @return Task result waiting timeout.
          */
@@ -563,7 +563,7 @@ public class ServerStatus implements Closeable {
         /**
          * Store event that caused task failure.
          * <p/>
-         * 
+         *
          * @param newState Current task state.
          * @param event Event that caused task change.
          * @param args Unused interface parameter.
@@ -623,7 +623,7 @@ public class ServerStatus implements Closeable {
         /**
          * Creates an instance of administration port status check.
          * <p/>
-         * 
+         *
          * @param server GlassFish server to be checked.
          * @param timeout Socked connecting timeout.
          */
@@ -641,7 +641,7 @@ public class ServerStatus implements Closeable {
         /**
          * Get server administration port status check result.
          * <p/>
-         * 
+         *
          * @return Server administration port status check result.
          */
         Result getResult() {
@@ -655,7 +655,7 @@ public class ServerStatus implements Closeable {
         /**
          * Close socket and handle <code>IOException</code> that could be thrown.
          * <p/>
-         * 
+         *
          * @param socket Socket to be closed.
          */
         private void closeSocket(final Socket socket) {
@@ -670,7 +670,7 @@ public class ServerStatus implements Closeable {
         /**
          * Handle IO Exception caught in server administration port verification task.
          * <p/>
-         * 
+         *
          * @param ioe <code>IOException</code> caught.
          * @param host Server administration host.
          * @param port Server administration port.
@@ -697,7 +697,7 @@ public class ServerStatus implements Closeable {
         /**
          * Parent thread task to verify if server administration port is alive.
          * <p/>
-         * 
+         *
          * @return Returns <code>true</code> when server administration port is alive or <code>false</code>
          * otherwise.
          */
@@ -783,7 +783,7 @@ public class ServerStatus implements Closeable {
         /**
          * Creates an instance of <code>__locations</code> server status check.
          * <p/>
-         * 
+         *
          * @param server GlassFish server to be checked.
          * @param startup Trigger startup mode. Triggers longer administration commands execution timeouts
          * when <code>true</code>.
@@ -801,7 +801,7 @@ public class ServerStatus implements Closeable {
         /**
          * Get <code>__locations</code> command status check result.
          * <p/>
-         * 
+         *
          * @return <code>__locations</code> command status check result.
          */
         ResultLocations getResult() {
@@ -828,7 +828,7 @@ public class ServerStatus implements Closeable {
         /**
          * Log Exception caught on task join.
          * <p/>
-         * 
+         *
          * @param ex Exception caught.
          */
         private void logExceptionOnJoin(final Exception ex) {
@@ -926,7 +926,7 @@ public class ServerStatus implements Closeable {
         /**
          * Creates an instance of <code>version</code> server status check.
          * <p/>
-         * 
+         *
          * @param server GlassFish server to be checked.
          * @param startup Trigger startup mode. Triggers longer administration commands execution timeouts
          * when <code>true</code>.
@@ -944,7 +944,7 @@ public class ServerStatus implements Closeable {
         /**
          * Get <code>version</code> command status check result.
          * <p/>
-         * 
+         *
          * @return <code>version</code> command status check result.
          */
         ResultVersion getResult() {
@@ -971,7 +971,7 @@ public class ServerStatus implements Closeable {
         /**
          * Log Exception caught on task join.
          * <p/>
-         * 
+         *
          * @param ex Exception caught.
          */
         private void logExceptionOnJoin(final Exception ex) {
@@ -1086,7 +1086,7 @@ public class ServerStatus implements Closeable {
      * <p/>
      * Method {@link #close()} must be called at the end to release system resources.
      * <p/>
-     * 
+     *
      * @param server GlassFish server to be checked.
      * @param startup Trigger startup mode. Triggers longer administration commands execution timeouts
      * when <code>true</code>.
@@ -1105,7 +1105,7 @@ public class ServerStatus implements Closeable {
     /**
      * Get server administration port status check result.
      * <p/>
-     * 
+     *
      * @return Server administration port status check result.
      */
     public Result getAdminPortResult() {
@@ -1115,7 +1115,7 @@ public class ServerStatus implements Closeable {
     /**
      * Get <code>version</code> command status check result.
      * <p/>
-     * 
+     *
      * @return <code>version</code> command status check result.
      */
     public ResultVersion getVersionResult() {
@@ -1125,7 +1125,7 @@ public class ServerStatus implements Closeable {
     /**
      * Get <code>__locations</code> command status check result.
      * <p/>
-     * 
+     *
      * @return <code>__locations</code> command status check result.
      */
     public ResultLocations getLocationsResult() {
@@ -1135,7 +1135,7 @@ public class ServerStatus implements Closeable {
     /**
      * Retrieve GlassFish version from version string retrieved from <code>version</code> command.
      * <p/>
-     * 
+     *
      * @return Version string retrieved from <code>version</code> command.
      */
     public Version getVersion() {

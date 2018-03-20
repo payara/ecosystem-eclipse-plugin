@@ -24,7 +24,7 @@ import org.eclipse.sapphire.Version;
  * <p/>
  * Holds data for command. Objects of this class are created by API user.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 @RunnerHttpClass
@@ -48,7 +48,7 @@ public class CommandVersion extends Command {
     /**
      * Retrieve version from server.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity.
      * @return GlassFish command result containing version string returned by server.
      * @throws GlassFishIdeException When error occurred during administration command execution.
@@ -69,7 +69,7 @@ public class CommandVersion extends Command {
     /**
      * Retrieve version from server.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity.
      * @return GlassFish command result containing {@link GlassFishVersion} object retrieved from server
      * or <code>null</code> if no version was returned.
@@ -97,7 +97,7 @@ public class CommandVersion extends Command {
      * Verifies if domain directory returned by version command result matches domain directory of
      * provided GlassFish server entity.
      * <p/>
-     * 
+     *
      * @param result Version command result.
      * @param server GlassFish server entity.
      * @return For local server value of <code>true</code> means that server major and minor version

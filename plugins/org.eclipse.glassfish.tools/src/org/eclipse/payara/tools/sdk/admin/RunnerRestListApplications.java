@@ -14,7 +14,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 /**
  * Command runner for commands that retrieve list of applications deployed on server.
  * <p>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RunnerRestListApplications extends RunnerRestList {
@@ -26,7 +26,7 @@ public class RunnerRestListApplications extends RunnerRestList {
     /**
      * Constructs an instance of administration command executor using REST interface.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */

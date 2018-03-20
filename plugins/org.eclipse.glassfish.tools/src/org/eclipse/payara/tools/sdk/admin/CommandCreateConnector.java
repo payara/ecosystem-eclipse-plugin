@@ -15,7 +15,7 @@ import java.util.Map;
  * Command that creates connector resource with the specified JNDI name and the interface definition
  * for a resource adapter on server.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 @RunnerHttpClass(runner = RunnerHttpCreateConnector.class)
@@ -52,7 +52,7 @@ public class CommandCreateConnector extends CommandTarget {
     /**
      * Constructs an instance of GlassFish server create connector resource command entity.
      * <p/>
-     * 
+     *
      * @param jndiName The JNDI name of this connector resource.
      * @param poolName Connection pool unique name (and ID).
      * @param properties Optional properties for configuring the pool.
@@ -71,7 +71,7 @@ public class CommandCreateConnector extends CommandTarget {
     /**
      * Constructs an instance of GlassFish server create connector resource command entity.
      * <p/>
-     * 
+     *
      * @param jndiName The JNDI name of this connector resource.
      * @param poolName Connection pool unique name (and ID).
      * @param properties Optional properties for configuring the pool.
@@ -87,7 +87,7 @@ public class CommandCreateConnector extends CommandTarget {
      * <p/>
      * This object will be enabled on server by default.
      * <p/>
-     * 
+     *
      * @param jndiName The JNDI name of this connector resource.
      * @param poolName Connection pool unique name (and ID).
      * @param properties Optional properties for configuring the pool.

@@ -91,7 +91,7 @@ public class RunnerAsadminRestoreDomain extends RunnerAsadmin {
     /**
      * Constructs an instance of administration command executor using command line asadmin interface.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */

@@ -21,7 +21,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 /**
  * Command that sets property (properties) on the server.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 @RunnerHttpClass(runner = RunnerHttpSetProperty.class)
@@ -50,7 +50,7 @@ public class CommandSetProperty extends Command {
     /**
      * Build error message from command property name and it's value.
      * <p/>
-     * 
+     *
      * @param command Command used to build error message.
      * @return Error message for administration command execution exception.
      */
@@ -73,7 +73,7 @@ public class CommandSetProperty extends Command {
     /**
      * Put property to server.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity.
      * @param command Command to set property value.
      * @return GlassFish command result containing <code>String</code> with result message.
@@ -94,7 +94,7 @@ public class CommandSetProperty extends Command {
     /**
      * Put property to server.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity.
      * @param command Command to set property value.
      * @param timeout Administration command execution timeout [ms].
@@ -136,7 +136,7 @@ public class CommandSetProperty extends Command {
     /**
      * Constructs an instance of GlassFish server set property command entity.
      * <p/>
-     * 
+     *
      * @param property Name of the property to set.
      * @param value Value of the property to set.
      * @param format Format for the query string.
@@ -152,7 +152,7 @@ public class CommandSetProperty extends Command {
     /**
      * Constructs an instance of GlassFish server set property command entity.
      * <p/>
-     * 
+     *
      * @param property Name of the property to set.
      * @param value Value of the property to set.
      */
@@ -170,7 +170,7 @@ public class CommandSetProperty extends Command {
     /**
      * Get name of the property to set.
      * <p/>
-     * 
+     *
      * @return Name of the property to set.
      */
     public String getProperty() {
@@ -180,7 +180,7 @@ public class CommandSetProperty extends Command {
     /**
      * Get value of the property to set.
      * <p/>
-     * 
+     *
      * @return Value of the property to set.
      */
     public String getValue() {

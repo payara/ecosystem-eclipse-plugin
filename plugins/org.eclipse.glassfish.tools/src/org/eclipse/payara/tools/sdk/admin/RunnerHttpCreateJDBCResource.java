@@ -17,7 +17,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
  * Contains code for create JDBC resource command. Class implements GlassFish server administration
  * functionality trough HTTP interface.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RunnerHttpCreateJDBCResource extends RunnerHttp {
@@ -59,7 +59,7 @@ public class RunnerHttpCreateJDBCResource extends RunnerHttp {
      * &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ['&' "properties" '=' &lt;pname&gt; '=' &lt;pvalue&gt;
      * { ':' &lt;pname&gt; '=' &lt;pvalue&gt;} ]</code>
      * <p/>
-     * 
+     *
      * @param command GlassFish server administration command entity.
      * <code>CommandCreateJDBCResource</code> instance is expected.
      * @return Create JDBC connection pool query string for given command.
@@ -115,7 +115,7 @@ public class RunnerHttpCreateJDBCResource extends RunnerHttp {
     /**
      * Constructs an instance of administration command executor using HTTP interface.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */

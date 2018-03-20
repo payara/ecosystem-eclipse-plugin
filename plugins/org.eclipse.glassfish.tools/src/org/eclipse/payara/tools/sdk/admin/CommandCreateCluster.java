@@ -14,7 +14,7 @@ package org.eclipse.payara.tools.sdk.admin;
  * <p/>
  * Holds data for command. Objects of this class are created by API user.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 @RunnerHttpClass(runner = RunnerHttpTarget.class)
@@ -35,7 +35,7 @@ public class CommandCreateCluster extends CommandTarget {
     /**
      * Constructs an instance of GlassFish server create-cluster command entity.
      * <p/>
-     * 
+     *
      * @param clusterName Name of the created cluster.
      */
     public CommandCreateCluster(String clusterName) {

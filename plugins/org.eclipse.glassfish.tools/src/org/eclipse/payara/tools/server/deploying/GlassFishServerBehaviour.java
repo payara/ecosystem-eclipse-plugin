@@ -358,7 +358,7 @@ public final class GlassFishServerBehaviour extends ServerBehaviourDelegate impl
 
     /**
      * This is the only modification point of server state.
-     * 
+     *
      * @param state
      */
     public synchronized void setGFServerState(int state) {
@@ -367,7 +367,7 @@ public final class GlassFishServerBehaviour extends ServerBehaviourDelegate impl
 
     /**
      * Called to attempt to attach debugger to running glassfish.
-     * 
+     *
      * @param launch
      * @param config
      * @param monitor
@@ -477,7 +477,7 @@ public final class GlassFishServerBehaviour extends ServerBehaviourDelegate impl
     /**
      * Checks if the Ant publisher actually needs to publish. For ear modules it also checks if any of
      * the children modules requires publishing.
-     * 
+     *
      * @return true if ant publisher needs to publish.
      */
     private boolean publishNeeded(int kind, int deltaKind, IModule[] module) {
@@ -854,7 +854,7 @@ public final class GlassFishServerBehaviour extends ServerBehaviourDelegate impl
     }
 
     /**
-     * 
+     *
      * @stop GlassFish v3 or v3 prelude via http command
      */
     private void stopServer(boolean stopLogging) {

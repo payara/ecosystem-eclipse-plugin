@@ -14,7 +14,7 @@ package org.eclipse.payara.tools.sdk.data;
  * <p/>
  * There is also minimal algebra defined to support <code>AND</code> and <code>OR</code>.
  * <p/>
- * 
+ *
  * @author Tomas Kraus
  */
 public enum GlassFishStatusCheckResult {
@@ -50,7 +50,7 @@ public enum GlassFishStatusCheckResult {
     /**
      * Compute logical <code>AND</code> of two status values.
      * <p/>
-     * 
+     *
      * @param s1 First operand.
      * @param s2 Second operand.
      */
@@ -63,7 +63,7 @@ public enum GlassFishStatusCheckResult {
     /**
      * Compute logical <code>OR</code> of two status values.
      * <p/>
-     * 
+     *
      * @param s1 First operand.
      * @param s2 Second operand.
      */
@@ -76,7 +76,7 @@ public enum GlassFishStatusCheckResult {
     /**
      * Compute logical <code>AND</code> of three status values.
      * <p/>
-     * 
+     *
      * @param s1 First operand.
      * @param s2 Second operand.
      * @param s3 Third operand.
@@ -91,7 +91,7 @@ public enum GlassFishStatusCheckResult {
     /**
      * Compute logical <code>OR</code> of three status values.
      * <p/>
-     * 
+     *
      * @param s1 First operand.
      * @param s2 Second operand.
      * @param s3 Third operand.
@@ -110,7 +110,7 @@ public enum GlassFishStatusCheckResult {
     /**
      * Convert <code>GlassFishStatusCheckResult</code> value to <code>String</code>.
      * <p/>
-     * 
+     *
      * @return A <code>String</code> representation of the value of this object.
      */
     @Override

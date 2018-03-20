@@ -39,7 +39,7 @@ public class GlassfishConsoleManager {
     /**
      * Returns standard console for specified server. For each server there is only one console. It
      * reads information from server.log file but only newly added lines.
-     * 
+     *
      * @param server
      * @return
      */
@@ -56,7 +56,7 @@ public class GlassfishConsoleManager {
     /**
      * Returns console for showing contents of the whole server.log file. For the same server.log file
      * there is only one console at the time.
-     * 
+     *
      * @param server
      * @return
      */
@@ -72,7 +72,7 @@ public class GlassfishConsoleManager {
 
     /**
      * Creates new startup process console. There should be only one for particular GF server.
-     * 
+     *
      * @param server
      * @return
      */

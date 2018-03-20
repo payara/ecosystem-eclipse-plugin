@@ -19,7 +19,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 /**
  * Fetch GlassFish log from server.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public abstract class FetchLog {
@@ -51,7 +51,7 @@ public abstract class FetchLog {
     /**
      * Constructor callback which will initialize log <code>InputStream</code>.
      * <p/>
-     * 
+     *
      * @return <code>InputStream</code> where log lines received from server will be available to read.
      */
     abstract InputStream initInputStream();
@@ -66,7 +66,7 @@ public abstract class FetchLog {
      * <code>InputStream</code> is set using constructor argument. Child class
      * <code>initInputStream</code> method is ignored.
      * <p/>
-     * 
+     *
      * @param in Input stream used to read server log.
      * @param skip Skip to the end of the log file.
      */
@@ -81,7 +81,7 @@ public abstract class FetchLog {
      * <p/>
      * <code>InputStream</code> is set using child <code>initInputStream</code> method.
      * <p/>
-     * 
+     *
      * @param server GlassFish server for fetching server log.
      * @param skip Skip to the end of the log file.
      */
@@ -99,7 +99,7 @@ public abstract class FetchLog {
     /**
      * Get input stream for reading lines from server log file.
      * <p/>
-     * 
+     *
      * @return Input stream for reading lines from server log file.
      */
     public InputStream getInputStream() {

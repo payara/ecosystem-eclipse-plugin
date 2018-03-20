@@ -17,7 +17,7 @@ import java.lang.annotation.Target;
 /**
  * Annotation to select GlassFish server admin command runner for command entity.
  * <p>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 @Retention(RetentionPolicy.RUNTIME)

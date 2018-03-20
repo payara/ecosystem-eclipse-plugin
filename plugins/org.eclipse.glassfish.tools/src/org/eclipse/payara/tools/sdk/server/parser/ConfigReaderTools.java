@@ -21,7 +21,7 @@ import org.xml.sax.SAXException;
 /**
  * Tools configuration XML element reader.
  * <p/>
- * 
+ *
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class ConfigReaderTools extends AbstractReader implements XMLReader {
@@ -56,7 +56,7 @@ public class ConfigReaderTools extends AbstractReader implements XMLReader {
     /**
      * Creates an instance of <code>tools</code> configuration XML element reader.
      * <p/>
-     * 
+     *
      * @param pathPrefix Tree parser path prefix to be prepended before current XML element.
      */
     ConfigReaderTools(final String pathPrefix) {
@@ -75,7 +75,7 @@ public class ConfigReaderTools extends AbstractReader implements XMLReader {
      * <p/>
      * Sets readers for <code>tools</code> element and it's content.
      * <p/>
-     * 
+     *
      * @return Paths that the reader listens to.
      */
     @Override
@@ -94,7 +94,7 @@ public class ConfigReaderTools extends AbstractReader implements XMLReader {
     /**
      * Process attributes from current XML element.
      * <p/>
-     * 
+     *
      * @param qname Not used.
      * @param attributes List of XML attributes.
      * @throws SAXException When any problem occurs.
@@ -108,7 +108,7 @@ public class ConfigReaderTools extends AbstractReader implements XMLReader {
     /**
      * Finish <code>tools</code> element processing.
      * <p/>
-     * 
+     *
      * @param qname Current XML element name.
      * @throws ServerConfigException when more than one <code>tools</code> XML elements were found.
      */
@@ -131,7 +131,7 @@ public class ConfigReaderTools extends AbstractReader implements XMLReader {
     /**
      * Get tools library directory (relative under GlassFish home).
      * <p/>
-     * 
+     *
      * @return Tools library directory (relative under GlassFish home).
      */
     String getLib() {
@@ -141,7 +141,7 @@ public class ConfigReaderTools extends AbstractReader implements XMLReader {
     /**
      * Get asadmin tool JAR.
      * <p/>
-     * 
+     *
      * @return Asadmin tool JAR.
      */
     String getJar() {

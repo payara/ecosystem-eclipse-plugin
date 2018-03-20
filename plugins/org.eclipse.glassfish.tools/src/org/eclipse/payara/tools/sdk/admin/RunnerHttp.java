@@ -38,7 +38,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
  * <p/>
  * Class implements GlassFish server administration functionality trough HTTP interface.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RunnerHttp extends Runner {
@@ -59,7 +59,7 @@ public class RunnerHttp extends Runner {
     /**
      * Calculate properties length based on properties map.
      * <p/>
-     * 
+     *
      * @param properties Properties to be added into query string.
      * @param paramName Properties parameter name in query string.
      * @return Size of properties query string to be added.
@@ -93,7 +93,7 @@ public class RunnerHttp extends Runner {
     /**
      * Calculate libraries length based on libraries array.
      * <p/>
-     * 
+     *
      * @param libraries Libraries to be added into query string.
      * @param paramName Libraries parameter name in query string.
      * @return Size of libraries query string to be added.
@@ -119,7 +119,7 @@ public class RunnerHttp extends Runner {
     /**
      * Append properties to existing query string stored in given <code>StringBuilder</code>.
      * <p/>
-     * 
+     *
      * @param sb Target <code>StringBuilder</code> where to append properties.
      * @param properties Properties to be added into query string.
      * @param paramName Properties parameter name in query string.
@@ -157,7 +157,7 @@ public class RunnerHttp extends Runner {
     /**
      * Append libraries to existing query string stored in given <code>StringBuilder</code>.
      * <p/>
-     * 
+     *
      * @param sb Target <code>StringBuilder</code> where to append properties.
      * @param libraries Libraries to be added into query string.
      * @param paramName Libraries parameter name in query string.
@@ -191,7 +191,7 @@ public class RunnerHttp extends Runner {
      * <p/>
      * Response processing helper method. Manifest must contain valid data.
      * <p/>
-     * 
+     *
      * @param manifest Manifest from server response.
      * @return <code>true</code> for success and <code>false</code> for failure.
      */
@@ -250,7 +250,7 @@ public class RunnerHttp extends Runner {
     /**
      * Constructs an instance of administration command executor using HTTP interface.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
@@ -264,7 +264,7 @@ public class RunnerHttp extends Runner {
      * <p/>
      * <b>For use in child classes only.</b>
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      * @param query Query string for this command.
@@ -280,7 +280,7 @@ public class RunnerHttp extends Runner {
      * <p/>
      * <b>For use in child classes only.</b>
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      * @param path Server command path.
@@ -300,7 +300,7 @@ public class RunnerHttp extends Runner {
      * Create <code>ResultString</code> object corresponding to <code>String</code>command execution
      * value to be returned.
      * <p/>
-     * 
+     *
      * @return <code>String</code>command execution value to be returned.
      */
     @Override
@@ -311,7 +311,7 @@ public class RunnerHttp extends Runner {
     /**
      * Do not send information to the server via HTTP POST by default.
      * <p/>
-     * 
+     *
      * @return <code>true</code> if using HTTP POST to send to server or <code>false</code> otherwise
      */
     @Override
@@ -322,7 +322,7 @@ public class RunnerHttp extends Runner {
     /**
      * Inform whether this runner implementation accepts gzip format.
      * <p/>
-     * 
+     *
      * @return <code>true</code> when gzip format is accepted, <code>false</code> otherwise.
      */
     @Override
@@ -332,7 +332,7 @@ public class RunnerHttp extends Runner {
 
     /**
      * Build GlassFish HTTP command URL. <o>
-     * 
+     *
      * @return <code>String</code> value containing command URL.
      * @throws <code>CommandException</code> if there is a problem with building command URL.
      */
@@ -394,7 +394,7 @@ public class RunnerHttp extends Runner {
      * Override to read the response data sent by the server. Do not close the stream parameter when
      * finished. Caller will take care of that.
      * <p/>
-     * 
+     *
      * @param in Stream to read data from.
      * @return true if response was read correctly.
      * @throws CommandException in case of stream error.
@@ -434,7 +434,7 @@ public class RunnerHttp extends Runner {
      * attribute in <code>Manifest</code> object is stored as <i>value</i> into
      * <code>ResultString</code> result object.
      * <p/>
-     * 
+     *
      * @return true if result was extracted correctly. <code>null</code> <i>message</i>value is
      * considered as failure.
      */
@@ -472,7 +472,7 @@ public class RunnerHttp extends Runner {
      * instance is always created in <code>readResponse</code> method so no <code>null</code> check is
      * required here.
      * <p/>
-     * 
+     *
      * @param manifest Manifest from server response.
      * @return Value of <i>message<i> attribute or <code>null</code> if no such attribute exists.
      */
@@ -496,7 +496,7 @@ public class RunnerHttp extends Runner {
     /**
      * Get extra properties for ZIP entries.
      * <p/>
-     * 
+     *
      * @return Extra properties for ZIP entries.
      */
     byte[] getExtraProperties() {
@@ -514,7 +514,7 @@ public class RunnerHttp extends Runner {
     /**
      * Prepare headers for HTTP connection.
      * <p/>
-     * 
+     *
      * @param conn Target HTTP connection.
      * @throws <code>CommandException</code> if there is a problem with setting the headers.
      */

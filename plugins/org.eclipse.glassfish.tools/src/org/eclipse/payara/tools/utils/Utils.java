@@ -119,7 +119,7 @@ public class Utils {
 
     /**
      * Determine if a local port is occupied.
-     * 
+     *
      * @param port
      * @return true, if the local port is in use.
      */
@@ -144,7 +144,7 @@ public class Utils {
 
     /**
      * identify the http/https protocol designator for a port
-     * 
+     *
      */
     public static String getHttpListenerProtocol(String hostname, int port) {
         String retVal = "http";
@@ -169,13 +169,13 @@ public class Utils {
 
     /**
      * Determine whether an http listener is secure or not..
-     * 
+     *
      * This method accepts a hostname and port #. It uses this information to attempt to connect to the
      * port, send a test query, analyze the result to determine if the port is secure or unsecure
      * (currently only http / https is supported). it might emit a warning in the server log for
      * GlassFish cases No Harm, just an annoying warning, so we need to use this call only when really
      * needed
-     * 
+     *
      * @param hostname the host for the http-listener
      * @param port the port for the http-listener
      * @throws IOException

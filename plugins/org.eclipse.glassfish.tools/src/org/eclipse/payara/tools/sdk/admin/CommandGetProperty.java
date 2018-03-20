@@ -22,7 +22,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 /**
  * Command that retrieves property (properties) from server.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 @RunnerHttpClass(runner = RunnerHttpGetProperty.class)
@@ -53,7 +53,7 @@ public class CommandGetProperty extends Command {
     /**
      * Retrieve properties from server.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity.
      * @param propertyPattern Pattern that defines properties to retrieve.
      * @return GlassFish command result containing map with key-value pairs returned by server.
@@ -77,7 +77,7 @@ public class CommandGetProperty extends Command {
     /**
      * Retrieve properties from server with timeout.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity.
      * @param propertyPattern Pattern that defines properties to retrieve.
      * @param timeout Administration command execution timeout [ms].
@@ -113,7 +113,7 @@ public class CommandGetProperty extends Command {
     /**
      * Constructs an instance of GlassFish server get property command entity.
      * <p/>
-     * 
+     *
      * @param property Pattern that defines property tor retrieve.
      */
     public CommandGetProperty(final String property) {

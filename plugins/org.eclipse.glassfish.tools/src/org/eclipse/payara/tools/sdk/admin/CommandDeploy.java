@@ -47,7 +47,7 @@ public class CommandDeploy extends CommandTargetName {
     /**
      * Deploy task that deploys application on server.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity.
      * @param application File object representing archive or directory to be deployed.
      * @param listener Command execution events listener.
@@ -88,7 +88,7 @@ public class CommandDeploy extends CommandTargetName {
     /**
      * Constructs an instance of GlassFish server deploy command entity.
      * <p/>
-     * 
+     *
      * @param name Name of module/cluster/instance to modify.
      * @param target Target GlassFish instance or cluster where <code>name</code> is stored.
      * @param path File to deploy.

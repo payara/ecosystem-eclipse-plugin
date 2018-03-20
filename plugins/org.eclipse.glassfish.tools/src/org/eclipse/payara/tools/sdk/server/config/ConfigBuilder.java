@@ -33,7 +33,7 @@ import org.eclipse.sapphire.Version;
  * XML configuration file is read just once with first configuration getter call. Returned values
  * are cached for subsequent getter calls which are very fast.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class ConfigBuilder {
@@ -46,7 +46,7 @@ public class ConfigBuilder {
      * Build <code>List</code> of <code>GlassFishLibrary</code> objects representing libraries found in
      * particular GlassFish server installation.
      * <p/>
-     * 
+     *
      * @param libConfigs List of libraries configuration nodes.
      * @param classpathHome Directory tree to search for class path elements.
      * @param javadocsHome Directory tree to search for java doc.
@@ -88,7 +88,7 @@ public class ConfigBuilder {
      * Converts provided list of files to <code>URL</code> objects and appends supplied <code>URL</code>
      * objects to this list.
      * <p/>
-     * 
+     *
      * @param files List of files to convert to <code>URL</code> objects.
      * @param urls <code>URL</code> objects to append to this list.
      * @return List of <code>URL</code> objects containing content of both supplied lists.
@@ -103,7 +103,7 @@ public class ConfigBuilder {
     /**
      * Converts provided list of files to <code>URL</code> objects.
      * <p/>
-     * 
+     *
      * @param files List of files to convert to <code>URL</code> objects.
      * @return List of <code>URL</code> objects containing files from supplied list.
      */
@@ -155,7 +155,7 @@ public class ConfigBuilder {
      * <p/>
      * Stores provided GlassFish version to configuration file mapping.
      * <p/>
-     * 
+     *
      * @param config Library builder configuration. Should not be <code>null</code>.
      * @param classpathHome Classpath search prefix.
      * @param javadocsHome Javadoc search prefix.
@@ -174,7 +174,7 @@ public class ConfigBuilder {
      * <p/>
      * Stores provided GlassFish version to configuration file mapping.
      * <p/>
-     * 
+     *
      * @param config Library builder configuration. Should not be <code>null</code>.
      * @param classpathHome Classpath search prefix.
      * @param javadocsHome Javadoc search prefix.
@@ -192,7 +192,7 @@ public class ConfigBuilder {
      * Internal version check to avoid usage of a single builder instance for multiple GlassFish
      * versions.
      * <p/>
-     * 
+     *
      * @param version GlassFish version being checked.
      * @throws ServerConfigException when builder is used with multiple GlassFish versions.
      */
@@ -233,7 +233,7 @@ public class ConfigBuilder {
      * This method shall not be used with multiple GlassFish versions for the same instance of
      * {@link ConfigBuilder} class.
      * <p/>
-     * 
+     *
      * @param version GlassFish version.
      * @return List of libraries configured for GlassFish of given version.
      * @throws ServerConfigException when builder instance is used with multiple GlassFish versions.
@@ -253,7 +253,7 @@ public class ConfigBuilder {
      * This method shall not be used with multiple GlassFish versions for the same instance of
      * {@link ConfigBuilder} class.
      * <p/>
-     * 
+     *
      * @param version GlassFish version.
      * @return GlassFish JavaEE configuration for provided GlassFish of given version.
      * @throws ServerConfigException when builder instance is used with multiple GlassFish versions.
@@ -273,7 +273,7 @@ public class ConfigBuilder {
      * This method shall not be used with multiple GlassFish versions for the same instance of
      * {@link ConfigBuilder} class.
      * <p/>
-     * 
+     *
      * @param version GlassFish version.
      * @return GlassFish JavaSE configuration for provided GlassFish of given version.
      * @throws ServerConfigException when builder instance is used with multiple GlassFish versions.

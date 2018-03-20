@@ -22,7 +22,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 /**
  * Command that creates JDBC connection pool on server.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 @RunnerHttpClass(runner = RunnerHttpCreateJDBCConnectionPool.class)
@@ -46,7 +46,7 @@ public class CommandCreateJDBCConnectionPool extends Command {
     /**
      * create JDBC connection pool.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity.
      * @param connectionPoolId Connection pool unique name (and ID).
      * @param dataSourceClassName The name of the vendor-supplied JDBC data source resource manager.
@@ -74,7 +74,7 @@ public class CommandCreateJDBCConnectionPool extends Command {
     /**
      * Create JDBC connection pool.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity.
      * @param connectionPoolId Connection pool unique name (and ID).
      * @param dataSourceClassName The name of the vendor-supplied JDBC data source resource manager.
@@ -217,7 +217,7 @@ public class CommandCreateJDBCConnectionPool extends Command {
     /**
      * Constructs an instance of GlassFish server create JDBC connection pool command entity.
      * <p/>
-     * 
+     *
      * @param connectionPoolId Connection pool unique name (and ID).
      * @param dataSourceClassName The name of the vendor-supplied JDBC data source resource manager.
      * @param resType Resource type.

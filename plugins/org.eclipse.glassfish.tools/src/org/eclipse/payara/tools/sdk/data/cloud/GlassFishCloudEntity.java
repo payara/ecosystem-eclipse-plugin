@@ -16,7 +16,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
  * <p/>
  * GlassFish cloud entity instance which is used when not defined externally in IDE.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class GlassFishCloudEntity implements GlassFishCloud {
@@ -50,7 +50,7 @@ public class GlassFishCloudEntity implements GlassFishCloud {
     /**
      * Constructs class instance with ALL values set.
      * <p/>
-     * 
+     *
      * @param name GlassFish cloud name to set.
      * @param host GlassFish cloud host to set.
      * @param port GlassFish server port to set.
@@ -71,7 +71,7 @@ public class GlassFishCloudEntity implements GlassFishCloud {
     /**
      * Get GlassFish cloud name (display name in IDE).
      * <p/>
-     * 
+     *
      * @return GlassFish cloud name (display name in IDE).
      */
     @Override
@@ -82,7 +82,7 @@ public class GlassFishCloudEntity implements GlassFishCloud {
     /**
      * Set GlassFish cloud name (display name in IDE).
      * <p/>
-     * 
+     *
      * @param name GlassFish cloud name to set (display name in IDE).
      */
     public void setName(String name) {
@@ -92,7 +92,7 @@ public class GlassFishCloudEntity implements GlassFishCloud {
     /**
      * Get GlassFish cloud host.
      * <p/>
-     * 
+     *
      * @return GlassFish cloud host.
      */
     @Override
@@ -103,7 +103,7 @@ public class GlassFishCloudEntity implements GlassFishCloud {
     /**
      * Set GlassFish cloud host.
      * <p/>
-     * 
+     *
      * @param host GlassFish cloud host to set.
      */
     public void setHost(String host) {
@@ -113,7 +113,7 @@ public class GlassFishCloudEntity implements GlassFishCloud {
     /**
      * Get GlassFish server port.
      * <p/>
-     * 
+     *
      * @return GlassFish server port.
      */
     @Override
@@ -124,7 +124,7 @@ public class GlassFishCloudEntity implements GlassFishCloud {
     /**
      * Set GlassFish server port.
      * <p/>
-     * 
+     *
      * @param port GlassFish server port to set.
      */
     public void setPort(int port) {
@@ -134,7 +134,7 @@ public class GlassFishCloudEntity implements GlassFishCloud {
     /**
      * Get GlassFish cloud local server.
      * <p/>
-     * 
+     *
      * @return GlassFish cloud local server.
      */
     @Override
@@ -145,7 +145,7 @@ public class GlassFishCloudEntity implements GlassFishCloud {
     /**
      * Set GlassFish cloud local server.
      * <p/>
-     * 
+     *
      * @param localServer GlassFish cloud local server to set.
      */
     public void setLocalServer(GlassFishServer localServer) {
@@ -159,7 +159,7 @@ public class GlassFishCloudEntity implements GlassFishCloud {
     /**
      * String representation of this GlassFish cloud entity.
      * <p/>
-     * 
+     *
      * @return String representation of this GlassFish cloud entity.
      */
     @Override

@@ -23,7 +23,7 @@ import org.eclipse.payara.tools.sdk.data.GlassFishStatusCheckResult;
  * stored <code>result</code> value shall be examined too to see real administration command
  * execution result.
  * <p/>
- * 
+ *
  * @author Tomas Kraus
  */
 class StatusResultLocations extends StatusResult {
@@ -44,7 +44,7 @@ class StatusResultLocations extends StatusResult {
      * <p/>
      * Command <code>__locations</code> result is stored.
      * <p/>
-     * 
+     *
      * @param result Command <code>__locations</code> execution result.
      * @param status Individual server status returned.
      * @param failureEvent Failure cause.
@@ -63,7 +63,7 @@ class StatusResultLocations extends StatusResult {
     /**
      * Get <code>__locations</code> command execution result.
      * <p/>
-     * 
+     *
      * @return <code>__locations</code> command execution result.
      */
     public ResultMap<String, String> getStatusResult() {

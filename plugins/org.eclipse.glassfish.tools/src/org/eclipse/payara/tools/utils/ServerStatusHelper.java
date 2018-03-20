@@ -169,7 +169,7 @@ public class ServerStatusHelper {
      * value is well defined only after corresponding Future.get method returned. It can also return
      * null if no event was observed or execution timed out. Do not put the same instance into two exec
      * calls that run concurrently, it is not thread safe.
-     * 
+     *
      * @author Peter Benedikovic
      *
      */

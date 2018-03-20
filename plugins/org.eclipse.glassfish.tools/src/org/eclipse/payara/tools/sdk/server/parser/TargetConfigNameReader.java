@@ -19,7 +19,7 @@ import org.xml.sax.SAXException;
 /**
  * Reads the name of the configuration for given target (server or cluster). TODO now it reads only
  * servers and not clusters...
- * 
+ *
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class TargetConfigNameReader extends TreeParser.NodeListener implements

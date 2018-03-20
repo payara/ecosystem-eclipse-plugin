@@ -15,7 +15,7 @@ import org.xml.sax.SAXException;
 /**
  * Abstract Java configuration XML element reader.
  * <p/>
- * 
+ *
  * @author Peter Benedikovic, Tomas Kraus
  */
 public abstract class ConfigReaderJava
@@ -42,7 +42,7 @@ public abstract class ConfigReaderJava
     /**
      * Creates an instance of Java EE configuration XML element reader.
      * <p/>
-     * 
+     *
      * @param pathPrefix Tree parser path prefix to be prepended before current XML element.
      * @param node XML element name.
      */
@@ -58,7 +58,7 @@ public abstract class ConfigReaderJava
     /**
      * Process attributes from current XML element.
      * <p/>
-     * 
+     *
      * @param qname Not used.
      * @param attributes List of XML attributes.
      * @throws SAXException When any problem occurs.
@@ -76,7 +76,7 @@ public abstract class ConfigReaderJava
     /**
      * Get highest JavaEE specification version implemented.
      * <p/>
-     * 
+     *
      * @return Highest JavaEE specification version implemented.
      */
     String getVersion() {

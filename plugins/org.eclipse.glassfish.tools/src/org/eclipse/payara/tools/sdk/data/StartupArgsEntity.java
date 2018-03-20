@@ -17,7 +17,7 @@ import java.util.Map;
  * <p/>
  * Local GlassFish Server entity instance which is used when not defined in IDE.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class StartupArgsEntity implements StartupArgs {
@@ -51,7 +51,7 @@ public class StartupArgsEntity implements StartupArgs {
     /**
      * Constructs class instance with all values supplied.
      * <p/>
-     * 
+     *
      * @param glassfishArgs Command line arguments passed to bootstrap jar.
      * @param javaArgs Command line arguments passed to JVM.
      * @param environmentVars Environment variables set before JVM execution.
@@ -72,7 +72,7 @@ public class StartupArgsEntity implements StartupArgs {
     /**
      * Get command line arguments passed to bootstrap jar.
      * <p/>
-     * 
+     *
      * @return Command line arguments passed to bootstrap jar.
      */
     @Override
@@ -83,7 +83,7 @@ public class StartupArgsEntity implements StartupArgs {
     /**
      * Set command line arguments passed to bootstrap jar.
      * <p/>
-     * 
+     *
      * @param glassfishArgs Command line arguments passed to bootstrap jar.
      */
     public void setGlassfishArgs(List<String> glassfishArgs) {
@@ -93,7 +93,7 @@ public class StartupArgsEntity implements StartupArgs {
     /**
      * Get command line arguments passed to JVM.
      * <p/>
-     * 
+     *
      * @return Command line arguments passed to JVM.
      */
     @Override
@@ -104,7 +104,7 @@ public class StartupArgsEntity implements StartupArgs {
     /**
      * Set command line arguments passed to JVM.
      * <p/>
-     * 
+     *
      * @param javaArgs Command line arguments passed to JVM.
      */
     public void getJavaArgs(List<String> javaArgs) {
@@ -114,7 +114,7 @@ public class StartupArgsEntity implements StartupArgs {
     /**
      * Get environment variables set before JVM execution.
      * <p/>
-     * 
+     *
      * @return Environment variables set before JVM execution.
      */
     @Override
@@ -125,7 +125,7 @@ public class StartupArgsEntity implements StartupArgs {
     /**
      * Set environment variables set before JVM execution.
      * <p/>
-     * 
+     *
      * @param environmentVars Environment variables set before JVM execution.
      */
     public void setEnvironmentVars(Map<String, String> environmentVars) {
@@ -135,7 +135,7 @@ public class StartupArgsEntity implements StartupArgs {
     /**
      * Get installation home of Java SDK used to run GlassFish.
      * <p/>
-     * 
+     *
      * @return Installation home of Java SDK used to run GlassFish.
      */
     @Override
@@ -146,7 +146,7 @@ public class StartupArgsEntity implements StartupArgs {
     /**
      * Set installation home of Java SDK used to run GlassFish.
      * <p/>
-     * 
+     *
      * @param javaHome Installation home of Java SDK used to run GlassFish.
      */
     public void getJavaHome(String javaHome) {

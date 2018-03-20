@@ -36,7 +36,7 @@ public class CommandDeleteResource extends CommandTarget {
     /**
      * Constructor for delete resource command entity.
      * <p/>
-     * 
+     *
      * @param target Target GlassFish instance or cluster.
      * @param name Name of resource to be deleted.
      * @param resourceCmdSuffix Resource related command suffix. Command string is build by appending
@@ -55,7 +55,7 @@ public class CommandDeleteResource extends CommandTarget {
     /**
      * Constructor for delete resource command entity.
      * <p/>
-     * 
+     *
      * @param name Name of resource to be deleted.
      * @param resourceCmdSuffix Resource related command suffix. Command string is build by appending
      * this value after <code>delete-</code>.

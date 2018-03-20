@@ -18,7 +18,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 /**
  * Runner executes set property command via REST interface.
  * <p/>
- * 
+ *
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class RunnerRestSetProperty extends RunnerRest {
@@ -29,7 +29,7 @@ public class RunnerRestSetProperty extends RunnerRest {
     /**
      * Constructs an instance of administration command executor using REST interface.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */

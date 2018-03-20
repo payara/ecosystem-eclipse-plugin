@@ -24,7 +24,7 @@ import org.xml.sax.SAXException;
  * Reads configuration of network listeners. For each listener returns one {@link HttpData} object
  * that contains port number, protocol and information whether this protocol is secured.
  * <p/>
- * 
+ *
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class NetworkListenerReader extends TargetConfigReader implements

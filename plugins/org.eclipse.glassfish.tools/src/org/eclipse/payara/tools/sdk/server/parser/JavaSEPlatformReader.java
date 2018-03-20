@@ -19,7 +19,7 @@ import org.xml.sax.SAXException;
 /**
  * <code>platform</code> Java SE configuration XML element reader.
  * <p/>
- * 
+ *
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class JavaSEPlatformReader extends AbstractReader {
@@ -48,7 +48,7 @@ public class JavaSEPlatformReader extends AbstractReader {
     /**
      * Creates an instance of <code>platform</code> Java EE configuration XML element reader.
      * <p/>
-     * 
+     *
      * @param pathPrefix Tree parser path prefix to be prepended before current XML element.
      */
     JavaSEPlatformReader(final String pathPrefix) throws ServerConfigException {
@@ -63,7 +63,7 @@ public class JavaSEPlatformReader extends AbstractReader {
     /**
      * Process attributes from current XML element.
      * <p/>
-     * 
+     *
      * @param qname Not used.
      * @param attributes List of XML attributes.
      * @throws SAXException When any problem occurs.
@@ -81,7 +81,7 @@ public class JavaSEPlatformReader extends AbstractReader {
     /**
      * Get platforms retrieved from XML elements.
      * <p/>
-     * 
+     *
      * @return Platforms retrieved from XML elements.
      */
     public List<String> getPlatforms() {

@@ -15,7 +15,7 @@ package org.eclipse.payara.tools.sdk.admin;
  * Contains common <code>name</code> and <code>target</code> attribute. Holds data for command.
  * Objects of this class are created by API user.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public abstract class CommandTargetName extends CommandTarget {
@@ -34,7 +34,7 @@ public abstract class CommandTargetName extends CommandTarget {
     /**
      * Constructs an instance of GlassFish server enable command entity.
      * <p/>
-     * 
+     *
      * @param command Server command represented by this object.
      * @param name Name of module/cluster/instance to modify.
      * @param target Target GlassFish instance or cluster where <code>name</code> is stored.

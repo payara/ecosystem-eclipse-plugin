@@ -14,7 +14,7 @@ package org.eclipse.payara.tools.sdk.admin;
  * <p/>
  * Holds data for command. Objects of this class are created by API user.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 @RunnerHttpClass(runner = RunnerHttpUndeploy.class)
@@ -35,7 +35,7 @@ public class CommandUndeploy extends CommandTargetName {
     /**
      * Constructs an instance of GlassFish server undeploy command entity.
      * <p/>
-     * 
+     *
      * @param target Target GlassFish instance.
      */
     public CommandUndeploy(String name) {
@@ -45,7 +45,7 @@ public class CommandUndeploy extends CommandTargetName {
     /**
      * Constructs an instance of GlassFish server undeploy command entity.
      * <p/>
-     * 
+     *
      * @param target Target GlassFish instance.
      */
     public CommandUndeploy(String name, String target) {

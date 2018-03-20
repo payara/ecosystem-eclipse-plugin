@@ -23,7 +23,7 @@ import org.eclipse.payara.tools.sdk.logging.Logger;
  * responding. This helps to use just subset of checks in some states and also to use different
  * checks synchronization strategy.
  * <p/>
- * 
+ *
  * @author Tomas Kraus
  */
 public enum StatusJobState {
@@ -153,7 +153,7 @@ public enum StatusJobState {
      * specified <code>String</code> matches any <code>String</code> returned by <code>toString</code>
      * method. Otherwise <code>null</code> value is returned.
      * <p>
-     * 
+     *
      * @param name Value containing <code>GlassFishStatus</code> <code>toString</code> representation.
      * @return <code>GlassFishStatus</code> value represented by <code>String</code> or
      * <code>null</code> if value was not recognized.
@@ -173,7 +173,7 @@ public enum StatusJobState {
     /**
      * Convert <code>StatusJobState</code> value to <code>String</code>.
      * <p/>
-     * 
+     *
      * @return A <code>String</code> representation of the value of this object.
      */
     @Override
@@ -211,7 +211,7 @@ public enum StatusJobState {
     /**
      * Convert <code>StatusJobState</code> value to {@link GlassFishStatus}.
      * <p/>
-     * 
+     *
      * @return A {@link GlassFishStatus} representation of the value of this object.
      */
     GlassFishStatus toGlassFishStatus() {

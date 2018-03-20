@@ -12,7 +12,7 @@ package org.eclipse.payara.tools.sdk.admin;
 /**
  * GlassFish server administration command entity with local Java SE support and class path.
  * <p/>
- * 
+ *
  * @author Tomas Kraus
  */
 public abstract class CommandJavaClassPath extends CommandJava {
@@ -35,7 +35,7 @@ public abstract class CommandJavaClassPath extends CommandJava {
      * Constructs an instance of GlassFish server administration command entity with specified server
      * command, Java SE home and class path.
      * <p/>
-     * 
+     *
      * @param command Server command represented by this object.
      * @param javaHome Java SE home used to select JRE for GlassFish server.
      * @param classPath Java SE class path.
@@ -53,7 +53,7 @@ public abstract class CommandJavaClassPath extends CommandJava {
     /**
      * Get class path to be passed to java executable.
      * <p/>
-     * 
+     *
      * @return the classPath Class path to be passed to java executable.
      */
     public String getClassPath() {

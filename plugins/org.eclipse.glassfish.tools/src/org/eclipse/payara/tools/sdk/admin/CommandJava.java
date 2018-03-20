@@ -12,7 +12,7 @@ package org.eclipse.payara.tools.sdk.admin;
 /**
  * GlassFish server administration command entity with local Java SE support.
  * <p/>
- * 
+ *
  * @author Tomas Kraus
  */
 public abstract class CommandJava extends Command {
@@ -32,7 +32,7 @@ public abstract class CommandJava extends Command {
      * Constructs an instance of GlassFish server administration command entity with specified server
      * command and Java SE home.
      * <p/>
-     * 
+     *
      * @param command Server command represented by this object.
      * @param javaHome Java SE home used to select JRE for GlassFish server.
      */
@@ -48,7 +48,7 @@ public abstract class CommandJava extends Command {
     /**
      * Get Java SE home used to select JRE for GlassFish server.
      * <p/>
-     * 
+     *
      * @return Java SE home used to select JRE for GlassFish server.
      */
     public String getJavaHome() {

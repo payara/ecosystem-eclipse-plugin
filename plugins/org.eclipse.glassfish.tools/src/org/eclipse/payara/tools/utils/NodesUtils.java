@@ -110,7 +110,7 @@ public class NodesUtils {
 
     /**
      * Sends list-web-services command to server (synchronous)
-     * 
+     *
      * @return String array of names of deployed applications.
      */
     public static List<WSDesc> getWebServices(GlassFishServer server) {

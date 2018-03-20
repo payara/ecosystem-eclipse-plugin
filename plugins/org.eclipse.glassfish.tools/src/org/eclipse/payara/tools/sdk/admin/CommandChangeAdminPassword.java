@@ -12,7 +12,7 @@ package org.eclipse.payara.tools.sdk.admin;
 /**
  * GlassFish server change administrator's password administration command entity.
  * <p/>
- * 
+ *
  * @author Tomas Kraus
  */
 @RunnerHttpClass(runner = RunnerAsadminChangeAdminPassword.class)
@@ -44,7 +44,7 @@ public class CommandChangeAdminPassword extends CommandJava {
      * Constructs an instance of GlassFish server administration command entity with specified server
      * command, Java SE home and class path.
      * <p/>
-     * 
+     *
      * @param javaHome Java SE home used to select JRE for GlassFish server.
      * @param password GlassFish administrator's new password to be set.
      */

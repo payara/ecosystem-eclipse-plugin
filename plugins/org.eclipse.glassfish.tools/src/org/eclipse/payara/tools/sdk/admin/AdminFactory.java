@@ -24,7 +24,7 @@ import org.eclipse.sapphire.Version;
  * Selects correct GlassFish server administration functionality depending on given GlassFish server
  * entity object.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public abstract class AdminFactory {
@@ -44,7 +44,7 @@ public abstract class AdminFactory {
      * Creates specific <code>AdminFactory</code> child class instance to build GlassFish server
      * administration command runner and data objects based on provided GlassFish server version.
      * <p>
-     * 
+     *
      * @param version GlassFish server version.
      * @return Child factory class instance to work with given GlassFish server.
      */
@@ -59,7 +59,7 @@ public abstract class AdminFactory {
      * administration command runner and data objects based on provided GlassFish server administration
      * interface type.
      * <p/>
-     * 
+     *
      * @param adminInterface GlassFish server administration interface type.
      * @return Child factory class instance to work with given GlassFish server.
      */
@@ -85,7 +85,7 @@ public abstract class AdminFactory {
      * Build runner for command interface execution and connect it with provided <code>Command</code>
      * instance.
      * <p/>
-     * 
+     *
      * @param srv Target GlassFish server.
      * @param cmd GlassFish server administration command entity.
      * @return GlassFish server administration command execution object.
@@ -100,7 +100,7 @@ public abstract class AdminFactory {
     /**
      * Constructs an instance of selected <code>Runner</code> child class.
      * <p/>
-     * 
+     *
      * @param srv Target GlassFish server.
      * @param cmd GlassFish server administration command entity.
      * @param runnerClass Class of newly instantiated <code>runner</code>

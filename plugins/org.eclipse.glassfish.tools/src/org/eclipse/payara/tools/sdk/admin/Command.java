@@ -37,7 +37,7 @@ public abstract class Command {
      * Constructs an instance of GlassFish server administration command entity with specified server
      * command.
      * <p/>
-     * 
+     *
      * @param command Server command represented by this object.
      */
     protected Command(final String command) {
@@ -52,7 +52,7 @@ public abstract class Command {
      * Returns server command represented by this object. Set in constructor. e.g. "deploy",
      * "list-applications", etc.
      * <p/>
-     * 
+     *
      * @return command string represented by this object.
      */
     public String getCommand() {
@@ -67,7 +67,7 @@ public abstract class Command {
      * <p/>
      * In such cases, we set a flag and have the option to reissue the command.
      * <p/>
-     * 
+     *
      * @return true if server responded with it's "please wait" message.
      */
     public boolean retry() {

@@ -19,7 +19,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
  * Contains common code for enable and disable commands. Individual child classes are not needed at
  * this stage. Class implements GlassFish server administration functionality trough HTTP interface.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RunnerHttpEnableDisable extends RunnerHttp {
@@ -44,7 +44,7 @@ public class RunnerHttpEnableDisable extends RunnerHttp {
      * <code>QUERY :: "DEFAULT" '=' &lt;name&gt;
      *                ['&' "target" '=' &lt;target&gt; ]</code>
      * <p/>
-     * 
+     *
      * @param command GlassFish Server Admin Command Entity. <code>CommandDisable</code> instance is
      * expected.
      * @return Enable/Disable query string for given command.
@@ -85,7 +85,7 @@ public class RunnerHttpEnableDisable extends RunnerHttp {
     /**
      * Constructs an instance of admin command executor using HTTP interface.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity object.
      * @param command GlassFish Server Admin Command Entity.
      */

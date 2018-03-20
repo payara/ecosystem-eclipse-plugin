@@ -20,7 +20,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 /**
  * Command that retrieves list of components defined on server.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 @RunnerHttpClass(runner = RunnerHttpListComponents.class)
@@ -44,7 +44,7 @@ public class CommandListComponents extends CommandTarget {
     /**
      * List components.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity.
      * @param target Target server instance or cluster.
      * @return List components task response.
@@ -71,7 +71,7 @@ public class CommandListComponents extends CommandTarget {
     /**
      * Constructs an instance of GlassFish server list components command entity.
      * <p/>
-     * 
+     *
      * @param target Target GlassFish instance or cluster.
      */
     public CommandListComponents(final String target) {

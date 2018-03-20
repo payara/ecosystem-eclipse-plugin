@@ -33,7 +33,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
  * <p/>
  * Class implements GlassFish server administration functionality command line asadmin interface.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public abstract class RunnerAsadmin extends RunnerJava {
@@ -60,7 +60,7 @@ public abstract class RunnerAsadmin extends RunnerJava {
     /**
      * Extracts asadmin JAR path from GlassFish server entity object.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity object.
      * @return Asadmin JAR path to execute.
      */
@@ -135,7 +135,7 @@ public abstract class RunnerAsadmin extends RunnerJava {
     /**
      * Constructs an instance of administration command executor using command line asadmin interface.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      * @param query Query string for this command.
@@ -158,7 +158,7 @@ public abstract class RunnerAsadmin extends RunnerJava {
      * Create <code>ResultString</code> object corresponding to <code>String</code>command execution
      * value to be returned.
      * <p/>
-     * 
+     *
      * @return <code>String</code>command execution value to be returned.
      */
     @Override
@@ -169,7 +169,7 @@ public abstract class RunnerAsadmin extends RunnerJava {
     /**
      * Reads response from server and stores internally.
      * <p/>
-     * 
+     *
      * @param in Stream to read data from.
      * @return Always returns <code>false</code>.
      * @throws CommandException in case of stream error.
@@ -183,7 +183,7 @@ public abstract class RunnerAsadmin extends RunnerJava {
     /**
      * Extracts result value from internal storage.
      * <p/>
-     * 
+     *
      * @return Always returns <code>false</code>.
      */
     @Override
@@ -198,7 +198,7 @@ public abstract class RunnerAsadmin extends RunnerJava {
     /**
      * Build process execution arguments.
      * <p/>
-     * 
+     *
      * @return Process execution arguments.
      */
     String buildProcessArgs() {
@@ -236,7 +236,7 @@ public abstract class RunnerAsadmin extends RunnerJava {
     /**
      * Execute an arbitrary server command.
      * <p/>
-     * 
+     *
      * @return <code>Future</code> object to retrieve receiveResult of asynchronous execution.
      */
     @Override
@@ -248,7 +248,7 @@ public abstract class RunnerAsadmin extends RunnerJava {
     /**
      * Execute an arbitrary server command using provided executor.
      * <p/>
-     * 
+     *
      * @return <code>Future</code> object to retrieve receiveResult of asynchronous execution.
      */
     @Override
@@ -267,7 +267,7 @@ public abstract class RunnerAsadmin extends RunnerJava {
      * <p/>
      * Attempts to start local GalssFish DAS directly using <code>java</code> executable.
      * <p/>
-     * 
+     *
      * @return Task execution state.
      */
     @Override

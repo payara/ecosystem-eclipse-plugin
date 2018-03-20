@@ -22,7 +22,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 /**
  * Command that creates JDBC resource on server.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 @RunnerHttpClass(runner = RunnerHttpCreateJDBCResource.class)
@@ -46,7 +46,7 @@ public class CommandCreateJDBCResource extends Command {
     /**
      * Create JDBC resource.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity.
      * @param connectionPoolId Connection pool unique name (and ID).
      * @param jndiName The JNDI name of this JDBC resource.
@@ -74,7 +74,7 @@ public class CommandCreateJDBCResource extends Command {
     /**
      * Create JDBC resource.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity.
      * @param connectionPoolId Connection pool unique name (and ID).
      * @param jndiName The JNDI name of this JDBC resource.
@@ -149,7 +149,7 @@ public class CommandCreateJDBCResource extends Command {
     /**
      * Constructs an instance of GlassFish server create JDBC resource command entity.
      * <p/>
-     * 
+     *
      * @param connectionPoolId Connection pool unique name (and ID).
      * @param jndiName The JNDI name of this JDBC resource.
      * @param target Specify the target to which you are deploying.

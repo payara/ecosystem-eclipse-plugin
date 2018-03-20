@@ -17,7 +17,7 @@ import org.eclipse.payara.tools.sdk.server.parser.TreeParser.Path;
 /**
  * <code>classpath</code> library configuration XML element reader.
  * <p/>
- * 
+ *
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class ConfigReaderClasspath extends ConfigReader {
@@ -31,7 +31,7 @@ public class ConfigReaderClasspath extends ConfigReader {
      * <p/>
      * Sets readers for internal <code>javadocs</code> elements.
      * <p/>
-     * 
+     *
      * @return Paths that the reader listens to.
      */
     @Override

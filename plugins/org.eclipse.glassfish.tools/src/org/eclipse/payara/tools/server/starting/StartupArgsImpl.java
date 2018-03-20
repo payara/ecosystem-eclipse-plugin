@@ -33,7 +33,7 @@ public class StartupArgsImpl implements StartupArgs {
     /**
      * Adds java arguments contained in <code>javaArgsString</code>. The parameter is parsed - the
      * delimeter is defined as one or more whitespace characters followed by <code>-</code>.
-     * 
+     *
      * @param javaArgsString
      */
     public void addJavaArgs(String javaArgsString) {
@@ -46,7 +46,7 @@ public class StartupArgsImpl implements StartupArgs {
 
     /**
      * Adds single argument for bootstrap jar. No processing is done.
-     * 
+     *
      * @param glassfishArgsString
      */
     public void addGlassfishArgs(String glassfishArgsString) {

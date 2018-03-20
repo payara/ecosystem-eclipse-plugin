@@ -15,7 +15,7 @@ package org.eclipse.payara.tools.sdk.admin;
  * Stores admin command result values and command execution state. Result value is set of values
  * describing process execution.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class ResultProcess extends Result<ValueProcess> {
@@ -46,7 +46,7 @@ public class ResultProcess extends Result<ValueProcess> {
     /**
      * Get value returned by admin command execution.
      * <p/>
-     * 
+     *
      * @return Value returned by admin command execution.
      */
     @Override

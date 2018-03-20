@@ -14,7 +14,7 @@ import org.eclipse.payara.tools.sdk.logging.Logger;
 /**
  * GlassFisg Tooling Library configuration.
  * <p/>
- * 
+ *
  * @author Tomas Kraus
  */
 public class GlassFishToolsConfig {
@@ -52,7 +52,7 @@ public class GlassFishToolsConfig {
     /**
      * Get proxy settings usage for loopback addresses configuration value.
      * <p/>
-     * 
+     *
      * @return Proxy settings usage for loopback addresses configuration value.
      */
     public static boolean getProxyForLoopback() {

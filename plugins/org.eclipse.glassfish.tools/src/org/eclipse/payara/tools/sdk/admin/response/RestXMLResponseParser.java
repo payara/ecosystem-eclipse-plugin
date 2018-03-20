@@ -30,7 +30,7 @@ import org.eclipse.payara.tools.sdk.GlassFishIdeException;
 /**
  * Response parser implementation that can parse XML responses returned by REST admin interface.
  * <p>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RestXMLResponseParser extends RestResponseParser {
@@ -52,7 +52,7 @@ public class RestXMLResponseParser extends RestResponseParser {
      * for XML responses so this implementation is based on the code that generates the response on
      * server side.
      * <p>
-     * 
+     *
      * @param in {@link InputStream} with XML REST response.
      * @return Response returned by REST administration service.
      */

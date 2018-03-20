@@ -12,7 +12,7 @@ package org.eclipse.payara.tools.sdk.admin.response;
 /**
  * Enum that represents possible content types that runners accept responses in.
  * <p>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public enum ResponseContentType {

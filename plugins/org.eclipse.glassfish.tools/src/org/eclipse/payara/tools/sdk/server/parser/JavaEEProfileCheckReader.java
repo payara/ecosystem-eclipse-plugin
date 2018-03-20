@@ -19,7 +19,7 @@ import org.xml.sax.SAXException;
 /**
  * Java EE platform check configuration XML element reader.
  * <p/>
- * 
+ *
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class JavaEEProfileCheckReader
@@ -43,7 +43,7 @@ public class JavaEEProfileCheckReader
          * <p/>
          * Internal file list to check is initialized as an empty list.
          * <p/>
-         * 
+         *
          * @param name Java EE platform check name (unique ID).
          */
         Check(final String name) {
@@ -54,7 +54,7 @@ public class JavaEEProfileCheckReader
         /**
          * Set Java EE platform check files.
          * <p/>
-         * 
+         *
          * @param files Java EE platform check files.
          */
         void setFiles(final List<String> files) {
@@ -64,7 +64,7 @@ public class JavaEEProfileCheckReader
         /**
          * Get Java EE platform check name (unique ID).
          * <p/>
-         * 
+         *
          * @return Java EE platform check name (unique ID).
          */
         public String getName() {
@@ -74,7 +74,7 @@ public class JavaEEProfileCheckReader
         /**
          * Get Java EE platform check files.
          * <p/>
-         * 
+         *
          * @return Java EE platform check files.
          */
         public List<String> getFiles() {
@@ -112,7 +112,7 @@ public class JavaEEProfileCheckReader
     /**
      * Creates an instance of Java EE platform check configuration XML element reader.
      * <p/>
-     * 
+     *
      * @param pathPrefix Tree parser path prefix to be prepended before current XML element.
      */
     JavaEEProfileCheckReader(final String pathPrefix) {
@@ -129,7 +129,7 @@ public class JavaEEProfileCheckReader
     /**
      * Get all Java EE platform check values from XML elements on this level.
      * <p/>
-     * 
+     *
      * @return All Java EE platform check values from XML elements on this level.
      */
     List<Check> getChecks() {
@@ -145,7 +145,7 @@ public class JavaEEProfileCheckReader
      * <p/>
      * Sets readers for <code>javaee</code> element and it's content.
      * <p/>
-     * 
+     *
      * @return Paths that the reader listens to.
      */
     @Override
@@ -159,7 +159,7 @@ public class JavaEEProfileCheckReader
     /**
      * Process attributes from current XML element.
      * <p/>
-     * 
+     *
      * @param qname Not used.
      * @param attributes List of XML attributes.
      * @throws SAXException When any problem occurs.
@@ -173,7 +173,7 @@ public class JavaEEProfileCheckReader
     /**
      * Finish <code>javaee</code> element processing.
      * <p/>
-     * 
+     *
      * @param qname Current XML element name.
      * @throws ServerConfigException when more than one <code>javaee</code> XML elements were found.
      */

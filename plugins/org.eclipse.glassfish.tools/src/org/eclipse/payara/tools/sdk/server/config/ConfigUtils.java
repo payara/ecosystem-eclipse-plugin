@@ -54,7 +54,7 @@ public class ConfigUtils {
     /**
      * Convert {@link File} to {@link URL}.
      * <p/>
-     * 
+     *
      * @param file {@link File} to be converted to {@link URL}.
      */
     static URL fileToURL(File file) {
@@ -71,7 +71,7 @@ public class ConfigUtils {
      * Process <code>List</code> of links from library node and convert them to <code>List</code> of
      * {@link URL}s.
      * <p/>
-     * 
+     *
      * @param fileset Library node.
      * @return <code>List</code> of {@link URL}s from library node.
      */
@@ -93,7 +93,7 @@ public class ConfigUtils {
      * Process <code>List</code> of links from library node and convert them of <code>List</code> of
      * {@link File}s.
      * <p/>
-     * 
+     *
      * @param fileset Library node.
      * @param rootDir File system search root.
      * @return <code>List</code> of {@link File}s from library node.
@@ -140,7 +140,7 @@ public class ConfigUtils {
     /**
      * Search class path for Maven information.
      * <p/>
-     * 
+     *
      * @param classpath List of class path JAR files.
      * @return List of Maven information
      */
@@ -190,7 +190,7 @@ public class ConfigUtils {
     /**
      * Process <code>pom.properties</code> content to retrieve Maven information from JAR.
      * <p/>
-     * 
+     *
      * @param propStream Input stream to read <code>pom.properties</code> file from JAR.
      */
     private static GlassFishLibrary.Maven getMvnInfoFromProperties(
@@ -210,7 +210,7 @@ public class ConfigUtils {
     /**
      * Creates file name filter from <code>List</code> of <cpode>Pattern</code>s.
      * <p/>
-     * 
+     *
      * @param patterns <code>List</code> of <cpode>Pattern</code>s.
      * @return File name filter.
      */
@@ -232,7 +232,7 @@ public class ConfigUtils {
     /**
      * Compile pattern <code>String</code>s.
      * <p/>
-     * 
+     *
      * @param names <code>List</code> of pattern <code>String</code>s.
      * @return <code>List</code> of compiled <code>Pattern</code>s.
      */

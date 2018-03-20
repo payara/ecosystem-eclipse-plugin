@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Object representation of the response returned by REST administration service.
  * <p>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RestActionReport implements ActionReport {

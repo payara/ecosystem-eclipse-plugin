@@ -16,7 +16,7 @@ package org.eclipse.payara.tools.utils;
 public class PartialCompletionException extends Exception {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
     private String failedUpdates;

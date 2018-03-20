@@ -36,7 +36,7 @@ import org.xml.sax.helpers.DefaultHandler;
 /**
  * SAX parser that invokes a user defined node reader(s) on a list of xpath designated nodes.
  * <p/>
- * 
+ *
  * @author Peter Williams
  */
 public final class TreeParser extends DefaultHandler {

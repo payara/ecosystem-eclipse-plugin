@@ -17,7 +17,7 @@ import org.eclipse.payara.tools.sdk.server.parser.TreeParser.Path;
 /**
  * <code>javadocs</code> library configuration XML element reader.
  * <p/>
- * 
+ *
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class ConfigReaderJavadocs extends ConfigReader {
@@ -41,7 +41,7 @@ public class ConfigReaderJavadocs extends ConfigReader {
      * <p/>
      * Sets readers for internal <code>javadocs</code> elements.
      * <p/>
-     * 
+     *
      * @return Paths that the reader listens to.
      */
     @Override
@@ -61,7 +61,7 @@ public class ConfigReaderJavadocs extends ConfigReader {
     /**
      * Get links retrieved from XML elements.
      * <p/>
-     * 
+     *
      * @return Links sets retrieved from XML elements.
      */
     List<String> getLinks() {
@@ -71,7 +71,7 @@ public class ConfigReaderJavadocs extends ConfigReader {
     /**
      * Get lookups retrieved from XML elements.
      * <p/>
-     * 
+     *
      * @return Links sets retrieved from XML elements.
      */
     List<String> getLookups() {

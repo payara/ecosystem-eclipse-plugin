@@ -34,7 +34,7 @@ import org.eclipse.wst.server.core.util.WebResource;
 /**
  * This class converts / adapts an Eclipse generic {@link IModuleArtifact} into an
  * {@link HttpLaunchable}, which represents an archive that can be deployed to Payara / GlassFish
- * 
+ *
  * <p>
  * This class is registered in <code>plug-in.xml</code> in the
  * <code>org.eclipse.wst.server.core.launchableAdapters</code> extension point.

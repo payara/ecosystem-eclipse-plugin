@@ -12,7 +12,7 @@ package org.eclipse.payara.tools.exceptions;
 public class HttpPortUpdateException extends Exception {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 7714377871660146294L;
 

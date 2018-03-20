@@ -25,7 +25,7 @@ import org.xml.sax.SAXException;
  * {@link HttpData} object that contains name of listener, port number and information whether this
  * listener is secured.
  * <p/>
- * 
+ *
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class HttpListenerReader extends TargetConfigReader implements XMLReader {

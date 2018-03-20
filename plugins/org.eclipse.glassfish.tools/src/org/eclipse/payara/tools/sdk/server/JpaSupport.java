@@ -14,7 +14,7 @@ import org.eclipse.sapphire.Version;
 /**
  * GlassFish server JPA support matrix.
  * <p/>
- * 
+ *
  * @author Tomas Kraus
  */
 public class JpaSupport {
@@ -51,7 +51,7 @@ public class JpaSupport {
         /**
          * Creates an instance of individual JPA specifications support class.
          * <p/>
-         * 
+         *
          * @param jpa_1_0 JPA 1.0 supported.
          * @param jpa_2_0 JPA 1.0 supported.
          * @param jpa_2_1 JPA 2.1 supported.
@@ -72,7 +72,7 @@ public class JpaSupport {
         /**
          * Is JPA 1.0 supported.
          * <p/>
-         * 
+         *
          * @return Value of <code>true</code> when JPA 1.0 supported or <code>false</code> otherwise.
          */
         public boolean is10() {
@@ -82,7 +82,7 @@ public class JpaSupport {
         /**
          * Is JPA 2.0 supported.
          * <p/>
-         * 
+         *
          * @return Value of <code>true</code> when JPA 2.0 supported or <code>false</code> otherwise.
          */
         public boolean is20() {
@@ -92,7 +92,7 @@ public class JpaSupport {
         /**
          * Is JPA 2.1 supported.
          * <p/>
-         * 
+         *
          * @return Value of <code>true</code> when JPA 2.1 supported or <code>false</code> otherwise.
          */
         public boolean is21() {
@@ -102,7 +102,7 @@ public class JpaSupport {
         /**
          * Get JPA provider class.
          * <p/>
-         * 
+         *
          * @return JPA provider class name.
          */
         public String getProvider() {
@@ -121,7 +121,7 @@ public class JpaSupport {
     /**
      * Get GlassFish JPA support information for given GlassFish version.
      * <p/>
-     * 
+     *
      * @param version GlassFish version to get JPA support information for.
      * @return GlassFish JPA support information for given GlassFish version.
      */

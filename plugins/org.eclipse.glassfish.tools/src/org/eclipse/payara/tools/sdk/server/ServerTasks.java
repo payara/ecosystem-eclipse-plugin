@@ -82,7 +82,7 @@ public class ServerTasks {
      * that need to be provided for the command. The parameters come from domain.xml and from parameter
      * <code>args</code> provided by caller.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity.
      * @param args Startup arguments provided by caller.
      * @param mode Mode which we are starting GF in.
@@ -158,7 +158,7 @@ public class ServerTasks {
     /**
      * Build server variables map.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity
      * @param javaHome Java SE JDK home used to run Glassfish.
      */
@@ -176,7 +176,7 @@ public class ServerTasks {
     /**
      * Add java agents into server options.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity.
      * @param jvmConfigReader Contains <code>jvm-options</code> from <code>domain.xwl</code>.
      */
@@ -197,7 +197,7 @@ public class ServerTasks {
     /**
      * Adds server variables from variables map into Java VM options for server startup.
      * <p/>
-     * 
+     *
      * @param javaOpts Java VM options {@link StringBuilder} instance.
      * @param varMap Server variables map.
      */
@@ -211,7 +211,7 @@ public class ServerTasks {
     /**
      * Convenient method to start glassfish in START mode.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity.
      * @param args Startup arguments provided by caller.
      * @return ResultProcess returned by CommandStartDAS to give caller opportunity to monitor the start
@@ -225,7 +225,7 @@ public class ServerTasks {
     /**
      * Computing class path for <code>-cp</code> option of java.
      * <p/>
-     * 
+     *
      * @param propMap Attributes of <code>jvm-config</code> element of <code>domain.xml</code>.
      * @param domainDir Relative paths will be added to this directory.
      * @param bootstrapJar Bootstrap jar will be also added to class path.
@@ -280,7 +280,7 @@ public class ServerTasks {
      * we can detect it and only the latest one in list will be appended to command-line. For simple
      * once maybe some duplicate detection will be added in the future.
      * <p/>
-     * 
+     *
      * @param argumentBuf Returned string.
      * @param optList List of java options.
      * @param varMap Map to be used for replacing place holders, Contains <i>place holder</i> - <i>place
@@ -352,7 +352,7 @@ public class ServerTasks {
     /**
      * Append GlassFish startup arguments to given {@link StringBuilder}.
      * <p/>
-     * 
+     *
      * @param glassfishArgs Target {@link StringBuilder} to append arguments.
      * @param glassfishArgsList Arguments to be appended.
      */

@@ -18,7 +18,7 @@ abstract class AbstractGlassfishDeploymentDescriptor implements
 
     /**
      * Created new deployment descriptor if it's not already there.
-     * 
+     *
      */
     @Override
     public final void store(IProgressMonitor monitor) throws CoreException {

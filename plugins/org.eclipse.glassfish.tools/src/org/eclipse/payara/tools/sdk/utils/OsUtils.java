@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * OS related utilities
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class OsUtils {
@@ -62,7 +62,7 @@ public class OsUtils {
     /**
      * Check if OS where this JDK is running is windows.
      * <p/>
-     * 
+     *
      * @return <code>true</code> when this JDK is running on Windows or <code>false</code> otherwise.
      */
     public static boolean isWin() {
@@ -99,7 +99,7 @@ public class OsUtils {
      * under Windows frequently perform their own parsing and unescaping (since the shell cannot be
      * relied on to do this). On Unix, this problem should not occur.
      * <p/>
-     * 
+     *
      * @param args A String to parse
      * @return An array of executable file and parameters to be passed to it.
      */
@@ -236,7 +236,7 @@ public class OsUtils {
 
     /**
      * Complementary method to parseParameters
-     * 
+     *
      * @link #parseParameters
      */
     public static String escapeParameters(String[] params) {
@@ -259,7 +259,7 @@ public class OsUtils {
     /**
      * Escapes one string and appends it into provided {@link StringBuffer}.
      * <p/>
-     * 
+     *
      * @param s String to be escaped.
      * @param sb Target {@link StringBuffer}.
      * @link #escapeParameters
@@ -299,7 +299,7 @@ public class OsUtils {
     /**
      * Escapes provided {@link String}.
      * <p/>
-     * 
+     *
      * @param s {@link String} to be escaped.
      * @return Escaped {@link String} value.
      */
@@ -350,7 +350,7 @@ public class OsUtils {
      * <p/>
      * Target directory is not removed. It's made empty. Think twice before using it.
      * <p/>
-     * 
+     *
      * @param target File or directory which content will be deleted.
      */
     public static boolean rmDirContent(File target) {
@@ -377,7 +377,7 @@ public class OsUtils {
      * <p/>
      * Target directory is also removed. Think twice before using it.
      * <p/>
-     * 
+     *
      * @param target File or directory to be deleted.
      */
     public static boolean rmDir(File target) {
@@ -389,7 +389,7 @@ public class OsUtils {
      * Join 2 path elements separating them with path separator if not present at the end of first path
      * element.
      * <p/>
-     * 
+     *
      * @param e1 1st path element.
      * @param e2 2nd path element.
      */

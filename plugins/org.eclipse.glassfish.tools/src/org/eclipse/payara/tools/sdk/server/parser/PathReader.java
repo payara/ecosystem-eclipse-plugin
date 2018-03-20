@@ -18,7 +18,7 @@ import org.xml.sax.SAXException;
 /**
  * <code>file</code> library configuration XML element reader.
  * <p/>
- * 
+ *
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class PathReader extends AbstractReader {
@@ -44,7 +44,7 @@ public class PathReader extends AbstractReader {
     /**
      * Creates an instance of Java EE platform check configuration XML element reader.
      * <p/>
-     * 
+     *
      * @param pathPrefix Tree parser path prefix to be prepended before current XML element.
      */
     PathReader(final String pathPrefix) {
@@ -58,7 +58,7 @@ public class PathReader extends AbstractReader {
     /**
      * Process attributes from current XML element.
      * <p/>
-     * 
+     *
      * @param qname Not used.
      * @param attributes List of XML attributes.
      * @throws SAXException When any problem occurs.
@@ -76,7 +76,7 @@ public class PathReader extends AbstractReader {
     /**
      * Get paths retrieved from XML elements.
      * <p/>
-     * 
+     *
      * @return Paths sets retrieved from XML elements.
      */
     public List<String> getPaths() {

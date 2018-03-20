@@ -21,7 +21,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
  * <p/>
  * Holds data for command. Objects of this class are created by API user.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 @RunnerHttpClass
@@ -45,7 +45,7 @@ public class CommandStopDAS extends Command {
     /**
      * Stops running DAS server.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity.
      * @return Stop DAS task response.
      * @throws GlassFishIdeException When error occurred during administration command execution.

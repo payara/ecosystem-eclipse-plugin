@@ -18,7 +18,7 @@ import java.util.Map;
 /**
  * GlassFish Server Containers.
  * <p>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public enum GlassFishContainer implements Comparator<GlassFishContainer> {
@@ -83,7 +83,7 @@ public enum GlassFishContainer implements Comparator<GlassFishContainer> {
      * if specified <code>String</code> matches any <code>String</code> returned by
      * <code>toString</code> method. Otherwise <code>null</code> value is returned.
      * <p>
-     * 
+     *
      * @param containerStr Value containing container <code>String</code> representation.
      * @return <code>GlassFishContainer</code> value represented by <code>String</code> or
      * <code>null</code> if value was not recognized.
@@ -103,7 +103,7 @@ public enum GlassFishContainer implements Comparator<GlassFishContainer> {
     /**
      * Convert <code>GlassFishContainer</code> value to <code>String</code>.
      * <p>
-     * 
+     *
      * @return A <code>String</code> representation of the value of this object.
      */
     @Override
@@ -134,7 +134,7 @@ public enum GlassFishContainer implements Comparator<GlassFishContainer> {
      * Returns a negative integer, zero, or a positive integer as the first argument is less than, equal
      * to, or greater than the second.
      * <p/>
-     * 
+     *
      * @param container1 The first object to be compared.
      * @param container2 The second object to be compared.
      * @return A negative integer, zero, or a positive integer as the first argument is less than, equal

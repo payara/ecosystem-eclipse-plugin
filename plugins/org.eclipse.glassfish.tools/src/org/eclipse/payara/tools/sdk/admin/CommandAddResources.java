@@ -48,7 +48,7 @@ public class CommandAddResources extends CommandTarget {
     /**
      * Add resource to target server.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity.
      * @param xmlResourceFile File object pointing to XML file containing resources to be added.
      * @param target GlassFish server target.
@@ -70,7 +70,7 @@ public class CommandAddResources extends CommandTarget {
     /**
      * Add resource to target server.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity.
      * @param xmlResourceFile File object pointing to XML file containing resources to be added.
      * @param target GlassFish server target.
@@ -107,7 +107,7 @@ public class CommandAddResources extends CommandTarget {
     /**
      * Constructs an instance of GlassFish server add-resources command entity.
      * <p/>
-     * 
+     *
      * @param xmlResourceFile File object pointing to XML file containing resources to be added.
      * @param target GlassFish server target.
      */

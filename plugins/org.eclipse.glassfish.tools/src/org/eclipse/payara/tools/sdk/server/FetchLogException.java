@@ -16,7 +16,7 @@ import org.eclipse.payara.tools.sdk.GlassFishIdeException;
  * <p>
  * All exceptions are logging themselves on WARNING level when created.
  * <p>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class FetchLogException extends GlassFishIdeException {
@@ -40,7 +40,7 @@ public class FetchLogException extends GlassFishIdeException {
     /**
      * Constructs an instance of <code>FetchLogException</code> with the specified detail message.
      * <p>
-     * 
+     *
      * @param msg The detail message.
      */
     public FetchLogException(String msg) {
@@ -54,7 +54,7 @@ public class FetchLogException extends GlassFishIdeException {
      * Note that the detail message associated with {@code cause} is <i>not</i> automatically
      * incorporated in this runtime exception's detail message.
      * <p>
-     * 
+     *
      * @param msg the detail message (which is saved for later retrieval by the {@link #getMessage()}
      * method).
      * @param cause the cause (which is saved for later retrieval by the {@link #getCause()} method). (A

@@ -14,7 +14,7 @@ import org.eclipse.payara.tools.sdk.data.ToolsConfig;
 /**
  * Payara tools.
  * <p/>
- * 
+ *
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class Tools implements ToolsConfig {
@@ -33,7 +33,7 @@ public class Tools implements ToolsConfig {
     /**
      * Creates an instance of Payara tools.
      * <p/>
-     * 
+     *
      * @param asadmin Payara asadmin tool.
      */
     public Tools(AsadminTool asadmin) {
@@ -47,7 +47,7 @@ public class Tools implements ToolsConfig {
     /**
      * Get asadmin tool.
      * <p/>
-     * 
+     *
      * @return Asadmin tool.
      */
     @Override

@@ -17,7 +17,7 @@ import org.eclipse.payara.tools.sdk.server.config.JavaSESet;
 /**
  * Container of GlassFish JavaSE features configuration.
  * <p/>
- * 
+ *
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class GlassFishJavaSEConfig {
@@ -40,7 +40,7 @@ public class GlassFishJavaSEConfig {
      * Creates an instance of avaEE configuration entity using JavaEE set for GlassFish features
      * configuration as source of instance content.
      * <p/>
-     * 
+     *
      * @param javaSEconfig Container of GlassFish JavaEE features configuration.
      */
     public GlassFishJavaSEConfig(final JavaSESet javaSEconfig) {
@@ -55,7 +55,7 @@ public class GlassFishJavaSEConfig {
     /**
      * Get highest JavaSE specification version implemented.
      * <p/>
-     * 
+     *
      * @return Highest JavaSE specification version implemented.
      */
     public String getVersion() {
@@ -65,7 +65,7 @@ public class GlassFishJavaSEConfig {
     /**
      * Get supported JavaSE platforms.
      * <p/>
-     * 
+     *
      * @return Supported JavaSE platforms.
      */
     public Set<JavaSEPlatform> getPlatforms() {

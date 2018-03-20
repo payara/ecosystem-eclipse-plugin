@@ -44,7 +44,7 @@ import org.eclipse.payara.tools.sdk.utils.LinkedList;
 /**
  * Server status check internal data for individual GlassFish server instance.
  * <p/>
- * 
+ *
  * @author Tomas Kraus
  */
 public class StatusJob {
@@ -74,7 +74,7 @@ public class StatusJob {
         /**
          * Constructs an instance of common command execution state listener.
          * <p/>
-         * 
+         *
          * @param job Server status check internal data for individual GlassFish server instance.
          */
         private Listener(final StatusJob job) {
@@ -85,7 +85,7 @@ public class StatusJob {
         /**
          * Set {@link Runner} object instance before it's {@link Runner#call()} method is executed.
          * <p/>
-         * 
+         *
          * @param runner GlassFish server command execution runner.
          */
         void setRunner(final Runner runner) {
@@ -112,7 +112,7 @@ public class StatusJob {
         /**
          * Constructs an instance of <code>__locations</code> command execution state listener.
          * <p/>
-         * 
+         *
          * @param job Server status check internal data for individual GlassFish server instance.
          */
         private ListenerLocations(final StatusJob job) {
@@ -123,7 +123,7 @@ public class StatusJob {
          * Evaluate <code>__locations</code> response to verify GlassFish server home and domain
          * directories.
          * <p/>
-         * 
+         *
          * @return Returns <code>true</code> when <code>__locations</code> response matches domain directory
          * in GlassFish server entity or <code>false</code> otherwise.
          */
@@ -150,7 +150,7 @@ public class StatusJob {
          * <li><code>args[3]</code> display message in GUI</li>
          * </ul>
          * <p/>
-         * 
+         *
          * @param newState New command execution state.
          * @param event Event related to execution state change.
          * @param args Additional String arguments.
@@ -221,7 +221,7 @@ public class StatusJob {
         /**
          * Constructs an instance of <code>version</code> command execution state listener.
          * <p/>
-         * 
+         *
          * @param job Server status check internal data for individual GlassFish server instance.
          */
         private ListenerVersion(final StatusJob job) {
@@ -231,7 +231,7 @@ public class StatusJob {
         /**
          * Evaluate <code>version</code> response to verify GlassFish server version.
          * <p/>
-         * 
+         *
          * @return Returns <code>true</code> when <code>version</code> response matches version in GlassFish
          * server entity or <code>false</code> otherwise.
          */
@@ -258,7 +258,7 @@ public class StatusJob {
          * <li><code>args[3]</code> display message in GUI</li>
          * </ul>
          * <p/>
-         * 
+         *
          * @param newState New command execution state.
          * @param event Event related to execution state change.
          * @param args Additional String arguments.
@@ -328,7 +328,7 @@ public class StatusJob {
         /**
          * Constructs an instance of <code>version</code> command execution state listener.
          * <p/>
-         * 
+         *
          * @param job Server status check internal data for individual GlassFish server instance.
          */
         private ListenerPortCheck(final StatusJob job) {
@@ -345,7 +345,7 @@ public class StatusJob {
          * <li><code>args[1]</code> port check task name</li>
          * <li><code>args[2]</code> exception message</li>
          * <p/>
-         * 
+         *
          * @param newState New command execution state.
          * @param event Event related to execution state change.
          * @param args Additional String arguments.
@@ -393,7 +393,7 @@ public class StatusJob {
         /**
          * Constructs an instance of individual job task.
          * <p/>
-         * 
+         *
          * @param type Server status check type.
          * @param listener Server status task execution listener for asynchronous command execution.
          */
@@ -410,7 +410,7 @@ public class StatusJob {
         /**
          * Get server status task execution listener for asynchronous command execution.
          * <p/>
-         * 
+         *
          * @return Server status task execution listener for asynchronous command execution.
          */
         Listener getListener() {
@@ -420,7 +420,7 @@ public class StatusJob {
         /**
          * Set server status task execution listener for asynchronous command execution.
          * <p/>
-         * 
+         *
          * @param listener Server status task execution listener for asynchronous command execution.
          */
         void setListener(final Listener listener) {
@@ -430,7 +430,7 @@ public class StatusJob {
         /**
          * Get server status check type.
          * <p/>
-         * 
+         *
          * @return Server status check type.
          */
         @Override
@@ -441,7 +441,7 @@ public class StatusJob {
         /**
          * Get last command task execution result.
          * <p/>
-         * 
+         *
          * @return Last command task execution result.
          */
         StatusResult getResult() {
@@ -451,7 +451,7 @@ public class StatusJob {
         /**
          * Set last command task execution result.
          * <p/>
-         * 
+         *
          * @param result Last command task execution result.
          */
         void setResult(final StatusResult result) {
@@ -461,7 +461,7 @@ public class StatusJob {
         /**
          * Get last command task execution status.
          * <p/>
-         * 
+         *
          * @return Last command task execution status.
          */
         @Override
@@ -472,7 +472,7 @@ public class StatusJob {
         /**
          * Get last command task execution status.
          * <p/>
-         * 
+         *
          * @return Last command task execution status.
          */
         @Override
@@ -483,7 +483,7 @@ public class StatusJob {
         /**
          * Get task thread currently being executed.
          * <p/>
-         * 
+         *
          * @return Task thread currently being executed.
          */
         AbstractTask getTask() {
@@ -493,7 +493,7 @@ public class StatusJob {
         /**
          * Set task thread currently being executed.
          * <p/>
-         * 
+         *
          * @param task Task thread currently being executed.
          */
         void setTask(final AbstractTask task) {
@@ -503,7 +503,7 @@ public class StatusJob {
         /**
          * Get all task listeners.
          * <p/>
-         * 
+         *
          * @return All task listeners.
          */
         TaskStateListener[] getListeners() {
@@ -513,7 +513,7 @@ public class StatusJob {
         /**
          * Get task execution handler.
          * <p/>
-         * 
+         *
          * @return Task execution handler.
          */
         ScheduledFuture getFuture() {
@@ -523,7 +523,7 @@ public class StatusJob {
         /**
          * Set task execution handler.
          * <p/>
-         * 
+         *
          * @param future Task execution handler.
          */
         void setFuture(final ScheduledFuture future) {
@@ -533,7 +533,7 @@ public class StatusJob {
         /**
          * Set task execution handler and thread currently being executed.
          * <p/>
-         * 
+         *
          * @param task Task thread currently being executed.
          * @param future Task execution handler.
          */
@@ -557,7 +557,7 @@ public class StatusJob {
          * Task will fail only when task is scheduled for execution (<code>task</code> value is not null)
          * and stored task result is <code>FAILED</code> or does not exist.
          * <p/>
-         * 
+         *
          * @return Task execution result evaluation.
          */
         GlassFishStatusCheckResult evalResult() {
@@ -581,7 +581,7 @@ public class StatusJob {
         /**
          * Constructs an instance of individual job runner task.
          * <p/>
-         * 
+         *
          * @param type Server status check type.
          * @param cmd Server administration command to be executed.
          * @param listener Server status task execution listener for asynchronous command execution.
@@ -595,7 +595,7 @@ public class StatusJob {
         /**
          * Get server administration command to be executed.
          * <p/>
-         * 
+         *
          * @return Server administration command to be executed.
          */
         Command getCommand() {
@@ -612,7 +612,7 @@ public class StatusJob {
         /**
          * Constructs an instance of individual job runner task running <code>__locations</code> command.
          * <p/>
-         * 
+         *
          * @param listener Server status task execution listener for asynchronous command execution.
          */
         private RunnerTaskLocations(final Listener listener) {
@@ -630,7 +630,7 @@ public class StatusJob {
         /**
          * Constructs an instance of individual job runner task running <code>version</code> command.
          * <p/>
-         * 
+         *
          * @param listener Server status task execution listener for asynchronous command execution.
          */
         private RunnerTaskVersion(final Listener listener) {
@@ -684,7 +684,7 @@ public class StatusJob {
     /**
      * Evaluate check result depending on running tasks and their result.
      * <p/>
-     * 
+     *
      * @param job Server status job.
      * @return Check result depending on running tasks and their result.
      */
@@ -697,7 +697,7 @@ public class StatusJob {
      * Handles state transition and server status check tasks reschedule for administrator port check
      * result evaluation.
      * <p/>
-     * 
+     *
      * @param job Server status job.
      * @param task GlassFish server status check task details.
      */
@@ -736,7 +736,7 @@ public class StatusJob {
      * Handles state transition and server status check tasks reschedule for administrator command
      * execution result evaluation.
      * <p/>
-     * 
+     *
      * @param job Server status job.
      * @param task GlassFish server status check task details.
      */
@@ -803,7 +803,7 @@ public class StatusJob {
     /**
      * Constructs an instance of GlassFish server status check internal data.
      * <p/>
-     * 
+     *
      * @param status GlassFish server status entity.
      */
     StatusJob(final GlassFishStatusEntity status) {
@@ -828,7 +828,7 @@ public class StatusJob {
     /**
      * get GlassFish server status entity.
      * <p/>
-     * 
+     *
      * @return GlassFish server status entity.
      */
     GlassFishStatusEntity getStatus() {
@@ -838,7 +838,7 @@ public class StatusJob {
     /**
      * Get server status job internal state.
      * <p/>
-     * 
+     *
      * @return Server status job internal state.
      */
     StatusJobState getState() {
@@ -848,7 +848,7 @@ public class StatusJob {
     /**
      * Get server status job internal state.
      * <p/>
-     * 
+     *
      * @param state Server status job internal state.
      */
     void setState(final StatusJobState state) {
@@ -858,7 +858,7 @@ public class StatusJob {
     /**
      * Get administrator port check asynchronous task.
      * <p/>
-     * 
+     *
      * @return Administrator port check asynchronous task.
      */
     Task getPortCheck() {
@@ -868,7 +868,7 @@ public class StatusJob {
     /**
      * Get command <code>__locations</code> asynchronous task.
      * <p/>
-     * 
+     *
      * @return Command <code>__locations</code> asynchronous task.
      */
     RunnerTask getLocations() {
@@ -878,7 +878,7 @@ public class StatusJob {
     /**
      * Get command <code>version</code> asynchronous task.
      * <p/>
-     * 
+     *
      * @return Command <code>version</code> asynchronous task.
      */
     RunnerTask getVersion() {
@@ -900,7 +900,7 @@ public class StatusJob {
      * <p/>
      * Called by job tasks scheduler.
      * <p/>
-     * 
+     *
      * @param scheduler Job tasks scheduler calling this method.
      * @param listener Server status listener to be registered when status checking is being restarted.
      * @return Value of <code>true</code> when job was successfully switched into startup mode or false
@@ -936,7 +936,7 @@ public class StatusJob {
      * <p/>
      * Called by job tasks scheduler.
      * <p/>
-     * 
+     *
      * @param scheduler Job tasks scheduler calling this method.
      */
     void stopJob(StatusScheduler scheduler) {
@@ -955,7 +955,7 @@ public class StatusJob {
     /**
      * Switches job into <code>STARTUP</code> state.
      * <p/>
-     * 
+     *
      * @param scheduler Job tasks scheduler calling this method.
      * @param listener Server status listener to be registered together with switching into startup
      * mode.
@@ -985,7 +985,7 @@ public class StatusJob {
      * <p/>
      * Called by job tasks scheduler.
      * <p/>
-     * 
+     *
      * @param scheduler Job tasks scheduler calling this method.
      * @param force Force startup mode for GlassFish server instance from any state then
      * <code>true</code>.
@@ -1029,7 +1029,7 @@ public class StatusJob {
      * <p/>
      * Called by job tasks scheduler.
      * <p/>
-     * 
+     *
      * @param scheduler Job tasks scheduler calling this method.
      * @return Value of <code>true</code> when job was successfully switched into shutdown mode or false
      * otherwise.
@@ -1058,7 +1058,7 @@ public class StatusJob {
      * <p/>
      * Called by job tasks scheduler.
      * <p/>
-     * 
+     *
      * @param scheduler Job tasks scheduler calling this method.
      */
     void scheduleNew(StatusScheduler scheduler) {
@@ -1073,7 +1073,7 @@ public class StatusJob {
      * Listeners list access is synchronized but they are just copied into temporary array and executed
      * outside synchronized block to avoid deadlocks.
      * <p/>
-     * 
+     *
      * @param status Current server status.
      * @param task GlassFish server status check task details.
      */
@@ -1105,7 +1105,7 @@ public class StatusJob {
      * Listeners list access is synchronized but they are just copied into temporary array and executed
      * outside synchronized block to avoid deadlocks.
      * <p/>
-     * 
+     *
      * @param status Current server status.
      * @param task GlassFish server status check task details.
      */
@@ -1135,7 +1135,7 @@ public class StatusJob {
      * Listeners list access is synchronized but they are just copied into temporary array and executed
      * outside synchronized block to avoid deadlocks.
      * <p/>
-     * 
+     *
      * @param task GlassFish server status check task details.
      */
     public void notifyErrorListeners(final GlassFishStatusTask task) {
@@ -1160,7 +1160,7 @@ public class StatusJob {
     /**
      * Register server status listener to be notified about current server status after every check.
      * <p/>
-     * 
+     *
      * @param listener Server status listener to be registered.
      * @return Value of <code>true</code> when listener was added or <code>false</code> when this
      * listener was already registered.
@@ -1192,7 +1192,7 @@ public class StatusJob {
     /**
      * Register server status listener to be notified about server status change.
      * <p/>
-     * 
+     *
      * @param listener Server status listener to be registered.
      * @param newState Notify about server status change for new states provided as this argument.
      * @return Value of <code>true</code> when listener was added in at least one list or
@@ -1232,7 +1232,7 @@ public class StatusJob {
     /**
      * Register server status listener to be notified about server status check errors.
      * <p/>
-     * 
+     *
      * @param listener Server status listener to be registered.
      * @return Value of <code>true</code> when listener was added or <code>false</code> when this
      * listener was already registered.
@@ -1264,7 +1264,7 @@ public class StatusJob {
     /**
      * Register server status listener.
      * <p/>
-     * 
+     *
      * @param listener Server status listener to be registered.
      * @param currentState Notify about current server status after every check when <code>true</code>.
      * @param newState Notify about server status change for new states provided as this argument.
@@ -1294,7 +1294,7 @@ public class StatusJob {
     /**
      * Unregister server status listener.
      * <p/>
-     * 
+     *
      * @param listener Server status listener to be unregistered.
      * @return Value of <code>true</code> when listener was found and removed or <code>false</code> when
      * listener was not found among registered listeners.

@@ -15,7 +15,7 @@ package org.eclipse.payara.tools.sdk.admin;
  * Stores administration command result values and command execution state. Result value is
  * <code>String</code>.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class ResultString extends Result<String> {
@@ -46,7 +46,7 @@ public class ResultString extends Result<String> {
     /**
      * Get value returned by administration command execution.
      * <p/>
-     * 
+     *
      * @return Value returned by administration command execution.
      */
     @Override

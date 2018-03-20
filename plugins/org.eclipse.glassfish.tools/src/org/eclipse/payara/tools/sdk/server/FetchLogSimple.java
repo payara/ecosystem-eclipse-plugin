@@ -14,7 +14,7 @@ import java.io.InputStream;
 /**
  * Fetch GlassFish log from provided stream.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class FetchLogSimple extends FetchLog {
@@ -30,7 +30,7 @@ public class FetchLogSimple extends FetchLog {
      * be ignored. Old log lines are never skipped so whole log is always available in
      * <code>InputStream</code>
      * <p/>
-     * 
+     *
      * @param in Input stream to access server log.
      */
     public FetchLogSimple(InputStream in) {
@@ -46,7 +46,7 @@ public class FetchLogSimple extends FetchLog {
      * <p/>
      * This method throws an exception when called.
      * <p/>
-     * 
+     *
      * @return <code>FileInputStream</code> where log lines received from server will be available to
      * read.
      */

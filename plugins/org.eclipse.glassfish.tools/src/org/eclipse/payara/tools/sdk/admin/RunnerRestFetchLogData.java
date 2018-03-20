@@ -30,7 +30,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
  * <p/>
  * Class implements GlassFish server administration functionality trough HTTP interface.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RunnerRestFetchLogData extends RunnerRest {
@@ -41,7 +41,7 @@ public class RunnerRestFetchLogData extends RunnerRest {
 
     /**
      * Extracts query string from passed View Log command entity. <p.>
-     * 
+     *
      * @param command View Log command entity.
      * @return Query string for given command.
      */
@@ -96,7 +96,7 @@ public class RunnerRestFetchLogData extends RunnerRest {
     /**
      * Constructs an instance of administration command executor using HTTP interface.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
@@ -131,7 +131,7 @@ public class RunnerRestFetchLogData extends RunnerRest {
     /**
      * Inform whether this runner implementation accepts gzip format.
      * <p/>
-     * 
+     *
      * @return <code>true</code> when gzip format is accepted, <code>false</code> otherwise.
      */
     @Override
@@ -150,7 +150,7 @@ public class RunnerRestFetchLogData extends RunnerRest {
      * this method uses additional stream handlers for <code>gzip</code> compression and buffered
      * reading so it should close them.
      * <p/>
-     * 
+     *
      * @param in Stream to read data from.
      * @return <code>true</code> if response <code>X-Text-Append-Next</code> HTTP header contains some
      * parameters (e.g. ?start=&lt;number&gt;) or <code>false</code> otherwise.
@@ -201,7 +201,7 @@ public class RunnerRestFetchLogData extends RunnerRest {
      * attribute in <code>Manifest</code> object is stored as <i>value</i> into
      * <code>ResultString</code> result object.
      * <p/>
-     * 
+     *
      * @return true if result was extracted correctly. <code>null</code> <i>message</i>value is
      * considered as failure.
      */

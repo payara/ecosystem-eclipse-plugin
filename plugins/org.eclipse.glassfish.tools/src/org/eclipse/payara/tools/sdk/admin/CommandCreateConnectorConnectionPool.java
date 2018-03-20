@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * Command that creates a pool of connections to an enterprise information system (EIS).
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 @RunnerHttpClass(runner = RunnerHttpCreateConnectorConnectionPool.class)
@@ -72,7 +72,7 @@ public class CommandCreateConnectorConnectionPool extends Command {
     /**
      * Constructs an instance of GlassFish server create EIS connection pool command entity.
      * <p/>
-     * 
+     *
      * @param poolName Connection pool unique name (and ID).
      * @param raName The name of the resource adapter.
      * @param connectionDefinition The name of the connection definition.

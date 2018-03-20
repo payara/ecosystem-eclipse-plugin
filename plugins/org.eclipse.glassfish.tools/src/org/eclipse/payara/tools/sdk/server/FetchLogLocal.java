@@ -26,7 +26,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 /**
  * Fetch GlassFish log from local server.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class FetchLogLocal extends FetchLogPiped {
@@ -49,7 +49,7 @@ public class FetchLogLocal extends FetchLogPiped {
      * <code>InputStream</code> as <code>FileInputStream</code> before this constructor code is being
      * executed.
      * <p/>
-     * 
+     *
      * @param server GlassFish server for fetching local server log. Both <code>getDomainsFolder</code>
      * and <code>getDomainName</code> should not return null.
      * @param skip Skip to the end of the log file.
@@ -66,7 +66,7 @@ public class FetchLogLocal extends FetchLogPiped {
      * <code>InputStream</code> as <code>FileInputStream</code> before this constructor code is being
      * executed.
      * <p/>
-     * 
+     *
      * @param executor Executor service used to start task.
      * @param server GlassFish server for fetching local server log. Both <code>getDomainsFolder</code>
      * and <code>getDomainName</code> should not return null.
@@ -85,7 +85,7 @@ public class FetchLogLocal extends FetchLogPiped {
      * Initializes active log file <code>InputStream</code> as <code>FileInputStream</code> sending data
      * from local server log file.
      * <p/>
-     * 
+     *
      * @return <code>FileInputStream</code> where log lines from server active log file will be
      * available to read.
      */
@@ -129,7 +129,7 @@ public class FetchLogLocal extends FetchLogPiped {
      * Reads new log lines from server using GlassFish remote administration API and sends them into
      * pipe (<code>PipedInputStream</code>).
      * <p/>
-     * 
+     *
      * @return <code>TaskState.COMPLETED</code> when remote administration API stopped responding or
      * <code>TaskState.FAILED</code> when exception was caught.
      */

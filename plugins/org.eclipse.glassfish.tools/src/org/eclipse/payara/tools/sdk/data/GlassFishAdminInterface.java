@@ -18,7 +18,7 @@ import java.util.Map;
  * Local GlassFish server administration interface type used to mark proper administration interface
  * for individual GlassFish servers.
  * <p>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public enum GlassFishAdminInterface {
@@ -62,7 +62,7 @@ public enum GlassFishAdminInterface {
      * only if specified <code>String</code> matches any <code>String</code> returned by
      * <code>toString</code> method. Otherwise <code>null</code> value is returned.
      * <p>
-     * 
+     *
      * @param name Value containing <code>GlassFishAdminInterface</code> <code>toString</code>
      * representation.
      * @return <code>GlassFishAdminInterface</code> value represented by <code>String</code> or
@@ -83,7 +83,7 @@ public enum GlassFishAdminInterface {
     /**
      * Convert <code>GlassFishAdminInterface</code> value to <code>String</code>.
      * <p>
-     * 
+     *
      * @return A <code>String</code> representation of the value of this object.
      */
     @Override

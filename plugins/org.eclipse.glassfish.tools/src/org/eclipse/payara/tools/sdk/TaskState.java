@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * Current state of GlassFish server administration command execution
  * <p>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public enum TaskState {
@@ -74,7 +74,7 @@ public enum TaskState {
      * <code>String</code> matches any <code>String</code> returned by <code>toString</code> method.
      * Otherwise <code>null</code> value is returned.
      * <p>
-     * 
+     *
      * @param stateStr Value containing <code>TaskState</code> <code>toString</code> representation.
      * @return <code>TaskState</code> value represented by <code>String</code> or <code>null</code> if
      * value was not recognized.
@@ -94,7 +94,7 @@ public enum TaskState {
     /**
      * Convert <code>TaskState</code> value to <code>String</code>.
      * <p>
-     * 
+     *
      * @return A <code>String</code> representation of the value of this object.
      */
     @Override

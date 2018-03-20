@@ -17,7 +17,7 @@ package org.eclipse.payara.tools.sdk.admin;
  * <code>List&ltString&gt</code> with individual log lines</li>. <code>String</code> with
  * <code>X-Text-Append-Next</code> response URL parameters is also stored.</li>
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class ResultLog extends Result<ValueLog> {
@@ -48,7 +48,7 @@ public class ResultLog extends Result<ValueLog> {
     /**
      * Get server log value returned by admin command execution.
      * <p/>
-     * 
+     *
      * @return Server log value returned by admin command execution.
      */
     @Override

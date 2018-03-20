@@ -14,7 +14,7 @@ package org.eclipse.payara.tools.sdk.data.cloud;
  * <p/>
  * GlassFish Cloud User Account entity instance which is used when not defined externally in IDE.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class GlassFishAccountEntity implements GlassFishAccount {
@@ -56,7 +56,7 @@ public class GlassFishAccountEntity implements GlassFishAccount {
     /**
      * Constructs class instance with ALL values set.
      * <p/>
-     * 
+     *
      * @param name GlassFish cloud account name to set.
      * @param url GlassFish cloud server URL.
      * @param account GlassFish cloud host to set.
@@ -85,7 +85,7 @@ public class GlassFishAccountEntity implements GlassFishAccount {
      * <p/>
      * This is display name given to the cloud user account.
      * <p/>
-     * 
+     *
      * @return GlassFish cloud user account display name.
      */
     @Override
@@ -100,7 +100,7 @@ public class GlassFishAccountEntity implements GlassFishAccount {
      * <p/>
      * This is display name given to the cloud user account.
      * <p/>
-     * 
+     *
      * @param name GlassFish cloud user account display name to set.
      */
     public void setName(String name) {
@@ -112,7 +112,7 @@ public class GlassFishAccountEntity implements GlassFishAccount {
      * <p/>
      * Key attribute.
      * <p/>
-     * 
+     *
      * @return Cloud URL.
      */
     @Override
@@ -125,7 +125,7 @@ public class GlassFishAccountEntity implements GlassFishAccount {
      * <p/>
      * Key attribute.
      * <p/>
-     * 
+     *
      * @param url Cloud URL to set.
      */
     public void setUrl(String url) {
@@ -135,7 +135,7 @@ public class GlassFishAccountEntity implements GlassFishAccount {
     /**
      * Get GlassFish cloud account name.
      * <p/>
-     * 
+     *
      * @return GlassFish cloud account name.
      */
     @Override
@@ -146,7 +146,7 @@ public class GlassFishAccountEntity implements GlassFishAccount {
     /**
      * Set GlassFish cloud account name.
      * <p/>
-     * 
+     *
      * @param account GlassFish cloud account name to set.
      */
     public void setAcount(String account) {
@@ -156,7 +156,7 @@ public class GlassFishAccountEntity implements GlassFishAccount {
     /**
      * Get GlassFish cloud user name under account.
      * <p/>
-     * 
+     *
      * @return GlassFish cloud user name under account.
      */
     @Override
@@ -167,7 +167,7 @@ public class GlassFishAccountEntity implements GlassFishAccount {
     /**
      * Set GlassFish cloud user name under account.
      * <p/>
-     * 
+     *
      * @param userName GlassFish cloud user name under account to set.
      */
     public void setUserName(String userName) {
@@ -177,7 +177,7 @@ public class GlassFishAccountEntity implements GlassFishAccount {
     /**
      * Get GlassFish cloud user password under account.
      * <p/>
-     * 
+     *
      * @return GlassFish cloud user password under account.
      */
     @Override
@@ -188,7 +188,7 @@ public class GlassFishAccountEntity implements GlassFishAccount {
     /**
      * Set GlassFish cloud user password under account.
      * <p/>
-     * 
+     *
      * @param userPassword GlassFish cloud user password under account to set.
      */
     public void setUserPassword(String userPassword) {
@@ -198,7 +198,7 @@ public class GlassFishAccountEntity implements GlassFishAccount {
     /**
      * Get GlassFish cloud entity reference.
      * <p/>
-     * 
+     *
      * @return GlassFish cloud entity reference.
      */
     @Override
@@ -209,7 +209,7 @@ public class GlassFishAccountEntity implements GlassFishAccount {
     /**
      * Set GlassFish cloud entity reference.
      * <p/>
-     * 
+     *
      * @param cloudEntity GlassFish cloud entity reference to set.
      */
     public void setCloudEntity(GlassFishCloud cloudEntity) {
@@ -223,7 +223,7 @@ public class GlassFishAccountEntity implements GlassFishAccount {
     /**
      * String representation of this GlassFish cloud entity.
      * <p/>
-     * 
+     *
      * @return String representation of this GlassFish cloud entity.
      */
     @Override

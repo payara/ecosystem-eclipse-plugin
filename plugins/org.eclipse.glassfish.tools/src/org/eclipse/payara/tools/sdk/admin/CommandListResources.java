@@ -20,7 +20,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 /**
  * Command that retrieves list of JDBC resources defined on server.
  * <p>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 @RunnerHttpClass(runner = RunnerHttpListResources.class)
@@ -51,7 +51,7 @@ public class CommandListResources extends CommandTarget {
     /**
      * Add resource to target server.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity.
      * @param cmdSuffix Resource command suffix. Value should not be null.
      * @param target GlassFish server target.
@@ -76,7 +76,7 @@ public class CommandListResources extends CommandTarget {
     /**
      * Constructs command string for provided resource command suffix.
      * <p/>
-     * 
+     *
      * @param resourceCmdSuffix Resource command suffix. Value should not be null.
      */
     public static String command(String resourceCmdSuffix) {
@@ -97,7 +97,7 @@ public class CommandListResources extends CommandTarget {
      * <p/>
      * Command string is supplied as an argument.
      * <p/>
-     * 
+     *
      * @param command Server command represented by this object. Use <code>command</code> static method
      * to build this string using resource command suffix.
      * @param target Target GlassFish instance or cluster.

@@ -21,7 +21,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
  * <p/>
  * Holds data for command. Objects of this class are created by API user.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 @RunnerHttpClass(runner = RunnerHttpRestartDAS.class)
@@ -45,7 +45,7 @@ public class CommandRestartDAS extends Command {
     /**
      * Restarts running DAS server.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity.
      * @param debug Specifies whether the domain is restarted with JPDA.
      * @return Restart DAS task response.
@@ -77,7 +77,7 @@ public class CommandRestartDAS extends Command {
     /**
      * Constructs an instance of GlassFish server version command entity.
      * <p/>
-     * 
+     *
      * @param debug Specifies whether the domain is restarted with JPDA.
      */
     public CommandRestartDAS(final boolean debug) {

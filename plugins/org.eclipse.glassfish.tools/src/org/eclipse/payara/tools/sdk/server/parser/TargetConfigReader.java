@@ -17,7 +17,7 @@ import org.xml.sax.SAXException;
  * Marks that the xml parser is currently inside config element with give name. This information is
  * used by descendants of this class.
  * <p/>
- * 
+ *
  * @author Peter Benedikovic, Tomas Kraus
  */
 class TargetConfigReader extends NodeListener {

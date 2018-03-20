@@ -18,7 +18,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
  * Receives notifications about every GlassFish server status check result or about GlassFish server
  * status changes.
  * <p/>
- * 
+ *
  * @author Tomas Kraus
  */
 public interface GlassFishStatusListener {
@@ -26,7 +26,7 @@ public interface GlassFishStatusListener {
     /**
      * Callback to notify about current server status after every check when enabled.
      * <p/>
-     * 
+     *
      * @param server GlassFish server instance being monitored.
      * @param status Current server status.
      * @param task Last GlassFish server status check task details.
@@ -37,7 +37,7 @@ public interface GlassFishStatusListener {
     /**
      * Callback to notify about server status change when enabled.
      * <p/>
-     * 
+     *
      * @param server GlassFish server instance being monitored.
      * @param status Current server status.
      * @param task Last GlassFish server status check task details.
@@ -48,7 +48,7 @@ public interface GlassFishStatusListener {
     /**
      * Callback to notify about server status check failures.
      * <p/>
-     * 
+     *
      * @param server GlassFish server instance being monitored.
      * @param task GlassFish server status check task details.
      */

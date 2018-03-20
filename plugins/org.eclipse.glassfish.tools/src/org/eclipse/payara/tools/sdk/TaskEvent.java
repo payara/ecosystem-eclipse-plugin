@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * Events that caused state of GlassFish server administration command execution change.
  * <p>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public enum TaskEvent {
@@ -142,7 +142,7 @@ public enum TaskEvent {
      * <code>String</code> matches any <code>String</code> returned by <code>toString</code> method.
      * Otherwise <code>null</code> value is returned.
      * <p>
-     * 
+     *
      * @param eventStr Value containing <code>TaskEvent</code> <code>toString</code> representation.
      * @return <code>TaskEvent</code> value represented by <code>String</code> or <code>null</code> if
      * value was not recognized.
@@ -162,7 +162,7 @@ public enum TaskEvent {
     /**
      * Convert <code>TaskEvent</code> value to <code>String</code>.
      * <p>
-     * 
+     *
      * @return A <code>String</code> representation of the value of this object.
      */
     @Override

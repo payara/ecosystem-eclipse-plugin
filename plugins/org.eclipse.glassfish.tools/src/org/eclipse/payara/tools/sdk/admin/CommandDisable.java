@@ -14,7 +14,7 @@ package org.eclipse.payara.tools.sdk.admin;
  * <p/>
  * Holds data for command. Objects of this class are created by API user.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 @RunnerHttpClass(runner = RunnerHttpEnableDisable.class)
@@ -35,7 +35,7 @@ public class CommandDisable extends CommandTargetName {
     /**
      * Constructs an instance of GlassFish server disable command entity.
      * <p/>
-     * 
+     *
      * @param name Name of module to disable.
      * @param target Target GlassFish instance.
      */

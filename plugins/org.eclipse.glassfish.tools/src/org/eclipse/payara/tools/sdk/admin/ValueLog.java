@@ -16,7 +16,7 @@ import org.eclipse.payara.tools.sdk.utils.Utils;
 /**
  * GlassFish server log.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class ValueLog {
@@ -48,7 +48,7 @@ public class ValueLog {
      * Entity is initialized with values stored in <code>Runner</code> internal attributes in
      * <code>processResponse</code> method.
      * <p/>
-     * 
+     *
      * @param lines GlassFish server log lines.
      * @param paramsAppendNext URL parameters from HTTP header <code>X-Text-Append-Next</code>
      */
@@ -64,7 +64,7 @@ public class ValueLog {
     /**
      * Get GlassFish server log lines.
      * <p/>
-     * 
+     *
      * @return GlassFish server log lines.
      */
     public List<String> getLines() {
@@ -74,7 +74,7 @@ public class ValueLog {
     /**
      * Get URL parameters from HTTP header <code>X-Text-Append-Next</code>.
      * <p/>
-     * 
+     *
      * @return URL parameters from HTTP header <code>X-Text-Append-Next</code>.
      */
     public String getParamsAppendNext() {
@@ -88,7 +88,7 @@ public class ValueLog {
     /**
      * Convert stored server log lines to <code>String</code>.
      * <p>
-     * 
+     *
      * @return A <code>String</code> representation of the value of this object.
      */
     @Override

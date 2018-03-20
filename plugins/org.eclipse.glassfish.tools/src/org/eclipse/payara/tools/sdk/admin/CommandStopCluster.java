@@ -21,7 +21,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
  * <p/>
  * Holds data for command. Objects of this class are created by API user.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 @RunnerHttpClass(runner = RunnerHttpTarget.class)
@@ -45,7 +45,7 @@ public class CommandStopCluster extends CommandTarget {
     /**
      * Stops cluster.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity.
      * @param target Cluster name.
      * @return Stop cluster task response.
@@ -70,7 +70,7 @@ public class CommandStopCluster extends CommandTarget {
     /**
      * Constructs an instance of GlassFish server stop-cluster command entity.
      * <p/>
-     * 
+     *
      * @param target Target GlassFish cluster.
      */
     public CommandStopCluster(String target) {

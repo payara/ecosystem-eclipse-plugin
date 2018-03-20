@@ -15,7 +15,7 @@ import org.eclipse.payara.tools.sdk.data.GlassFishStatusCheckResult;
 /**
  * Individual server status result including additional information.
  * <p/>
- * 
+ *
  * @author tomas Kraus
  */
 class StatusResult {
@@ -36,7 +36,7 @@ class StatusResult {
     /**
      * Creates an instance of individual server status result.
      * <p/>
-     * 
+     *
      * @param status Individual server status returned.
      * @param event Current status cause.
      */
@@ -49,7 +49,7 @@ class StatusResult {
     /**
      * Creates an instance of individual server status result.
      * <p/>
-     * 
+     *
      * @param status Individual server status returned.
      */
     StatusResult(final GlassFishStatusCheckResult status) {
@@ -63,7 +63,7 @@ class StatusResult {
     /**
      * Get individual check task status.
      * <p/>
-     * 
+     *
      * @return Individual check task status.
      */
     public GlassFishStatusCheckResult getStatus() {
@@ -73,7 +73,7 @@ class StatusResult {
     /**
      * Get task failure event.
      * <p/>
-     * 
+     *
      * @return Task failure event.
      */
     public TaskEvent getEvent() {

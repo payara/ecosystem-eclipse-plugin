@@ -75,7 +75,7 @@ import org.eclipse.wst.server.core.model.ServerDelegate;
 
 /**
  * This class takes care of actually starting (launching) the Payara / GlassFish server.
- * 
+ *
  * <p>
  * This class is registered in <code>plug-in.xml</code> in the
  * <code>org.eclipse.debug.core.launchConfigurationTypes</code> extension point.

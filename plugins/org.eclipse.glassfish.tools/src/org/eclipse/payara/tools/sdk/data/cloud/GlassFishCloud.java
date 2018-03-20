@@ -16,7 +16,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
  * <p/>
  * GlassFish Cloud entity interface allows to use foreign entity classes.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public interface GlassFishCloud {
@@ -30,7 +30,7 @@ public interface GlassFishCloud {
      * <p/>
      * This is display name given to the cloud.
      * <p/>
-     * 
+     *
      * @return GlassFish cloud name.
      */
     public String getName();
@@ -38,7 +38,7 @@ public interface GlassFishCloud {
     /**
      * Get GlassFish cloud (CPAS) host.
      * <p/>
-     * 
+     *
      * @return GlassFish cloud (CPAS) host.
      */
     public String getHost();
@@ -46,7 +46,7 @@ public interface GlassFishCloud {
     /**
      * Get GlassFish cloud port.
      * <p/>
-     * 
+     *
      * @return GlassFish cloud port.
      */
     public int getPort();
@@ -54,7 +54,7 @@ public interface GlassFishCloud {
     /**
      * Get GlassFish cloud local server.
      * <p/>
-     * 
+     *
      * @return GlassFish cloud local server.
      */
     public GlassFishServer getLocalServer();

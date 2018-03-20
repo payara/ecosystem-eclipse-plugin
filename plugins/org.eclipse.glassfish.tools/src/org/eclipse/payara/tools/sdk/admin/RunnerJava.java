@@ -29,7 +29,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 /**
  * GlassFish server administration command execution using local Java VM.
  * <p/>
- * 
+ *
  * @author Tomas Kraus
  */
 abstract class RunnerJava extends Runner {
@@ -66,7 +66,7 @@ abstract class RunnerJava extends Runner {
      * <p/>
      * {@link CommandException} is thrown when configuration object value is <code>null</code>.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity object.
      * @return GlassFish server features configuration which is not <code>null</code>.
      */
@@ -85,7 +85,7 @@ abstract class RunnerJava extends Runner {
     /**
      * Get {@link JavaSESet} instance for provided GlassFish server features configuration.
      * <p/>
-     * 
+     *
      * @param config GlassFish server features configuration.
      * @return GlassFish JavaSE configuration which is not <code>null</code>.
      */
@@ -101,7 +101,7 @@ abstract class RunnerJava extends Runner {
     /**
      * Constructs path to Java VM executable and verifies if it exists.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity object.
      * @param command lassFish server administration command with local Java VM.
      * @return Path to Java VM executable
@@ -137,7 +137,7 @@ abstract class RunnerJava extends Runner {
     /**
      * Constructs an instance of administration command executor using command line asadmin interface.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      * @param query Query string for this command.
@@ -161,7 +161,7 @@ abstract class RunnerJava extends Runner {
     /**
      * Constructs an instance of administration command executor using command line asadmin interface.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
@@ -176,7 +176,7 @@ abstract class RunnerJava extends Runner {
     /**
      * Do not send information to the server via HTTP POST by default.
      * <p/>
-     * 
+     *
      * @return <code>true</code> if using HTTP POST to send to server or <code>false</code> otherwise
      */
     /**
@@ -184,7 +184,7 @@ abstract class RunnerJava extends Runner {
      * <p/>
      * This method makes no sense for this runner.
      * <p/>
-     * 
+     *
      * @return Always returns <code>false</code>.
      */
     @Override
@@ -197,7 +197,7 @@ abstract class RunnerJava extends Runner {
      * <p/>
      * This method makes no sense for this runner.
      * <p/>
-     * 
+     *
      * @return Always returns <code>false</code>.
      */
     @Override
@@ -210,7 +210,7 @@ abstract class RunnerJava extends Runner {
      * <p/>
      * This method makes no sense for this runner.
      * <p/>
-     * 
+     *
      * @return Always returns <code>null</code>.
      * @throws <code>CommandException</code> if there is a problem with building command URL.
      */
@@ -224,7 +224,7 @@ abstract class RunnerJava extends Runner {
      * <p/>
      * This method makes no sense for this runner.
      * <p/>
-     * 
+     *
      * @return Always returns <code>null</code>.
      */
     @Override
@@ -248,7 +248,7 @@ abstract class RunnerJava extends Runner {
     /**
      * Verifies if Java VM version is supported by provided GlassFish server.
      * <p/>
-     * 
+     *
      * @return Value of <code>true</code> when Java VM executable version is known and supported by
      * provided GlassFish server or <code>false</code> otherwise.
      */
@@ -276,7 +276,7 @@ abstract class RunnerJava extends Runner {
     /**
      * Prepare Java VM environment for Glassfish server execution.
      * <p/>
-     * 
+     *
      * @param env Process builder environment <code>Map</code>.
      * @param command GlassFish Server Administration Command Entity.
      */
@@ -292,7 +292,7 @@ abstract class RunnerJava extends Runner {
      * <p/>
      * No current directory will be set when domain directory does not exist.
      * <p/>
-     * 
+     *
      * @param pb Process builder object where to set current directory.
      */
     void setProcessCurrentDir(ProcessBuilder pb) {

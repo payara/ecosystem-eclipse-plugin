@@ -19,7 +19,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
  * Command runner for disabling the application.
  * <p>
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RunnerRestDisable extends RunnerRest {
@@ -27,7 +27,7 @@ public class RunnerRestDisable extends RunnerRest {
     /**
      * Constructs an instance of administration command executor using REST interface.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */

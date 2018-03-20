@@ -14,7 +14,7 @@ import org.eclipse.payara.tools.sdk.TaskState;
 /**
  * Events in GlassFish log fetcher.
  * <p/>
- * 
+ *
  * @author Tomas Kraus
  */
 public class FetchLogEvent {
@@ -33,7 +33,7 @@ public class FetchLogEvent {
     /**
      * Constructs an instance of event in GlassFish log fetcher.
      * <p/>
-     * 
+     *
      * @param state Current log fetcher task state.
      */
     FetchLogEvent(TaskState state) {
@@ -47,7 +47,7 @@ public class FetchLogEvent {
     /**
      * Get current log fetcher task state.
      * <p/>
-     * 
+     *
      * @return Current log fetcher task state.
      */
     public TaskState getState() {

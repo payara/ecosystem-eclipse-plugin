@@ -17,7 +17,7 @@ import java.util.List;
  * Stores administration command result values and command execution state. Result value is
  * <code>List</code>.
  * <p>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class ResultList<T> extends Result<List<T>> {
@@ -47,7 +47,7 @@ public class ResultList<T> extends Result<List<T>> {
 
     /**
      * Get value returned by administration command execution.
-     * 
+     *
      * @return Value returned by administration command execution.
      */
     @Override

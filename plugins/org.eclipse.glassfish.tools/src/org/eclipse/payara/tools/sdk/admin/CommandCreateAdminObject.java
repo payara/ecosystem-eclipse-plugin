@@ -15,7 +15,7 @@ import java.util.Map;
  * Command that creates administered object with the specified JNDI name and the interface
  * definition for a resource adapter on server.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 @RunnerHttpClass(runner = RunnerHttpCreateAdminObject.class)
@@ -56,7 +56,7 @@ public class CommandCreateAdminObject extends Command {
     /**
      * Constructs an instance of GlassFish server create administered object command entity.
      * <p/>
-     * 
+     *
      * @param jndiName The JNDI name of this JDBC resource.
      * @param resType Resource type.
      * @param raName The name of the resource adapter associated with this administered object.
@@ -79,7 +79,7 @@ public class CommandCreateAdminObject extends Command {
      * <p/>
      * This object will be enabled on server by default.
      * <p/>
-     * 
+     *
      * @param jndiName The JNDI name of this JDBC resource.
      * @param resType Resource type.
      * @param raName The name of the resource adapter associated with this administered object.

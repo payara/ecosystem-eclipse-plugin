@@ -19,7 +19,7 @@ import org.eclipse.payara.tools.sdk.admin.RunnerRestClass;
  * <p/>
  * Holds data for command. Objects of this class are created by API user.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 @RunnerHttpClass(runner = RunnerHttpCloud.class)
@@ -47,7 +47,7 @@ public class CommandCloudDeploy extends CommandCloud {
     /**
      * Constructs an instance of GlassFish server deploy command entity.
      * <p/>
-     * 
+     *
      * @param account Cloud account identifier.
      * @param path File to deploy.
      */

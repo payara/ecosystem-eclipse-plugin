@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * JavaEE modules supported by Glassfish.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public enum ModuleType {
@@ -79,7 +79,7 @@ public enum ModuleType {
      * <code>String</code> matches any <code>String</code> returned by <code>toString</code> method.
      * Otherwise <code>null</code> value is returned.
      * <p>
-     * 
+     *
      * @param stateStr Value containing <code>ModuleType</code> <code>toString</code> representation.
      * @return <code>ModuleType</code> value represented by <code>String</code> or <code>null</code> if
      * value was not recognized.
@@ -99,7 +99,7 @@ public enum ModuleType {
     /**
      * Convert module type name to <code>String</code>.
      * <p/>
-     * 
+     *
      * @return A <code>String</code> representation of the value of this object.
      */
     @Override

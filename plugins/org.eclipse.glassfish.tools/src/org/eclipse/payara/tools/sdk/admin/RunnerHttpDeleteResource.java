@@ -31,7 +31,7 @@ public class RunnerHttpDeleteResource extends RunnerHttp {
     /**
      * Creates query string from command object properties.
      * <p/>
-     * 
+     *
      * @param command GlassFish server administration command entity.
      * @return Query string from command object properties.
      */
@@ -54,7 +54,7 @@ public class RunnerHttpDeleteResource extends RunnerHttp {
     /**
      * Constructs an instance of administration command executor using HTTP interface.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */

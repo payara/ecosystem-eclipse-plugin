@@ -16,7 +16,7 @@ import org.eclipse.payara.tools.sdk.admin.Command;
  * <p/>
  * Holds common data for cloud administration command.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class CommandCloud extends Command {
@@ -36,7 +36,7 @@ public class CommandCloud extends Command {
      * Constructs an instance of GlassFish cloud administration command entity with specified cloud
      * account and command.
      * <p/>
-     * 
+     *
      * @param command Cloud command represented by this object.
      * @param account Cloud account identifier.
      */
@@ -52,7 +52,7 @@ public class CommandCloud extends Command {
     /**
      * Returns cloud account identifier of this command.
      * <p/>
-     * 
+     *
      * @return Cloud account identifier.
      */
     public String getAccount() {

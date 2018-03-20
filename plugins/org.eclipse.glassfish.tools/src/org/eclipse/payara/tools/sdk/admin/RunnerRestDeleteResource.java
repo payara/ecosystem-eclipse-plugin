@@ -18,7 +18,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 /**
  * Command runner for command that deletes the resource.
  * <p>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RunnerRestDeleteResource extends RunnerRest {
@@ -26,7 +26,7 @@ public class RunnerRestDeleteResource extends RunnerRest {
     /**
      * Constructs an instance of administration command executor using REST interface.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */

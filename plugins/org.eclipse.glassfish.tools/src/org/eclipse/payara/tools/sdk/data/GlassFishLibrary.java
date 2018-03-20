@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * GlassFish library entity.
  * <p/>
- * 
+ *
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class GlassFishLibrary {
@@ -37,7 +37,7 @@ public class GlassFishLibrary {
         /**
          * Creates an instance of Maven related information.
          * <p/>
-         * 
+         *
          * @param groupId Maven Group ID.
          * @param artifactId Maven Artifact ID.
          * @param version Maven Version.
@@ -71,7 +71,7 @@ public class GlassFishLibrary {
     /**
      * Creates an instance of GlassFish library entity.
      * <p/>
-     * 
+     *
      * @param libraryID Library name (unique identifier).
      * @param classpath Library class path.
      * @param javadocs Library java doc.
@@ -92,7 +92,7 @@ public class GlassFishLibrary {
     /**
      * Get library name (unique identifier).
      * <p/>
-     * 
+     *
      * @return Library name (unique identifier).
      */
     public String getLibraryID() {
@@ -102,7 +102,7 @@ public class GlassFishLibrary {
     /**
      * Get library class path.
      * <p/>
-     * 
+     *
      * @return Library class path.
      */
     public List<URL> getClasspath() {
@@ -112,7 +112,7 @@ public class GlassFishLibrary {
     /**
      * Get library java doc.
      * <p/>
-     * 
+     *
      * @return Library java doc.
      */
     public List<URL> getJavadocs() {
@@ -122,7 +122,7 @@ public class GlassFishLibrary {
     /**
      * Get library java doc lookups.
      * <p/>
-     * 
+     *
      * @return Library java doc lookups.
      */
     public List<String> getJavadocLookups() {
@@ -132,7 +132,7 @@ public class GlassFishLibrary {
     /**
      * get library sources.
      * <p/>
-     * 
+     *
      * @return Library sources.
      */
     public List<URL> getSources() {

@@ -18,7 +18,7 @@ import org.eclipse.payara.tools.sdk.server.config.LibraryNode;
 /**
  * Payara configuration reader API interface.
  * <p/>
- * 
+ *
  * @author Peter Benedikovic, Tomas Kraus
  */
 public interface GlassFishConfig {
@@ -26,7 +26,7 @@ public interface GlassFishConfig {
     /**
      * Get Payara libraries configuration.
      * <p/>
-     * 
+     *
      * @return Payara libraries configuration.
      */
     public List<LibraryNode> getLibrary();
@@ -34,7 +34,7 @@ public interface GlassFishConfig {
     /**
      * Get Payara Java EE configuration.
      * <p/>
-     * 
+     *
      * @return Payara JavaEE configuration.
      */
     public JavaEESet getJavaEE();
@@ -42,7 +42,7 @@ public interface GlassFishConfig {
     /**
      * Get Payara Java SE configuration.
      * <p/>
-     * 
+     *
      * @return Payara JavaSE configuration.
      */
     public JavaSESet getJavaSE();
@@ -50,7 +50,7 @@ public interface GlassFishConfig {
     /**
      * Get Payara tools configuration.
      * <p/>
-     * 
+     *
      * @return Payara tools configuration.
      */
     public ToolsConfig getTools();

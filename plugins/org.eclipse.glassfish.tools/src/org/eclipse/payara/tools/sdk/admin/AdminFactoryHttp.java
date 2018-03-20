@@ -18,7 +18,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
  * <p>
  * Factory is implemented as singleton.
  * <p>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class AdminFactoryHttp extends AdminFactory {
@@ -37,7 +37,7 @@ public class AdminFactoryHttp extends AdminFactory {
     /**
      * Return existing singleton instance of this class or create a new one when no instance exists.
      * <p>
-     * 
+     *
      * @return <code>AdminFactoryHttp</code> singleton instance.
      */
     static AdminFactoryHttp getInstance() {
@@ -60,7 +60,7 @@ public class AdminFactoryHttp extends AdminFactory {
      * Build runner for HTTP command interface execution and connect it with provided
      * <code>Command</code> instance.
      * <p>
-     * 
+     *
      * @param srv GlassFish server entity object.
      * @param cmd GlassFish server administration command entity.
      * @return GlassFish server administration command execution object.

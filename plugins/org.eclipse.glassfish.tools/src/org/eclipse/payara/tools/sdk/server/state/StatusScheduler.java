@@ -28,7 +28,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
  * Thread responsible for processing all server status checks and updating server status entity
  * objects with current server status.
  * <p/>
- * 
+ *
  * @author Tomas Kraus
  */
 public class StatusScheduler {
@@ -54,7 +54,7 @@ public class StatusScheduler {
         /**
          * Initialize {@link ThreadGroup} object for threads being created in this factory.
          * <p/>
-         * 
+         *
          * @return {@link ThreadGroup} object for threads being created in this factory.
          */
         private static ThreadGroup initThreadGroup() {
@@ -71,7 +71,7 @@ public class StatusScheduler {
         /**
          * Constructs a new {@link Thread}.
          * <p/>
-         * 
+         *
          * @param r A runnable to be executed by new {@link Thread} instance.
          * @return Constructed thread.
          */
@@ -126,7 +126,7 @@ public class StatusScheduler {
      * <p/>
      * This method must be called before first usage of {@link #getInstance()} method.
      * <p/>
-     * 
+     *
      * @param executor External executor to be supplied.
      */
     public static void init(final ScheduledThreadPoolExecutor executor) {
@@ -155,7 +155,7 @@ public class StatusScheduler {
     /**
      * Return existing singleton instance of this class or create a new one when no instance exists.
      * <p>
-     * 
+     *
      * @return <code>GlassFishAccountInstanceProvider</code> singleton instance.
      */
     public static StatusScheduler getInstance() {
@@ -176,7 +176,7 @@ public class StatusScheduler {
     /**
      * Select tasks execution delay depending on current job internal state.
      * <p/>
-     * 
+     *
      * @param state Current job internal state.
      * @return Tasks execution delay.
      */
@@ -195,7 +195,7 @@ public class StatusScheduler {
     /**
      * Select tasks execution initial delay depending on current job internal state.
      * <p/>
-     * 
+     *
      * @param state Current job internal state.
      * @return Tasks execution initial delay.
      */
@@ -228,7 +228,7 @@ public class StatusScheduler {
     /**
      * Creates an instance of server status checks scheduler.
      * <p/>
-     * 
+     *
      * @param executor External executor.
      */
     private StatusScheduler(final ScheduledThreadPoolExecutor executor) {
@@ -243,7 +243,7 @@ public class StatusScheduler {
     /**
      * Check if given GlassFisg server instance is registered.
      * <p/>
-     * 
+     *
      * @param srv GlassFisg server instance to be checked.
      * @return Value of <code>true</code> when server instance is registered in scheduler or
      * <code>false</code> otherwise.
@@ -264,7 +264,7 @@ public class StatusScheduler {
      * notification following status checking restart. This listener won't be unregistered automatically
      * so caller should handle it properly.
      * <p/>
-     * 
+     *
      * @param srv GlassFisg server instance to search for in jobs.
      * @param listener Server status listener to be registered when status checking is being restarted.
      * @return GlassFisg server status {@link GlassFishServerStatus} object. Returns <code>null</code>
@@ -285,7 +285,7 @@ public class StatusScheduler {
     /**
      * Switch GlassFisg server status monitoring into startup mode.
      * <p/>
-     * 
+     *
      * @param srv GlassFisg server instance to be started.
      * @param force Force startup mode for GlassFish server instance from any state then
      * <code>true</code>.
@@ -307,7 +307,7 @@ public class StatusScheduler {
     /**
      * Switch GlassFisg server status monitoring into shutdown mode.
      * <p/>
-     * 
+     *
      * @param srv GlassFisg server instance to be stopped.
      * @return Value of <code>true</code> when server instance is being monitored in startup mode or
      * <code>false</code> if switching failed.
@@ -321,7 +321,7 @@ public class StatusScheduler {
      * Register GlassFisg server instance into scheduler, register server status listener and launch
      * server status checking jobs.
      * <p/>
-     * 
+     *
      * @param status GlassFish server status entity.
      * @param listener Server status listener to be registered.
      * @param currentState Notify about current server status after every check when <code>true</code>.
@@ -344,7 +344,7 @@ public class StatusScheduler {
     /**
      * Register GlassFisg server instance into scheduler and launch server status checking jobs.
      * <p/>
-     * 
+     *
      * @param status GlassFish server status entity.
      * @return Value of <code>true</code> when server instance was successfully added into scheduler and
      * status checking job was started or <code>false</code> otherwise.
@@ -361,7 +361,7 @@ public class StatusScheduler {
     /**
      * Unregister GlassFisg server instance from scheduler and and stop server status checking jobs.
      * <p/>
-     * 
+     *
      * @param srv GlassFisg server instance to unregister.
      * @return Value of <code>true</code> when server instance was successfully removed from scheduler
      * and status checking job was stopped. or <code>false</code> when server instance was not
@@ -378,7 +378,7 @@ public class StatusScheduler {
     /**
      * Suspend server status monitoring for GlassFisg server instance.
      * <p/>
-     * 
+     *
      * @param srv GlassFish server instance for which to suspend monitoring.
      * @return Value of <code>true</code> when server instance monitoring was suspended or
      * <code>false</code> when server instance is not registered.
@@ -396,7 +396,7 @@ public class StatusScheduler {
     /**
      * Get server status job from jobs {@link Map}.
      * <p/>
-     * 
+     *
      * @param srv GlassFisg server instance to search for in jobs.
      * @return Server status job associated with GlassFisg server instance or <code>null</code> when no
      * such job exists.
@@ -415,7 +415,7 @@ public class StatusScheduler {
      * Server status job will be added only if there is no other job for GlassFisg server instance
      * associated with this job.
      * <p/>
-     * 
+     *
      * @return Value of <code>true</code> when jow was added into jobs {@link Map} or <code>false</code>
      * otherwise.
      */
@@ -433,7 +433,7 @@ public class StatusScheduler {
     /**
      * Remove server status job from jobs {@link Map}.
      * <p/>
-     * 
+     *
      * @param srv GlassFisg server instance associated with job to be removed.
      * @return Server status job that was removed or <code>null</code> when no job for given server
      * instance was found.
@@ -451,7 +451,7 @@ public class StatusScheduler {
      * <p/>
      * Caller must own <code>job</code> lock.
      * <p/>
-     * 
+     *
      * @param job Server status check job internal data.
      * @param initialDelay Task execution initial delay.
      */
@@ -471,7 +471,7 @@ public class StatusScheduler {
      * <p/>
      * Caller must own <code>job</code> lock.
      * <p/>
-     * 
+     *
      * @param job Server status check job internal data.
      * @param initialDelay Task execution initial delay.
      */
@@ -491,7 +491,7 @@ public class StatusScheduler {
      * <p/>
      * Caller must own <code>job</code> lock.
      * <p/>
-     * 
+     *
      * @param job Server status check job internal data.
      */
     private ScheduledFuture scheduleLocationsTask(final StatusJob job) {
@@ -504,7 +504,7 @@ public class StatusScheduler {
      * <p/>
      * Caller must own <code>job</code> lock.
      * <p/>
-     * 
+     *
      * @param job Server status check job internal data.
      */
     private ScheduledFuture scheduleVersionTask(final StatusJob job) {
@@ -517,7 +517,7 @@ public class StatusScheduler {
      * <p/>
      * Caller must own <code>job</code> lock.
      * <p/>
-     * 
+     *
      * @param job Server status check job internal data.
      */
     private ScheduledFuture scheduleAdminPortTask(final StatusJob job) {
@@ -534,7 +534,7 @@ public class StatusScheduler {
     /**
      * Cancel execution of scheduled job task.
      * <p/>
-     * 
+     *
      * @param task Individual status check task data.
      */
     void cancel(final StatusJob.Task task) {
@@ -555,7 +555,7 @@ public class StatusScheduler {
      * <p/>
      * Caller must own <code>job</code> lock.
      * <p/>
-     * 
+     *
      * @param job Server status check job internal data.
      */
     private void portCheckOnly(final StatusJob job) {
@@ -572,7 +572,7 @@ public class StatusScheduler {
      * <p/>
      * Caller must own <code>job</code> lock.
      * <p/>
-     * 
+     *
      * @param job Server status check job internal data.
      */
     private void localChecksAtOnce(final StatusJob job) {
@@ -589,7 +589,7 @@ public class StatusScheduler {
      * <p/>
      * Caller must own <code>job</code> lock.
      * <p/>
-     * 
+     *
      * @param job Server status check job internal data.
      */
     private void localChecksStepByStep(final StatusJob job) {
@@ -608,7 +608,7 @@ public class StatusScheduler {
      * <p/>
      * Caller must own <code>job</code> lock.
      * <p/>
-     * 
+     *
      * @param job Server status check job internal data.
      */
     private void localChecksCommand(final StatusJob job) {
@@ -625,7 +625,7 @@ public class StatusScheduler {
      * installation directory and domain. We can at least check server version. Caller must own
      * <code>job</code> lock.
      * <p/>
-     * 
+     *
      * @param job Server status check job internal data.
      */
     private void remoteChecksAtOnce(final StatusJob job) {
@@ -643,7 +643,7 @@ public class StatusScheduler {
      * <p/>
      * Caller must own <code>job</code> lock.
      * <p/>
-     * 
+     *
      * @param job Server status check job internal data.
      */
     private void remoteChecksStepByStep(final StatusJob job) {
@@ -662,7 +662,7 @@ public class StatusScheduler {
      * <p/>
      * Caller must own <code>job</code> lock.
      * <p/>
-     * 
+     *
      * @param job Server status check job internal data.
      */
     private void remoteChecksCommand(final StatusJob job) {
@@ -677,7 +677,7 @@ public class StatusScheduler {
      * <p/>
      * Caller must own <code>job</code> lock.
      * <p/>
-     * 
+     *
      * @param job Server status check job internal data.
      */
     private void noChecks(final StatusJob job) {
@@ -706,7 +706,7 @@ public class StatusScheduler {
      * <p/>
      * Caller must own <code>job</code> lock.
      * <p/>
-     * 
+     *
      * @param job Server status job.
      */
     void scheduleNew(final StatusJob job) {
@@ -728,7 +728,7 @@ public class StatusScheduler {
      * <p/>
      * Caller must own <code>job</code> lock.
      * <p/>
-     * 
+     *
      * @param job Server status job.
      */
     void reschedule(final StatusJob job) {

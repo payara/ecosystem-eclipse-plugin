@@ -23,7 +23,7 @@ import org.eclipse.payara.tools.sdk.logging.Logger;
 /**
  * Individual server status check task to verify if server administration port is alive.
  * <p/>
- * 
+ *
  * @author Tomas Kraus
  */
 class AdminPortTask extends AbstractTask {
@@ -49,7 +49,7 @@ class AdminPortTask extends AbstractTask {
      * Format time value in miliseconds to be printed as value in seconds and miliseconds
      * <code>s.ms<code>.
      * <p/>
-     * 
+     *
      * @param tm Time value in miliseconds
      * @return Time string formated as econds and miliseconds <code>s.ms<code>.
      */
@@ -84,7 +84,7 @@ class AdminPortTask extends AbstractTask {
     /**
      * Creates an instance of administration port status check.
      * <p/>
-     * 
+     *
      * @param job Server status check job internal data.
      * @param task Individual status check task data.
      * @param timeout Socked connecting timeout.
@@ -104,7 +104,7 @@ class AdminPortTask extends AbstractTask {
     /**
      * Get last command task execution result.
      * <p/>
-     * 
+     *
      * @return Last command task execution result.
      */
     StatusResult getResult() {
@@ -121,7 +121,7 @@ class AdminPortTask extends AbstractTask {
      * Send <code>false</code> display argument to operationStateChanged method to not display GUI
      * message about this event.
      * <p/>
-     * 
+     *
      * @param exMessage Exception message.
      * @return Arguments for operationStateChanged method listening for state changes.
      */
@@ -135,7 +135,7 @@ class AdminPortTask extends AbstractTask {
     /**
      * Close socket and handle <code>IOException</code> that could be thrown.
      * <p/>
-     * 
+     *
      * @param socket Socket to be closed.
      */
     private void closeSocket(final Socket socket) {
@@ -154,7 +154,7 @@ class AdminPortTask extends AbstractTask {
      * <p/>
      * Set task result and call registered listeners.
      * <p/>
-     * 
+     *
      * @param ioe <code>IOException</code> caught.
      * @param host Server administration host.
      * @param port Server administration port.

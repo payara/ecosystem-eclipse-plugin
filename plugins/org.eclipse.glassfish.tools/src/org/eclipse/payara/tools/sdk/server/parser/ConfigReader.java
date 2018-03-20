@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * Common library configuration XML elements reader.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public abstract class ConfigReader implements XMLReader {
@@ -37,7 +37,7 @@ public abstract class ConfigReader implements XMLReader {
     /**
      * Get file sets retrieved from XML elements.
      * <p/>
-     * 
+     *
      * @return File sets retrieved from XML elements.
      */
     Map<String, List<String>> getFilesets() {
@@ -47,7 +47,7 @@ public abstract class ConfigReader implements XMLReader {
     /**
      * Get paths retrieved from XML elements.
      * <p/>
-     * 
+     *
      * @return Paths sets retrieved from XML elements.
      */
     List<String> getPaths() {

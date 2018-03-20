@@ -14,7 +14,7 @@ import java.io.InputStream;
 /**
  * Interface for various implementations of parsing response functionality.
  * <p>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public interface ResponseParser {
@@ -22,7 +22,7 @@ public interface ResponseParser {
     /**
      * Method parses the response and returns it's object representation - <code>ActionReport</code>.
      * <p>
-     * 
+     *
      * @param in - input stream object
      * @return <i>ActionReport</i> object that represents the response.
      */

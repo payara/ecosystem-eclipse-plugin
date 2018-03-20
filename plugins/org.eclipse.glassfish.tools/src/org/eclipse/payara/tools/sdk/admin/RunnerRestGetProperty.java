@@ -25,7 +25,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 /**
  * Command runner that executes get property command.
  * <p>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RunnerRestGetProperty extends RunnerRest {
@@ -52,7 +52,7 @@ public class RunnerRestGetProperty extends RunnerRest {
     /**
      * Constructs an instance of administration command executor using REST interface.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */

@@ -27,7 +27,7 @@ import org.eclipse.sapphire.Version;
  * builder. Configuration builder is created with first request for given server version and reused
  * for every subsequent request.
  * <p/>
- * 
+ *
  * @author Tomas Kraus
  */
 public class ConfigBuilderProvider {
@@ -46,7 +46,7 @@ public class ConfigBuilderProvider {
     /**
      * Get library builder configuration for given GlassFish server version.
      * <p/>
-     * 
+     *
      * @param version GlassFish server version.
      * @return Library builder configuration for given GlassFish server version.
      */
@@ -61,7 +61,7 @@ public class ConfigBuilderProvider {
     /**
      * Get configuration builder instance for given GlassFish server entity instance.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity for which builder is returned.
      * <p/>
      * @return Configuration builder for given GlassFish server entity.
@@ -91,7 +91,7 @@ public class ConfigBuilderProvider {
      * Allows to free resources when configuration builder instance will no more be needed (e.g.
      * GlassFish server entity is being destroyed).
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity for which builder is destroyed.
      */
     public static void destroyBuilder(final GlassFishServer server) {

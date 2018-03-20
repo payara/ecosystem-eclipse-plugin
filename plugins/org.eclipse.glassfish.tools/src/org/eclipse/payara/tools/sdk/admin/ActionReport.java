@@ -15,7 +15,7 @@ package org.eclipse.payara.tools.sdk.admin;
  * Inspired by ActionReport class from module GF Admin Rest Service. In our case the interface
  * allows just read-only access.
  * <p>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public interface ActionReport {

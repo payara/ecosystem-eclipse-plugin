@@ -18,7 +18,7 @@ import org.eclipse.payara.tools.sdk.logging.Logger;
  * new characters to the end or prepend new characters to the beginning of the buffer without
  * necessity to move buffer content.
  * <p/>
- * 
+ *
  * @author Tomas Kraus
  */
 public class CyclicStringBuffer {
@@ -53,7 +53,7 @@ public class CyclicStringBuffer {
     /**
      * Creates an instance of cyclic <code>String</code> buffer.
      * <p/>
-     * 
+     *
      * @param size Cyclic <code>String</code> buffer size.
      */
     public CyclicStringBuffer(final int size) {
@@ -72,7 +72,7 @@ public class CyclicStringBuffer {
      * <p/>
      * Content of buffer will be removed.
      * <p/>
-     * 
+     *
      * @param size New cyclic <code>String</code> buffer size.
      */
     public void resize(final int size) {
@@ -89,7 +89,7 @@ public class CyclicStringBuffer {
      * <p/>
      * First character in the buffer will be discarded when buffer is full.
      * <p/>
-     * 
+     *
      * @param c Character to be appended.
      * @return Value of <code>true</code> when buffer was full and first character in the buffer got
      * overwritten or <code>false</code> otherwise.
@@ -110,7 +110,7 @@ public class CyclicStringBuffer {
      * <p/>
      * Last character in the buffer will be discarded when buffer is full.
      * <p/>
-     * 
+     *
      * @param c Character to be prepended.
      * @return Value of <code>true</code> when buffer was full and last character in the buffer got
      * overwritten or <code>false</code> otherwise.
@@ -132,7 +132,7 @@ public class CyclicStringBuffer {
      * Empty {@link String} value and <code>null</code> value are considered as equivalent and are equal
      * to zero length buffer content.
      * <p/>
-     * 
+     *
      * @return Value of <code>true</code> if buffer content represents {@link String} equivalent to this
      * provided string or <code>false</code> otherwise.
      */
@@ -159,7 +159,7 @@ public class CyclicStringBuffer {
      * <p/>
      * Zero length content is returned as zero length {@link String};
      * <p/>
-     * 
+     *
      * @return {@link String} stored in buffer.
      */
     @Override

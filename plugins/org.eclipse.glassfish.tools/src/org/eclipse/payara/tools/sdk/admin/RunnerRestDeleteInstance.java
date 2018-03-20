@@ -18,7 +18,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 /**
  * Command runner executes delete instance command.
  * <p>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RunnerRestDeleteInstance extends RunnerRest {
@@ -26,7 +26,7 @@ public class RunnerRestDeleteInstance extends RunnerRest {
     /**
      * Constructs an instance of administration command executor using REST interface.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */

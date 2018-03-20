@@ -18,7 +18,7 @@ import org.eclipse.payara.tools.sdk.logging.Logger;
 /**
  * Abstract task for server status verification.
  * <p/>
- * 
+ *
  * @author Tomas Kraus
  */
 public abstract class AbstractTask implements Runnable {
@@ -55,7 +55,7 @@ public abstract class AbstractTask implements Runnable {
     /**
      * Creates an instance of abstract task for server status verification.
      * <p/>
-     * 
+     *
      * @param job Server status check job internal data.
      * @param task Individual status check task data.
      * @param type Server status check type.
@@ -89,7 +89,7 @@ public abstract class AbstractTask implements Runnable {
      * <p/>
      * This method should be used after task is submitted into <code>ExecutorService</code>.
      * <p/>
-     * 
+     *
      * @param taskState New task execution state.
      * @param taskEvent Event related to execution state change.
      * @param args Additional arguments.

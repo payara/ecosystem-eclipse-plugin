@@ -16,7 +16,7 @@ import org.eclipse.payara.tools.sdk.GlassFishIdeException;
  * <p>
  * All exceptions are logging themselves on WARNING level when created.
  * <p>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class CommandException extends GlassFishIdeException {
@@ -90,7 +90,7 @@ public class CommandException extends GlassFishIdeException {
     /**
      * Constructs an instance of <code>CommandException</code> with the specified detail message.
      * <p>
-     * 
+     *
      * @param msg The detail message.
      */
     public CommandException(String msg) {
@@ -103,7 +103,7 @@ public class CommandException extends GlassFishIdeException {
      * <p/>
      * Uses {@link java.text.MessageFormat} to format message.
      * <p/>
-     * 
+     *
      * @param msg The detail message.
      * @param arguments Arguments to be inserted into message.
      */
@@ -118,7 +118,7 @@ public class CommandException extends GlassFishIdeException {
      * Note that the detail message associated with {@code cause} is <i>not</i> automatically
      * incorporated in this runtime exception's detail message.
      * <p>
-     * 
+     *
      * @param msg the detail message (which is saved for later retrieval by the {@link #getMessage()}
      * method).
      * @param cause the cause (which is saved for later retrieval by the {@link #getCause()} method). (A

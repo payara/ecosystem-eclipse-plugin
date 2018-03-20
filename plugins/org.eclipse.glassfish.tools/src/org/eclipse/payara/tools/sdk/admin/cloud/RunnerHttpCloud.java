@@ -18,7 +18,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
  * <p/>
  * HTTP interface is not supported with cloud commands.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RunnerHttpCloud extends RunnerHttp {
@@ -29,7 +29,7 @@ public class RunnerHttpCloud extends RunnerHttp {
      * This constructor prototype is called from factory class and should remain public in all child
      * classes.
      * <p/>
-     * 
+     *
      * @param server GlassFish cloud entity object.
      * @param command GlassFish server administration command entity.
      */
@@ -43,7 +43,7 @@ public class RunnerHttpCloud extends RunnerHttp {
     /**
      * Constructs an instance of administration command executor using HTTP interface.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      * @param query Query string for this command.
@@ -58,7 +58,7 @@ public class RunnerHttpCloud extends RunnerHttp {
     /**
      * Constructs an instance of administration command executor using HTTP interface.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      * @param path Path which builds URL we speak to.

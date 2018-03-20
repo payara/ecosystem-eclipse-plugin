@@ -26,7 +26,7 @@ public abstract class RuntimeComponentProvider {
     /**
      * Returns additional components to add to the runtime that represents the provided GlassFish Server
      * installation.
-     * 
+     *
      * @param runtime the WTP server tools runtime definition
      * @return list of additional components or <code>null</code> to not contribute anything
      */

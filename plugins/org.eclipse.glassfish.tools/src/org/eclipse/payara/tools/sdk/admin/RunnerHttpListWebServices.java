@@ -19,7 +19,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
 /**
  * Command runner for retrieving list of web services from server.
  * <p>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RunnerHttpListWebServices extends RunnerHttp {
@@ -45,7 +45,7 @@ public class RunnerHttpListWebServices extends RunnerHttp {
     /**
      * Constructs an instance of administration command executor using HTTP interface.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
@@ -72,7 +72,7 @@ public class RunnerHttpListWebServices extends RunnerHttp {
      * attribute in <code>Manifest</code> object is stored as <i>value</i> into
      * <code>ResultString</code> result object.
      * <p/>
-     * 
+     *
      * @return true if result was extracted correctly. <code>null</code> <i>message</i>value is
      * considered as failure.
      */

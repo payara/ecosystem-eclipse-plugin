@@ -21,7 +21,7 @@ import org.xml.sax.SAXException;
 /**
  * Reader for jmx connector port number as string from domain.xml.
  * <p/>
- * 
+ *
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class JmxConnectorReader extends TargetConfigReader implements XMLReader {

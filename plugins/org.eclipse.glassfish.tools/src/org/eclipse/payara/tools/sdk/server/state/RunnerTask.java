@@ -24,7 +24,7 @@ import org.eclipse.payara.tools.sdk.logging.Logger;
 /**
  * Individual server administrator command task to verify if server is responding properly.
  * <p/>
- * 
+ *
  * @author Tomas Kraus
  */
 class RunnerTask extends AbstractTask {
@@ -63,7 +63,7 @@ class RunnerTask extends AbstractTask {
          * <li><code>args[3]</code> display message in GUI</li>
          * </ul>
          * <p/>
-         * 
+         *
          * @param newState New command execution state.
          * @param event Event related to execution state change.
          * @param args Additional String arguments.
@@ -92,7 +92,7 @@ class RunnerTask extends AbstractTask {
     /**
      * Constructs an instance of individual server administrator command task.
      * <p/>
-     * 
+     *
      * @param job Server status check job internal data.
      * @param task Individual status check task data.
      * @param type Server status check type.

@@ -14,7 +14,7 @@ package org.eclipse.payara.tools.sdk.admin;
  * <p/>
  * Holds data for command. Objects of this class are created by API user.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 @RunnerHttpClass(runner = RunnerRestFetchLogData.class)
@@ -61,7 +61,7 @@ public class CommandFetchLogData extends Command {
      * Only log entries added in particular interval starting from previous call that returned this
      * value of <code>paramsAppendNext</code> will be returned.
      * <p/>
-     * 
+     *
      * @param paramsAppendNext Interval query parameters from Last View Log command execution.
      */
     public CommandFetchLogData(String paramsAppendNext) {

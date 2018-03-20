@@ -28,7 +28,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
  * <p/>
  * Class implements GlassFish server administration functionality trough HTTP interface.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RunnerHttpDeploy extends RunnerHttp {
@@ -81,7 +81,7 @@ public class RunnerHttpDeploy extends RunnerHttp {
      * &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ['&' "libraries" '=' &lt;lname&gt; '='
      * &lt;lvalue&gt; { ':' &lt;lname&gt; '=' &lt;lvalue&gt;} ]</code>
      * <p/>
-     * 
+     *
      * @param command GlassFish server administration deploy command entity.
      * @return Deploy query string for given command.
      */
@@ -161,7 +161,7 @@ public class RunnerHttpDeploy extends RunnerHttp {
     /**
      * Constructs an instance of administration command executor using HTTP interface.
      * <p>
-     * 
+     *
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
@@ -178,7 +178,7 @@ public class RunnerHttpDeploy extends RunnerHttp {
     /**
      * Send deployed file to the server via HTTP POST when it's not a directory deployment.
      * <p/>
-     * 
+     *
      * @return <code>true</code> if using HTTP POST to send to server or <code>false</code> otherwise
      */
     @Override
@@ -264,7 +264,7 @@ public class RunnerHttpDeploy extends RunnerHttp {
      * Provide the lastModified date for data source whose <code>InputStream</code> is returned by
      * getInputStream.
      * <p/>
-     * 
+     *
      * @return String format of long integer from lastModified date of source.
      */
     @Override
@@ -275,7 +275,7 @@ public class RunnerHttpDeploy extends RunnerHttp {
     /**
      * Get <code>InputStream</code> object for deployed file.
      * <p/>
-     * 
+     *
      * @return <code>InputStream</code> object for deployed file or <code>null</code> for directory
      * deployment.
      */

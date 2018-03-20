@@ -42,7 +42,7 @@ public class CommandRestoreDomain extends CommandJava {
      * Constructs an instance of GlassFish server administration command entity with specified server
      * command, Java SE home and class path.
      * <p/>
-     * 
+     *
      * @param javaHome Java SE home used to select JRE for GlassFish server.
      * @param domainBackup archive that contains domain restore.
      */

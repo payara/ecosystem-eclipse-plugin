@@ -303,7 +303,7 @@ public class AssembleModules {
 
     /**
      * Checks if there has been a change in the published resources.
-     * 
+     *
      * @param module
      * @return module changed
      */
@@ -311,7 +311,7 @@ public class AssembleModules {
      * private boolean shouldRepack( IModule module ) { final Server _server = (Server)
      * server.getServer(); final IModule[] modules ={module}; IModuleResourceDelta[] deltas =
      * _server.getPublishedResourceDelta( modules );
-     * 
+     *
      * return deltas.length > 0; }
      */
     private boolean shouldRepack(IModule lmodule) {

@@ -17,7 +17,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
  * <p/>
  * Class implements GlassFish server administration functionality trough HTTP interface.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RunnerHttpRedeploy extends RunnerHttp {
@@ -61,7 +61,7 @@ public class RunnerHttpRedeploy extends RunnerHttp {
      * &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ['&' "libraries" '=' &lt;lname&gt; '='
      * &lt;lvalue&gt; { ':' &lt;lname&gt; '=' &lt;lvalue&gt;} ]</code>
      * <p/>
-     * 
+     *
      * @param command GlassFish server administration deploy command entity.
      * @return Redeploy query string for given command.
      */
@@ -133,7 +133,7 @@ public class RunnerHttpRedeploy extends RunnerHttp {
     /**
      * Constructs an instance of administration command executor using HTTP interface.
      * <p>
-     * 
+     *
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */

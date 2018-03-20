@@ -26,7 +26,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
  * Minimal <code>__locations</code> command support exists since GlassFish 3.0.1 where both
  * Base-Root and Domain-Root values are returned.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 @RunnerHttpClass(runner = RunnerHttpLocation.class)
@@ -54,7 +54,7 @@ public class CommandLocation extends Command {
      * Verifies if domain directory returned by location command result matches domain directory of
      * provided GlassFish server entity.
      * <p/>
-     * 
+     *
      * @param resultMap Locations command result.
      * @param server GlassFish server entity.
      * @return For local server value of <code>true</code> means that domain directory returned by

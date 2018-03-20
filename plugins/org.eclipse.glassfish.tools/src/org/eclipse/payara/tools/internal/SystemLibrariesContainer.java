@@ -149,7 +149,7 @@ public final class SystemLibrariesContainer implements IClasspathContainer {
 
     /**
      * Checks whether the specified project is a Java project.
-     * 
+     *
      * @param pj the project to check
      * @return <code>true</code> if the project is a Java project
      */

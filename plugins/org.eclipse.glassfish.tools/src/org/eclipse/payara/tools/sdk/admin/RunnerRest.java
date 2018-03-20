@@ -29,7 +29,7 @@ import org.eclipse.payara.tools.server.GlassFishServer;
  * <p/>
  * Class implements GlassFish server administration functionality trough REST interface.
  * <p/>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RunnerRest extends Runner {
@@ -61,7 +61,7 @@ public class RunnerRest extends Runner {
     /**
      * Constructs an instance of administration command executor using REST interface.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
@@ -72,7 +72,7 @@ public class RunnerRest extends Runner {
     /**
      * Constructs an instance of administration command executor using REST interface.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      * @param query Query string for this command.
@@ -85,7 +85,7 @@ public class RunnerRest extends Runner {
     /**
      * Constructs an instance of administration command executor using REST interface.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      * @param path path which builds URL we speak to.
@@ -99,7 +99,7 @@ public class RunnerRest extends Runner {
 
     /**
      * Helper methods that appends java.util.Properties into POST request body.
-     * 
+     *
      * @param sb
      * @param properties
      * @param paramName
@@ -148,7 +148,7 @@ public class RunnerRest extends Runner {
      * Create <code>ResultString</code> object corresponding to <code>String</code>command execution
      * value to be returned.
      * <p/>
-     * 
+     *
      * @return <code>String</code>command execution value to be returned.
      */
     @Override
@@ -159,7 +159,7 @@ public class RunnerRest extends Runner {
     /**
      * Do not send information to the server via HTTP POST by default.
      * <p/>
-     * 
+     *
      * @return <code>true</code> if using HTTP POST to send to server or <code>false</code> otherwise
      */
     @Override
@@ -170,7 +170,7 @@ public class RunnerRest extends Runner {
     /**
      * Inform whether this runner implementation accepts gzip format.
      * <p/>
-     * 
+     *
      * @return <code>true</code> when gzip format is accepted, <code>false</code> otherwise.
      */
     @Override
@@ -181,7 +181,7 @@ public class RunnerRest extends Runner {
     /**
      * Build Glassfish REST command URL.
      * <p/>
-     * 
+     *
      * @return <code>String</code> value containing command URL.
      * @throws <code>CommandException</code> if there is a problem with building command URL.
      */
@@ -202,7 +202,7 @@ public class RunnerRest extends Runner {
     /**
      * Override to change the type of HTTP method used for this command. Default is GET.
      * <p/>
-     * 
+     *
      * @return HTTP method (GET, POST, etc.)
      */
     @Override
@@ -225,7 +225,7 @@ public class RunnerRest extends Runner {
      * finished. Caller will take care of that.
      * <p/>
      * <p/>
-     * 
+     *
      * @param in Stream to read data from.
      * @return <code>true</code> if response was read correctly.
      * @throws java.io.IOException in case of stream error.
@@ -240,7 +240,7 @@ public class RunnerRest extends Runner {
      * Override to parse, validate, and/or format any data read from the server in readResponse() /
      * readManifest().
      * <p/>
-     * 
+     *
      * @return <code>true</code> if data was processed correctly.
      */
     @Override
@@ -254,7 +254,7 @@ public class RunnerRest extends Runner {
      * <p/>
      * Default is to delegate decision to report itself.
      * <p/>
-     * 
+     *
      * @return Does report state have successful meaning?
      */
     protected boolean isSuccess() {
@@ -268,7 +268,7 @@ public class RunnerRest extends Runner {
     /**
      * Prepare headers for HTTP connection.
      * <p/>
-     * 
+     *
      * @param conn Target HTTP connection.
      * @throws <code>CommandException</code> if there is a problem with setting the headers.
      */
@@ -295,7 +295,7 @@ public class RunnerRest extends Runner {
     /**
      * Method returns content type in which the server is asked to return the response.
      * <p/>
-     * 
+     *
      * @return <code>ContentType</code> that runner wants to get from server.
      */
     protected ResponseContentType getResponseType() {

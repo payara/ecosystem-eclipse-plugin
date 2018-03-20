@@ -20,7 +20,7 @@ import org.eclipse.payara.tools.sdk.logging.Logger;
  * Base exception for GlassFish IDE SDK Exception contains all common code. All exceptions are
  * logging themselves on WARNING level when created.
  * <p>
- * 
+ *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class GlassFishIdeException extends RuntimeException {
@@ -44,7 +44,7 @@ public class GlassFishIdeException extends RuntimeException {
      * Create exception message from message pattern and arguments using
      * {@link java.text.MessageFormat}.
      * <p/>
-     * 
+     *
      * @param msg The detail message pattern.
      * @param arguments Arguments to be inserted into message pattern.
      */
@@ -73,7 +73,7 @@ public class GlassFishIdeException extends RuntimeException {
     /**
      * Constructs an instance of <code>GlassFishIdeException</code> with the specified detail message.
      * <p>
-     * 
+     *
      * @param msg The detail message.
      */
     public GlassFishIdeException(String msg) {
@@ -100,7 +100,7 @@ public class GlassFishIdeException extends RuntimeException {
      * <p/>
      * Uses {@link java.text.MessageFormat} to format message.
      * <p/>
-     * 
+     *
      * @param msg The detail message.
      * @param arguments Arguments to be inserted into message.
      */
@@ -115,7 +115,7 @@ public class GlassFishIdeException extends RuntimeException {
      * Note that the detail message associated with {@code cause} is <i>not</i> automatically
      * incorporated int his runtime exception's detail message.
      * <p>
-     * 
+     *
      * @param msg the detail message (which is saved for later retrieval by the {@link #getMessage()}
      * method).
      * @param cause the cause (which is saved for later retrieval by the {@link #getCause()} method). (A

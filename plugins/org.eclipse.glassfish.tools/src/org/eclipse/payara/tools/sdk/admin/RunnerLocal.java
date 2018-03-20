@@ -78,7 +78,7 @@ public class RunnerLocal extends RunnerJava {
     /**
      * Constructs an instance of administration command executor using local file access interface.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity object.
      * @param command GlassFish Server Administration Command Entity.
      */
@@ -97,7 +97,7 @@ public class RunnerLocal extends RunnerJava {
     * <p/>
     * Attempts to start local GalssFish DAS directly using <code>java</code> executable.
      * <p/>
-     * 
+     *
      * @return Task execution state.
      */
     @Override
@@ -150,7 +150,7 @@ public class RunnerLocal extends RunnerJava {
     /**
      * Reads response from server and stores internally.
      * <p/>
-     * 
+     *
      * @param in Stream to read data from.
      * @return Always returns <code>false</code>.
      * @throws CommandException in case of stream error.
@@ -163,7 +163,7 @@ public class RunnerLocal extends RunnerJava {
     /**
      * Extracts result value from internal storage.
      * <p/>
-     * 
+     *
      * @return Always returns <code>false</code>.
      */
     @Override
@@ -174,7 +174,7 @@ public class RunnerLocal extends RunnerJava {
     /**
      * Prepare Java VM options for Glassfish server execution.
      * <p/>
-     * 
+     *
      * @param server GlassFish server entity object.
      * @param command GlassFish Server Administration Command Entity.
      * @return Java VM options for Glassfish server execution as <cpde>String</code>.
@@ -215,7 +215,7 @@ public class RunnerLocal extends RunnerJava {
      * <p/>
      * No current directory will be set when domain directory does not exist.
      * <p/>
-     * 
+     *
      * @param processBuilder Process builder object where to set current directory.
      */
     @Override

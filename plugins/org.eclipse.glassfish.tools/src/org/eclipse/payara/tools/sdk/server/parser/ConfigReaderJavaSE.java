@@ -20,7 +20,7 @@ import org.xml.sax.SAXException;
 /**
  * Java SE configuration XML element reader.
  * <p/>
- * 
+ *
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class ConfigReaderJavaSE extends ConfigReaderJava {
@@ -49,7 +49,7 @@ public class ConfigReaderJavaSE extends ConfigReaderJava {
     /**
      * Creates an instance of Java EE configuration XML element reader.
      * <p/>
-     * 
+     *
      * @param pathPrefix Tree parser path prefix to be prepended before current XML element.
      */
     ConfigReaderJavaSE(final String pathPrefix) {
@@ -67,7 +67,7 @@ public class ConfigReaderJavaSE extends ConfigReaderJava {
      * <p/>
      * Sets readers for <code>java</code> element and it's content.
      * <p/>
-     * 
+     *
      * @return Paths that the reader listens to.
      */
     @Override
@@ -86,7 +86,7 @@ public class ConfigReaderJavaSE extends ConfigReaderJava {
     /**
      * Process attributes from current XML element.
      * <p/>
-     * 
+     *
      * @param qname Not used.
      * @param attributes List of XML attributes.
      * @throws SAXException When any problem occurs.
@@ -100,7 +100,7 @@ public class ConfigReaderJavaSE extends ConfigReaderJava {
     /**
      * Finish <code>java</code> element processing.
      * <p/>
-     * 
+     *
      * @param qname Current XML element name.
      * @throws ServerConfigException when more than one <code>java</code> XML elements were found.
      */
@@ -123,7 +123,7 @@ public class ConfigReaderJavaSE extends ConfigReaderJava {
     /**
      * Get platforms retrieved from XML elements.
      * <p/>
-     * 
+     *
      * @return Platforms retrieved from XML elements.
      */
     private List<String> getPlatforms() {

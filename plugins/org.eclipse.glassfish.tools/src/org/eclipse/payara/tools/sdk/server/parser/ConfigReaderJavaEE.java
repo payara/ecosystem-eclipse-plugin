@@ -20,7 +20,7 @@ import org.xml.sax.SAXException;
 /**
  * Java EE configuration XML element reader.
  * <p/>
- * 
+ *
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class ConfigReaderJavaEE extends ConfigReaderJava {
@@ -55,7 +55,7 @@ public class ConfigReaderJavaEE extends ConfigReaderJava {
     /**
      * Creates an instance of Java EE configuration XML element reader.
      * <p/>
-     * 
+     *
      * @param pathPrefix Tree parser path prefix to be prepended before current XML element.
      */
     ConfigReaderJavaEE(final String pathPrefix) {
@@ -75,7 +75,7 @@ public class ConfigReaderJavaEE extends ConfigReaderJava {
      * <p/>
      * Sets readers for <code>javaee</code> element and it's content.
      * <p/>
-     * 
+     *
      * @return Paths that the reader listens to.
      */
     @Override
@@ -91,7 +91,7 @@ public class ConfigReaderJavaEE extends ConfigReaderJava {
     /**
      * Process attributes from current XML element.
      * <p/>
-     * 
+     *
      * @param qname Not used.
      * @param attributes List of XML attributes.
      * @throws SAXException When any problem occurs.
@@ -105,7 +105,7 @@ public class ConfigReaderJavaEE extends ConfigReaderJava {
     /**
      * Finish <code>javaee</code> element processing.
      * <p/>
-     * 
+     *
      * @param qname Current XML element name.
      * @throws ServerConfigException when more than one <code>javaee</code> XML elements were found.
      */
@@ -129,7 +129,7 @@ public class ConfigReaderJavaEE extends ConfigReaderJava {
     /**
      * Get profiles retrieved from XML elements.
      * <p/>
-     * 
+     *
      * @return Profiles retrieved from XML elements.
      */
     private List<JavaEEProfileReader.Profile> getProfiles() {
@@ -139,7 +139,7 @@ public class ConfigReaderJavaEE extends ConfigReaderJava {
     /**
      * Get modules retrieved from XML elements.
      * <p/>
-     * 
+     *
      * @return Modules sets retrieved from XML elements.
      */
     private List<JavaEEModuleReader.Module> getModules() {
@@ -149,7 +149,7 @@ public class ConfigReaderJavaEE extends ConfigReaderJava {
     /**
      * Get Java EE platform checks retrieved from XML elements.
      * <p/>
-     * 
+     *
      * @return Java EE platform checks retrieved from XML elements.
      */
     private List<JavaEEProfileCheckReader.Check> getChecks() {

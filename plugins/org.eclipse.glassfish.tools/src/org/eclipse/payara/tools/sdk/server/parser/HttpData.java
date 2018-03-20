@@ -12,7 +12,7 @@ package org.eclipse.payara.tools.sdk.server.parser;
 /**
  * Data holder for port informations from domain.xml.
  * <p/>
- * 
+ *
  * @author Peter Benedikovic, Tomas Kraus
  */
 public class HttpData {
