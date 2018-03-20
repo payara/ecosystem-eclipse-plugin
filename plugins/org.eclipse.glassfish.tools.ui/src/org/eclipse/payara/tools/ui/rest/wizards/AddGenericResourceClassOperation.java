@@ -35,7 +35,8 @@ public class AddGenericResourceClassOperation extends NewWebClassOperation {
 		super(dataModel);
 	}
 
-	protected void generateUsingTemplates(IProgressMonitor monitor,
+	@Override
+    protected void generateUsingTemplates(IProgressMonitor monitor,
 			IPackageFragment fragment) throws WFTWrappedException,
 			CoreException {
 		// Create the template model
@@ -82,9 +83,10 @@ public class AddGenericResourceClassOperation extends NewWebClassOperation {
 		if (fragment != null) {
 			ICompilationUnit cu = fragment.getCompilationUnit(className);
 			// Add the compilation unit to the java file
-			if (cu == null || !cu.exists())
-				cu = fragment.createCompilationUnit(className, source,
+			if (cu == null || !cu.exists()) {
+                cu = fragment.createCompilationUnit(className, source,
 						true, monitor);
+            }
 			return (IFile) cu.getResource();
 		}
 		return null;

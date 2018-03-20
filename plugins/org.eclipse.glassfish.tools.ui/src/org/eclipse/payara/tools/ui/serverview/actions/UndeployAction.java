@@ -19,15 +19,15 @@ import static org.eclipse.wst.server.core.IServer.STATE_STOPPED;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.payara.tools.server.deploying.GlassFishServerBehaviour;
-import org.eclipse.payara.tools.ui.serverview.dynamicnodes.DeployedApplicationsNode;
-import org.eclipse.payara.tools.ui.serverview.dynamicnodes.TreeNode;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.TreeSelection;
+import org.eclipse.payara.tools.server.deploying.GlassFishServerBehaviour;
+import org.eclipse.payara.tools.ui.serverview.dynamicnodes.DeployedApplicationsNode;
+import org.eclipse.payara.tools.ui.serverview.dynamicnodes.TreeNode;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
@@ -58,7 +58,8 @@ public class UndeployAction extends Action {
 		this.actionSite = actionSite;
 	}
 
-	public void runWithEvent(Event event) {
+	@Override
+    public void runWithEvent(Event event) {
 		if (selection instanceof TreeSelection) {
 			TreeSelection ts = (TreeSelection) selection;
 			Object obj = ts.getFirstElement();
@@ -69,7 +70,8 @@ public class UndeployAction extends Action {
 				try {
 					final GlassFishServerBehaviour be = target.getServer().getServerBehaviourAdapter();
 					IRunnableWithProgress op = new IRunnableWithProgress() {
-						public void run(IProgressMonitor monitor) {
+						@Override
+                        public void run(IProgressMonitor monitor) {
 							try {
 
 								IServer server = be.getServer();
@@ -100,7 +102,8 @@ public class UndeployAction extends Action {
 								if (server.getServerState() != STATE_STOPPED
 										&& ServerUIPlugin.getPreferences().getPublishOnAddRemoveModule()) {
 									final IAdaptable info = new IAdaptable() {
-										public <T> T getAdapter(final Class<T> adapter) {
+										@Override
+                                        public <T> T getAdapter(final Class<T> adapter) {
 											if (Shell.class.equals(adapter)) {
 												return adapter.cast(Display.getDefault().getActiveShell());
 											}

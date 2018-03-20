@@ -72,8 +72,9 @@ public final class GlassFishRuntimeLocatorDelegate extends RuntimeLocatorDelegat
 
 	private static IRuntime create(final File gfhome) throws CoreException {
 		GlassFishLocationUtils install = GlassFishLocationUtils.find(gfhome);
-		if (install == null)
-			return null;
+		if (install == null) {
+            return null;
+        }
 
 		if (findRuntime(gfhome) != null) {
 			return null;
@@ -87,7 +88,7 @@ public final class GlassFishRuntimeLocatorDelegate extends RuntimeLocatorDelegat
 
 		final RuntimeWorkingCopy rwc = (RuntimeWorkingCopy) created;
 
-		final Map<String, String> props = new HashMap<String, String>();
+		final Map<String, String> props = new HashMap<>();
 		props.put("sunappserver.rootdirectory", rwc.getLocation().toPortableString());
 		rwc.setAttribute("generic_server_instance_properties", props);
 
@@ -100,7 +101,8 @@ public final class GlassFishRuntimeLocatorDelegate extends RuntimeLocatorDelegat
 			final Display display = Display.getDefault();
 
 			display.syncExec(new Runnable() {
-				public void run() {
+				@Override
+                public void run() {
 					new SapphireDialog(display.getActiveShell(), gfmodel,
 							DefinitionLoader.sdef(GlassFishRuntimeLocatorDelegate.class).dialog()).open();
 				}

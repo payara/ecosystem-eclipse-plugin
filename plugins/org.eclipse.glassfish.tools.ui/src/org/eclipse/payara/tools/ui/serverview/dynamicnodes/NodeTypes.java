@@ -56,7 +56,7 @@ public class NodeTypes {
         JAVAMAIL_RESOURCE };
     
     static {
-        nodeTree = new HashMap<String, String[]>();
+        nodeTree = new HashMap<>();
         nodeTree.put(APPLICATIONS, APPLICATIONS_TREE);
         nodeTree.put(RESOURCES, RESOURCES_TREE);
         nodeTree.put(JDBC, JDBC_TREE);

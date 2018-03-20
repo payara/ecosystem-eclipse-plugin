@@ -18,14 +18,14 @@ import static org.eclipse.ui.browser.IWorkbenchBrowserSupport.NAVIGATION_BAR;
 
 import java.net.URI;
 
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.payara.tools.GlassfishToolsPlugin;
 import org.eclipse.payara.tools.server.GlassFishServer;
 import org.eclipse.payara.tools.server.deploying.GlassFishServerBehaviour;
 import org.eclipse.payara.tools.ui.serverview.dynamicnodes.DeployedApplicationsNode;
 import org.eclipse.payara.tools.ui.serverview.dynamicnodes.TreeNode;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
@@ -47,7 +47,8 @@ public class OpenInBrowserAction extends Action {
 		this.selection = selection;
 	}
 
-	public void runWithEvent(Event event) {
+	@Override
+    public void runWithEvent(Event event) {
 		if (selection instanceof TreeSelection) {
 			TreeSelection ts = (TreeSelection) selection;
 			Object obj = ts.getFirstElement();

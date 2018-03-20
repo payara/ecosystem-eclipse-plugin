@@ -23,6 +23,12 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeoutException;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.StructuredViewer;
+import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.payara.tools.GlassfishToolsPlugin;
 import org.eclipse.payara.tools.sdk.TaskState;
 import org.eclipse.payara.tools.sdk.admin.CommandDeleteResource;
@@ -31,12 +37,6 @@ import org.eclipse.payara.tools.sdk.admin.ServerAdmin;
 import org.eclipse.payara.tools.server.GlassFishServer;
 import org.eclipse.payara.tools.server.deploying.GlassFishServerBehaviour;
 import org.eclipse.payara.tools.ui.serverview.dynamicnodes.ResourcesNode;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.dialogs.ProgressMonitorDialog;
-import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.StructuredViewer;
-import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
@@ -60,7 +60,8 @@ public class UnregisterResourceAction extends Action {
 		this.actionSite = actionSite;
 	}
 
-	public void runWithEvent(Event event) {
+	@Override
+    public void runWithEvent(Event event) {
 		if (selection instanceof TreeSelection) {
 			TreeSelection ts = (TreeSelection) selection;
 			Object obj = ts.getFirstElement();
@@ -73,7 +74,8 @@ public class UnregisterResourceAction extends Action {
 				try {
 					final GlassFishServerBehaviour be = currentResource.getServer().getServerBehaviourAdapter();
 					IRunnableWithProgress op = new IRunnableWithProgress() {
-						public void run(IProgressMonitor monitor) {
+						@Override
+                        public void run(IProgressMonitor monitor) {
 							GlassFishServer server = be.getGlassfishServerDelegate();
 
 							String propName = "";

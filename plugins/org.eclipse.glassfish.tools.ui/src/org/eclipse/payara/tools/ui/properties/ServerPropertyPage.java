@@ -60,10 +60,11 @@ public class ServerPropertyPage extends PropertyPage {
 	protected Control createContents(Composite parent) {
 
 		IServer server = (IServer) getElement();
-		if (server instanceof IServerWorkingCopy)
-			serverWC = (IServerWorkingCopy) server;
-		else
-			serverWC = server.createWorkingCopy();
+		if (server instanceof IServerWorkingCopy) {
+            serverWC = (IServerWorkingCopy) server;
+        } else {
+            serverWC = server.createWorkingCopy();
+        }
 
 		sunserver = (GlassFishServer) serverWC.loadAdapter(GlassFishServer.class, new NullProgressMonitor());
 		model = sunserver.getModel();

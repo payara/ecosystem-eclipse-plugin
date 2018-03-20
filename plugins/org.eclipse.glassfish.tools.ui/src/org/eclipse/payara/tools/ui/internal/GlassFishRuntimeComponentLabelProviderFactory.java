@@ -21,11 +21,13 @@ import org.eclipse.wst.common.project.facet.ui.IRuntimeComponentLabelProvider;
 public final class GlassFishRuntimeComponentLabelProviderFactory implements IAdapterFactory {
 	private static final Class<?>[] ADAPTER_TYPES = { IRuntimeComponentLabelProvider.class };
 
-	public <T> T getAdapter(Object adaptable, Class<T> adapterType) {
+	@Override
+    public <T> T getAdapter(Object adaptable, Class<T> adapterType) {
 		return adapterType.cast(new GlassFishRuntimeComponentLabelProvider((IRuntimeComponent) adaptable));
 	}
 
-	public Class<?>[] getAdapterList() {
+	@Override
+    public Class<?>[] getAdapterList() {
 		return ADAPTER_TYPES;
 	}
 

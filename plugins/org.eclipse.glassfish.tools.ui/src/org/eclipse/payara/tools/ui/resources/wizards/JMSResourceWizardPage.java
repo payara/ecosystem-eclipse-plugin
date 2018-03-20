@@ -18,6 +18,9 @@ import org.eclipse.jface.dialogs.IDialogPage;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.payara.tools.sdk.server.parser.ResourcesReader.ResourceType;
+import org.eclipse.payara.tools.ui.resources.JMSInfo;
+import org.eclipse.payara.tools.utils.ResourceUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -30,10 +33,6 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.payara.tools.sdk.server.parser.ResourcesReader.ResourceType;
-
-import org.eclipse.payara.tools.ui.resources.JMSInfo;
-import org.eclipse.payara.tools.utils.ResourceUtils;
 
 /**
  * @author Nitya Doraisamy
@@ -54,7 +53,7 @@ public class JMSResourceWizardPage extends WizardPage {
 
 	private Combo projectNameCombo;
 
-	private List<String> resources = new ArrayList<String>();
+	private List<String> resources = new ArrayList<>();
 	private String defaultJndiName = "jms/myQueue"; //$NON-NLS-1$
 	
 	/**
@@ -73,7 +72,8 @@ public class JMSResourceWizardPage extends WizardPage {
 	/**
 	 * @see IDialogPage#createControl(Composite)
 	 */
-	public void createControl(Composite parent) {
+	@Override
+    public void createControl(Composite parent) {
 		Composite container = new Composite(parent, SWT.NULL);
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 3;
@@ -107,6 +107,7 @@ public class JMSResourceWizardPage extends WizardPage {
 		GridDataFactory.defaultsFor(jndiText).span(2, 1).applyTo(jndiText);
 		jndiText.setText(defaultJndiName); 
 		jndiText.addModifyListener(new ModifyListener() {
+            @Override
             public void modifyText(ModifyEvent e) {
                 dialogChanged();
             }

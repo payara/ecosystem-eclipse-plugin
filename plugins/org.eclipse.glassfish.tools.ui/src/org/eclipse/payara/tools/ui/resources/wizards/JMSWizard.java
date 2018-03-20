@@ -26,13 +26,12 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.payara.tools.ui.resources.JMSInfo;
+import org.eclipse.payara.tools.utils.ResourceUtils;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
-
-import org.eclipse.payara.tools.ui.resources.JMSInfo;
-import org.eclipse.payara.tools.utils.ResourceUtils;
 
 /**
  * @author Nitya Doraisamy
@@ -75,7 +74,8 @@ public class JMSWizard extends ResourceWizard {
 		final IProject selectedProject = page.getSelectedProject();
 		
 		IRunnableWithProgress op = new IRunnableWithProgress() {
-			public void run(IProgressMonitor monitor) throws InvocationTargetException {
+			@Override
+            public void run(IProgressMonitor monitor) throws InvocationTargetException {
 				try {
 					doFinish(jndiName, jmsInfo, selectedProject, monitor);
 				} catch (CoreException e) {
@@ -131,7 +131,8 @@ public class JMSWizard extends ResourceWizard {
 		monitor.worked(1);
 		monitor.setTaskName("Opening file for editing...");
 		getShell().getDisplay().asyncExec(new Runnable() {
-			public void run() {
+			@Override
+            public void run() {
 				IWorkbenchPage page =
 					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 				try {

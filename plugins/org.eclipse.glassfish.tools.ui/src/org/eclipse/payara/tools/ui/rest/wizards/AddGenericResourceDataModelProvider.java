@@ -24,12 +24,11 @@ import org.eclipse.jst.j2ee.internal.common.operations.NewJavaClassDataModelProv
 import org.eclipse.jst.j2ee.internal.common.operations.NewJavaEEArtifactClassOperation;
 import org.eclipse.jst.j2ee.internal.web.operations.AddWebClassOperation;
 import org.eclipse.jst.j2ee.internal.web.operations.NewWebClassDataModelProvider;
+import org.eclipse.payara.tools.GlassfishToolsPlugin;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelProvider;
 import org.eclipse.wst.common.frameworks.internal.plugin.WTPCommonPlugin;
-
-import org.eclipse.payara.tools.GlassfishToolsPlugin;
 
 @SuppressWarnings("restriction")
 public class AddGenericResourceDataModelProvider extends
@@ -44,14 +43,16 @@ public class AddGenericResourceDataModelProvider extends
 	public static final String IN_CONTAINER_CLASS = "AddGenericResource.IN_CONTAINER_CLASS"; //$NON-NLS-1$
 	public static final String ORIGINAL_CLASS_NAME = "AddGenericResource.ORIGINAL_CLASS_NAME"; //$NON-NLS-1$
 	
-	public IDataModelOperation getDefaultOperation() {
+	@Override
+    public IDataModelOperation getDefaultOperation() {
 		return new AddWebClassOperation(getDataModel()) {
 
 			@Override
 			protected NewJavaEEArtifactClassOperation getNewClassOperation() {
 				return new AddGenericResourceClassOperation(getDataModel());
 			}
-			protected void generateMetaData(IDataModel aModel, String qualifiedClassName) {
+			@Override
+            protected void generateMetaData(IDataModel aModel, String qualifiedClassName) {
 				// for now, do nothing here - data model should be ok as is
 			}
 		};
@@ -132,7 +133,8 @@ public class AddGenericResourceDataModelProvider extends
 		return super.isPropertyEnabled(propertyName);
 	}
 
-	public IStatus validate(String propertyName) {
+	@Override
+    public IStatus validate(String propertyName) {
 		if (MIME_TYPE.equals(propertyName)) {
 			String value = (String) getProperty(MIME_TYPE);
 			if (value == null || value.trim().length() == 0) {
@@ -211,7 +213,7 @@ public class AddGenericResourceDataModelProvider extends
 		}
 		if (!isSimplePattern()) {
 			StringTokenizer segments = new StringTokenizer(path, "/ "); //$NON-NLS-1$
-			Set<String> pathParts = new HashSet<String>();
+			Set<String> pathParts = new HashSet<>();
 			while (segments.hasMoreTokens()) {
 				String segment = segments.nextToken();
 				if (segment.startsWith("{")) { //$NON-NLS-1$

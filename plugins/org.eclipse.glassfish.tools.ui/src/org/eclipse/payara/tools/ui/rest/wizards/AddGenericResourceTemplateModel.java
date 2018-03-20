@@ -53,7 +53,7 @@ public class AddGenericResourceTemplateModel extends CreateWebClassTemplateModel
 	private static final Map<String, String> typeToSuffix;
 	
 	static {
-		typeToSuffix= new HashMap<String, String>();
+		typeToSuffix= new HashMap<>();
 		typeToSuffix.put(TYPE_APP_JSON, SUFFIX_JSON);
 		typeToSuffix.put(TYPE_APP_XML, SUFFIX_XML);
 		typeToSuffix.put(TYPE_TEXT_HTML, SUFFIX_HTML);
@@ -114,7 +114,7 @@ public class AddGenericResourceTemplateModel extends CreateWebClassTemplateModel
 				String packageName = repClass.substring(0, index);
 				if (repClass.startsWith("java.lang.") && //$NON-NLS-1$
 						!packageName.equals("java.lang")) { //$NON-NLS-1$
-					Collection<String> myCollection = new TreeSet<String>();
+					Collection<String> myCollection = new TreeSet<>();
 					myCollection.addAll(collection);
 					myCollection.add(repClass);
 					return myCollection;
@@ -135,7 +135,8 @@ public class AddGenericResourceTemplateModel extends CreateWebClassTemplateModel
 		return patternProp.equals(CLIENT_CONTAINER_PATTERN);
 	}
 
-	public String getProperty(String propertyName) {
+	@Override
+    public String getProperty(String propertyName) {
 		return dataModel.getStringProperty(propertyName);
 	}
 
@@ -170,7 +171,7 @@ public class AddGenericResourceTemplateModel extends CreateWebClassTemplateModel
 		if (!isSimplePattern()) {
 			String path = getProperty(AddGenericResourceDataModelProvider.PATH);
 			StringTokenizer segments = new StringTokenizer(path, "/ "); //$NON-NLS-1$
-			List<String> pathParts = new ArrayList<String>();
+			List<String> pathParts = new ArrayList<>();
 			while (segments.hasMoreTokens()) {
 				String segment = segments.nextToken();
 				if (segment.startsWith("{")) { //$NON-NLS-1$

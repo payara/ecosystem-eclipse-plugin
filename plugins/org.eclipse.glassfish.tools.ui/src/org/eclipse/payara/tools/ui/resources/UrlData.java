@@ -55,7 +55,7 @@ public class UrlData {
 
     private final String url;
     private final String [] parts = new String[NUM_PARTS];
-    private final Map<String, String> props = new LinkedHashMap<String, String>();
+    private final Map<String, String> props = new LinkedHashMap<>();
 
     public UrlData(String newUrl) {
         url = newUrl;
@@ -103,7 +103,7 @@ public class UrlData {
     }
     
     private static Map<String, String> parseProperties(final String data) {
-        Map<String, String> result = new LinkedHashMap<String, String>();
+        Map<String, String> result = new LinkedHashMap<>();
         if(data != null && data.length() > 0) {
             String [] properties = data.split("[;?&:]");
             for(int i = 0; i < properties.length; i++) {

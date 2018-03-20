@@ -14,6 +14,7 @@ import static org.eclipse.sapphire.ui.forms.swt.GridLayoutUtil.glayout;
 
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.payara.tools.ui.GlassfishToolsUIPlugin;
 import org.eclipse.sapphire.Element;
 import org.eclipse.sapphire.FilteredListener;
 import org.eclipse.sapphire.modeling.Status;
@@ -27,8 +28,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.wst.server.ui.wizard.IWizardHandle;
 import org.eclipse.wst.server.ui.wizard.WizardFragment;
 
-import org.eclipse.payara.tools.ui.GlassfishToolsUIPlugin;
-
 public abstract class BaseWizardFragment extends WizardFragment {
 
 	private IWizardHandle wizard;
@@ -39,7 +38,8 @@ public abstract class BaseWizardFragment extends WizardFragment {
 		setComplete(false);
 	}
 
-	public final boolean hasComposite() {
+	@Override
+    public final boolean hasComposite() {
 		return true;
 	}
 

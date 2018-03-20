@@ -13,8 +13,8 @@ import static org.eclipse.jface.resource.ImageDescriptor.createFromURL;
 import static org.eclipse.wst.server.core.IServer.STATE_UNKNOWN;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.payara.tools.server.GlassFishServer;
 import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.payara.tools.server.GlassFishServer;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.wst.server.core.IServer;
@@ -53,7 +53,8 @@ public class GlassfishToolsUIPlugin extends AbstractUIPlugin {
 	private void addServerLifecycleListener() {
 
 		IServerLifecycleListener serverLifecycleListener = new IServerLifecycleListener() {
-			public void serverAdded(IServer server) {
+			@Override
+            public void serverAdded(IServer server) {
 				if (server.loadAdapter(GlassFishServer.class, new NullProgressMonitor()) != null) {
 					if (server.getServerState() == STATE_UNKNOWN) {
 						UpdateServerJob job = new UpdateServerJob(new IServer[] { server });
@@ -62,10 +63,12 @@ public class GlassfishToolsUIPlugin extends AbstractUIPlugin {
 				}
 			}
 
-			public void serverChanged(IServer server) {
+			@Override
+            public void serverChanged(IServer server) {
 			}
 
-			public void serverRemoved(IServer server) {
+			@Override
+            public void serverRemoved(IServer server) {
 			}
 		};
 

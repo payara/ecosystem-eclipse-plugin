@@ -26,13 +26,13 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.payara.tools.server.GlassFishRuntime;
+import org.eclipse.payara.tools.utils.ResourceUtils;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWizard;
 import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
 import org.eclipse.wst.server.core.IRuntime;
-import org.eclipse.payara.tools.server.GlassFishRuntime;
-import org.eclipse.payara.tools.utils.ResourceUtils;
 
 /**
  * This is a superclass for wizards to create resources
@@ -82,15 +82,17 @@ public abstract class ResourceWizard extends Wizard implements INewWizard {
 	protected IContainer getContainerResource() {
 		if (selection != null && selection.isEmpty() == false) {
 			IStructuredSelection ssel =  selection;
-			if (ssel.size() > 1)
-				return null;
+			if (ssel.size() > 1) {
+                return null;
+            }
 			Object obj = ssel.getFirstElement();
 			if (obj instanceof IResource) {
 				IContainer containerResource;
-				if (obj instanceof IContainer)
-					containerResource = (IContainer) obj;
-				else
-					containerResource = ((IResource) obj).getParent();
+				if (obj instanceof IContainer) {
+                    containerResource = (IContainer) obj;
+                } else {
+                    containerResource = ((IResource) obj).getParent();
+                }
 				
 				return ((containerResource != null) ? containerResource.getProject() : null);
 			}
@@ -100,7 +102,7 @@ public abstract class ResourceWizard extends Wizard implements INewWizard {
 
 	protected List<IProject> getGlassFishAndSailfinProjects() {
 		IProject[] allProjects = ProjectUtilities.getAllProjects();
-		List<IProject> returnProjects = new ArrayList<IProject>();
+		List<IProject> returnProjects = new ArrayList<>();
 
 		for (IProject project2 : allProjects) {
 			try {
@@ -130,7 +132,8 @@ public abstract class ResourceWizard extends Wizard implements INewWizard {
 	 * we can initialize from it.
 	 * @see IWorkbenchWizard#init(IWorkbench, IStructuredSelection)
 	 */
-	public void init(IWorkbench workbench, IStructuredSelection selection) {
+	@Override
+    public void init(IWorkbench workbench, IStructuredSelection selection) {
 		this.selection = selection;
 	}
 }

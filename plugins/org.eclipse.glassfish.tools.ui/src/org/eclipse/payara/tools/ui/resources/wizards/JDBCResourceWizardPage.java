@@ -22,9 +22,6 @@ import org.eclipse.datatools.connectivity.internal.ui.wizards.CPWizardNode;
 import org.eclipse.datatools.connectivity.internal.ui.wizards.NewCPWizard;
 import org.eclipse.datatools.connectivity.internal.ui.wizards.ProfileWizardProvider;
 import org.eclipse.datatools.connectivity.ui.wizards.IWizardCategoryProvider;
-import org.eclipse.payara.tools.sdk.server.parser.ResourcesReader.ResourceType;
-import org.eclipse.payara.tools.ui.resources.JDBCInfo;
-import org.eclipse.payara.tools.utils.ResourceUtils;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.dialogs.IDialogPage;
 import org.eclipse.jface.layout.GridDataFactory;
@@ -34,6 +31,9 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.payara.tools.sdk.server.parser.ResourcesReader.ResourceType;
+import org.eclipse.payara.tools.ui.resources.JDBCInfo;
+import org.eclipse.payara.tools.utils.ResourceUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -68,7 +68,7 @@ public class JDBCResourceWizardPage extends WizardPage {
 
 	private WizardDialog wizardDialog;
 
-	private List<String> resources = new ArrayList<String>();
+	private List<String> resources = new ArrayList<>();
 	private String defaultJndiName = "jdbc/myDatasource"; //$NON-NLS-1$
 	
 	/**
@@ -87,7 +87,8 @@ public class JDBCResourceWizardPage extends WizardPage {
 	/**
 	 * @see IDialogPage#createControl(Composite)
 	 */
-	public void createControl(Composite parent) {
+	@Override
+    public void createControl(Composite parent) {
 		Composite container = new Composite(parent, SWT.NULL);
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 3;
@@ -121,6 +122,7 @@ public class JDBCResourceWizardPage extends WizardPage {
 		GridDataFactory.defaultsFor(jndiText).span(2, 1).applyTo(jndiText);
 		jndiText.setText(defaultJndiName); 
 		jndiText.addModifyListener(new ModifyListener() {
+            @Override
             public void modifyText(ModifyEvent e) {
                 dialogChanged();
             }
@@ -150,11 +152,13 @@ public class JDBCResourceWizardPage extends WizardPage {
 		Button button = new Button(container, SWT.PUSH);
 		button.setText(Messages.Create);
 		button.addSelectionListener(new SelectionListener() {
-			public void widgetDefaultSelected(SelectionEvent e) {
+			@Override
+            public void widgetDefaultSelected(SelectionEvent e) {
 				// do nothing
 			}
 		
-			public void widgetSelected(SelectionEvent e) {
+			@Override
+            public void widgetSelected(SelectionEvent e) {
 				IConnectionProfile newProfile = showCPWizard();
 				if (newProfile != null) {
 					connectionProfile = newProfile;
@@ -237,8 +241,9 @@ public class JDBCResourceWizardPage extends WizardPage {
 					
 					// Only display wizards belong to database category
 					while( cat != null) {
-						if( cat.getId().equals(DATABASE_CATEGORY_ID))
-							return true;
+						if( cat.getId().equals(DATABASE_CATEGORY_ID)) {
+                            return true;
+                        }
 						cat = cat.getParent();
 					}
 				}
@@ -301,15 +306,18 @@ public class JDBCResourceWizardPage extends WizardPage {
 	static class ProfileListener implements IProfileListener {
 		IConnectionProfile newProfile;
 		
-		public void profileAdded( IConnectionProfile profile) {
+		@Override
+        public void profileAdded( IConnectionProfile profile) {
 			newProfile = profile;
 		}
 	
-		public void profileChanged( IConnectionProfile profile) {
+		@Override
+        public void profileChanged( IConnectionProfile profile) {
 			// do nothing
 		}
 	
-		public void profileDeleted( IConnectionProfile profile) {
+		@Override
+        public void profileDeleted( IConnectionProfile profile) {
 			// do nothing
 		}
 	}

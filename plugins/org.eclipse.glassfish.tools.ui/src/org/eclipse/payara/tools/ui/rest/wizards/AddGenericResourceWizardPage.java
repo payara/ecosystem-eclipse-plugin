@@ -25,6 +25,7 @@ import org.eclipse.jst.j2ee.internal.plugin.J2EEUIMessages;
 import org.eclipse.jst.j2ee.internal.web.operations.INewWebClassDataModelProperties;
 import org.eclipse.jst.jee.ui.internal.navigator.web.WebAppProvider;
 import org.eclipse.jst.servlet.ui.internal.wizard.NewWebClassWizardPage;
+import org.eclipse.payara.tools.utils.WizardUtil;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -41,8 +42,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelEvent;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
-import org.eclipse.payara.tools.utils.WizardUtil;
-
 @SuppressWarnings("restriction")
 public class AddGenericResourceWizardPage extends NewWebClassWizardPage {
 
@@ -57,7 +56,7 @@ public class AddGenericResourceWizardPage extends NewWebClassWizardPage {
 	private static final Map<String, String> patternStringToObject;
 	
 	static {
-		patternStringToObject= new HashMap<String, String>();
+		patternStringToObject= new HashMap<>();
 		patternStringToObject.put(Messages.patternTypeSimpleValue, AddGenericResourceTemplateModel.SIMPLE_PATTERN);
 		patternStringToObject.put(Messages.patternTypeContainerValue, AddGenericResourceTemplateModel.CONTAINER_PATTERN);
 		patternStringToObject.put(Messages.patternTypeClientContainerValue, AddGenericResourceTemplateModel.CLIENT_CONTAINER_PATTERN);
@@ -68,7 +67,8 @@ public class AddGenericResourceWizardPage extends NewWebClassWizardPage {
 		super(model, pageName, pageDesc, pageTitle, moduleType);
 	}
 
-	protected Composite createTopLevelComposite(Composite parent) {
+	@Override
+    protected Composite createTopLevelComposite(Composite parent) {
 		Composite composite = super.createTopLevelComposite(parent);
 		Label typeLabel = new Label(composite, SWT.NONE);
 		GridData data = new GridData();
@@ -81,12 +81,14 @@ public class AddGenericResourceWizardPage extends NewWebClassWizardPage {
 		patternTypeCombo.setLayoutData(data);
 		patternTypeCombo.addSelectionListener(new SelectionListener() {
 
-			public void widgetDefaultSelected(SelectionEvent e) {
+			@Override
+            public void widgetDefaultSelected(SelectionEvent e) {
 				// TODO Auto-generated method stub
 				
 			}
 
-			public void widgetSelected(SelectionEvent e) {
+			@Override
+            public void widgetSelected(SelectionEvent e) {
 				Combo combo = (Combo) e.getSource();
 				String patternName = combo.getItem(combo.getSelectionIndex());
 				String patternObject = patternStringToObject.get(patternName);
@@ -137,7 +139,8 @@ public class AddGenericResourceWizardPage extends NewWebClassWizardPage {
 		containerPathText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		synchHelper.synchText(containerPathText, AddGenericResourceDataModelProvider.CONTAINER_PATH, null);
 		classText.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
+			@Override
+            public void modifyText(ModifyEvent e) {
 				model.setProperty(AddGenericResourceDataModelProvider.CONTAINER_PATH, 
 						model.getDefaultProperty(AddGenericResourceDataModelProvider.CONTAINER_PATH));
 			}
@@ -198,11 +201,13 @@ public class AddGenericResourceWizardPage extends NewWebClassWizardPage {
 		repButton.setText(J2EEUIMessages.BROWSE_BUTTON_LABEL);
 		repButton.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
 		repButton.addSelectionListener(new SelectionListener() {
-			public void widgetSelected(SelectionEvent e) {
+			@Override
+            public void widgetSelected(SelectionEvent e) {
 				handleRepButtonPressed(dialogTitle, dialogLabel, repTextField);
 			}
 
-			public void widgetDefaultSelected(SelectionEvent e) {
+			@Override
+            public void widgetDefaultSelected(SelectionEvent e) {
 				// Do nothing
 			}
 		});
@@ -212,8 +217,9 @@ public class AddGenericResourceWizardPage extends NewWebClassWizardPage {
 	protected void handleRepButtonPressed(String dialogTitle, String dialogLabel, Text repTextField) {
 		getControl().setCursor(new Cursor(getShell().getDisplay(), SWT.CURSOR_WAIT));
 		IPackageFragmentRoot packRoot = (IPackageFragmentRoot) model.getProperty(INewJavaClassDataModelProperties.JAVA_PACKAGE_FRAGMENT_ROOT);
-		if (packRoot == null)
-			return;
+		if (packRoot == null) {
+            return;
+        }
 
 		// this eliminates the non-exported classpath entries
 		final IJavaSearchScope scope = TypeSearchEngine.createJavaSearchScopeForAProject(packRoot.getJavaProject(), true, true);

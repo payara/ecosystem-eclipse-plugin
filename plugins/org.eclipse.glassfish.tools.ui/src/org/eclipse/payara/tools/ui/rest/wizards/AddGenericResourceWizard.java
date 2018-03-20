@@ -47,7 +47,7 @@ public class AddGenericResourceWizard extends NewWebArtifactWizard {
 
 	@Override
 	protected IDataModelProvider getDefaultProvider() {
-		return (IDataModelProvider) new AddGenericResourceDataModelProvider();
+		return new AddGenericResourceDataModelProvider();
 	}
 
 	@Override
@@ -82,7 +82,9 @@ public class AddGenericResourceWizard extends NewWebArtifactWizard {
 				String packageName = model.getStringProperty(JAVA_PACKAGE);
 
 				if (packageName != null && packageName.trim().length() > 0)
-					className = packageName + "." + className; //$NON-NLS-1$
+                 {
+                    className = packageName + "." + className; //$NON-NLS-1$
+                }
 
 				IProject p = (IProject) model.getProperty(PROJECT);
 				IJavaProject javaProject = J2EEEditorUtility.getJavaProject(p);

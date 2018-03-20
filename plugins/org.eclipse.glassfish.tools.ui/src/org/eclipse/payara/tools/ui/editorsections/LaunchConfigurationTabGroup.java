@@ -31,7 +31,8 @@ import org.eclipse.wst.server.ui.ServerLaunchConfigurationTab;
  */
 public class LaunchConfigurationTabGroup extends AbstractLaunchConfigurationTabGroup {
 
-	public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
+	@Override
+    public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
 		ILaunchConfigurationTab[] tabs = new ILaunchConfigurationTab[7];
 		tabs[0] = new ComboServerLaunchConfigurationTab(new String[] {"payara.server"});
 		tabs[0].setLaunchConfigurationDialog(dialog);

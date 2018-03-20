@@ -25,7 +25,8 @@ public final class GlassFishRuntimeComponentLabelProvider implements IRuntimeCom
 		this.rc = rc;
 	}
 
-	public String getLabel() {
+	@Override
+    public String getLabel() {
 		return Resources.bind(Resources.label, rc.getRuntimeComponentVersion().getVersionString());
 	}
 

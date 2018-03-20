@@ -23,9 +23,9 @@ import static org.eclipse.ui.internal.dialogs.PropertyDialog.createDialogOn;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.payara.tools.Messages;
 import org.eclipse.payara.tools.ui.properties.ServerPropertyPage;
-import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -58,7 +58,8 @@ public class ServerSection extends ServerEditorSection implements PropertyChange
 		super.dispose();
 	}
 
-	public void createSection(Composite parent) {
+	@Override
+    public void createSection(Composite parent) {
 		super.createSection(parent);
 
 		FormToolkit toolkit = getFormToolkit(parent.getDisplay());
@@ -109,7 +110,8 @@ public class ServerSection extends ServerEditorSection implements PropertyChange
 	}
 
 	// note that this is currently not working due to issue 140
-	public void propertyChange(PropertyChangeEvent evt) {
+	@Override
+    public void propertyChange(PropertyChangeEvent evt) {
 	}
 
 }

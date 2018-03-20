@@ -14,11 +14,11 @@ import static org.eclipse.payara.tools.preferences.PreferenceConstants.ENABLE_CO
 import java.util.Arrays;
 import java.util.logging.Level;
 
-import org.eclipse.payara.tools.GlassfishToolsPlugin;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
+import org.eclipse.payara.tools.GlassfishToolsPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.LineStyleEvent;
 import org.eclipse.swt.custom.LineStyleListener;
@@ -38,7 +38,8 @@ public class LogStyle implements LineStyleListener, IPropertyChangeListener {
 		store.addPropertyChangeListener(this);
 	}
 
-	public void lineGetStyle(LineStyleEvent event) {
+	@Override
+    public void lineGetStyle(LineStyleEvent event) {
 		StyleRange styleRange = null;
 		String buf = event.lineText;
 		int start;
@@ -83,7 +84,8 @@ public class LogStyle implements LineStyleListener, IPropertyChangeListener {
 		}
 	}
 
-	public void propertyChange(PropertyChangeEvent event) {
+	@Override
+    public void propertyChange(PropertyChangeEvent event) {
 		if (event.getProperty().equals(ENABLE_COLORS_CONSOLE)) {
 			colorInConsole = store.getBoolean(ENABLE_COLORS_CONSOLE);
 		}

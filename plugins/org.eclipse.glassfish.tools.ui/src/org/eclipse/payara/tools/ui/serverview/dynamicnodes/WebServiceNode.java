@@ -1,7 +1,7 @@
 /****************************************************************************** * Copyright (c) 2018 Oracle * All rights reserved. This program and the accompanying materials * are made available under the terms of the Eclipse Public License v2.0 * which accompanies this distribution, and is available at * http://www.eclipse.org/legal/epl-v20.html
  * SPDX-License-Identifier: EPL-2.0 ******************************************************************************/package org.eclipse.payara.tools.ui.serverview.dynamicnodes;
 
-import java.util.ArrayList;import org.eclipse.ui.views.properties.IPropertyDescriptor;import org.eclipse.ui.views.properties.PropertyDescriptor;import org.eclipse.ui.views.properties.TextPropertyDescriptor;import org.eclipse.payara.tools.server.GlassFishServer;import org.eclipse.payara.tools.serverview.WSDesc;
+import java.util.ArrayList;import org.eclipse.payara.tools.server.GlassFishServer;import org.eclipse.payara.tools.serverview.WSDesc;import org.eclipse.ui.views.properties.IPropertyDescriptor;import org.eclipse.ui.views.properties.PropertyDescriptor;import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
 /**
  * A deployed web service node in the server view
@@ -30,7 +30,7 @@ public class WebServiceNode extends TreeNode{
 	}
 	@Override
 	public IPropertyDescriptor[] getPropertyDescriptors() {
-        ArrayList< IPropertyDescriptor > properties = new ArrayList< IPropertyDescriptor >();
+        ArrayList< IPropertyDescriptor > properties = new ArrayList< >();
         PropertyDescriptor pd;
 
 
@@ -46,12 +46,9 @@ public class WebServiceNode extends TreeNode{
 	}
 	@Override
 	public Object getPropertyValue(Object id) {
-	       if ( id.equals( "testurl" ))
-               return app.getTestURL();
-	       if ( id.equals( "name" ))
-                   return app.getName();
-	       if ( id.equals( "wsdlurl" ))
-               return app.getWsdlUrl();
+	       if ( id.equals( "testurl" )) {            return app.getTestURL();        }
+	       if ( id.equals( "name" )) {            return app.getName();        }
+	       if ( id.equals( "wsdlurl" )) {            return app.getWsdlUrl();        }
 
      
 

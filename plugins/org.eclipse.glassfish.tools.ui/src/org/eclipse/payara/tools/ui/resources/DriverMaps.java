@@ -87,7 +87,7 @@ public class DriverMaps {
     }
     
     static {
-        driverMap = new HashMap<String, String>(INITIAL_MAP_SIZE);
+        driverMap = new HashMap<>(INITIAL_MAP_SIZE);
         
         //IBM DB2 
         driverMap.put("jdbc:db2:", "COM.ibm.db2.jdbc.net.DB2Driver");
@@ -193,7 +193,7 @@ public class DriverMaps {
     }
 
     static {
-        dsClassMap = new HashMap<String, String>(INITIAL_MAP_SIZE);
+        dsClassMap = new HashMap<>(INITIAL_MAP_SIZE);
         
         //IBM DB2 
         dsClassMap.put("jdbc:db2:", "com.ibm.db2.jcc.DB2DataSource");
@@ -299,7 +299,7 @@ public class DriverMaps {
     }
     
     static {
-        cpClassMap = new HashMap<String, String>(INITIAL_MAP_SIZE);
+        cpClassMap = new HashMap<>(INITIAL_MAP_SIZE);
         //Java DB (Net)
         cpClassMap.put("jdbc:derby:", "org.apache.derby.jdbc.ClientConnectionPoolDataSource");
         //DB2 Driver
