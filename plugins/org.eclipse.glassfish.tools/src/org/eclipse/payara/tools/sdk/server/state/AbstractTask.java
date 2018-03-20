@@ -97,9 +97,9 @@ public abstract class AbstractTask implements Runnable {
     void handleStateChange(final TaskState taskState,
             final TaskEvent taskEvent, final String... args) {
         if (stateListeners != null && !cancelled) {
-            for (int i = 0; i < stateListeners.length; i++) {
-                if (stateListeners[i] != null) {
-                    stateListeners[i].operationStateChanged(taskState,
+            for (TaskStateListener stateListener : stateListeners) {
+                if (stateListener != null) {
+                    stateListener.operationStateChanged(taskState,
                             taskEvent, args);
                 }
             }

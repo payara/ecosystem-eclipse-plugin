@@ -242,8 +242,8 @@ public class OsUtils {
     public static String escapeParameters(String[] params) {
         StringBuffer sb = new StringBuffer();
 
-        for (int i = 0; i < params.length; i++) {
-            escapeString(params[i], sb);
+        for (String param : params) {
+            escapeString(param, sb);
             sb.append(' ');
         }
 

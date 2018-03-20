@@ -386,9 +386,9 @@ public final class JdtUtil {
     private static File findJavaExecutable(File vmInstallLocation) {
         // Try each candidate in order. The first one found wins. Thus, the order
         // of fgCandidateJavaLocations and fgCandidateJavaFiles is significant.
-        for (int i = 0; i < fgCandidateJavaFiles.length; i++) {
-            for (int j = 0; j < fgCandidateJavaLocations.length; j++) {
-                File javaFile = new File(vmInstallLocation, fgCandidateJavaLocations[j] + fgCandidateJavaFiles[i]);
+        for (String fgCandidateJavaFile : fgCandidateJavaFiles) {
+            for (String fgCandidateJavaLocation : fgCandidateJavaLocations) {
+                File javaFile = new File(vmInstallLocation, fgCandidateJavaLocation + fgCandidateJavaFile);
                 if (javaFile.isFile()) {
                     return javaFile;
                 }

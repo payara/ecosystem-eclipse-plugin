@@ -575,9 +575,9 @@ public abstract class Runner implements Callable<Result> {
     Result<ValueProcess> handleStateChange(TaskState newTaskState, final TaskEvent taskEvent, final String... args) {
         result.state = newTaskState;
         if (stateListeners != null) {
-            for (int i = 0; i < stateListeners.length; i++) {
-                if (stateListeners[i] != null) {
-                    stateListeners[i].operationStateChanged(newTaskState, taskEvent, args);
+            for (TaskStateListener stateListener : stateListeners) {
+                if (stateListener != null) {
+                    stateListener.operationStateChanged(newTaskState, taskEvent, args);
                 }
             }
         }

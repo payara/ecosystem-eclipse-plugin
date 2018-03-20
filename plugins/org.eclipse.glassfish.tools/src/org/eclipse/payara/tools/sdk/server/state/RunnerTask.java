@@ -127,9 +127,9 @@ class RunnerTask extends AbstractTask {
                 job.getStatus().getServer().getAdminInterface());
         Runner runner = af.getRunner(job.getStatus().getServer(), cmd);
         if (listeners != null) {
-            for (int i = 0; i < listeners.length; i++) {
-                if (listeners[i] instanceof StatusJob.Listener) {
-                    ((StatusJob.Listener) listeners[i]).setRunner(runner);
+            for (TaskStateListener listener : listeners) {
+                if (listener instanceof StatusJob.Listener) {
+                    ((StatusJob.Listener) listener).setRunner(runner);
                 }
             }
         }
@@ -138,9 +138,9 @@ class RunnerTask extends AbstractTask {
         runner.setReadyState();
         result = runner.call();
         if (listeners != null) {
-            for (int i = 0; i < listeners.length; i++) {
-                if (listeners[i] instanceof StatusJob.Listener) {
-                    ((StatusJob.Listener) listeners[i]).clearRunner();
+            for (TaskStateListener listener : listeners) {
+                if (listener instanceof StatusJob.Listener) {
+                    ((StatusJob.Listener) listener).clearRunner();
                 }
             }
         }

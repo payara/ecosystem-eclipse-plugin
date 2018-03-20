@@ -244,8 +244,8 @@ public final class GlassFishServerBehaviour extends ServerBehaviourDelegate impl
     protected void publishFinish(IProgressMonitor monitor) throws CoreException {
         IModule[] modules = getServer().getModules();
         boolean allpublished = true;
-        for (int i = 0; i < modules.length; i++) {
-            if (getServer().getModulePublishState(new IModule[] { modules[i] }) != PUBLISH_STATE_NONE) {
+        for (IModule module : modules) {
+            if (getServer().getModulePublishState(new IModule[] { module }) != PUBLISH_STATE_NONE) {
                 allpublished = false;
             }
         }
@@ -501,8 +501,7 @@ public final class GlassFishServerBehaviour extends ServerBehaviourDelegate impl
             IEnterpriseApplication earModule = (IEnterpriseApplication) module[0]
                     .loadAdapter(IEnterpriseApplication.class, new NullProgressMonitor());
             IModule[] childModules = earModule.getModules();
-            for (int i = 0; i < childModules.length; i++) {
-                IModule m = childModules[i];
+            for (IModule m : childModules) {
                 IModule[] modules = { module[0], m };
                 if (PUBLISH_STATE_NONE != getGlassfishServerDelegate().getServer()
                         .getModulePublishState(modules)) {

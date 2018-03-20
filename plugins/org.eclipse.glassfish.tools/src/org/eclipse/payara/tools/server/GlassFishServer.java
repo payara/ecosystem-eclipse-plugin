@@ -839,13 +839,13 @@ public final class GlassFishServer extends ServerDelegate implements IURLProvide
     private IModule[] doGetParentModules(IModule module) {
         IModule[] ears = ServerUtil.getModules("jst.ear"); //$NON-NLS-1$
         ArrayList<IModule> list = new ArrayList<>();
-        for (int i = 0; i < ears.length; i++) {
-            IEnterpriseApplication ear = (IEnterpriseApplication) ears[i].loadAdapter(IEnterpriseApplication.class,
+        for (IModule ear2 : ears) {
+            IEnterpriseApplication ear = (IEnterpriseApplication) ear2.loadAdapter(IEnterpriseApplication.class,
                     null);
             IModule[] childs = ear.getModules();
-            for (int j = 0; j < childs.length; j++) {
-                if (childs[j].equals(module)) {
-                    list.add(ears[i]);
+            for (IModule child : childs) {
+                if (child.equals(module)) {
+                    list.add(ear2);
                 }
             }
         }
@@ -874,8 +874,8 @@ public final class GlassFishServer extends ServerDelegate implements IURLProvide
                     return createErrorStatus("cannot bridge runtimes", null);
                 }
 
-                for (Iterator itr = fproj.getProjectFacets().iterator(); itr.hasNext();) {
-                    IProjectFacetVersion fv = (IProjectFacetVersion) itr.next();
+                for (Object element : fproj.getProjectFacets()) {
+                    IProjectFacetVersion fv = (IProjectFacetVersion) element;
 
                     if (!runtime.supports(fv)) {
                         return createErrorStatus(bind(facetNotSupported, fv.toString()), null);
@@ -956,9 +956,9 @@ public final class GlassFishServer extends ServerDelegate implements IURLProvide
             ArrayList<IModule> ret = new ArrayList<>();
             // Return only the EAR modules on current server.
             HashSet<IModule> allmodules = new HashSet<>(Arrays.asList(getServer().getModules()));
-            for (int i = 0; i < ear.length; i++) {
-                if (allmodules.contains(ear[i])) {
-                    ret.add(ear[i]);
+            for (IModule element : ear) {
+                if (allmodules.contains(element)) {
+                    ret.add(element);
                 }
             }
             return ret.toArray(new IModule[ret.size()]);

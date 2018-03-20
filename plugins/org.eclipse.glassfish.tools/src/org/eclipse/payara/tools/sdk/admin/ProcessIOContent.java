@@ -124,8 +124,8 @@ public class ProcessIOContent {
          */
         protected boolean isSuccess() {
             boolean success = true;
-            for (int i = 0; i < matchSuccess.length; i++) {
-                success = success && matchSuccess[i];
+            for (boolean matchSucces : matchSuccess) {
+                success = success && matchSucces;
             }
             return success;
         }

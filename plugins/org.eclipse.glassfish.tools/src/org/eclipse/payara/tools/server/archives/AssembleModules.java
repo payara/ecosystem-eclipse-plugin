@@ -73,8 +73,7 @@ public class AssembleModules {
 
         IWebModule webModule = (IWebModule) module.loadAdapter(IWebModule.class, monitor);
         IModule[] childModules = webModule.getModules();
-        for (int i = 0; i < childModules.length; i++) {
-            IModule childModule = childModules[i];
+        for (IModule childModule : childModules) {
             // packModule(module, webModule.getURI(module), parent);
             String uri = webModule.getURI(childModule);
             if (uri == null) { // The bad memories of WTP 1.0
@@ -128,10 +127,10 @@ public class AssembleModules {
             packager = new ModulePackager(dest, false);
             ProjectModule pm = (ProjectModule) module.loadAdapter(ProjectModule.class, null);
             IModuleResource[] resources = pm.members();
-            for (int i = 0; i < resources.length; i++) {
-                GlassfishToolsPlugin.logMessage("AssembleModules resources=" + resources[i]);
+            for (IModuleResource resource : resources) {
+                GlassfishToolsPlugin.logMessage("AssembleModules resources=" + resource);
 
-                doPackModule(resources[i], packager);
+                doPackModule(resource, packager);
             }
         } catch (IOException e) {
             IStatus status = new Status(IStatus.ERROR, GlassfishToolsPlugin.SYMBOLIC_NAME, 0,
@@ -198,8 +197,8 @@ public class AssembleModules {
         if (status != null && status.length > 0) {
             // no need to emit an error like CoreException(status[0]); just log in the entry
             // see https://glassfishplugins.dev.java.net/issues/show_bug.cgi?id=268
-            for (int i = 0; i < status.length; i++) {
-                GlassfishToolsPlugin.logMessage("warning copying module: " + status[i].getMessage());
+            for (IStatus statu : status) {
+                GlassfishToolsPlugin.logMessage("warning copying module: " + statu.getMessage());
             }
         }
 
@@ -215,9 +214,9 @@ public class AssembleModules {
         IModule[] childModules = earModule.getModules();
         GlassfishToolsPlugin.logMessage("copyEarModule childModules.length=" + childModules.length);
         ArrayList<IPath> ignorePaths = new ArrayList<>(childModules.length);
-        for (int i = 0; i < childModules.length; i++) {
+        for (IModule childModule2 : childModules) {
 
-            IModule childModule = childModules[i];
+            IModule childModule = childModule2;
             String uri = earModule.getURI(childModule);
             if (uri == null) {
                 IStatus status = new Status(IStatus.ERROR, CorePlugin.PLUGIN_ID, 0,
@@ -242,8 +241,8 @@ public class AssembleModules {
         if (status != null && status.length > 0) {
             // no need to emit an error like CoreException(status[0]); just log in the entry
             // see https://glassfishplugins.dev.java.net/issues/show_bug.cgi?id=268
-            for (int i = 0; i < status.length; i++) {
-                GlassfishToolsPlugin.logMessage("warning copying module: " + status[i].getMessage());
+            for (IStatus statu : status) {
+                GlassfishToolsPlugin.logMessage("warning copying module: " + statu.getMessage());
             }
         }
 
@@ -269,8 +268,7 @@ public class AssembleModules {
         IEnterpriseApplication earModule = (IEnterpriseApplication) module.loadAdapter(IEnterpriseApplication.class,
                 monitor);
         IModule[] childModules = earModule.getModules();
-        for (int i = 0; i < childModules.length; i++) {
-            IModule module = childModules[i];
+        for (IModule module : childModules) {
             String uri = earModule.getURI(module);
             if (uri == null) {
                 IStatus status = new Status(IStatus.ERROR, CorePlugin.PLUGIN_ID, 0,
@@ -344,32 +342,32 @@ public class AssembleModules {
             return false;
         }
 
-        for (int i = 0; i < deltas.length; i++) {
-            if (deltas[i].getModuleResource().getName().endsWith(".class")) {// class file
+        for (IModuleResourceDelta delta : deltas) {
+            if (delta.getModuleResource().getName().endsWith(".class")) {// class file
                 GlassfishToolsPlugin.logMessage(
                         "Class Changed in AssembleModules criticalResourceChangeThatNeedsARedeploy DELTA IS="
-                                + deltas[i].getKind() + deltas[i].getModuleResource().getName());
+                                + delta.getKind() + delta.getModuleResource().getName());
                 return true;
             }
-            if (deltas[i].getModuleResource().getName().endsWith(".properties")) {// properties file
+            if (delta.getModuleResource().getName().endsWith(".properties")) {// properties file
                 return true;
             }
-            if (deltas[i].getModuleResource().getName().endsWith(".xml")) {// all XML files, including DD files or
-                                                                           // config files
+            if (delta.getModuleResource().getName().endsWith(".xml")) {// all XML files, including DD files or
+                                                                       // config files
                 GlassfishToolsPlugin
                         .logMessage("XML Changed in AssembleModules criticalResourceChangeThatNeedsARedeploy DELTA IS="
-                                + deltas[i].getKind() + deltas[i].getModuleResource().getName());
+                                + delta.getKind() + delta.getModuleResource().getName());
                 return true;
             }
-            if (deltas[i].getModuleResource().getName().equalsIgnoreCase("manifest.mf")) {
+            if (delta.getModuleResource().getName().equalsIgnoreCase("manifest.mf")) {
                 GlassfishToolsPlugin.logMessage(
                         "MANIFEST FIle  Changed in AssembleModules criticalResourceChangeThatNeedsARedeploy DELTA IS="
-                                + deltas[i].getKind() + deltas[i].getModuleResource().getName());
+                                + delta.getKind() + delta.getModuleResource().getName());
                 return true;
             }
             GlassfishToolsPlugin.logMessage("AssembleModules neither class manifest or xml file");
 
-            IModuleResourceDelta[] childrenDeltas = deltas[i].getAffectedChildren();
+            IModuleResourceDelta[] childrenDeltas = delta.getAffectedChildren();
             if (criticalResourceChangeThatNeedsARedeploy(childrenDeltas)) {
                 return true;
             }
@@ -428,9 +426,9 @@ public class AssembleModules {
                 monitor);
         IModule[] childModules = earModule.getModules();
         GlassfishToolsPlugin.logMessage("assembleDirDeployedEARModule childModules.length=" + childModules.length);
-        for (int i = 0; i < childModules.length; i++) {
+        for (IModule childModule2 : childModules) {
 
-            IModule childModule = childModules[i];
+            IModule childModule = childModule2;
             String uri = earModule.getURI(childModule);
             if (uri == null) {
                 IStatus status = new Status(IStatus.ERROR, CorePlugin.PLUGIN_ID, 0,

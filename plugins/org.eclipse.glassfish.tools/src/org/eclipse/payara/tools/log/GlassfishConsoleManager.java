@@ -111,9 +111,9 @@ public class GlassfishConsoleManager {
     private static IGlassFishConsole findConsole(String name) {
         IConsole[] existing = manager.getConsoles();
 
-        for (int i = 0; i < existing.length; i++) {
-            if (name.equals(existing[i].getName())) {
-                return (IGlassFishConsole) existing[i];
+        for (IConsole element : existing) {
+            if (name.equals(element.getName())) {
+                return (IGlassFishConsole) element;
             }
         }
 
