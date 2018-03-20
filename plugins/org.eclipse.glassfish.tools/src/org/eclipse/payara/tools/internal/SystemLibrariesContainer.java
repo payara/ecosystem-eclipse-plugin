@@ -26,7 +26,6 @@ import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.ClasspathContainerInitializer;
 import org.eclipse.jdt.core.IClasspathContainer;
@@ -352,12 +351,7 @@ public final class SystemLibrariesContainer implements IClasspathContainer {
                 }
 
                 try {
-                    final IWorkspaceRunnable wsr = new IWorkspaceRunnable() {
-                        @Override
-                        public void run(final IProgressMonitor monitor) throws CoreException {
-                            refresh(project);
-                        }
-                    };
+                    final IWorkspaceRunnable wsr = monitor -> refresh(project);
 
                     final IWorkspace ws = ResourcesPlugin.getWorkspace();
                     ws.run(wsr, ws.getRoot(), 0, null);

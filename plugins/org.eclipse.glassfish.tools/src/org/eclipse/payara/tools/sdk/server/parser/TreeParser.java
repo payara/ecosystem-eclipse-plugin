@@ -58,13 +58,7 @@ public final class TreeParser extends DefaultHandler {
     /**
      * Stops SAX parser from accessing remote DTDs or schemas.
      */
-    private static final EntityResolver DUMMY_RESOLVER = new EntityResolver() {
-        @Override
-        public InputSource resolveEntity(String string, String string1) throws SAXException,
-                IOException {
-            return new InputSource(new StringReader(""));
-        }
-    };
+    private static final EntityResolver DUMMY_RESOLVER = (string, string1) -> new InputSource(new StringReader(""));
 
     public static boolean readXml(File xmlFile, XMLReader... pathList)
             throws IllegalStateException {

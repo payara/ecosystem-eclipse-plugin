@@ -186,14 +186,11 @@ public abstract class FetchLogPiped
         taksExecute = true;
         // Create internal executor to run log reader task.
         executor = new ThreadPoolExecutor(0, 1, 0L, TimeUnit.MILLISECONDS,
-                new LinkedBlockingQueue<Runnable>(), new ThreadFactory() {
-                    @Override
-                    public Thread newThread(Runnable r) {
-                        Thread t = new Thread(r, FetchLogPiped.class.getName()
-                                + server.getUrl() != null ? " (Localhost)" : server.getUrl());
-                        t.setDaemon(true);
-                        return t;
-                    }
+                new LinkedBlockingQueue<Runnable>(), (ThreadFactory) r -> {
+                    Thread t = new Thread(r, FetchLogPiped.class.getName()
+                            + server.getUrl() != null ? " (Localhost)" : server.getUrl());
+                    t.setDaemon(true);
+                    return t;
                 });
         internalExecutor = true;
     }

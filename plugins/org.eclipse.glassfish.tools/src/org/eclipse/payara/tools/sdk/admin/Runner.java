@@ -33,10 +33,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 
-import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
@@ -682,13 +680,7 @@ public abstract class Runner implements Callable<Result> {
             context = SSLContext.getInstance("SSL");
             context.init(null, tm, null);
             conn.setSSLSocketFactory(context.getSocketFactory());
-            conn.setHostnameVerifier(new HostnameVerifier() {
-
-                @Override
-                public boolean verify(String string, SSLSession ssls) {
-                    return true;
-                }
-            });
+            conn.setHostnameVerifier((string, ssls) -> true);
         } catch (NoSuchAlgorithmException | KeyManagementException ex) {
             // if there is an issue here... there will be another exception
             // later which will take care of the user interaction...

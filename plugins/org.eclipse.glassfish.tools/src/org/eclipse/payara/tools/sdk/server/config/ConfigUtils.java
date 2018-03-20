@@ -215,17 +215,13 @@ public class ConfigUtils {
      * @return File name filter.
      */
     private static FilenameFilter createFilter(final List<Pattern> patterns) {
-        return new FilenameFilter() {
-
-            @Override
-            public boolean accept(File dir, String name) {
-                for (Pattern p : patterns) {
-                    if (p.matcher(name).matches()) {
-                        return true;
-                    }
+        return (dir, name) -> {
+            for (Pattern p : patterns) {
+                if (p.matcher(name).matches()) {
+                    return true;
                 }
-                return false;
             }
+            return false;
         };
     }
 

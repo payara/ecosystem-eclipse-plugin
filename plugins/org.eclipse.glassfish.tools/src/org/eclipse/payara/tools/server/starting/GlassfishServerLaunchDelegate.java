@@ -349,22 +349,19 @@ public class GlassfishServerLaunchDelegate extends AbstractJavaLaunchConfigurati
 
     private void startLogging(final GlassFishServer serverAdapter, final GlassFishServerBehaviour serverBehavior) {
         try {
-            PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
-                @Override
-                public void run() {
-                    File logFile = new File(serverAdapter.getDomainPath() + "/logs/server.log"); //$NON-NLS-1$
-                    try {
-                        logFile.createNewFile();
-                    } catch (Exception e) {
-                        // file probably exists
-                        e.printStackTrace();
-                    }
+            PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
+                File logFile = new File(serverAdapter.getDomainPath() + "/logs/server.log"); //$NON-NLS-1$
+                try {
+                    logFile.createNewFile();
+                } catch (Exception e) {
+                    // file probably exists
+                    e.printStackTrace();
+                }
 
-                    IGlassFishConsole console = getStandardConsole(serverAdapter);
-                    showConsole(console);
-                    if (!console.isLogging()) {
-                        console.startLogging(FetchLogPiped.create(serverAdapter, true));
-                    }
+                IGlassFishConsole console = getStandardConsole(serverAdapter);
+                showConsole(console);
+                if (!console.isLogging()) {
+                    console.startLogging(FetchLogPiped.create(serverAdapter, true));
                 }
             });
         } catch (Exception e) {

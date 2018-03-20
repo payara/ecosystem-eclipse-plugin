@@ -17,10 +17,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchManager;
-import org.eclipse.debug.core.IStreamListener;
 import org.eclipse.debug.core.Launch;
 import org.eclipse.debug.core.model.IProcess;
-import org.eclipse.debug.core.model.IStreamMonitor;
 import org.eclipse.jdt.internal.launching.LaunchingPlugin;
 import org.eclipse.payara.tools.GlassfishToolsPlugin;
 import org.eclipse.payara.tools.sapphire.ICreateGlassfishDomainOp;
@@ -57,19 +55,9 @@ public class CreateGlassfishDomainOpMethods {
                 IProcess process = DebugPlugin.newProcess(new Launch(null, ILaunchManager.RUN_MODE, null), p, "GlassFish asadmin"); //$NON-NLS-1$
 
                 // Log output
-                process.getStreamsProxy().getOutputStreamMonitor().addListener(new IStreamListener() {
-                    @Override
-                    public void streamAppended(String text, IStreamMonitor monitor) {
-                        output.append(text);
-                    }
-                });
+                process.getStreamsProxy().getOutputStreamMonitor().addListener((text, monitor) -> output.append(text));
 
-                process.getStreamsProxy().getErrorStreamMonitor().addListener(new IStreamListener() {
-                    @Override
-                    public void streamAppended(String text, IStreamMonitor monitor) {
-                        errOutput.append(text);
-                    }
-                });
+                process.getStreamsProxy().getErrorStreamMonitor().addListener((text, monitor) -> errOutput.append(text));
 
                 for (int i = 0; i < 600; i++) {
                     // Wait no more than 30 seconds (600 * 50 milliseconds)
