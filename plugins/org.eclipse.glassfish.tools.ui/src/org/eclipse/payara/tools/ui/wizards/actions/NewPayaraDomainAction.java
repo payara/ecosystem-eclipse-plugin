@@ -56,7 +56,7 @@ public class NewPayaraDomainAction extends SapphireActionHandler {
                 new SapphireWizard<>(
                         createDomainOperation,
                         context(BaseWizardFragment.class)
-                                .sdef("org.eclipse.payara.tools.ui.GlassfishUI")
+                                .sdef("org.eclipse.payara.tools.ui.PayaraUI")
                                 .wizard("new-domain-wizard")));
 
         // If user okay'ed dialog, copy the provided values to our model

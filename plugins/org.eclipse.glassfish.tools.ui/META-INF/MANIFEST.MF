@@ -37,4 +37,4 @@ Require-Bundle: org.eclipse.debug.ui,
  org.eclipse.sapphire.modeling,
  org.eclipse.sapphire.ui,
  org.eclipse.payara.tools
-Bundle-Activator: org.eclipse.payara.tools.ui.GlassfishToolsUIPlugin
+Bundle-Activator: org.eclipse.payara.tools.ui.PayaraToolsUIPlugin

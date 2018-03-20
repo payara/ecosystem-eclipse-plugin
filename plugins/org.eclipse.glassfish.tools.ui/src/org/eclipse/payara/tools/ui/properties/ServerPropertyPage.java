@@ -73,7 +73,7 @@ public class ServerPropertyPage extends PropertyPage {
 
         final SapphireForm control = new SapphireForm(parent, model,
                 DefinitionLoader.context(BaseWizardFragment.class)
-                        .sdef("org.eclipse.payara.tools.ui.GlassfishUI")
+                        .sdef("org.eclipse.payara.tools.ui.PayaraUI")
                         .form("payara.server"));
 
         control.setLayoutData(new GridData(FILL, FILL, true, true));

@@ -32,7 +32,7 @@ import org.eclipse.wst.server.core.IServerWorkingCopy;
  * This fragment essentially causes the screen with <code>Name</code>, <code>Host name</code>,
  * <code>Domain path</code> etc to be rendered, although a lot of the actual work is delegated by
  * the {@link BaseWizardFragment} to Sapphire. The UI layout for this wizard fragment is specified
- * in the file <code>GlassfishUI.sdef</code> in the "payara.server" section.
+ * in the file <code>PayaraUI.sdef</code> in the "payara.server" section.
  *
  */
 @SuppressWarnings("restriction")
@@ -49,7 +49,7 @@ public final class NewPayaraServerWizardFragment extends BaseWizardFragment {
     }
 
     /**
-     * The section in <code>GlassfishUI.sdef</code> that contains the UI layout for this wizard
+     * The section in <code>PayaraUI.sdef</code> that contains the UI layout for this wizard
      * fragment.
      */
     @Override

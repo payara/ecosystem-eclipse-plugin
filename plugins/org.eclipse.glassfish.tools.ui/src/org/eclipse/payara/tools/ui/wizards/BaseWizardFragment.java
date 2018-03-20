@@ -14,7 +14,7 @@ import static org.eclipse.sapphire.ui.forms.swt.GridLayoutUtil.glayout;
 
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.payara.tools.ui.GlassfishToolsUIPlugin;
+import org.eclipse.payara.tools.ui.PayaraToolsUIPlugin;
 import org.eclipse.sapphire.Element;
 import org.eclipse.sapphire.FilteredListener;
 import org.eclipse.sapphire.modeling.Status;
@@ -93,7 +93,7 @@ public abstract class BaseWizardFragment extends WizardFragment {
 
         this.form = new SapphireForm(this.composite, getModel(),
                 DefinitionLoader.context(BaseWizardFragment.class)
-                        .sdef("org.eclipse.payara.tools.ui.GlassfishUI").form(getUserInterfaceDef()));
+                        .sdef("org.eclipse.payara.tools.ui.PayaraUI").form(getUserInterfaceDef()));
 
         this.form.part().attach(new FilteredListener<PartValidationEvent>() {
             @Override
@@ -134,7 +134,7 @@ public abstract class BaseWizardFragment extends WizardFragment {
     }
 
     protected ImageDescriptor getImageDescriptor() {
-        return GlassfishToolsUIPlugin.getInstance().getImageRegistry().getDescriptor(GlassfishToolsUIPlugin.GF_WIZARD);
+        return PayaraToolsUIPlugin.getInstance().getImageRegistry().getDescriptor(PayaraToolsUIPlugin.GF_WIZARD);
     }
 
 }

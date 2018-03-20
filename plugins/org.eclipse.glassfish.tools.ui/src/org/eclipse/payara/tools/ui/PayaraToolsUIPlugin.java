@@ -26,7 +26,7 @@ import org.eclipse.wst.server.core.internal.UpdateServerJob;
  * This is used as the OSGi bundle activator, as well as the central place to get images from.
  */
 @SuppressWarnings("restriction")
-public class GlassfishToolsUIPlugin extends AbstractUIPlugin {
+public class PayaraToolsUIPlugin extends AbstractUIPlugin {
 
     public static final String PLUGIN_ID = "org.eclipse.payara.tools.ui";
 
@@ -40,9 +40,9 @@ public class GlassfishToolsUIPlugin extends AbstractUIPlugin {
     public static final String RESOURCES_IMG = "resources.img";
     public static final String GF_WIZARD = "wizard.img";
 
-    private static GlassfishToolsUIPlugin instance;
+    private static PayaraToolsUIPlugin instance;
 
-    public GlassfishToolsUIPlugin() {
+    public PayaraToolsUIPlugin() {
         instance = this;
         addServerLifecycleListener();
     }
@@ -75,7 +75,7 @@ public class GlassfishToolsUIPlugin extends AbstractUIPlugin {
         ResourceManager.getInstance().addServerLifecycleListener(serverLifecycleListener);
     }
 
-    public static final GlassfishToolsUIPlugin getInstance() {
+    public static final PayaraToolsUIPlugin getInstance() {
         return instance;
     }
 
