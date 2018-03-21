@@ -15,7 +15,7 @@ import static org.eclipse.payara.tools.utils.WtpUtil.load;
 import static org.eclipse.ui.browser.IWorkbenchBrowserSupport.LOCATION_BAR;
 import static org.eclipse.ui.browser.IWorkbenchBrowserSupport.NAVIGATION_BAR;
 
-import org.eclipse.payara.tools.server.deploying.GlassFishServerBehaviour;
+import org.eclipse.payara.tools.server.deploying.PayaraServerBehaviour;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.server.core.IServer;
 
@@ -31,7 +31,7 @@ public class ViewAdminConsoleHandler extends AbstractGlassfishSelectionHandler {
                             null, null, null)
                     .openURL(
                             getServerAdminURI(
-                                    load(server, GlassFishServerBehaviour.class).getGlassfishServerDelegate())
+                                    load(server, PayaraServerBehaviour.class).getGlassfishServerDelegate())
                                             .toURL());
 
         } catch (Exception e) {

@@ -9,7 +9,7 @@
 
 package org.eclipse.payara.tools.sdk.admin;
 
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * Command runner for commands that retrieve list of resources of certain kind.
@@ -30,7 +30,7 @@ public class RunnerRestListResources extends RunnerRestList {
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
-    public RunnerRestListResources(final GlassFishServer server,
+    public RunnerRestListResources(final PayaraServer server,
             final Command command) {
         super(server, command);
     }

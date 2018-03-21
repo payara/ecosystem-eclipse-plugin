@@ -13,7 +13,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 import org.eclipse.sapphire.Version;
 
 /**
@@ -37,7 +37,7 @@ public class ConfigBuilderProvider {
     ////////////////////////////////////////////////////////////////////////////
 
     /** Builders array for each server instance. */
-    private static final Map<GlassFishServer, ConfigBuilder> builders = new HashMap<>();
+    private static final Map<PayaraServer, ConfigBuilder> builders = new HashMap<>();
 
     ////////////////////////////////////////////////////////////////////////////
     // Static methods //
@@ -68,7 +68,7 @@ public class ConfigBuilderProvider {
      * @throws ServerConfigException when there is no version ser in GlassFish server entity object or
      * this object is null.
      */
-    public static ConfigBuilder getBuilder(final GlassFishServer server) {
+    public static ConfigBuilder getBuilder(final PayaraServer server) {
         if (server == null) {
             throw new ServerConfigException(
                     "GlassFish server entity shall not be null");
@@ -94,7 +94,7 @@ public class ConfigBuilderProvider {
      *
      * @param server GlassFish server entity for which builder is destroyed.
      */
-    public static void destroyBuilder(final GlassFishServer server) {
+    public static void destroyBuilder(final PayaraServer server) {
         if (server == null) {
             throw new ServerConfigException(
                     "GlassFish server entity shall not be null");

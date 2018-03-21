@@ -23,7 +23,7 @@ import java.util.zip.GZIPInputStream;
 
 import org.eclipse.payara.tools.sdk.admin.response.ResponseContentType;
 import org.eclipse.payara.tools.sdk.logging.Logger;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * GlassFish Server <code>view-log</code> Administration Command Execution using HTTP interface.
@@ -100,7 +100,7 @@ public class RunnerRestFetchLogData extends RunnerRest {
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
-    public RunnerRestFetchLogData(final GlassFishServer server,
+    public RunnerRestFetchLogData(final PayaraServer server,
             final Command command) {
         super(server, command, "/management/domain/", query(command));
     }

@@ -19,7 +19,7 @@ import java.net.HttpURLConnection;
 
 import org.eclipse.payara.tools.sdk.GlassFishIdeException;
 import org.eclipse.payara.tools.sdk.admin.Command;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * GlassFish cloud administration command execution using REST interface.
@@ -47,7 +47,7 @@ public class RunnerRestCloudDeploy extends RunnerRestCloud {
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
-    public RunnerRestCloudDeploy(final GlassFishServer server,
+    public RunnerRestCloudDeploy(final PayaraServer server,
             final Command command) {
         super(server, command);
         this.command = (CommandCloudDeploy) command;

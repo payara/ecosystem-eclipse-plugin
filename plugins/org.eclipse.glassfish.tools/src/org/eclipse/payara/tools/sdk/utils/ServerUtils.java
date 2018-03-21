@@ -31,7 +31,7 @@ import javax.xml.bind.DatatypeConverter;
 import org.eclipse.payara.tools.sdk.admin.CommandException;
 import org.eclipse.payara.tools.sdk.data.GlassFishContainer;
 import org.eclipse.payara.tools.sdk.logging.Logger;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 import org.eclipse.sapphire.Version;
 
 /**
@@ -616,7 +616,7 @@ public class ServerUtils {
      * @return Value of <code>true</code> when server listener port is occupied or <code>false</code>
      * otherwise.
      */
-    public static boolean isHttpPortListening(final GlassFishServer server) {
+    public static boolean isHttpPortListening(final PayaraServer server) {
         return server.isRemote() ? NetUtils.isPortListeningRemote(server.getHost(), server.getPort())
                 : NetUtils.isHttpPortListeningLocal(server.getHost(), server.getPort());
     }
@@ -630,7 +630,7 @@ public class ServerUtils {
      * @return Value of <code>true</code> when server listener port is occupied or <code>false</code>
      * otherwise.
      */
-    public static boolean isHttpPortListening(final GlassFishServer server, final int timeout) {
+    public static boolean isHttpPortListening(final PayaraServer server, final int timeout) {
         return server.isRemote() ? NetUtils.isPortListeningRemote(server.getHost(), server.getPort(), timeout)
                 : NetUtils.isHttpPortListeningLocal(server.getHost(), server.getPort());
     }
@@ -643,7 +643,7 @@ public class ServerUtils {
      * @return Value of <code>true</code> when server administrator port is occupied or
      * <code>false</code> otherwise.
      */
-    public static boolean isAdminPortListening(final GlassFishServer server) {
+    public static boolean isAdminPortListening(final PayaraServer server) {
         return server.isRemote() ? NetUtils.isPortListeningRemote(server.getHost(), server.getAdminPort())
                 : NetUtils.isHttpPortListeningLocal(server.getHost(), server.getAdminPort());
     }
@@ -657,7 +657,7 @@ public class ServerUtils {
      * @return Value of <code>true</code> when server administrator port is occupied or
      * <code>false</code> otherwise.
      */
-    public static boolean isAdminPortListening(final GlassFishServer server, final int timeout) {
+    public static boolean isAdminPortListening(final PayaraServer server, final int timeout) {
         return server.isRemote() ? NetUtils.isPortListeningRemote(server.getHost(), server.getAdminPort(), timeout)
                 : NetUtils.isHttpPortListeningLocal(server.getHost(), server.getAdminPort());
     }
@@ -744,7 +744,7 @@ public class ServerUtils {
      * @return GlassFish server domain root full path or <code>null</code> when server domains root
      * folder or domain name is not set.
      */
-    public static String getDomainPath(final GlassFishServer server) {
+    public static String getDomainPath(final PayaraServer server) {
         String domainName = server.getDomainName();
         String domainsFolder = server.getDomainsFolder();
         boolean appendSeparator = domainsFolder.lastIndexOf(File.separator)
@@ -816,7 +816,7 @@ public class ServerUtils {
      * @param server GlassFish server entity.
      * @return GlassFish server log {@link File} object.
      */
-    public static File getServerLogFile(final GlassFishServer server) {
+    public static File getServerLogFile(final PayaraServer server) {
         return new File(getDomainPath(server), serverLogFileRelativePath());
     }
 
@@ -828,7 +828,7 @@ public class ServerUtils {
      * @return GlassFish server derby root full path or <code>null</code> when server server
      * installation directory is not set.
      */
-    public static String getDerbyRoot(final GlassFishServer server) {
+    public static String getDerbyRoot(final PayaraServer server) {
         String serverRoot = server.getServerRoot();
         if (serverRoot == null) {
             return null;

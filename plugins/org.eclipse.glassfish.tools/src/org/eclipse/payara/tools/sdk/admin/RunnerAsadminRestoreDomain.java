@@ -11,7 +11,7 @@ package org.eclipse.payara.tools.sdk.admin;
 
 import org.eclipse.payara.tools.sdk.logging.Logger;
 import org.eclipse.payara.tools.sdk.utils.OsUtils;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  *
@@ -45,7 +45,7 @@ public class RunnerAsadminRestoreDomain extends RunnerAsadmin {
     /**
      * Builds <code>change-admin-password</code> command query string.
      */
-    private static String query(final GlassFishServer server,
+    private static String query(final PayaraServer server,
             final Command command) {
         final String METHOD = "query";
         CommandRestoreDomain restoreCommand;
@@ -95,7 +95,7 @@ public class RunnerAsadminRestoreDomain extends RunnerAsadmin {
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
-    public RunnerAsadminRestoreDomain(final GlassFishServer server,
+    public RunnerAsadminRestoreDomain(final PayaraServer server,
             final Command command) {
         super(server, command, query(server, command));
         final String METHOD = "init";

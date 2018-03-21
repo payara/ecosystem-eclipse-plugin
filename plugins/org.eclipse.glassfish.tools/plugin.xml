@@ -25,7 +25,7 @@
         <launchConfigurationType
             id="org.glassfish.jst.server.GlassfishServerLaunchConfigurationType"
             name="%glassfish.runConfigurationName"
-            delegate="org.eclipse.payara.tools.server.starting.GlassfishServerLaunchDelegate"
+            delegate="org.eclipse.payara.tools.server.starting.PayaraServerLaunchDelegate"
             modes="run, debug"
             sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector"
             sourcePathComputerId="org.eclipse.jst.server.generic.core.sourcePathComputer"/>
@@ -59,8 +59,8 @@
     <extension point="org.eclipse.wst.server.core.serverTypes">
         <serverType
              id="payara.server"
-             class="org.eclipse.payara.tools.server.GlassFishServer"
-             behaviourClass="org.eclipse.payara.tools.server.deploying.GlassFishServerBehaviour"
+             class="org.eclipse.payara.tools.server.PayaraServer"
+             behaviourClass="org.eclipse.payara.tools.server.deploying.PayaraServerBehaviour"
              name="%serverTypeNameglassfish"
              description="%serverTypeDescriptionglassfish"
              hasConfiguration="false"

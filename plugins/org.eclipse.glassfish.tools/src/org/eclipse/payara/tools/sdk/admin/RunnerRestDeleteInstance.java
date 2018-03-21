@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * Command runner executes delete instance command.
@@ -30,7 +30,7 @@ public class RunnerRestDeleteInstance extends RunnerRest {
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
-    public RunnerRestDeleteInstance(final GlassFishServer server,
+    public RunnerRestDeleteInstance(final PayaraServer server,
             final Command command) {
         super(server, command);
     }

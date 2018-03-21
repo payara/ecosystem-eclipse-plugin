@@ -44,7 +44,7 @@ import org.eclipse.payara.tools.sdk.TaskState;
 import org.eclipse.payara.tools.sdk.TaskStateListener;
 import org.eclipse.payara.tools.sdk.logging.Logger;
 import org.eclipse.payara.tools.sdk.utils.ServerUtils;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * Abstract GlassFish server administration command execution.
@@ -289,7 +289,7 @@ public abstract class Runner implements Callable<Result> {
     boolean auth = true;
 
     /** Holding GlassFish server for command execution. */
-    protected GlassFishServer server;
+    protected PayaraServer server;
 
     /** Holding data for command execution. */
     final Command command;
@@ -395,7 +395,7 @@ public abstract class Runner implements Callable<Result> {
      * @param command GlassFish Server HTTP Administration Command Entity.
      * @param path Server command path.
      */
-    Runner(final GlassFishServer server, final Command command, final String path) {
+    Runner(final PayaraServer server, final Command command, final String path) {
         this(server, command, path, null);
     }
 
@@ -408,7 +408,7 @@ public abstract class Runner implements Callable<Result> {
      * @param path Server command path.
      * @param query Query string for this command.
      */
-    Runner(final GlassFishServer server, final Command command, final String path, final String query) {
+    Runner(final PayaraServer server, final Command command, final String path, final String query) {
         this.server = server;
         this.command = command;
         this.path = path;

@@ -15,7 +15,7 @@ import java.util.logging.Level;
 
 import org.eclipse.payara.tools.sdk.data.GlassFishAdminInterface;
 import org.eclipse.payara.tools.sdk.logging.Logger;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 import org.eclipse.sapphire.Version;
 
 /**
@@ -91,7 +91,7 @@ public abstract class AdminFactory {
      * @return GlassFish server administration command execution object.
      */
     public abstract Runner getRunner(
-            final GlassFishServer srv, final Command cmd);
+            final PayaraServer srv, final Command cmd);
 
     ////////////////////////////////////////////////////////////////////////////
     // Methods //
@@ -107,14 +107,14 @@ public abstract class AdminFactory {
      * @return GlassFish server administration command execution object.
      * @throws <code>CommandException</code> if construction of new instance fails.
      */
-    Runner newRunner(final GlassFishServer srv, final Command cmd,
+    Runner newRunner(final PayaraServer srv, final Command cmd,
             final Class runnerClass) throws CommandException {
         final String METHOD = "newRunner";
         Constructor<Runner> con = null;
         Runner runner = null;
         try {
             con = runnerClass.getConstructor(
-                    GlassFishServer.class, Command.class);
+                    PayaraServer.class, Command.class);
         } catch (NoSuchMethodException | SecurityException nsme) {
             throw new CommandException(CommandException.RUNNER_INIT, nsme);
         }

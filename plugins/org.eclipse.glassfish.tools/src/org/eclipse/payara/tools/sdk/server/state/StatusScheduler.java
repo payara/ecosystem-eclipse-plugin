@@ -22,7 +22,7 @@ import org.eclipse.payara.tools.sdk.GlassFishStatusListener;
 import org.eclipse.payara.tools.sdk.data.GlassFishServerStatus;
 import org.eclipse.payara.tools.sdk.data.GlassFishStatusCheck;
 import org.eclipse.payara.tools.sdk.logging.Logger;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * Thread responsible for processing all server status checks and updating server status entity
@@ -219,7 +219,7 @@ public class StatusScheduler {
     private ScheduledThreadPoolExecutor executor;
 
     /** Server status jobs. */
-    private final Map<GlassFishServer, StatusJob> jobs;
+    private final Map<PayaraServer, StatusJob> jobs;
 
     ////////////////////////////////////////////////////////////////////////////
     // Constructors //
@@ -248,7 +248,7 @@ public class StatusScheduler {
      * @return Value of <code>true</code> when server instance is registered in scheduler or
      * <code>false</code> otherwise.
      */
-    public boolean exists(final GlassFishServer srv) {
+    public boolean exists(final PayaraServer srv) {
         boolean result;
         synchronized (jobs) {
             result = jobs.containsKey(srv);
@@ -270,7 +270,7 @@ public class StatusScheduler {
      * @return GlassFisg server status {@link GlassFishServerStatus} object. Returns <code>null</code>
      * value for unregistered server instance.
      */
-    public GlassFishServerStatus get(final GlassFishServer srv,
+    public GlassFishServerStatus get(final PayaraServer srv,
             final GlassFishStatusListener listener) {
         StatusJob job = getJob(srv);
         if (job != null) {
@@ -295,7 +295,7 @@ public class StatusScheduler {
      * @return Value of <code>true</code> when server instance is being monitored in startup mode or
      * <code>false</code> if switching failed.
      */
-    public boolean start(final GlassFishServer srv, final boolean force,
+    public boolean start(final PayaraServer srv, final boolean force,
             final GlassFishStatusListener listener,
             final GlassFishStatus... newState) {
         StatusJob job = getJob(srv);
@@ -312,7 +312,7 @@ public class StatusScheduler {
      * @return Value of <code>true</code> when server instance is being monitored in startup mode or
      * <code>false</code> if switching failed.
      */
-    public boolean shutdown(final GlassFishServer srv) {
+    public boolean shutdown(final PayaraServer srv) {
         StatusJob job = getJob(srv);
         return job != null ? job.shutdownState(this) : false;
     }
@@ -367,7 +367,7 @@ public class StatusScheduler {
      * and status checking job was stopped. or <code>false</code> when server instance was not
      * registered.
      */
-    public boolean remove(final GlassFishServer srv) {
+    public boolean remove(final PayaraServer srv) {
         StatusJob job = removeJob(srv);
         if (job != null) {
             remove(job);
@@ -383,7 +383,7 @@ public class StatusScheduler {
      * @return Value of <code>true</code> when server instance monitoring was suspended or
      * <code>false</code> when server instance is not registered.
      */
-    public boolean suspend(final GlassFishServer srv) {
+    public boolean suspend(final PayaraServer srv) {
         StatusJob job = getJob(srv);
         if (job == null) {
             return false;
@@ -401,7 +401,7 @@ public class StatusScheduler {
      * @return Server status job associated with GlassFisg server instance or <code>null</code> when no
      * such job exists.
      */
-    public StatusJob getJob(final GlassFishServer srv) {
+    public StatusJob getJob(final PayaraServer srv) {
         StatusJob job;
         synchronized (jobs) {
             job = jobs.get(srv);
@@ -438,7 +438,7 @@ public class StatusScheduler {
      * @return Server status job that was removed or <code>null</code> when no job for given server
      * instance was found.
      */
-    private StatusJob removeJob(final GlassFishServer srv) {
+    private StatusJob removeJob(final PayaraServer srv) {
         StatusJob job;
         synchronized (jobs) {
             job = jobs.remove(srv);

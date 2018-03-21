@@ -9,7 +9,7 @@
 
 package org.eclipse.payara.tools.sdk.admin;
 
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * GlassFish server create administered object administration command execution using HTTP
@@ -130,7 +130,7 @@ public class RunnerHttpCreateAdminObject extends RunnerHttp {
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
-    public RunnerHttpCreateAdminObject(final GlassFishServer server,
+    public RunnerHttpCreateAdminObject(final PayaraServer server,
             final Command command) {
         super(server, command, query(command));
     }

@@ -16,7 +16,7 @@ import java.util.concurrent.Future;
 import org.eclipse.payara.tools.sdk.GlassFishIdeException;
 import org.eclipse.payara.tools.sdk.logging.Logger;
 import org.eclipse.payara.tools.sdk.utils.ServerUtils;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 import org.eclipse.sapphire.Version;
 
 /**
@@ -53,7 +53,7 @@ public class CommandVersion extends Command {
      * @return GlassFish command result containing version string returned by server.
      * @throws GlassFishIdeException When error occurred during administration command execution.
      */
-    public static ResultString getVersion(final GlassFishServer server)
+    public static ResultString getVersion(final PayaraServer server)
             throws GlassFishIdeException {
         final String METHOD = "getVersion";
         Future<ResultString> future = ServerAdmin.<ResultString>exec(server, new CommandVersion());
@@ -76,7 +76,7 @@ public class CommandVersion extends Command {
      * @throws GlassFishIdeException When error occurred during administration command execution.
      */
     public static Version getGlassFishVersion(
-            final GlassFishServer server) {
+            final PayaraServer server) {
         ResultString result;
         try {
             result = getVersion(server);
@@ -105,7 +105,7 @@ public class CommandVersion extends Command {
      * differs.
      */
     public static boolean verifyResult(
-            final ResultString result, final GlassFishServer server) {
+            final ResultString result, final PayaraServer server) {
         boolean verifyResult = false;
         String value = ServerUtils.getVersionString(result.getValue());
         if (value != null) {

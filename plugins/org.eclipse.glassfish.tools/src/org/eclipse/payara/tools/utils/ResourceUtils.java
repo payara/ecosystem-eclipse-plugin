@@ -48,7 +48,7 @@ import org.eclipse.payara.tools.sdk.data.IdeContext;
 import org.eclipse.payara.tools.sdk.server.parser.ResourcesReader;
 import org.eclipse.payara.tools.sdk.server.parser.ResourcesReader.ResourceType;
 import org.eclipse.payara.tools.sdk.server.parser.TreeParser;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
@@ -238,7 +238,7 @@ public class ResourceUtils {
         return resources;
     }
 
-    public static void checkUpdateServerResources(File sunResourcesXml, GlassFishServer sunAppsrv) {
+    public static void checkUpdateServerResources(File sunResourcesXml, PayaraServer sunAppsrv) {
         Map<String, String> changedData = new HashMap<>();
 
         ResourcesReader cpReader = new ResourcesReader(ResourceType.JDBC_CONNECTION_POOL);
@@ -271,7 +271,7 @@ public class ResourceUtils {
         }
     }
 
-    public static Map<String, String> getResourceData(GlassFishServer server, String name) {
+    public static Map<String, String> getResourceData(PayaraServer server, String name) {
         try {
             // GetPropertyCommand cmd;
             String query;
@@ -357,7 +357,7 @@ public class ResourceUtils {
         return changedData;
     }
 
-    public static void putResourceData(GlassFishServer server, Map<String, String> data) throws PartialCompletionException {
+    public static void putResourceData(PayaraServer server, Map<String, String> data) throws PartialCompletionException {
         String itemsNotUpdated = null;
         Throwable lastEx = null;
         for (final Map.Entry<String, String> entry : data.entrySet()) {

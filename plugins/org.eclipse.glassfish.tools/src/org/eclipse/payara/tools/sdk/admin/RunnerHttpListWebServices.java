@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * Command runner for retrieving list of web services from server.
@@ -49,7 +49,7 @@ public class RunnerHttpListWebServices extends RunnerHttp {
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
-    public RunnerHttpListWebServices(final GlassFishServer server,
+    public RunnerHttpListWebServices(final PayaraServer server,
             final Command command) {
         super(server, command);
     }

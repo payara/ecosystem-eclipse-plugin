@@ -14,7 +14,7 @@ import static org.eclipse.payara.tools.utils.URIHelper.getDomainHomeURI;
 import static org.eclipse.payara.tools.utils.URIHelper.showURI;
 import static org.eclipse.payara.tools.utils.WtpUtil.load;
 
-import org.eclipse.payara.tools.server.deploying.GlassFishServerBehaviour;
+import org.eclipse.payara.tools.server.deploying.PayaraServerBehaviour;
 import org.eclipse.wst.server.core.IServer;
 
 public class OpenDomainHomeHandler extends AbstractGlassfishSelectionHandler {
@@ -22,7 +22,7 @@ public class OpenDomainHomeHandler extends AbstractGlassfishSelectionHandler {
     @Override
     public void processSelection(IServer server) {
         try {
-            showURI(getDomainHomeURI(load(server, GlassFishServerBehaviour.class).getGlassfishServerDelegate()));
+            showURI(getDomainHomeURI(load(server, PayaraServerBehaviour.class).getGlassfishServerDelegate()));
         } catch (Exception e) {
             logMessage("Error opening browser: " + e.getMessage());
         }

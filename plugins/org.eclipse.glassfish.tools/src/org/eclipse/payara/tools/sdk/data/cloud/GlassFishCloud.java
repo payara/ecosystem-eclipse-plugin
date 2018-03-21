@@ -9,7 +9,7 @@
 
 package org.eclipse.payara.tools.sdk.data.cloud;
 
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * GlassFish Cloud Entity Interface.
@@ -57,6 +57,6 @@ public interface GlassFishCloud {
      *
      * @return GlassFish cloud local server.
      */
-    public GlassFishServer getLocalServer();
+    public PayaraServer getLocalServer();
 
 }

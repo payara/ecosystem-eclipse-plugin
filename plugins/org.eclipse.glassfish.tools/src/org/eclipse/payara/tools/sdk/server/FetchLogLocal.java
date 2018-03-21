@@ -21,7 +21,7 @@ import java.util.logging.Level;
 import org.eclipse.payara.tools.sdk.TaskState;
 import org.eclipse.payara.tools.sdk.logging.Logger;
 import org.eclipse.payara.tools.sdk.utils.ServerUtils;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * Fetch GlassFish log from local server.
@@ -54,7 +54,7 @@ public class FetchLogLocal extends FetchLogPiped {
      * and <code>getDomainName</code> should not return null.
      * @param skip Skip to the end of the log file.
      */
-    FetchLogLocal(final GlassFishServer server, final boolean skip) {
+    FetchLogLocal(final PayaraServer server, final boolean skip) {
         super(server, skip);
     }
 
@@ -72,7 +72,7 @@ public class FetchLogLocal extends FetchLogPiped {
      * and <code>getDomainName</code> should not return null.
      * @param skip Skip to the end of the log file.
      */
-    FetchLogLocal(final ExecutorService executor, final GlassFishServer server,
+    FetchLogLocal(final ExecutorService executor, final PayaraServer server,
             final boolean skip) {
         super(executor, server, skip);
     }

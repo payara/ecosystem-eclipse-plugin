@@ -33,7 +33,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.payara.tools.sdk.utils.JavaUtils;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * GlassFish server administration command execution using local file access interface.
@@ -82,7 +82,7 @@ public class RunnerLocal extends RunnerJava {
      * @param server GlassFish server entity object.
      * @param command GlassFish Server Administration Command Entity.
      */
-    public RunnerLocal(GlassFishServer server, Command command) {
+    public RunnerLocal(PayaraServer server, Command command) {
         super(server, command);
         this.command = (CommandStartDAS) command;
     }
@@ -179,7 +179,7 @@ public class RunnerLocal extends RunnerJava {
      * @param command GlassFish Server Administration Command Entity.
      * @return Java VM options for Glassfish server execution as <cpde>String</code>.
      */
-    private static String buildJavaOptions(GlassFishServer server, CommandStartDAS command) {
+    private static String buildJavaOptions(PayaraServer server, CommandStartDAS command) {
         // Java VM options
         StringBuilder javaOptionsBuilder = new StringBuilder();
 

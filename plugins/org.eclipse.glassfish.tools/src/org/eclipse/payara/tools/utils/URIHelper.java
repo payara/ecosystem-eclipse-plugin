@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 public class URIHelper {
 
@@ -30,16 +30,16 @@ public class URIHelper {
         Desktop.getDesktop().browse(uri);
     }
 
-    public static final URI getServerAdminURI(GlassFishServer server) throws URISyntaxException {
+    public static final URI getServerAdminURI(PayaraServer server) throws URISyntaxException {
         return new URI(getHttpListenerProtocol(server.getHost(), server.getAdminPort()), null, server.getHost(),
                 server.getAdminPort(), null, null, null);
     }
 
-    public static final URI getServerHomeURI(GlassFishServer server) throws URISyntaxException {
+    public static final URI getServerHomeURI(PayaraServer server) throws URISyntaxException {
         return new File(server.getServerHome()).toURI();
     }
 
-    public static final URI getDomainHomeURI(GlassFishServer server) throws URISyntaxException {
+    public static final URI getDomainHomeURI(PayaraServer server) throws URISyntaxException {
         return new File(server.getDomainsFolder() + separator + server.getDomainName()).toURI();
     }
 }

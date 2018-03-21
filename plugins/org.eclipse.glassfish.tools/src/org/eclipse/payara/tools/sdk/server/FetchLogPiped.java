@@ -28,7 +28,7 @@ import org.eclipse.payara.tools.sdk.TaskState;
 import org.eclipse.payara.tools.sdk.logging.Logger;
 import org.eclipse.payara.tools.sdk.utils.LinkedList;
 import org.eclipse.payara.tools.sdk.utils.NetUtils;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * Fetch GlassFish log from local or remote server.
@@ -62,14 +62,14 @@ public abstract class FetchLogPiped
      * Constructs an instance of GlassFish server log fetcher depending on server being remote or local.
      * <p/>
      * Decision if server is local or remote depends on domains folder and domain name attributes stored
-     * in <code>GlassFishServer</code> object.
+     * in <code>PayaraServer</code> object.
      * <p/>
      *
      * @param server GlassFish server for fetching server log.
      * @param skip Skip to the end of the log file.
      * @return Newly created <code>FetchLog</code> instance.
      */
-    public static FetchLogPiped create(final GlassFishServer server,
+    public static FetchLogPiped create(final PayaraServer server,
             final boolean skip) {
         boolean isLocal = NetUtils.isLocahost(server.getHost());
         FetchLogPiped fetchLog = isLocal
@@ -83,14 +83,14 @@ public abstract class FetchLogPiped
      * Constructs an instance of GlassFish server log fetcher depending on server being remote or local.
      * <p/>
      * Decision if server is local or remote depends on domains folder and domain name attributes stored
-     * in <code>GlassFishServer</code> object. Log file is passed whole as is without skipping to the
+     * in <code>PayaraServer</code> object. Log file is passed whole as is without skipping to the
      * end.
      * <p/>
      *
      * @param server GlassFish server for fetching server log.
      * @return Newly created <code>FetchLog</code> instance.
      */
-    public static FetchLogPiped create(final GlassFishServer server) {
+    public static FetchLogPiped create(final PayaraServer server) {
         return create(server, false);
     }
 
@@ -99,7 +99,7 @@ public abstract class FetchLogPiped
      * with external {@link ExecutorService}.
      * <p/>
      * Decision if server is local or remote depends on domains folder and domain name attributes stored
-     * in <code>GlassFishServer</code> object.
+     * in <code>PayaraServer</code> object.
      * <p/>
      *
      * @param executor Executor service used to start task.
@@ -108,7 +108,7 @@ public abstract class FetchLogPiped
      * @return Newly created <code>FetchLog</code> instance.
      */
     public static FetchLogPiped create(final ExecutorService executor,
-            final GlassFishServer server, final boolean skip) {
+            final PayaraServer server, final boolean skip) {
         boolean isLocal = NetUtils.isLocahost(server.getHost());
         FetchLogPiped fetchLog = isLocal
                 ? new FetchLogLocal(executor, server, skip)
@@ -122,7 +122,7 @@ public abstract class FetchLogPiped
      * with external {@link ExecutorService}.
      * <p/>
      * Decision if server is local or remote depends on domains folder and domain name attributes stored
-     * in <code>GlassFishServer</code> object. Log file is passed whole as is without skipping to the
+     * in <code>PayaraServer</code> object. Log file is passed whole as is without skipping to the
      * end.
      * <p/>
      *
@@ -131,7 +131,7 @@ public abstract class FetchLogPiped
      * @return Newly created <code>FetchLog</code> instance.
      */
     public static FetchLogPiped create(final ExecutorService executor,
-            final GlassFishServer server) {
+            final PayaraServer server) {
         return create(executor, server, false);
     }
 
@@ -173,7 +173,7 @@ public abstract class FetchLogPiped
      * @param server GlassFish server for fetching server log.
      * @param skip Skip to the end of the log file.
      */
-    FetchLogPiped(final GlassFishServer server, boolean skip) {
+    FetchLogPiped(final PayaraServer server, boolean skip) {
         super(server, skip);
         final String METHOD = "init";
         this.eventListeners = new LinkedList();
@@ -210,7 +210,7 @@ public abstract class FetchLogPiped
      * @param skip Skip to the end of the log file.
      */
     @SuppressWarnings("LeakingThisInConstructor")
-    FetchLogPiped(final ExecutorService executor, final GlassFishServer server,
+    FetchLogPiped(final ExecutorService executor, final PayaraServer server,
             boolean skip) {
         super(server, skip);
         final String METHOD = "init";

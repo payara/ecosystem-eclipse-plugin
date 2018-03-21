@@ -26,7 +26,7 @@ import org.eclipse.payara.tools.sdk.data.ToolsConfig;
 import org.eclipse.payara.tools.sdk.logging.Logger;
 import org.eclipse.payara.tools.sdk.utils.OsUtils;
 import org.eclipse.payara.tools.sdk.utils.ServerUtils;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * GlassFish server administration command execution using local asadmin interface.
@@ -64,7 +64,7 @@ public abstract class RunnerAsadmin extends RunnerJava {
      * @param server GlassFish server entity object.
      * @return Asadmin JAR path to execute.
      */
-    private static String extractPath(final GlassFishServer server) {
+    private static String extractPath(final PayaraServer server) {
         final String METHOD = "extractPath";
         ToolsConfig toolsConfig = getServerConfig(server).getTools();
         if (toolsConfig == null) {
@@ -140,7 +140,7 @@ public abstract class RunnerAsadmin extends RunnerJava {
      * @param command GlassFish server administration command entity.
      * @param query Query string for this command.
      */
-    public RunnerAsadmin(final GlassFishServer server, final Command command,
+    public RunnerAsadmin(final PayaraServer server, final Command command,
             final String query) {
         super(server, command, query);
         asadminJar = extractPath(server);

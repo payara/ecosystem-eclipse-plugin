@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.jar.Attributes;
 
 import org.eclipse.payara.tools.sdk.utils.ServerUtils;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * Command runner for retrieving resources from server.
@@ -51,7 +51,7 @@ public class RunnerHttpListResources extends RunnerHttpTarget {
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
-    public RunnerHttpListResources(final GlassFishServer server,
+    public RunnerHttpListResources(final PayaraServer server,
             final Command command) {
         super(server, command);
     }

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.payara.tools.sdk.admin.response.MessagePart;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * Command runner for commands that retrieve some kind of list.
@@ -42,7 +42,7 @@ public class RunnerRestList extends RunnerRest {
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
-    public RunnerRestList(final GlassFishServer server, final Command command) {
+    public RunnerRestList(final PayaraServer server, final Command command) {
         super(server, command);
     }
 

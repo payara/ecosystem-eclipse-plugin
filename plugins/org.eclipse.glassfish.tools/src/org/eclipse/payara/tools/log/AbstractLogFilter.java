@@ -9,7 +9,7 @@
 
 package org.eclipse.payara.tools.log;
 
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * Common base class for log filters. They are used to transform standard GF log records to more
@@ -69,7 +69,7 @@ public abstract class AbstractLogFilter implements ILogFilter {
     @Override
     public abstract String process(String line);
 
-    public static AbstractLogFilter createFilter(GlassFishServer server) {
+    public static AbstractLogFilter createFilter(PayaraServer server) {
         if (server.getVersion().matches("[4")) {
             return new PatternLogFilterV4();
         } else {

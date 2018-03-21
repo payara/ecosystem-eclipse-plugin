@@ -27,8 +27,8 @@ import org.eclipse.jst.server.core.IWebModule;
 import org.eclipse.jst.server.generic.core.internal.CorePlugin;
 import org.eclipse.jst.server.generic.core.internal.publishers.ModulePackager;
 import org.eclipse.payara.tools.PayaraToolsPlugin;
-import org.eclipse.payara.tools.server.GlassFishServer;
-import org.eclipse.payara.tools.server.deploying.GlassFishServerBehaviour;
+import org.eclipse.payara.tools.server.PayaraServer;
+import org.eclipse.payara.tools.server.deploying.PayaraServerBehaviour;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.internal.Server;
@@ -50,10 +50,10 @@ public class AssembleModules {
     protected IModule module; // Module to be assembled
     protected IPath assembleRoot;
     protected PublishHelper publishHelper;
-    protected GlassFishServer server;
+    protected PayaraServer server;
     protected boolean childNeedsARedeployment = false;
 
-    public AssembleModules(IModule[] modulePath, IPath assembleRoot, GlassFishServer server, PublishHelper helper) {
+    public AssembleModules(IModule[] modulePath, IPath assembleRoot, PayaraServer server, PublishHelper helper) {
         this.modulePath = modulePath;
         this.module = modulePath[modulePath.length - 1]; // last segment of the module path
         this.assembleRoot = assembleRoot;
@@ -88,7 +88,7 @@ public class AssembleModules {
                 publishHelper.publishToPath(resources, parent.append(uri), monitor);
             } else { // Project module
                 // ludo 2010 packModule(module, uri, parent);
-                String version = GlassFishServerBehaviour.getVersion(server);
+                String version = PayaraServerBehaviour.getVersion(server);
                 if (version.indexOf(" 3.1") == -1) {
                     packModule(childModule, uri, parent);
                 } else {

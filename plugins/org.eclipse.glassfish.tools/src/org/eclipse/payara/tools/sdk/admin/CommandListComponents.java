@@ -15,7 +15,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import org.eclipse.payara.tools.sdk.GlassFishIdeException;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * Command that retrieves list of components defined on server.
@@ -51,7 +51,7 @@ public class CommandListComponents extends CommandTarget {
      * @throws GlassFishIdeException When error occurred during administration command execution.
      */
     public static ResultMap<String, List<String>> listComponents(
-            final GlassFishServer server, final String target)
+            final PayaraServer server, final String target)
             throws GlassFishIdeException {
         Command command = new CommandListComponents(target);
         Future<ResultMap<String, List<String>>> future = ServerAdmin

@@ -18,7 +18,7 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.payara.tools.sapphire.ICreateGlassfishDomainOp;
 import org.eclipse.payara.tools.sapphire.IGlassfishServerModel;
 import org.eclipse.payara.tools.server.PayaraRuntime;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 import org.eclipse.payara.tools.ui.wizards.BaseWizardFragment;
 import org.eclipse.sapphire.ui.Presentation;
 import org.eclipse.sapphire.ui.SapphireActionHandler;
@@ -36,7 +36,7 @@ public class NewPayaraDomainAction extends SapphireActionHandler {
 
     @Override
     protected Object run(Presentation context) {
-        IRuntime runtime = load(context.part().getModelElement().adapt(IServerWorkingCopy.class), GlassFishServer.class)
+        IRuntime runtime = load(context.part().getModelElement().adapt(IServerWorkingCopy.class), PayaraServer.class)
                 .getServer()
                 .getRuntime();
 

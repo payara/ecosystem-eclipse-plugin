@@ -10,7 +10,7 @@
 package org.eclipse.payara.tools.sdk.data;
 
 import org.eclipse.payara.tools.sdk.GlassFishStatus;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * GlassFish server status interface.
@@ -32,7 +32,7 @@ public interface GlassFishServerStatus {
      *
      * @return GlassFish server entity.
      */
-    public GlassFishServer getServer();
+    public PayaraServer getServer();
 
     /**
      * Get current GlassFish server status.

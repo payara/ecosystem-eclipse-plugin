@@ -14,7 +14,7 @@ import static org.eclipse.payara.tools.utils.URIHelper.getServerHomeURI;
 import static org.eclipse.payara.tools.utils.URIHelper.showURI;
 import static org.eclipse.payara.tools.utils.WtpUtil.load;
 
-import org.eclipse.payara.tools.server.deploying.GlassFishServerBehaviour;
+import org.eclipse.payara.tools.server.deploying.PayaraServerBehaviour;
 import org.eclipse.wst.server.core.IServer;
 
 public class OpenServerHomeHandler extends AbstractGlassfishSelectionHandler {
@@ -22,7 +22,7 @@ public class OpenServerHomeHandler extends AbstractGlassfishSelectionHandler {
     @Override
     public void processSelection(IServer server) {
         try {
-            showURI(getServerHomeURI(load(server, GlassFishServerBehaviour.class).getGlassfishServerDelegate()));
+            showURI(getServerHomeURI(load(server, PayaraServerBehaviour.class).getGlassfishServerDelegate()));
         } catch (Exception e) {
             logMessage("Error opening folder in desktop " + e.getMessage());
         }

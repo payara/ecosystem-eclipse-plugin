@@ -9,7 +9,7 @@
 
 package org.eclipse.payara.tools.sdk.data.cloud;
 
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * GlassFish Cloud Entity.
@@ -35,7 +35,7 @@ public class GlassFishCloudEntity implements GlassFishCloud {
     protected int port;
 
     /** GlassFish cloud local server. */
-    protected GlassFishServer localServer;
+    protected PayaraServer localServer;
 
     ////////////////////////////////////////////////////////////////////////////
     // Constructors //
@@ -57,7 +57,7 @@ public class GlassFishCloudEntity implements GlassFishCloud {
      * @param localServer GlassFish cloud local server to set.
      */
     public GlassFishCloudEntity(String name, String host, int port,
-            GlassFishServer localServer) {
+            PayaraServer localServer) {
         this.name = name;
         this.host = host;
         this.port = port;
@@ -138,7 +138,7 @@ public class GlassFishCloudEntity implements GlassFishCloud {
      * @return GlassFish cloud local server.
      */
     @Override
-    public GlassFishServer getLocalServer() {
+    public PayaraServer getLocalServer() {
         return localServer;
     }
 
@@ -148,7 +148,7 @@ public class GlassFishCloudEntity implements GlassFishCloud {
      *
      * @param localServer GlassFish cloud local server to set.
      */
-    public void setLocalServer(GlassFishServer localServer) {
+    public void setLocalServer(PayaraServer localServer) {
         this.localServer = localServer;
     }
 

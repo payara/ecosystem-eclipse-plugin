@@ -14,7 +14,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import org.eclipse.payara.tools.sdk.GlassFishIdeException;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * GlassFish Server Start Cluster Command Entity.
@@ -51,7 +51,7 @@ public class CommandStartCluster extends CommandTarget {
      * @return Start cluster task response.
      * @throws GlassFishIdeException When error occurred during administration command execution.
      */
-    public static ResultString startCluster(GlassFishServer server,
+    public static ResultString startCluster(PayaraServer server,
             String target) throws GlassFishIdeException {
         Command command = new CommandStartCluster(target);
         Future<ResultString> future = ServerAdmin.<ResultString>exec(server, command);

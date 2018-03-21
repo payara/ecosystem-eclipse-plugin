@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  *
@@ -32,7 +32,7 @@ public class RunnerRestUndeploy extends RunnerRest {
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
-    public RunnerRestUndeploy(final GlassFishServer server,
+    public RunnerRestUndeploy(final PayaraServer server,
             final Command command) {
         super(server, command);
     }

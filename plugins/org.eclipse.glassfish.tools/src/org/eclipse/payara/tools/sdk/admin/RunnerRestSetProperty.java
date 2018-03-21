@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * Runner executes set property command via REST interface.
@@ -33,7 +33,7 @@ public class RunnerRestSetProperty extends RunnerRest {
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
-    public RunnerRestSetProperty(final GlassFishServer server,
+    public RunnerRestSetProperty(final PayaraServer server,
             final Command command) {
         super(server, command, "/command/", null);
     }

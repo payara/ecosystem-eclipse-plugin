@@ -17,12 +17,12 @@ import org.eclipse.wst.common.project.facet.ui.IRuntimeComponentLabelProvider;
  * @author <a href="mailto:konstantin.komissarchik@oracle.com">Konstantin Komissarchik</a>
  */
 
-public final class GlassFishRuntimeComponentLabelProviderFactory implements IAdapterFactory {
+public final class PayaraRuntimeComponentLabelProviderFactory implements IAdapterFactory {
     private static final Class<?>[] ADAPTER_TYPES = { IRuntimeComponentLabelProvider.class };
 
     @Override
     public <T> T getAdapter(Object adaptable, Class<T> adapterType) {
-        return adapterType.cast(new GlassFishRuntimeComponentLabelProvider((IRuntimeComponent) adaptable));
+        return adapterType.cast(new PayaraRuntimeComponentLabelProvider((IRuntimeComponent) adaptable));
     }
 
     @Override

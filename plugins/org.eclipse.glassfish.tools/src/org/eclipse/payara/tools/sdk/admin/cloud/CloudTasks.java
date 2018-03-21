@@ -18,7 +18,7 @@ import org.eclipse.payara.tools.sdk.TaskStateListener;
 import org.eclipse.payara.tools.sdk.admin.Command;
 import org.eclipse.payara.tools.sdk.admin.ResultString;
 import org.eclipse.payara.tools.sdk.admin.ServerAdmin;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * This class provides convenience methods for working with cloud (CPAS server).
@@ -36,7 +36,7 @@ public class CloudTasks {
      * @param listener - listener, that listens to command execution events
      * @return result object with task status and message
      */
-    public static ResultString deploy(final GlassFishServer server,
+    public static ResultString deploy(final PayaraServer server,
             final String account, final File application,
             final TaskStateListener listener) {
         Command command = new CommandCloudDeploy(account, application);

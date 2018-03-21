@@ -9,7 +9,7 @@
 
 package org.eclipse.payara.tools.sdk.admin;
 
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * GlassFish server create EIS connection pool administration command execution using HTTP
@@ -118,7 +118,7 @@ public class RunnerHttpCreateConnectorConnectionPool extends RunnerHttp {
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
-    public RunnerHttpCreateConnectorConnectionPool(final GlassFishServer server,
+    public RunnerHttpCreateConnectorConnectionPool(final PayaraServer server,
             final Command command) {
         super(server, command, query(command));
     }

@@ -11,7 +11,7 @@ package org.eclipse.payara.tools.ui.wizards;
 
 import static org.eclipse.payara.tools.PayaraToolsPlugin.log;
 import static org.eclipse.payara.tools.sapphire.IGlassfishServerModel.PROP_NAME;
-import static org.eclipse.payara.tools.server.GlassFishServer.getDefaultDomainDir;
+import static org.eclipse.payara.tools.server.PayaraServer.getDefaultDomainDir;
 import static org.eclipse.payara.tools.ui.wizards.GlassfishWizardResources.wzdServerDescription;
 import static org.eclipse.payara.tools.utils.WtpUtil.load;
 import static org.eclipse.wst.server.core.TaskModel.TASK_SERVER;
@@ -19,7 +19,7 @@ import static org.eclipse.wst.server.core.internal.Server.AUTO_PUBLISH_DISABLE;
 import static org.eclipse.wst.server.core.internal.Server.PROP_AUTO_PUBLISH_SETTING;
 
 import org.eclipse.payara.tools.sapphire.IGlassfishServerModel;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 import org.eclipse.sapphire.Element;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 
@@ -69,7 +69,7 @@ public final class NewPayaraServerWizardFragment extends BaseWizardFragment {
             log(e);
         }
 
-        return load(server(), GlassFishServer.class).getModel();
+        return load(server(), PayaraServer.class).getModel();
     }
 
     @Override

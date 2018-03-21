@@ -17,7 +17,7 @@ import static org.eclipse.payara.tools.utils.WtpUtil.load;
 
 import org.eclipse.payara.tools.log.IGlassFishConsole;
 import org.eclipse.payara.tools.sdk.server.FetchLogPiped;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 import org.eclipse.payara.tools.server.ServerStatus;
 import org.eclipse.wst.server.core.IServer;
 
@@ -26,7 +26,7 @@ public class ViewLogHandler extends AbstractGlassfishSelectionHandler {
     @Override
     public void processSelection(IServer server) {
         try {
-            GlassFishServer serverAdapter = load(server, GlassFishServer.class);
+            PayaraServer serverAdapter = load(server, PayaraServer.class);
 
             if (serverAdapter.isRemote()) {
                 if (!serverAdapter.getServerBehaviourAdapter().getServerStatus(true).equals(ServerStatus.RUNNING_DOMAIN_MATCHING)) {

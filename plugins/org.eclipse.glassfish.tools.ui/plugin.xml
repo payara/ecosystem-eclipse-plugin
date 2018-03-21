@@ -45,7 +45,7 @@
     <extension point="org.eclipse.wst.common.project.facet.core.runtimes">
         <adapter>
             <runtime-component id="payara.runtime"/>
-            <factory class="org.eclipse.payara.tools.ui.internal.GlassFishRuntimeComponentLabelProviderFactory"/>
+            <factory class="org.eclipse.payara.tools.ui.internal.PayaraRuntimeComponentLabelProviderFactory"/>
             <type class="org.eclipse.wst.common.project.facet.ui.IRuntimeComponentLabelProvider"/>
         </adapter>
     </extension>
@@ -409,7 +409,7 @@
   <extension point="org.eclipse.wst.server.core.runtimeLocators">
     <runtimeLocator
       id="org.eclipse.payara.tools"
-      class="org.eclipse.payara.tools.ui.internal.GlassFishRuntimeLocatorDelegate"
+      class="org.eclipse.payara.tools.ui.internal.PayaraRuntimeLocatorDelegate"
 	  typeIds="payara.runtime"/>
   </extension> 
 

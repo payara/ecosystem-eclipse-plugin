@@ -12,7 +12,7 @@ package org.eclipse.payara.tools.sdk.admin;
 import java.util.logging.Level;
 
 import org.eclipse.payara.tools.sdk.logging.Logger;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * GlassFish instance and cluster admin command with <code>DEFAULT=&lt;target&gt;</code> query
@@ -38,7 +38,7 @@ public class RunnerHttpDeleteInstance extends RunnerHttpTarget {
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
-    public RunnerHttpDeleteInstance(final GlassFishServer server,
+    public RunnerHttpDeleteInstance(final PayaraServer server,
             final Command command) {
         super(server, command);
     }

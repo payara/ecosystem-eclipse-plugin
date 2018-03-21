@@ -16,11 +16,10 @@ import org.eclipse.wst.common.project.facet.ui.IRuntimeComponentLabelProvider;
 /**
  * @author <a href="mailto:konstantin.komissarchik@oracle.com">Konstantin Komissarchik</a>
  */
-
-public final class GlassFishRuntimeComponentLabelProvider implements IRuntimeComponentLabelProvider {
+public final class PayaraRuntimeComponentLabelProvider implements IRuntimeComponentLabelProvider {
     private final IRuntimeComponent rc;
 
-    public GlassFishRuntimeComponentLabelProvider(IRuntimeComponent rc) {
+    public PayaraRuntimeComponentLabelProvider(IRuntimeComponent rc) {
         this.rc = rc;
     }
 
@@ -33,7 +32,7 @@ public final class GlassFishRuntimeComponentLabelProvider implements IRuntimeCom
         public static String label;
 
         static {
-            initializeMessages(GlassFishRuntimeComponentLabelProvider.class.getName(), Resources.class);
+            initializeMessages(PayaraRuntimeComponentLabelProvider.class.getName(), Resources.class);
         }
     }
 

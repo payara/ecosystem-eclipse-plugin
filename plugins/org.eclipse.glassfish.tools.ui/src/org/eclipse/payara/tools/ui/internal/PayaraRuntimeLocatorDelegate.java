@@ -35,36 +35,36 @@ import org.eclipse.wst.server.core.internal.RuntimeWorkingCopy;
 import org.eclipse.wst.server.core.model.RuntimeLocatorDelegate;
 
 @SuppressWarnings("restriction")
-public final class GlassFishRuntimeLocatorDelegate extends RuntimeLocatorDelegate {
+public final class PayaraRuntimeLocatorDelegate extends RuntimeLocatorDelegate {
 
     private static final IRuntimeType RUNTIME_TYPE = ServerCore.findRuntimeType("payara.runtime");
 
     @Override
-    public void searchForRuntimes(IPath path, final IRuntimeSearchListener listener, IProgressMonitor monitor) {
+    public void searchForRuntimes(IPath path, IRuntimeSearchListener listener, IProgressMonitor monitor) {
         search(path.toFile(), listener, monitor);
     }
 
-    private void search(final File f, final IRuntimeSearchListener listener, final IProgressMonitor monitor) {
-        if (monitor.isCanceled() || !f.isDirectory() || f.isHidden()) {
+    private void search(File file, IRuntimeSearchListener listener, IProgressMonitor monitor) {
+        if (monitor.isCanceled() || !file.isDirectory() || file.isHidden()) {
             return;
         }
 
         try {
-            IRuntime rt = create(f);
-            if (rt != null) {
-                IRuntimeWorkingCopy wc = rt.createWorkingCopy();
+            IRuntime runtime = create(file);
+            if (runtime != null) {
+                IRuntimeWorkingCopy wc = runtime.createWorkingCopy();
                 listener.runtimeFound(wc);
                 return;
             }
-        } catch (final CoreException e) {
+        } catch (CoreException e) {
             PayaraToolsPlugin.log(e);
             return;
         }
 
-        final File[] children = f.listFiles();
+        File[] children = file.listFiles();
 
         if (children != null) {
-            for (final File child : children) {
+            for (File child : children) {
                 search(child, listener, monitor);
             }
         }
@@ -104,7 +104,7 @@ public final class GlassFishRuntimeLocatorDelegate extends RuntimeLocatorDelegat
                 @Override
                 public void run() {
                     new SapphireDialog(display.getActiveShell(), gfmodel,
-                            DefinitionLoader.sdef(GlassFishRuntimeLocatorDelegate.class).dialog()).open();
+                            DefinitionLoader.sdef(PayaraRuntimeLocatorDelegate.class).dialog()).open();
                 }
             });
 
@@ -133,8 +133,8 @@ public final class GlassFishRuntimeLocatorDelegate extends RuntimeLocatorDelegat
         return null;
     }
 
-    private static IRuntime findRuntime(final File location) {
-        for (final IRuntime runtime : ResourceManager.getInstance().getRuntimes()) {
+    private static IRuntime findRuntime(File location) {
+        for (IRuntime runtime : ResourceManager.getInstance().getRuntimes()) {
             if (RUNTIME_TYPE == runtime.getRuntimeType() && location.equals(runtime.getLocation().toFile())) {
                 return runtime;
             }

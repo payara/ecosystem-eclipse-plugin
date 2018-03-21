@@ -35,14 +35,14 @@ import org.eclipse.payara.tools.sdk.admin.CommandListWebServices;
 import org.eclipse.payara.tools.sdk.admin.ResultList;
 import org.eclipse.payara.tools.sdk.admin.ResultMap;
 import org.eclipse.payara.tools.sdk.admin.ServerAdmin;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 import org.eclipse.payara.tools.serverview.AppDesc;
 import org.eclipse.payara.tools.serverview.ResourceDesc;
 import org.eclipse.payara.tools.serverview.WSDesc;
 
 public class NodesUtils {
 
-    public static List<ResourceDesc> getResources(GlassFishServer server, String type) {
+    public static List<ResourceDesc> getResources(PayaraServer server, String type) {
         List<String> result = Collections.emptyList();
         LinkedList<ResourceDesc> retVal = null;
         try {
@@ -64,7 +64,7 @@ public class NodesUtils {
         return retVal;
     }
 
-    public static Map<String, List<AppDesc>> getApplications(GlassFishServer server, String container) {
+    public static Map<String, List<AppDesc>> getApplications(PayaraServer server, String container) {
         Map<String, List<String>> apps = Collections.emptyMap();
         Command command = new CommandListComponents(null);
         Future<ResultMap<String, List<String>>> future = ServerAdmin.<ResultMap<String, List<String>>>exec(server,
@@ -113,7 +113,7 @@ public class NodesUtils {
      *
      * @return String array of names of deployed applications.
      */
-    public static List<WSDesc> getWebServices(GlassFishServer server) {
+    public static List<WSDesc> getWebServices(PayaraServer server) {
         List<String> wssList = null;
 
         Future<ResultList<String>> future = ServerAdmin.<ResultList<String>>exec(server, new CommandListWebServices());
@@ -144,11 +144,11 @@ public class NodesUtils {
         return result;
     }
 
-    public static Map<String, String> getResourceData(GlassFishServer server, String name) {
+    public static Map<String, String> getResourceData(PayaraServer server, String name) {
         return getResourceData(server, name);
     }
 
-    public static void putResourceData(GlassFishServer server, Map<String, String> data)
+    public static void putResourceData(PayaraServer server, Map<String, String> data)
             throws PartialCompletionException {
         putResourceData(server, data);
     }

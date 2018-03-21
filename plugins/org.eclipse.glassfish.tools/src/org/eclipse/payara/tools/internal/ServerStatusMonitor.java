@@ -17,7 +17,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 import org.eclipse.payara.tools.server.ServerStatus;
 import org.eclipse.payara.tools.utils.ServerStatusHelper;
 
@@ -27,7 +27,7 @@ public class ServerStatusMonitor implements Runnable {
 
     private ScheduledExecutorService scheduler;
 
-    private GlassFishServer server;
+    private PayaraServer server;
 
     private int delay;
 
@@ -37,29 +37,29 @@ public class ServerStatusMonitor implements Runnable {
 
     private CopyOnWriteArrayList<ServerStateListener> listeners = null;
 
-    private ServerStatusMonitor(GlassFishServer server) {
+    private ServerStatusMonitor(PayaraServer server) {
         this(server, DEFAULT_DELAY_IN_SEC);
     }
 
-    private ServerStatusMonitor(GlassFishServer server, ServerStateListener... listeners) {
+    private ServerStatusMonitor(PayaraServer server, ServerStateListener... listeners) {
         this(server, DEFAULT_DELAY_IN_SEC, listeners);
     }
 
-    private ServerStatusMonitor(GlassFishServer server, int checkInterval, ServerStateListener... listeners) {
+    private ServerStatusMonitor(PayaraServer server, int checkInterval, ServerStateListener... listeners) {
         this.server = server;
         this.delay = checkInterval;
         this.listeners = new CopyOnWriteArrayList<>(listeners);
     }
 
-    public static ServerStatusMonitor getInstance(GlassFishServer server) {
+    public static ServerStatusMonitor getInstance(PayaraServer server) {
         return new ServerStatusMonitor(server);
     }
 
-    public static ServerStatusMonitor getInstance(GlassFishServer server, ServerStateListener... listeners) {
+    public static ServerStatusMonitor getInstance(PayaraServer server, ServerStateListener... listeners) {
         return new ServerStatusMonitor(server, listeners);
     }
 
-    public static ServerStatusMonitor getInstance(GlassFishServer server, int checkInterval) {
+    public static ServerStatusMonitor getInstance(PayaraServer server, int checkInterval) {
         return new ServerStatusMonitor(server, checkInterval);
     }
 

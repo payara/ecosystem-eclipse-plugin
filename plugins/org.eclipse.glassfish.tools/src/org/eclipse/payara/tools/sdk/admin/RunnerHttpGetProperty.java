@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.logging.Level;
 
 import org.eclipse.payara.tools.sdk.logging.Logger;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  *
@@ -50,7 +50,7 @@ public class RunnerHttpGetProperty extends RunnerHttp {
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
-    public RunnerHttpGetProperty(final GlassFishServer server,
+    public RunnerHttpGetProperty(final PayaraServer server,
             final Command command) {
         super(server, command,
                 "pattern=" + ((CommandGetProperty) command).propertyPattern);

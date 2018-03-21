@@ -14,7 +14,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 
 import org.eclipse.payara.tools.sdk.admin.response.ActionReport.ExitCode;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * Runner for create JDBC connection pool command via REST interface.
@@ -30,7 +30,7 @@ public class RunnerRestCreateJDBCConnectionPool extends RunnerRest {
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
-    public RunnerRestCreateJDBCConnectionPool(final GlassFishServer server,
+    public RunnerRestCreateJDBCConnectionPool(final PayaraServer server,
             final Command command) {
         super(server, command);
     }

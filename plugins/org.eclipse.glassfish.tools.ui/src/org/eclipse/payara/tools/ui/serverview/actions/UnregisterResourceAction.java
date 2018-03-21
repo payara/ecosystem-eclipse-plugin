@@ -34,8 +34,8 @@ import org.eclipse.payara.tools.sdk.TaskState;
 import org.eclipse.payara.tools.sdk.admin.CommandDeleteResource;
 import org.eclipse.payara.tools.sdk.admin.ResultString;
 import org.eclipse.payara.tools.sdk.admin.ServerAdmin;
-import org.eclipse.payara.tools.server.GlassFishServer;
-import org.eclipse.payara.tools.server.deploying.GlassFishServerBehaviour;
+import org.eclipse.payara.tools.server.PayaraServer;
+import org.eclipse.payara.tools.server.deploying.PayaraServerBehaviour;
 import org.eclipse.payara.tools.ui.serverview.dynamicnodes.ResourcesNode;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
@@ -72,11 +72,11 @@ public class UnregisterResourceAction extends Action {
                 }
 
                 try {
-                    final GlassFishServerBehaviour be = currentResource.getServer().getServerBehaviourAdapter();
+                    final PayaraServerBehaviour be = currentResource.getServer().getServerBehaviourAdapter();
                     IRunnableWithProgress op = new IRunnableWithProgress() {
                         @Override
                         public void run(IProgressMonitor monitor) {
-                            GlassFishServer server = be.getGlassfishServerDelegate();
+                            PayaraServer server = be.getGlassfishServerDelegate();
 
                             String propName = "";
                             boolean cascadeDelete = false;

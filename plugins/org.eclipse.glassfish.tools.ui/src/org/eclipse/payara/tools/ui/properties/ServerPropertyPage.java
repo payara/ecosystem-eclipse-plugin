@@ -10,6 +10,12 @@
 package org.eclipse.payara.tools.ui.properties;
 
 import static org.eclipse.core.runtime.Status.OK_STATUS;
+import static org.eclipse.payara.tools.server.PayaraServer.ATTR_ADMIN;
+import static org.eclipse.payara.tools.server.PayaraServer.ATTR_ADMINPASS;
+import static org.eclipse.payara.tools.server.PayaraServer.ATTR_ADMINPORT;
+import static org.eclipse.payara.tools.server.PayaraServer.ATTR_DEBUG_PORT;
+import static org.eclipse.payara.tools.server.PayaraServer.ATTR_DOMAINPATH;
+import static org.eclipse.payara.tools.server.PayaraServer.getDefaultDomainDir;
 import static org.eclipse.swt.SWT.FILL;
 import static org.eclipse.wst.server.core.IServer.PUBLISH_CLEAN;
 import static org.eclipse.wst.server.core.IServer.STATE_STOPPED;
@@ -20,8 +26,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.payara.tools.sapphire.IGlassfishServerModel;
-import org.eclipse.payara.tools.server.GlassFishServer;
-import org.eclipse.payara.tools.server.deploying.GlassFishServerBehaviour;
+import org.eclipse.payara.tools.server.PayaraServer;
+import org.eclipse.payara.tools.server.deploying.PayaraServerBehaviour;
 import org.eclipse.payara.tools.ui.wizards.BaseWizardFragment;
 import org.eclipse.sapphire.FilteredListener;
 import org.eclipse.sapphire.PropertyValidationEvent;
@@ -45,9 +51,9 @@ import org.eclipse.wst.server.core.internal.Server;
 @SuppressWarnings("restriction")
 public class ServerPropertyPage extends PropertyPage {
 
-    IServerWorkingCopy serverWC;
-    GlassFishServer sunserver;
-    IGlassfishServerModel model;
+    private IServerWorkingCopy serverWC;
+    private PayaraServer payaraServer;
+    private IGlassfishServerModel model;
 
     FilteredListener<PropertyValidationEvent> listener = new FilteredListener<PropertyValidationEvent>() {
         @Override
@@ -66,8 +72,8 @@ public class ServerPropertyPage extends PropertyPage {
             serverWC = server.createWorkingCopy();
         }
 
-        sunserver = (GlassFishServer) serverWC.loadAdapter(GlassFishServer.class, new NullProgressMonitor());
-        model = sunserver.getModel();
+        payaraServer = (PayaraServer) serverWC.loadAdapter(PayaraServer.class, new NullProgressMonitor());
+        model = payaraServer.getModel();
 
         model.attach(listener, "*");
 
@@ -103,10 +109,10 @@ public class ServerPropertyPage extends PropertyPage {
     // note that this is currently not working due to issue 140
     // public void propertyChange(PropertyChangeEvent evt) {
     // if (AbstractGlassfishServer.DOMAINUPDATE == evt.getPropertyName()) {
-    // username.setText(sunserver.getAdminUser());
-    // password.setText(sunserver.getAdminPassword());
-    // adminServerPortNumber.setText(Integer.toString(sunserver.getAdminPort()));
-    // serverPortNumber.setText(Integer.toString(sunserver.getPort()));
+    // username.setText(payaraServer.getAdminUser());
+    // password.setText(payaraServer.getAdminPassword());
+    // adminServerPortNumber.setText(Integer.toString(payaraServer.getAdminPort()));
+    // serverPortNumber.setText(Integer.toString(payaraServer.getPort()));
     // }
     // }
 
@@ -131,8 +137,8 @@ public class ServerPropertyPage extends PropertyPage {
                 @Override
                 protected IStatus run(IProgressMonitor monitor) {
                     try {
-                        GlassFishServerBehaviour serverBehavior = (GlassFishServerBehaviour) serverWC
-                                .loadAdapter(GlassFishServerBehaviour.class, monitor);
+                        PayaraServerBehaviour serverBehavior = (PayaraServerBehaviour) serverWC
+                                .loadAdapter(PayaraServerBehaviour.class, monitor);
                         serverBehavior.updateServerStatus();
 
                         Server gfServer = (Server) server;
@@ -162,12 +168,11 @@ public class ServerPropertyPage extends PropertyPage {
     @Override
     protected void performDefaults() {
         super.performDefaults();
-        serverWC.setAttribute(GlassFishServer.ATTR_ADMIN, "");
-        serverWC.setAttribute(GlassFishServer.ATTR_ADMINPASS, "");
-        serverWC.setAttribute(GlassFishServer.ATTR_DOMAINPATH,
-                GlassFishServer.getDefaultDomainDir(serverWC.getRuntime().getLocation()).toString());
-        serverWC.setAttribute(GlassFishServer.ATTR_ADMINPORT, "");
-        serverWC.setAttribute(GlassFishServer.ATTR_DEBUG_PORT, "");
+        serverWC.setAttribute(ATTR_ADMIN, "");
+        serverWC.setAttribute(ATTR_ADMINPASS, "");
+        serverWC.setAttribute(ATTR_DOMAINPATH, getDefaultDomainDir(serverWC.getRuntime().getLocation()).toString());
+        serverWC.setAttribute(ATTR_ADMINPORT, "");
+        serverWC.setAttribute(ATTR_DEBUG_PORT, "");
         model.refresh();
     }
 

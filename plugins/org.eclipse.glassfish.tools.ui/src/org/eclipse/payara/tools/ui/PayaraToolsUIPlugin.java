@@ -14,7 +14,7 @@ import static org.eclipse.wst.server.core.IServer.STATE_UNKNOWN;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.resource.ImageRegistry;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.wst.server.core.IServer;
@@ -55,7 +55,7 @@ public class PayaraToolsUIPlugin extends AbstractUIPlugin {
         IServerLifecycleListener serverLifecycleListener = new IServerLifecycleListener() {
             @Override
             public void serverAdded(IServer server) {
-                if (server.loadAdapter(GlassFishServer.class, new NullProgressMonitor()) != null) {
+                if (server.loadAdapter(PayaraServer.class, new NullProgressMonitor()) != null) {
                     if (server.getServerState() == STATE_UNKNOWN) {
                         UpdateServerJob job = new UpdateServerJob(new IServer[] { server });
                         job.schedule();

@@ -14,7 +14,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import org.eclipse.payara.tools.sdk.GlassFishIdeException;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * GlassFish Server Stop Cluster Command Entity.
@@ -51,7 +51,7 @@ public class CommandStopCluster extends CommandTarget {
      * @return Stop cluster task response.
      * @throws GlassFishIdeException When error occurred during administration command execution.
      */
-    public static ResultString stopCluster(GlassFishServer server,
+    public static ResultString stopCluster(PayaraServer server,
             String target) throws GlassFishIdeException {
         Command command = new CommandStopCluster(target);
         Future<ResultString> future = ServerAdmin.<ResultString>exec(server, command);

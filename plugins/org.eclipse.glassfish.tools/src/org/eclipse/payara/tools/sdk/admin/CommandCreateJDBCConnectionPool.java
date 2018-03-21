@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import org.eclipse.payara.tools.sdk.GlassFishIdeException;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * Command that creates JDBC connection pool on server.
@@ -56,7 +56,7 @@ public class CommandCreateJDBCConnectionPool extends Command {
      * @throws GlassFishIdeException When error occurred during administration command execution.
      */
     public static ResultString createJDBCConnectionPool(
-            final GlassFishServer server, final String connectionPoolId,
+            final PayaraServer server, final String connectionPoolId,
             final String dataSourceClassName, final String resType,
             final Map<String, String> properties) throws GlassFishIdeException {
         Command command = new CommandCreateJDBCConnectionPool(connectionPoolId,
@@ -85,7 +85,7 @@ public class CommandCreateJDBCConnectionPool extends Command {
      * @throws GlassFishIdeException When error occurred during administration command execution.
      */
     public static ResultString createJDBCConnectionPool(
-            final GlassFishServer server, final String connectionPoolId,
+            final PayaraServer server, final String connectionPoolId,
             final String dataSourceClassName, final String resType,
             final Map<String, String> properties, final long timeout)
             throws GlassFishIdeException {

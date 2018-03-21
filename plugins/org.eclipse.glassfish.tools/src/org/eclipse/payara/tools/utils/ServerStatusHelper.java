@@ -38,14 +38,14 @@ import org.eclipse.payara.tools.sdk.admin.CommandLocation;
 import org.eclipse.payara.tools.sdk.admin.ResultMap;
 import org.eclipse.payara.tools.sdk.admin.ServerAdmin;
 import org.eclipse.payara.tools.server.PayaraRuntime;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 import org.eclipse.payara.tools.server.ServerStatus;
-import org.eclipse.payara.tools.server.deploying.GlassFishServerBehaviour;
+import org.eclipse.payara.tools.server.deploying.PayaraServerBehaviour;
 import org.eclipse.wst.server.core.IServer;
 
 public class ServerStatusHelper {
 
-    public static ServerStatus checkServerStatus(GlassFishServer server) {
+    public static ServerStatus checkServerStatus(PayaraServer server) {
         try {
             Thread.sleep(Math.round(Math.random() * 1000));
         } catch (InterruptedException e) {
@@ -59,7 +59,7 @@ public class ServerStatusHelper {
 
         if (server.isRemote()) {
             IServer server1 = server.getServer();
-            String remoteServerVersion = GlassFishServerBehaviour.getVersion(server);
+            String remoteServerVersion = PayaraServerBehaviour.getVersion(server);
             PayaraRuntime gfRuntime = (PayaraRuntime) server1.getRuntime().loadAdapter(PayaraRuntime.class,
                     null);
             String thisServerVersion = gfRuntime.getVersion().toString();
@@ -134,7 +134,7 @@ public class ServerStatusHelper {
         return s;
     }
 
-    private static boolean domainMatching(GlassFishServer server, Map<String, String> locationResult)
+    private static boolean domainMatching(PayaraServer server, Map<String, String> locationResult)
             throws IOException {
         if (server.isRemote()) {
             return true;

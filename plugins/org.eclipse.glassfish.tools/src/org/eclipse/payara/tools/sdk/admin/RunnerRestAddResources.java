@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * Runner executes add-resources commnad via REST interface.
@@ -29,7 +29,7 @@ public class RunnerRestAddResources extends RunnerRest {
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
-    public RunnerRestAddResources(final GlassFishServer server,
+    public RunnerRestAddResources(final PayaraServer server,
             final Command command) {
         super(server, command);
     }

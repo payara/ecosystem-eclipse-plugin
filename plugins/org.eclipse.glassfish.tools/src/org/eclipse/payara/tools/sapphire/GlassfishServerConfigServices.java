@@ -21,7 +21,7 @@ import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.payara.tools.Messages;
 import org.eclipse.payara.tools.server.PayaraRuntime;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 import org.eclipse.payara.tools.utils.PayaraLocationUtils;
 import org.eclipse.payara.tools.utils.JavaLocationDefaultValueService;
 import org.eclipse.payara.tools.utils.JavaLocationValidationService;
@@ -224,7 +224,7 @@ public final class GlassfishServerConfigServices {
         @Override
         protected Status compute() {
             IServerWorkingCopy wc = context(Value.class).element().adapt(IServerWorkingCopy.class);
-            GlassFishServer serverDelegate = (GlassFishServer) wc.loadAdapter(GlassFishServer.class, null);
+            PayaraServer serverDelegate = (PayaraServer) wc.loadAdapter(PayaraServer.class, null);
 
             return StatusBridge.create(serverDelegate.validate());
         }

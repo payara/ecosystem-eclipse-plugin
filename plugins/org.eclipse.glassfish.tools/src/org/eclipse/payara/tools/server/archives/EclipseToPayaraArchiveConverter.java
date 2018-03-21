@@ -23,7 +23,7 @@ import java.net.URLEncoder;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jst.server.core.Servlet;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 import org.eclipse.wst.server.core.IModuleArtifact;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.model.IURLProvider;
@@ -56,7 +56,7 @@ public class EclipseToPayaraArchiveConverter extends LaunchableAdapterDelegate {
             return null;
         }
 
-        GlassFishServer glassfish = load(server, GlassFishServer.class);
+        PayaraServer glassfish = load(server, PayaraServer.class);
 
         if (glassfish == null) {
             return null;

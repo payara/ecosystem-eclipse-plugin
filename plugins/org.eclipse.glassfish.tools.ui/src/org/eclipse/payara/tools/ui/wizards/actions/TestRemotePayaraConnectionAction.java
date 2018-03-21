@@ -25,9 +25,9 @@ import static org.eclipse.wst.common.frameworks.internal.dialog.ui.MessageDialog
 
 import org.eclipse.core.runtime.Status;
 import org.eclipse.payara.tools.server.PayaraRuntime;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 import org.eclipse.payara.tools.server.ServerStatus;
-import org.eclipse.payara.tools.server.deploying.GlassFishServerBehaviour;
+import org.eclipse.payara.tools.server.deploying.PayaraServerBehaviour;
 import org.eclipse.sapphire.ui.Presentation;
 import org.eclipse.sapphire.ui.SapphireActionHandler;
 import org.eclipse.swt.widgets.Display;
@@ -48,16 +48,16 @@ public class TestRemotePayaraConnectionAction extends SapphireActionHandler {
     @Override
     protected Object run(Presentation context) {
         IServerWorkingCopy wc = context.part().getModelElement().adapt(IServerWorkingCopy.class);
-        GlassFishServer glassfish = load(wc, GlassFishServer.class);
+        PayaraServer payaraServer = load(wc, PayaraServer.class);
 
-        ServerStatus serverStatus = checkServerStatus(glassfish);
+        ServerStatus serverStatus = checkServerStatus(payaraServer);
 
         if (!serverStatus.equals(RUNNING_DOMAIN_MATCHING)) {
             StringBuilder errorMessage = new StringBuilder();
             errorMessage.append("Cannot communicate with ")
-                    .append(glassfish.getServer().getHost())
+                    .append(payaraServer.getServer().getHost())
                     .append(":")
-                    .append(glassfish.getAdminPort())
+                    .append(payaraServer.getAdminPort())
                     .append(" remote server.");
 
             // Give some hints
@@ -84,7 +84,7 @@ public class TestRemotePayaraConnectionAction extends SapphireActionHandler {
 
             // Check server version
 
-            String remoteServerVersion = GlassFishServerBehaviour.getVersion(glassfish);
+            String remoteServerVersion = PayaraServerBehaviour.getVersion(payaraServer);
             String thisServerVersion = wc.getRuntime()
                     .getAdapter(PayaraRuntime.class)
                     .getVersion()

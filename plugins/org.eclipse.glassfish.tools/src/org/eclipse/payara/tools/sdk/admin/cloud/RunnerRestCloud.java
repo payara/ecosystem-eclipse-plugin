@@ -11,7 +11,7 @@ package org.eclipse.payara.tools.sdk.admin.cloud;
 
 import org.eclipse.payara.tools.sdk.admin.Command;
 import org.eclipse.payara.tools.sdk.admin.RunnerRest;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * GlassFish cloud administration command execution using REST interface.
@@ -33,7 +33,7 @@ class RunnerRestCloud extends RunnerRest {
      * @param server GlassFish cloud entity object.
      * @param command GlassFish server administration command entity.
      */
-    public RunnerRestCloud(final GlassFishServer server,
+    public RunnerRestCloud(final PayaraServer server,
             final Command command) {
         super(server, command, "/command/cloud/", null);
     }
@@ -46,7 +46,7 @@ class RunnerRestCloud extends RunnerRest {
      * @param command GlassFish server administration command entity.
      * @param query Query string for this command.
      */
-    RunnerRestCloud(final GlassFishServer server, final Command command,
+    RunnerRestCloud(final PayaraServer server, final Command command,
             final String query) {
         super(server, command, "/command/cloud/", query);
     }
@@ -60,7 +60,7 @@ class RunnerRestCloud extends RunnerRest {
      * @param path Path which builds URL we speak to.
      * @param query Query string for this command.
      */
-    RunnerRestCloud(final GlassFishServer server, final Command command,
+    RunnerRestCloud(final PayaraServer server, final Command command,
             final String path, final String query) {
         super(server, command, path, query);
     }

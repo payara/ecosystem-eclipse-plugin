@@ -15,8 +15,8 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.payara.tools.PayaraToolsPlugin;
-import org.eclipse.payara.tools.server.GlassFishServer;
-import org.eclipse.payara.tools.server.deploying.GlassFishServerBehaviour;
+import org.eclipse.payara.tools.server.PayaraServer;
+import org.eclipse.payara.tools.server.deploying.PayaraServerBehaviour;
 import org.eclipse.payara.tools.ui.serverview.dynamicnodes.DeployedWebServicesNode;
 import org.eclipse.payara.tools.ui.serverview.dynamicnodes.WebServiceNode;
 import org.eclipse.payara.tools.utils.Utils;
@@ -45,7 +45,7 @@ public class TestWebServiceAction extends Action {
                         .getParent();
 
                 try {
-                    final GlassFishServerBehaviour be = target.getServer()
+                    final PayaraServerBehaviour be = target.getServer()
                             .getServerBehaviourAdapter();
 
                     IWorkbenchBrowserSupport browserSupport = PlatformUI
@@ -55,7 +55,7 @@ public class TestWebServiceAction extends Action {
                                     IWorkbenchBrowserSupport.LOCATION_BAR
                                             | IWorkbenchBrowserSupport.NAVIGATION_BAR,
                                     null, null, null);
-                    GlassFishServer server = be.getGlassfishServerDelegate();
+                    PayaraServer server = be.getGlassfishServerDelegate();
                     String host = server.getServer().getHost();
                     int port = server.getPort();
 

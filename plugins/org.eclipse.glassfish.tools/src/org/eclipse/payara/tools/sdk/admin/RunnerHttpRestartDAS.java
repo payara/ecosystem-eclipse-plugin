@@ -9,7 +9,7 @@
 
 package org.eclipse.payara.tools.sdk.admin;
 
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * GlassFish restart DAS administration command with <code></code> query execution using HTTP
@@ -75,7 +75,7 @@ public class RunnerHttpRestartDAS extends RunnerHttp {
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
-    public RunnerHttpRestartDAS(final GlassFishServer server,
+    public RunnerHttpRestartDAS(final PayaraServer server,
             final Command command) {
         super(server, command, query(command));
     }

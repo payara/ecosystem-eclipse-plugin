@@ -10,7 +10,7 @@
 package org.eclipse.payara.tools.sdk;
 
 import org.eclipse.payara.tools.sdk.data.GlassFishStatusTask;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * GlassFish server status listener.
@@ -31,7 +31,7 @@ public interface GlassFishStatusListener {
      * @param status Current server status.
      * @param task Last GlassFish server status check task details.
      */
-    public void currentState(final GlassFishServer server,
+    public void currentState(final PayaraServer server,
             final GlassFishStatus status, final GlassFishStatusTask task);
 
     /**
@@ -42,7 +42,7 @@ public interface GlassFishStatusListener {
      * @param status Current server status.
      * @param task Last GlassFish server status check task details.
      */
-    public void newState(final GlassFishServer server,
+    public void newState(final PayaraServer server,
             final GlassFishStatus status, final GlassFishStatusTask task);
 
     /**
@@ -52,7 +52,7 @@ public interface GlassFishStatusListener {
      * @param server GlassFish server instance being monitored.
      * @param task GlassFish server status check task details.
      */
-    public void error(final GlassFishServer server,
+    public void error(final PayaraServer server,
             final GlassFishStatusTask task);
 
     /**

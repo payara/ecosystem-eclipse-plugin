@@ -10,7 +10,7 @@
 package org.eclipse.payara.tools.sdk.admin;
 
 import org.eclipse.payara.tools.sdk.utils.Utils;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * GlassFish Server <code>undeploy</code> Admin Command Execution using HTTP interface.
@@ -89,7 +89,7 @@ public class RunnerHttpUndeploy extends RunnerHttp {
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
-    public RunnerHttpUndeploy(final GlassFishServer server,
+    public RunnerHttpUndeploy(final PayaraServer server,
             final Command command) {
         super(server, command, query(command));
     }

@@ -17,7 +17,7 @@ import java.util.concurrent.TimeoutException;
 
 import org.eclipse.payara.tools.sdk.GlassFishIdeException;
 import org.eclipse.payara.tools.sdk.logging.Logger;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * Command that retrieves property (properties) from server.
@@ -60,7 +60,7 @@ public class CommandGetProperty extends Command {
      * @throws GlassFishIdeException When error occurred during administration command execution.
      */
     public static ResultMap<String, String> getProperties(
-            final GlassFishServer server, final String propertyPattern)
+            final PayaraServer server, final String propertyPattern)
             throws GlassFishIdeException {
         final String METHOD = "getProperties";
         Future<ResultMap<String, String>> future = ServerAdmin.<ResultMap<String, String>>exec(
@@ -85,7 +85,7 @@ public class CommandGetProperty extends Command {
      * @throws GlassFishIdeException When error occurred during administration command execution.
      */
     public static ResultMap<String, String> getProperties(
-            final GlassFishServer server, final String propertyPattern,
+            final PayaraServer server, final String propertyPattern,
             final long timeout)
             throws GlassFishIdeException {
         final String METHOD = "getProperties";

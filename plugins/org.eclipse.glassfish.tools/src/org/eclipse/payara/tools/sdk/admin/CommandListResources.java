@@ -15,7 +15,7 @@ import java.util.concurrent.Future;
 
 import org.eclipse.payara.tools.sdk.GlassFishIdeException;
 import org.eclipse.payara.tools.sdk.logging.Logger;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * Command that retrieves list of JDBC resources defined on server.
@@ -58,7 +58,7 @@ public class CommandListResources extends CommandTarget {
      * @return Add resource task response.
      * @throws GlassFishIdeException When error occurred during administration command execution.
      */
-    public static ResultList<String> listResources(final GlassFishServer server,
+    public static ResultList<String> listResources(final PayaraServer server,
             final String cmdSuffix, final String target)
             throws GlassFishIdeException {
         final String METHOD = "listResources";

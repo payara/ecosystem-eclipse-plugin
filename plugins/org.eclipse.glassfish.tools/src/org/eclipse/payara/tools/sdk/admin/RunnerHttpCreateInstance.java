@@ -13,7 +13,7 @@ import java.util.logging.Level;
 
 import org.eclipse.payara.tools.sdk.logging.Logger;
 import org.eclipse.payara.tools.sdk.utils.Utils;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * GlassFish instance and cluster administration command with <code>DEFAULT=&lt;target&gt;</code>
@@ -103,7 +103,7 @@ public class RunnerHttpCreateInstance extends RunnerHttp {
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
-    public RunnerHttpCreateInstance(final GlassFishServer server,
+    public RunnerHttpCreateInstance(final PayaraServer server,
             final Command command) {
         super(server, command, query(command));
     }

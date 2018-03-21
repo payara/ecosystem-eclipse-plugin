@@ -14,7 +14,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import org.eclipse.payara.tools.sdk.GlassFishIdeException;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * GlassFish server stop DAS command entity.
@@ -50,7 +50,7 @@ public class CommandStopDAS extends Command {
      * @return Stop DAS task response.
      * @throws GlassFishIdeException When error occurred during administration command execution.
      */
-    public static ResultString stopDAS(final GlassFishServer server) throws GlassFishIdeException {
+    public static ResultString stopDAS(final PayaraServer server) throws GlassFishIdeException {
         Command command = new CommandStopDAS();
         Future<ResultString> future = ServerAdmin.<ResultString>exec(server, command);
         try {

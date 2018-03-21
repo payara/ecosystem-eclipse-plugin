@@ -26,7 +26,7 @@ import static org.eclipse.payara.tools.PayaraToolsPlugin.logMessage;
 import static org.eclipse.payara.tools.Messages.serverDirectoryGone;
 import static org.eclipse.payara.tools.log.GlassfishConsoleManager.getStandardConsole;
 import static org.eclipse.payara.tools.sdk.TaskState.COMPLETED;
-import static org.eclipse.payara.tools.server.GlassFishServer.DEFAULT_DEBUG_PORT;
+import static org.eclipse.payara.tools.server.PayaraServer.DEFAULT_DEBUG_PORT;
 import static org.eclipse.payara.tools.server.archives.AssembleModules.isModuleType;
 import static org.eclipse.payara.tools.server.archives.ExportJavaEEArchive.export;
 import static org.eclipse.payara.tools.utils.ResourceUtils.RESOURCE_FILE_NAME;
@@ -106,10 +106,10 @@ import org.eclipse.payara.tools.sdk.server.FetchLogSimple;
 import org.eclipse.payara.tools.sdk.server.ServerTasks;
 import org.eclipse.payara.tools.sdk.server.ServerTasks.StartMode;
 import org.eclipse.payara.tools.server.PayaraRuntime;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 import org.eclipse.payara.tools.server.ServerStatus;
 import org.eclipse.payara.tools.server.archives.AssembleModules;
-import org.eclipse.payara.tools.server.starting.GlassfishServerLaunchDelegate;
+import org.eclipse.payara.tools.server.starting.PayaraServerLaunchDelegate;
 import org.eclipse.payara.tools.server.starting.StartupArgsImpl;
 import org.eclipse.payara.tools.utils.ResourceUtils;
 import org.eclipse.payara.tools.utils.Utils;
@@ -123,7 +123,7 @@ import org.eclipse.wst.server.core.util.PublishHelper;
 /**
  * This behavior class is called back by WTP to perform the standard operations on the Payara /
  * GlassFish server such as deploy/undeploy etc. Starting/restarting is delegated to
- * {@link GlassfishServerLaunchDelegate}.
+ * {@link PayaraServerLaunchDelegate}.
  *
  * <p>
  * This class is registered in <code>plug-in.xml</code> in the
@@ -132,7 +132,7 @@ import org.eclipse.wst.server.core.util.PublishHelper;
  *
  */
 @SuppressWarnings("restriction")
-public final class GlassFishServerBehaviour extends ServerBehaviourDelegate implements ServerStateListener {
+public final class PayaraServerBehaviour extends ServerBehaviourDelegate implements ServerStateListener {
 
     // initialized
     protected boolean needARedeploy = true; // by default, will be calculated..
@@ -145,8 +145,8 @@ public final class GlassFishServerBehaviour extends ServerBehaviourDelegate impl
 
     private static JavaRemoteApplicationLaunchConfigurationDelegate REMOTE_JAVA_APP_LAUNCH_DELEGATE = new JavaRemoteApplicationLaunchConfigurationDelegate();
 
-    public GlassFishServerBehaviour() {
-        logMessage("in GlassFishServerBehaviour CTOR ");
+    public PayaraServerBehaviour() {
+        logMessage("in PayaraServerBehaviour CTOR ");
     }
 
     @Override
@@ -185,7 +185,7 @@ public final class GlassFishServerBehaviour extends ServerBehaviourDelegate impl
                     new Status(OK, SYMBOLIC_NAME, "Attaching to remote server..."));
         }
 
-        logMessage("in GlassfishServerBehaviourDelegate restart");
+        logMessage("in PayaraServerBehaviourDelegate restart");
         stopServer(false);
 
         Thread thread = new Thread("Synchronous server start") {
@@ -193,7 +193,7 @@ public final class GlassFishServerBehaviour extends ServerBehaviourDelegate impl
             public void run() {
                 try {
                     getServer().getLaunchConfiguration(true, null).launch(launchMode, new NullProgressMonitor());
-                    logMessage("GlassfishServerBehaviourDelegate restart done");
+                    logMessage("PayaraServerBehaviourDelegate restart done");
 
                 } catch (Exception e) {
                     logError("in SunAppServerBehaviour restart", e);
@@ -266,7 +266,7 @@ public final class GlassFishServerBehaviour extends ServerBehaviourDelegate impl
 
     @Override
     public void stop(boolean force) {
-        logMessage("in GlassfishServerBehaviourDelegate stop");
+        logMessage("in PayaraServerBehaviourDelegate stop");
         stopServer(true);
     }
 
@@ -282,10 +282,10 @@ public final class GlassFishServerBehaviour extends ServerBehaviourDelegate impl
     /*
      * get the correct adapter for the GlassFish server
      */
-    public GlassFishServer getGlassfishServerDelegate() {
-        GlassFishServer payaraServer = getServer().getAdapter(GlassFishServer.class);
+    public PayaraServer getGlassfishServerDelegate() {
+        PayaraServer payaraServer = getServer().getAdapter(PayaraServer.class);
         if (payaraServer == null) {
-            payaraServer = (GlassFishServer) getServer().loadAdapter(GlassFishServer.class, new NullProgressMonitor());
+            payaraServer = (PayaraServer) getServer().loadAdapter(PayaraServer.class, new NullProgressMonitor());
         }
 
         return payaraServer;
@@ -295,7 +295,7 @@ public final class GlassFishServerBehaviour extends ServerBehaviourDelegate impl
         return statusMonitor.getServerStatus(forceUpdate);
     }
 
-    public static String getVersion(GlassFishServer server) throws GlassFishIdeException {
+    public static String getVersion(PayaraServer server) throws GlassFishIdeException {
         Future<ResultString> future = ServerAdmin.exec(server, new CommandVersion());
         try {
             ResultString result = future.get(30, SECONDS);
@@ -374,7 +374,7 @@ public final class GlassFishServerBehaviour extends ServerBehaviourDelegate impl
      * @throws CoreException
      */
     public void attach(ILaunch launch, ILaunchConfigurationWorkingCopy config, IProgressMonitor monitor) throws CoreException {
-        GlassFishServer serverDelegate = getGlassfishServerDelegate();
+        PayaraServer serverDelegate = getGlassfishServerDelegate();
         int debugPort = serverDelegate.getDebugPort();
         debugPort = debugPort == -1 ? DEFAULT_DEBUG_PORT : debugPort;
         attach(launch, config, monitor, debugPort);
@@ -758,7 +758,7 @@ public final class GlassFishServerBehaviour extends ServerBehaviourDelegate impl
     }
 
     private void updateHttpPort() throws HttpPortUpdateException {
-        GlassFishServer server = (GlassFishServer) getServer().createWorkingCopy().loadAdapter(GlassFishServer.class, null);
+        PayaraServer server = (PayaraServer) getServer().createWorkingCopy().loadAdapter(PayaraServer.class, null);
         CommandGetProperty cgp = new CommandGetProperty("*.server-config.*.http-listener-1.port");
         Future<ResultMap<String, String>> future = ServerAdmin.<ResultMap<String, String>>exec(getGlassfishServerDelegate(), cgp);
         ResultMap<String, String> result = null;
@@ -857,7 +857,7 @@ public final class GlassFishServerBehaviour extends ServerBehaviourDelegate impl
      * @stop GlassFish v3 or v3 prelude via http command
      */
     private void stopServer(boolean stopLogging) {
-        GlassFishServer server = getGlassfishServerDelegate();
+        PayaraServer server = getGlassfishServerDelegate();
 
         // Shouldn't allow stop remote server
         if (server.isRemote()) {
@@ -871,7 +871,7 @@ public final class GlassFishServerBehaviour extends ServerBehaviourDelegate impl
         }
     }
 
-    private void stopImpl(GlassFishServer server) {
+    private void stopImpl(PayaraServer server) {
         setGFServerState(IServer.STATE_STOPPING);
         StopJob j = new StopJob();
         Future<?> res = asyncJobsService.submit(j);
@@ -921,7 +921,7 @@ public final class GlassFishServerBehaviour extends ServerBehaviourDelegate impl
             startupConsole.startLogging(new FetchLogSimple(gfProcess.getInputStream()),
                     new FetchLogSimple(gfProcess.getErrorStream()));
 
-            synchronized (GlassFishServerBehaviour.this) {
+            synchronized (PayaraServerBehaviour.this) {
                 check_server_status: while (true) {
                     ServerStatus status = getServerStatus(false);
                     // System.out.println("Launch process got server status: " + status);
@@ -961,7 +961,7 @@ public final class GlassFishServerBehaviour extends ServerBehaviourDelegate impl
                     // wait for notification when server state changes
                     try {
                         // limit waiting so we can check process exit code again
-                        GlassFishServerBehaviour.this.wait(5000);
+                        PayaraServerBehaviour.this.wait(5000);
                     } catch (InterruptedException e) {
                         System.out.println("StartJob interrupted, killing startup process");
                         startupConsole.stopLogging();
@@ -994,10 +994,10 @@ public final class GlassFishServerBehaviour extends ServerBehaviourDelegate impl
                 throw new Exception("Stop call failed. Reason: " + result.getValue());
             }
 
-            synchronized (GlassFishServerBehaviour.this) {
+            synchronized (PayaraServerBehaviour.this) {
                 // wait until is really stopped
                 while (!getServerStatus(false).equals(ServerStatus.STOPPED_NOT_LISTENING)) {
-                    GlassFishServerBehaviour.this.wait();
+                    PayaraServerBehaviour.this.wait();
                 }
             }
             Server server2 = ((Server) getServer());

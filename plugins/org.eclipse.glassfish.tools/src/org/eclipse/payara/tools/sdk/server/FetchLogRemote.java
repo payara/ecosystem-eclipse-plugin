@@ -22,7 +22,7 @@ import org.eclipse.payara.tools.sdk.admin.ResultLog;
 import org.eclipse.payara.tools.sdk.admin.ServerAdmin;
 import org.eclipse.payara.tools.sdk.logging.Logger;
 import org.eclipse.payara.tools.sdk.utils.OsUtils;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * Fetch GlassFish log from remote server.
@@ -55,7 +55,7 @@ public class FetchLogRemote extends FetchLogPiped {
      * @param server GlassFish server for fetching server log.
      * @param skip Skip to the end of the log file.
      */
-    FetchLogRemote(final GlassFishServer server, final boolean skip) {
+    FetchLogRemote(final PayaraServer server, final boolean skip) {
         super(server, skip);
     }
 
@@ -73,7 +73,7 @@ public class FetchLogRemote extends FetchLogPiped {
      * @param server GlassFish server for fetching server log.
      * @param skip Skip to the end of the log file.
      */
-    FetchLogRemote(final ExecutorService executor, final GlassFishServer server,
+    FetchLogRemote(final ExecutorService executor, final PayaraServer server,
             final boolean skip) {
         super(executor, server, skip);
     }

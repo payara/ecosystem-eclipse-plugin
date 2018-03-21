@@ -9,7 +9,7 @@
 
 package org.eclipse.payara.tools.sdk.admin;
 
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * GlassFish Server REST Command Factory.
@@ -66,7 +66,7 @@ public class AdminFactoryRest extends AdminFactory {
      * @return GlassFish server administration command execution object.
      */
     @Override
-    public Runner getRunner(final GlassFishServer srv, final Command cmd) {
+    public Runner getRunner(final PayaraServer srv, final Command cmd) {
         Runner runner;
         Class cmcClass = cmd.getClass();
         RunnerRestClass rc = (RunnerRestClass) cmcClass.getAnnotation(

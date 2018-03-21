@@ -12,7 +12,7 @@ package org.eclipse.payara.tools.log;
 import static java.io.File.separator;
 import static org.eclipse.payara.tools.log.AbstractLogFilter.createFilter;
 
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IConsoleManager;
@@ -43,7 +43,7 @@ public class GlassfishConsoleManager {
      * @param server
      * @return
      */
-    public static IGlassFishConsole getStandardConsole(GlassFishServer server) {
+    public static IGlassFishConsole getStandardConsole(PayaraServer server) {
         String consoleID = createStandardConsoleName(server);
         IGlassFishConsole gfConsole = findConsole(consoleID);
         if (gfConsole == null) {
@@ -60,7 +60,7 @@ public class GlassfishConsoleManager {
      * @param server
      * @return
      */
-    public static IGlassFishConsole getServerLogFileConsole(GlassFishServer server) {
+    public static IGlassFishConsole getServerLogFileConsole(PayaraServer server) {
         String consoleID = createServerLogConsoleName(server);
         IGlassFishConsole gfConsole = findConsole(consoleID);
         if (gfConsole == null) {
@@ -76,7 +76,7 @@ public class GlassfishConsoleManager {
      * @param server
      * @return
      */
-    public static IGlassFishConsole getStartupProcessConsole(GlassFishServer server, Process launchProcess) {
+    public static IGlassFishConsole getStartupProcessConsole(PayaraServer server, Process launchProcess) {
         String consoleID = createStartupProcessConsoleName(server);
         IGlassFishConsole gfConsole = findConsole(consoleID);
         if (gfConsole == null) {
@@ -86,7 +86,7 @@ public class GlassfishConsoleManager {
         return gfConsole;
     }
 
-    public static void removeServerLogFileConsole(GlassFishServer server) {
+    public static void removeServerLogFileConsole(PayaraServer server) {
         String consoleID = createServerLogConsoleName(server);
         IGlassFishConsole gfConsole = findConsole(consoleID);
         if (gfConsole != null) {
@@ -94,17 +94,17 @@ public class GlassfishConsoleManager {
         }
     }
 
-    private static String createServerLogConsoleName(GlassFishServer server) {
+    private static String createServerLogConsoleName(PayaraServer server) {
         return server.isRemote() ? server.getServer().getName()
                 : server.getDomainsFolder() + separator + server.getDomainName() + separator + "logs"
                         + separator + "server.log";
     }
 
-    private static String createStartupProcessConsoleName(GlassFishServer server) {
+    private static String createStartupProcessConsoleName(PayaraServer server) {
         return server.getServer().getName() + " startup process";
     }
 
-    private static String createStandardConsoleName(GlassFishServer server) {
+    private static String createStandardConsoleName(PayaraServer server) {
         return server.getServer().getName();
     }
 

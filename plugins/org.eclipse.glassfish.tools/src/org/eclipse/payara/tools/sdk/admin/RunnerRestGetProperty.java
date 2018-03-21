@@ -20,7 +20,7 @@ import java.util.logging.Level;
 
 import org.eclipse.payara.tools.sdk.admin.response.MessagePart;
 import org.eclipse.payara.tools.sdk.logging.Logger;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * Command runner that executes get property command.
@@ -56,7 +56,7 @@ public class RunnerRestGetProperty extends RunnerRest {
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
-    public RunnerRestGetProperty(final GlassFishServer server,
+    public RunnerRestGetProperty(final PayaraServer server,
             final Command command) {
         super(server, command, "/command/", null);
     }

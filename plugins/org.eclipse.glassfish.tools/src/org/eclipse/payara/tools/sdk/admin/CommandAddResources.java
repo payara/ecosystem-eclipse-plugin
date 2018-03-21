@@ -19,7 +19,7 @@ import java.util.concurrent.TimeoutException;
 
 import org.eclipse.payara.tools.sdk.GlassFishIdeException;
 import org.eclipse.payara.tools.sdk.logging.Logger;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * Command registers resources defined in provided xml file on specified target.
@@ -55,7 +55,7 @@ public class CommandAddResources extends CommandTarget {
      * @return Add resource task response.
      * @throws GlassFishIdeException When error occurred during administration command execution.
      */
-    public static ResultString addResource(GlassFishServer server, File xmlResourceFile, String target) throws GlassFishIdeException {
+    public static ResultString addResource(PayaraServer server, File xmlResourceFile, String target) throws GlassFishIdeException {
         String METHOD = "addResource";
 
         Command command = new CommandAddResources(xmlResourceFile, target);
@@ -78,7 +78,7 @@ public class CommandAddResources extends CommandTarget {
      * @return Add resource task response.
      * @throws GlassFishIdeException When error occurred during administration command execution.
      */
-    public static ResultString addResource(GlassFishServer server, File xmlResourceFile, String target, long timeout)
+    public static ResultString addResource(PayaraServer server, File xmlResourceFile, String target, long timeout)
             throws GlassFishIdeException {
         String METHOD = "addResource";
         Command command = new CommandAddResources(xmlResourceFile, target);

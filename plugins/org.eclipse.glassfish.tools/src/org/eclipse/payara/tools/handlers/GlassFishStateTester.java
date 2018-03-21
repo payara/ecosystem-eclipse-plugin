@@ -13,7 +13,7 @@ import static org.eclipse.payara.tools.utils.WtpUtil.load;
 import static org.eclipse.wst.server.core.IServer.STATE_STARTED;
 
 import org.eclipse.core.expressions.PropertyTester;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 import org.eclipse.wst.server.core.IServer;
 
 public class GlassFishStateTester extends PropertyTester {
@@ -27,7 +27,7 @@ public class GlassFishStateTester extends PropertyTester {
         }
 
         if (property.equals("isRemote")) {
-            GlassFishServer gf = load(server, GlassFishServer.class);
+            PayaraServer gf = load(server, PayaraServer.class);
 
             if (gf != null) {
                 return gf.isRemote();

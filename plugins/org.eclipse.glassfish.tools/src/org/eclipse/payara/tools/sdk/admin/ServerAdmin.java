@@ -21,7 +21,7 @@ import java.util.function.Consumer;
 
 import org.eclipse.payara.tools.sdk.TaskStateListener;
 import org.eclipse.payara.tools.sdk.data.IdeContext;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * GlassFish Administration Command API.
@@ -61,7 +61,7 @@ public class ServerAdmin {
      * @deprecated {@link IdeContext} class will be removed.
      */
     @Deprecated
-    public static <E extends Result> Future<E> exec(final GlassFishServer srv, final Command cmd,
+    public static <E extends Result> Future<E> exec(final PayaraServer srv, final Command cmd,
             final IdeContext ide) {
         AdminFactory af = AdminFactory.getInstance(srv.getAdminInterface());
         Runner runner = af.getRunner(srv, cmd);
@@ -81,7 +81,7 @@ public class ServerAdmin {
      * @deprecated {@link IdeContext} class will be removed.
      */
     @Deprecated
-    public static <E extends Result> Future<E> exec(final GlassFishServer srv, final Command cmd, final IdeContext ide,
+    public static <E extends Result> Future<E> exec(final PayaraServer srv, final Command cmd, final IdeContext ide,
             final TaskStateListener... listeners) {
         AdminFactory af = AdminFactory.getInstance(srv.getAdminInterface());
         Runner runner = af.getRunner(srv, cmd);
@@ -115,7 +115,7 @@ public class ServerAdmin {
      * @deprecated {@link IdeContext} class will be removed.
      */
     @Deprecated
-    public static <E extends Result> Future<E> exec(final ExecutorService executor, final GlassFishServer srv,
+    public static <E extends Result> Future<E> exec(final ExecutorService executor, final PayaraServer srv,
             final Command cmd, final IdeContext ide) {
         AdminFactory af = AdminFactory.getInstance(srv.getAdminInterface());
         Runner runner = af.getRunner(srv, cmd);
@@ -134,7 +134,7 @@ public class ServerAdmin {
      * @deprecated {@link IdeContext} class will be removed.
      */
     @Deprecated
-    public static <E extends Result> Future<E> exec(final ExecutorService executor, final GlassFishServer srv,
+    public static <E extends Result> Future<E> exec(final ExecutorService executor, final PayaraServer srv,
             final Command cmd, final IdeContext ide, final TaskStateListener... listeners) {
         AdminFactory af = AdminFactory.getInstance(srv.getAdminInterface());
         Runner runner = af.getRunner(srv, cmd);
@@ -151,26 +151,26 @@ public class ServerAdmin {
      * @param srv Target GlassFish server.
      * @param cmd Server administration command to me executed.
      */
-    public static <E extends Result> Future<E> exec(final GlassFishServer srv, final Command cmd) {
+    public static <E extends Result> Future<E> exec(final PayaraServer srv, final Command cmd) {
         return (Future<E>) AdminFactory.getInstance(srv.getAdminInterface())
                 .getRunner(srv, cmd)
                 .execute();
     }
 
-    public static CommandBuilder executeOn(GlassFishServer server) {
+    public static CommandBuilder executeOn(PayaraServer server) {
         return new CommandBuilder(server);
     }
 
     public static class CommandBuilder {
 
-        private final GlassFishServer server;
+        private final PayaraServer server;
         Command cmd;
         long timeout = 300;
         TimeUnit timeUnit = TimeUnit.SECONDS;
         Future<?> result;
         Consumer<ResultString> onNotCompleted;
 
-        public CommandBuilder(GlassFishServer server) {
+        public CommandBuilder(PayaraServer server) {
             this.server = server;
         }
 
@@ -224,7 +224,7 @@ public class ServerAdmin {
      * @param cmd Server administration command to me executed.
      * @param listeners Listeners that are called when command execution status changes.
      */
-    public static <E extends Result> Future<E> exec(final GlassFishServer srv, final Command cmd,
+    public static <E extends Result> Future<E> exec(final PayaraServer srv, final Command cmd,
             final TaskStateListener... listeners) {
         AdminFactory af = AdminFactory.getInstance(srv.getAdminInterface());
         Runner runner = af.getRunner(srv, cmd);
@@ -242,7 +242,7 @@ public class ServerAdmin {
      * @param srv Target GlassFish server.
      * @param cmd Server administration command to me executed.
      */
-    public static <E extends Result> Future<E> exec(final ExecutorService executor, final GlassFishServer srv,
+    public static <E extends Result> Future<E> exec(final ExecutorService executor, final PayaraServer srv,
             final Command cmd) {
         AdminFactory af = AdminFactory.getInstance(srv.getAdminInterface());
         Runner runner = af.getRunner(srv, cmd);
@@ -258,7 +258,7 @@ public class ServerAdmin {
      * @param cmd Server administration command to me executed.
      * @param listeners Listeners that are called when command execution status changes.
      */
-    public static <E extends Result> Future<E> exec(final ExecutorService executor, final GlassFishServer srv,
+    public static <E extends Result> Future<E> exec(final ExecutorService executor, final PayaraServer srv,
             final Command cmd, final TaskStateListener... listeners) {
         AdminFactory af = AdminFactory.getInstance(srv.getAdminInterface());
         Runner runner = af.getRunner(srv, cmd);

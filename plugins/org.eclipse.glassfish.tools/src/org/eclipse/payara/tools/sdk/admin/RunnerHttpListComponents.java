@@ -16,7 +16,7 @@ import java.util.List;
 
 import org.eclipse.payara.tools.sdk.utils.JavaUtils;
 import org.eclipse.payara.tools.sdk.utils.ServerUtils;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * Command runner for retrieving list of components from server.
@@ -51,7 +51,7 @@ public class RunnerHttpListComponents extends RunnerHttpTarget {
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
-    public RunnerHttpListComponents(final GlassFishServer server,
+    public RunnerHttpListComponents(final PayaraServer server,
             final Command command) {
         super(server, command);
     }

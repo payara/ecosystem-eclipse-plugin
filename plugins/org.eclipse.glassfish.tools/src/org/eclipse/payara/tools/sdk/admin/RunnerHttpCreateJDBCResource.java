@@ -9,7 +9,7 @@
 
 package org.eclipse.payara.tools.sdk.admin;
 
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * GlassFish server create JDBC resource administration command execution using HTTP interface.
@@ -119,7 +119,7 @@ public class RunnerHttpCreateJDBCResource extends RunnerHttp {
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
-    public RunnerHttpCreateJDBCResource(final GlassFishServer server,
+    public RunnerHttpCreateJDBCResource(final PayaraServer server,
             final Command command) {
         super(server, command, query(command));
     }

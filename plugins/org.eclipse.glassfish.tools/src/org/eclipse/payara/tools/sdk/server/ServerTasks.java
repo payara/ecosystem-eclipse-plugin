@@ -42,7 +42,7 @@ import org.eclipse.payara.tools.sdk.server.parser.JvmConfigReader;
 import org.eclipse.payara.tools.sdk.utils.JavaUtils;
 import org.eclipse.payara.tools.sdk.utils.OsUtils;
 import org.eclipse.payara.tools.sdk.utils.Utils;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * This class should contain task methods for GF server.
@@ -90,7 +90,7 @@ public class ServerTasks {
      * process.
      * @throws GlassFishIdeException
      */
-    public static ResultProcess startServer(GlassFishServer server, StartupArgs args, StartMode mode) throws GlassFishIdeException {
+    public static ResultProcess startServer(PayaraServer server, StartupArgs args, StartMode mode) throws GlassFishIdeException {
         String METHOD = "startServer";
 
         // Reading jvm config section from domain.xml
@@ -162,7 +162,7 @@ public class ServerTasks {
      * @param server GlassFish server entity
      * @param javaHome Java SE JDK home used to run Glassfish.
      */
-    private static Map<String, String> varMap(GlassFishServer server, String javaHome) {
+    private static Map<String, String> varMap(PayaraServer server, String javaHome) {
         HashMap<String, String> varMap = new HashMap<>();
 
         varMap.put(GF_HOME_PROPERTY, server.getServerHome());
@@ -180,7 +180,7 @@ public class ServerTasks {
      * @param server GlassFish server entity.
      * @param jvmConfigReader Contains <code>jvm-options</code> from <code>domain.xwl</code>.
      */
-    private static void addJavaAgent(GlassFishServer server, JvmConfigReader jvmConfigReader) {
+    private static void addJavaAgent(PayaraServer server, JvmConfigReader jvmConfigReader) {
         List<String> optList = jvmConfigReader.getOptList();
         File serverHome = new File(server.getServerHome());
         File btrace = new File(serverHome, "lib/monitor/btrace-agent.jar");
@@ -218,7 +218,7 @@ public class ServerTasks {
      * process.
      * @throws GlassFishIdeException
      */
-    public static ResultProcess startServer(GlassFishServer server, StartupArgs args) throws GlassFishIdeException {
+    public static ResultProcess startServer(PayaraServer server, StartupArgs args) throws GlassFishIdeException {
         return startServer(server, args, StartMode.START);
     }
 

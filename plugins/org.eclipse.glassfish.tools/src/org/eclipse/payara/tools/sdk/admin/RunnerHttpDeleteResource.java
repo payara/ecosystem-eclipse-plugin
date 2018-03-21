@@ -10,7 +10,7 @@
 package org.eclipse.payara.tools.sdk.admin;
 
 import org.eclipse.payara.tools.sdk.logging.Logger;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  *
@@ -58,7 +58,7 @@ public class RunnerHttpDeleteResource extends RunnerHttp {
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
-    public RunnerHttpDeleteResource(final GlassFishServer server,
+    public RunnerHttpDeleteResource(final PayaraServer server,
             final Command command) {
         super(server, command, query((CommandDeleteResource) command));
     }

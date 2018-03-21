@@ -31,7 +31,7 @@ import java.util.logging.Level;
 import org.eclipse.payara.tools.sdk.logging.Logger;
 import org.eclipse.payara.tools.sdk.utils.NetUtils;
 import org.eclipse.payara.tools.sdk.utils.ServerUtils;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * GlassFish server administration command execution using HTTP interface.
@@ -254,7 +254,7 @@ public class RunnerHttp extends Runner {
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
-    public RunnerHttp(final GlassFishServer server, final Command command) {
+    public RunnerHttp(final PayaraServer server, final Command command) {
         this(server, command, (String) null);
     }
 
@@ -269,7 +269,7 @@ public class RunnerHttp extends Runner {
      * @param command GlassFish server administration command entity.
      * @param query Query string for this command.
      */
-    RunnerHttp(final GlassFishServer server, final Command command,
+    RunnerHttp(final PayaraServer server, final Command command,
             final String query) {
         this(server, command, "/__asadmin/", query);
     }
@@ -286,7 +286,7 @@ public class RunnerHttp extends Runner {
      * @param path Server command path.
      * @param query Query string for this command.
      */
-    protected RunnerHttp(final GlassFishServer server, final Command command,
+    protected RunnerHttp(final PayaraServer server, final Command command,
             final String path, final String query) {
         super(server, command, path, query);
         silentFailureAllowed = false;

@@ -24,7 +24,7 @@ import org.eclipse.payara.tools.sdk.server.config.JavaSEPlatform;
 import org.eclipse.payara.tools.sdk.server.config.JavaSESet;
 import org.eclipse.payara.tools.sdk.utils.JavaUtils;
 import org.eclipse.payara.tools.sdk.utils.ServerUtils;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * GlassFish server administration command execution using local Java VM.
@@ -70,7 +70,7 @@ abstract class RunnerJava extends Runner {
      * @param server GlassFish server entity object.
      * @return GlassFish server features configuration which is not <code>null</code>.
      */
-    static GlassFishConfig getServerConfig(final GlassFishServer server) {
+    static GlassFishConfig getServerConfig(final PayaraServer server) {
         final String METHOD = "getServerConfig";
         GlassFishConfig config = GlassFishConfigManager.getConfig(
                 ConfigBuilderProvider.getBuilderConfig(
@@ -106,7 +106,7 @@ abstract class RunnerJava extends Runner {
      * @param command lassFish server administration command with local Java VM.
      * @return Path to Java VM executable
      */
-    private static String getJavaVM(final GlassFishServer server,
+    private static String getJavaVM(final PayaraServer server,
             final CommandJava command) {
         final String METHOD = "getJavaVM";
         String javaVmExe = JavaUtils.javaVmExecutableFullPath(command.javaHome);
@@ -142,7 +142,7 @@ abstract class RunnerJava extends Runner {
      * @param command GlassFish server administration command entity.
      * @param query Query string for this command.
      */
-    public RunnerJava(final GlassFishServer server, final Command command,
+    public RunnerJava(final PayaraServer server, final Command command,
             final String query) {
         super(server, command, null, query);
         final String METHOD = "init";
@@ -165,7 +165,7 @@ abstract class RunnerJava extends Runner {
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
-    public RunnerJava(final GlassFishServer server, final Command command) {
+    public RunnerJava(final PayaraServer server, final Command command) {
         this(server, command, null);
     }
 

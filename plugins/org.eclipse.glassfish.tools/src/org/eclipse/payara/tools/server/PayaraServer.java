@@ -69,7 +69,7 @@ import org.eclipse.payara.tools.sdk.server.parser.HttpData;
 import org.eclipse.payara.tools.sdk.server.parser.HttpListenerReader;
 import org.eclipse.payara.tools.sdk.server.parser.NetworkListenerReader;
 import org.eclipse.payara.tools.sdk.server.parser.TargetConfigNameReader;
-import org.eclipse.payara.tools.server.deploying.GlassFishServerBehaviour;
+import org.eclipse.payara.tools.server.deploying.PayaraServerBehaviour;
 import org.eclipse.payara.tools.utils.PayaraLocationUtils;
 import org.eclipse.payara.tools.utils.ModuleUtil;
 import org.eclipse.payara.tools.utils.Utils;
@@ -114,7 +114,7 @@ import org.eclipse.wst.server.core.model.ServerDelegate;
  *
  */
 @SuppressWarnings("restriction")
-public final class GlassFishServer extends ServerDelegate implements IURLProvider {
+public final class PayaraServer extends ServerDelegate implements IURLProvider {
 
     public static final String TYPE_ID = "payara.server";
     public static final IServerType TYPE = ServerCore.findServerType(TYPE_ID);
@@ -153,7 +153,7 @@ public final class GlassFishServer extends ServerDelegate implements IURLProvide
 
     @Override
     protected void initialize() {
-        logMessage("in GlassFishServer initialize" + this.getServer().getName()); //$NON-NLS-1$
+        logMessage("in PayaraServer initialize" + this.getServer().getName()); //$NON-NLS-1$
 
         if (getServerWorkingCopy() != null) {
             readDomainConfig();
@@ -204,11 +204,11 @@ public final class GlassFishServer extends ServerDelegate implements IURLProvide
 
     // #### Other public methods
 
-    public GlassFishServerBehaviour getServerBehaviourAdapter() {
-        GlassFishServerBehaviour serverBehavior = getServer().getAdapter(GlassFishServerBehaviour.class);
+    public PayaraServerBehaviour getServerBehaviourAdapter() {
+        PayaraServerBehaviour serverBehavior = getServer().getAdapter(PayaraServerBehaviour.class);
 
         if (serverBehavior == null) {
-            serverBehavior = (GlassFishServerBehaviour) getServer().loadAdapter(GlassFishServerBehaviour.class,
+            serverBehavior = (PayaraServerBehaviour) getServer().loadAdapter(PayaraServerBehaviour.class,
                     new NullProgressMonitor());
         }
 
@@ -368,7 +368,7 @@ public final class GlassFishServer extends ServerDelegate implements IURLProvide
                 }
 
                 if (server.getServerType() == this.getServer().getServerType()) {
-                    GlassFishServer gfServer = (GlassFishServer) server.loadAdapter(GlassFishServer.class, null);
+                    PayaraServer gfServer = (PayaraServer) server.loadAdapter(PayaraServer.class, null);
                     File p1 = new File(getDomainPath());
                     File p2 = new File(gfServer.getDomainPath());
 
@@ -451,10 +451,10 @@ public final class GlassFishServer extends ServerDelegate implements IURLProvide
         }
     }
 
-    public static GlassFishServer getGlassfishServerDelegate(IServerWorkingCopy server) {
-        GlassFishServer glassfishDelegate = server.getOriginal().getAdapter(GlassFishServer.class);
+    public static PayaraServer getGlassfishServerDelegate(IServerWorkingCopy server) {
+        PayaraServer glassfishDelegate = server.getOriginal().getAdapter(PayaraServer.class);
         if (glassfishDelegate == null) {
-            glassfishDelegate = (GlassFishServer) server.getOriginal().loadAdapter(GlassFishServer.class,
+            glassfishDelegate = (PayaraServer) server.getOriginal().loadAdapter(PayaraServer.class,
                     new NullProgressMonitor());
         }
 

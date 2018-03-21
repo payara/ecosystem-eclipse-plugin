@@ -22,8 +22,8 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.payara.tools.PayaraToolsPlugin;
-import org.eclipse.payara.tools.server.GlassFishServer;
-import org.eclipse.payara.tools.server.deploying.GlassFishServerBehaviour;
+import org.eclipse.payara.tools.server.PayaraServer;
+import org.eclipse.payara.tools.server.deploying.PayaraServerBehaviour;
 import org.eclipse.payara.tools.ui.serverview.dynamicnodes.DeployedApplicationsNode;
 import org.eclipse.payara.tools.ui.serverview.dynamicnodes.TreeNode;
 import org.eclipse.swt.widgets.Event;
@@ -57,11 +57,11 @@ public class OpenInBrowserAction extends Action {
                 DeployedApplicationsNode target = (DeployedApplicationsNode) module.getParent();
 
                 try {
-                    GlassFishServerBehaviour be = target.getServer().getServerBehaviourAdapter();
+                    PayaraServerBehaviour be = target.getServer().getServerBehaviourAdapter();
 
                     IWorkbenchBrowserSupport browserSupport = PlatformUI.getWorkbench().getBrowserSupport();
                     IWebBrowser browser = browserSupport.createBrowser(LOCATION_BAR | NAVIGATION_BAR, null, null, null);
-                    GlassFishServer server = be.getGlassfishServerDelegate();
+                    PayaraServer server = be.getGlassfishServerDelegate();
                     String host = server.getServer().getHost();
                     int port = server.getPort();
 

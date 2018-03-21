@@ -11,7 +11,7 @@ package org.eclipse.payara.tools.sdk.admin;
 
 import java.text.MessageFormat;
 
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  *
@@ -41,7 +41,7 @@ public class RunnerHttpSetProperty extends RunnerHttp {
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
-    public RunnerHttpSetProperty(final GlassFishServer server,
+    public RunnerHttpSetProperty(final PayaraServer server,
             final Command command) {
         super(server, command, query((CommandSetProperty) command));
     }

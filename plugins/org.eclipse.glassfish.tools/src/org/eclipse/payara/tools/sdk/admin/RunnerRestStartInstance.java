@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * Command runner executes start instance command.
@@ -30,7 +30,7 @@ public class RunnerRestStartInstance extends RunnerRest {
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
-    public RunnerRestStartInstance(final GlassFishServer server,
+    public RunnerRestStartInstance(final PayaraServer server,
             final Command command) {
         super(server, command);
     }

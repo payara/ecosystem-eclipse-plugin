@@ -33,7 +33,7 @@ import org.eclipse.payara.tools.sdk.admin.ResultMap;
 import org.eclipse.payara.tools.sdk.admin.ResultString;
 import org.eclipse.payara.tools.sdk.admin.ServerAdmin;
 import org.eclipse.payara.tools.sdk.logging.Logger;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 import org.eclipse.sapphire.Version;
 
 /**
@@ -502,7 +502,7 @@ public class ServerStatus implements Closeable {
         ////////////////////////////////////////////////////////////////////////
 
         /** GlassFish server to be tested. */
-        final GlassFishServer server;
+        final PayaraServer server;
 
         /**
          * Task start time. Used for logging purposes. Value of <code>-1</code> means that start time was
@@ -529,7 +529,7 @@ public class ServerStatus implements Closeable {
          *
          * @param server GlassFish server to be checked.
          */
-        Task(final GlassFishServer server) {
+        Task(final PayaraServer server) {
             this.server = server;
             this.tmStart = -1;
         }
@@ -627,7 +627,7 @@ public class ServerStatus implements Closeable {
          * @param server GlassFish server to be checked.
          * @param timeout Socked connecting timeout.
          */
-        AdminPortTask(final GlassFishServer server, final int timeout) {
+        AdminPortTask(final PayaraServer server, final int timeout) {
             super(server);
             this.host = server.getHost();
             this.port = server.getAdminPort();
@@ -788,7 +788,7 @@ public class ServerStatus implements Closeable {
          * @param startup Trigger startup mode. Triggers longer administration commands execution timeouts
          * when <code>true</code>.
          */
-        LocationsTask(final GlassFishServer server, final boolean startup) {
+        LocationsTask(final PayaraServer server, final boolean startup) {
             super(server);
             this.command = new CommandLocation();
             this.startup = startup;
@@ -931,7 +931,7 @@ public class ServerStatus implements Closeable {
          * @param startup Trigger startup mode. Triggers longer administration commands execution timeouts
          * when <code>true</code>.
          */
-        VersionTask(final GlassFishServer server, final boolean startup) {
+        VersionTask(final PayaraServer server, final boolean startup) {
             super(server);
             this.command = new CommandVersion();
             this.startup = startup;
@@ -1091,7 +1091,7 @@ public class ServerStatus implements Closeable {
      * @param startup Trigger startup mode. Triggers longer administration commands execution timeouts
      * when <code>true</code>.
      */
-    public ServerStatus(final GlassFishServer server, final boolean startup) {
+    public ServerStatus(final PayaraServer server, final boolean startup) {
         this.executor = ServerAdmin.executor(EXECUTOR_POOL_SIZE);
         this.adminPortTask = new AdminPortTask(server, CONNECT_TIMEOUT);
         this.versionTask = new VersionTask(server, startup);

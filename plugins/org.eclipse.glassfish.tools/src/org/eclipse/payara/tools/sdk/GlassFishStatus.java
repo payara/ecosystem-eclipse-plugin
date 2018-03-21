@@ -19,7 +19,7 @@ import org.eclipse.payara.tools.sdk.logging.Logger;
 import org.eclipse.payara.tools.sdk.server.state.GlassFishStatusEntity;
 import org.eclipse.payara.tools.sdk.server.state.StatusJob;
 import org.eclipse.payara.tools.sdk.server.state.StatusScheduler;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * GlassFish server status.
@@ -190,7 +190,7 @@ public enum GlassFishStatus {
      * @return Value of <code>true</code> when server instance was successfully added into scheduler and
      * status checking job was started or <code>false</code> otherwise.
      */
-    public static boolean add(final GlassFishServer srv) {
+    public static boolean add(final PayaraServer srv) {
         StatusScheduler scheduler = StatusScheduler.getInstance();
         if (!scheduler.exists(srv)) {
             GlassFishStatusEntity status = new GlassFishStatusEntity(srv);
@@ -215,7 +215,7 @@ public enum GlassFishStatus {
      * @return Value of <code>true</code> when server instance was successfully added into scheduler and
      * status checking job was started or <code>false</code> otherwise.
      */
-    public static boolean add(final GlassFishServer srv,
+    public static boolean add(final PayaraServer srv,
             final GlassFishStatusListener listener, final boolean currentState,
             final GlassFishStatus... newState) {
         StatusScheduler scheduler = StatusScheduler.getInstance();
@@ -239,7 +239,7 @@ public enum GlassFishStatus {
      * @return GlassFish server instance status. Returns <code>UNKNOWN</code> value for unregistered
      * server instance.
      */
-    public static GlassFishStatus getStatus(final GlassFishServer srv) {
+    public static GlassFishStatus getStatus(final PayaraServer srv) {
         GlassFishServerStatus status = StatusScheduler.getInstance().get(srv, null);
         return status != null ? status.getStatus() : GlassFishStatus.UNKNOWN;
     }
@@ -258,7 +258,7 @@ public enum GlassFishStatus {
      * @return GlassFish server instance status. Returns <code>UNKNOWN</code> value for unregistered
      * server instance.
      */
-    public static GlassFishStatus getStatus(final GlassFishServer srv,
+    public static GlassFishStatus getStatus(final PayaraServer srv,
             final GlassFishStatusListener listener) {
         GlassFishServerStatus status = StatusScheduler.getInstance().get(srv, listener);
         return status != null ? status.getStatus() : GlassFishStatus.UNKNOWN;
@@ -275,7 +275,7 @@ public enum GlassFishStatus {
      * @return GlassFish server status {@link GlassFishServerStatus} object. Returns <code>null</code>
      * value for unregistered server instance.
      */
-    public static GlassFishServerStatus get(final GlassFishServer srv) {
+    public static GlassFishServerStatus get(final PayaraServer srv) {
         return StatusScheduler.getInstance().get(srv, null);
     }
 
@@ -293,7 +293,7 @@ public enum GlassFishStatus {
      * @return GlassFish server status {@link GlassFishServerStatus} object. Returns <code>null</code>
      * value for unregistered server instance.
      */
-    public static GlassFishServerStatus get(final GlassFishServer srv,
+    public static GlassFishServerStatus get(final PayaraServer srv,
             final GlassFishStatusListener listener) {
         return StatusScheduler.getInstance().get(srv, listener);
     }
@@ -313,7 +313,7 @@ public enum GlassFishStatus {
      * @return Value of <code>true</code> when server instance was successfully added into scheduler and
      * status checking job was started or <code>false</code> otherwise.
      */
-    public static boolean start(final GlassFishServer srv, final boolean force,
+    public static boolean start(final PayaraServer srv, final boolean force,
             final GlassFishStatusListener listener,
             final GlassFishStatus... newState) {
         return StatusScheduler.getInstance().start(
@@ -330,7 +330,7 @@ public enum GlassFishStatus {
      * @return Value of <code>true</code> when server instance was successfully added into scheduler and
      * status checking job was started or <code>false</code> otherwise.
      */
-    public static boolean start(final GlassFishServer srv) {
+    public static boolean start(final PayaraServer srv) {
         return StatusScheduler.getInstance().start(srv, false, null);
     }
 
@@ -344,7 +344,7 @@ public enum GlassFishStatus {
      * @return Value of <code>true</code> when server instance was successfully added into scheduler and
      * status checking job was started or <code>false</code> otherwise.
      */
-    public static boolean shutdown(final GlassFishServer srv) {
+    public static boolean shutdown(final PayaraServer srv) {
         return StatusScheduler.getInstance().shutdown(srv);
     }
 
@@ -360,7 +360,7 @@ public enum GlassFishStatus {
      * and status checking job was stopped or <code>false</code> when server instance was not
      * registered.
      */
-    public static boolean remove(final GlassFishServer srv) {
+    public static boolean remove(final PayaraServer srv) {
         return StatusScheduler.getInstance().remove(srv);
     }
 
@@ -372,7 +372,7 @@ public enum GlassFishStatus {
      * @return Value of <code>true</code> when server instance monitoring was suspended or
      * <code>false</code> when server instance is not registered.
      */
-    public static boolean suspend(final GlassFishServer srv) {
+    public static boolean suspend(final PayaraServer srv) {
         return StatusScheduler.getInstance().suspend(srv);
     }
 
@@ -385,7 +385,7 @@ public enum GlassFishStatus {
      * @return Value of <code>true</code> when listener was added or <code>false</code> when this
      * listener was already registered or GlassFish server instance was not registered.
      */
-    public static boolean addCheckListener(final GlassFishServer srv,
+    public static boolean addCheckListener(final PayaraServer srv,
             final GlassFishStatusListener listener) {
         final StatusJob job = StatusScheduler.getInstance().getJob(srv);
         if (job != null) {
@@ -406,7 +406,7 @@ public enum GlassFishStatus {
      * <code>false</code> when this listener was already registered in all requested lists or GlassFish
      * server instance was not registered.
      */
-    public static boolean addChangeListener(final GlassFishServer srv,
+    public static boolean addChangeListener(final PayaraServer srv,
             final GlassFishStatusListener listener,
             final GlassFishStatus... newState) {
         final StatusJob job = StatusScheduler.getInstance().getJob(srv);
@@ -427,7 +427,7 @@ public enum GlassFishStatus {
      * <code>false</code> when this listener was already registered in all requested lists or GlassFish
      * server instance was not registered.
      */
-    public static boolean addErrorListener(final GlassFishServer srv,
+    public static boolean addErrorListener(final PayaraServer srv,
             final GlassFishStatusListener listener) {
         final StatusJob job = StatusScheduler.getInstance().getJob(srv);
         if (job != null) {
@@ -449,7 +449,7 @@ public enum GlassFishStatus {
      * <code>false</code> when this listener was already registered in all requested lists or GlassFish
      * server instance was not registered.
      */
-    public static boolean addListener(final GlassFishServer srv,
+    public static boolean addListener(final PayaraServer srv,
             final GlassFishStatusListener listener, final boolean currentState,
             final GlassFishStatus... newState) {
         final StatusJob job = StatusScheduler.getInstance().getJob(srv);
@@ -470,7 +470,7 @@ public enum GlassFishStatus {
      * listener was not found among registered listeners or GlassFish server instance was not
      * registered.
      */
-    public static boolean removeListener(final GlassFishServer srv,
+    public static boolean removeListener(final PayaraServer srv,
             final GlassFishStatusListener listener) {
         final StatusJob job = StatusScheduler.getInstance().getJob(srv);
         if (job != null) {

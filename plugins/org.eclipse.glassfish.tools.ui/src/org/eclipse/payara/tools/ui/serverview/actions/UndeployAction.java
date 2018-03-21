@@ -25,7 +25,7 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.TreeSelection;
-import org.eclipse.payara.tools.server.deploying.GlassFishServerBehaviour;
+import org.eclipse.payara.tools.server.deploying.PayaraServerBehaviour;
 import org.eclipse.payara.tools.ui.serverview.dynamicnodes.DeployedApplicationsNode;
 import org.eclipse.payara.tools.ui.serverview.dynamicnodes.TreeNode;
 import org.eclipse.swt.widgets.Display;
@@ -68,7 +68,7 @@ public class UndeployAction extends Action {
                 final DeployedApplicationsNode target = (DeployedApplicationsNode) module.getParent();
 
                 try {
-                    final GlassFishServerBehaviour be = target.getServer().getServerBehaviourAdapter();
+                    final PayaraServerBehaviour be = target.getServer().getServerBehaviourAdapter();
                     IRunnableWithProgress op = new IRunnableWithProgress() {
                         @Override
                         public void run(IProgressMonitor monitor) {

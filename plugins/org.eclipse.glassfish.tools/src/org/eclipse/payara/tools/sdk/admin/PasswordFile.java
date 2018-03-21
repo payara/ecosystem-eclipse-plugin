@@ -27,7 +27,7 @@ import java.util.logging.Level;
 
 import org.eclipse.payara.tools.sdk.logging.Logger;
 import org.eclipse.payara.tools.sdk.utils.OsUtils;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * Support for <code>asadmin</code> <code>--passwordfile</code> file format.
@@ -126,7 +126,7 @@ public class PasswordFile {
     // Static methods //
     ////////////////////////////////////////////////////////////////////////////
 
-    public static Path buildPasswordFilePath(final GlassFishServer server) {
+    public static Path buildPasswordFilePath(final PayaraServer server) {
         final String METHOD = "buildPasswordFilePath";
         String domainsFolder = server.getDomainsFolder();
         String domainName = server.getDomainName();
@@ -162,12 +162,12 @@ public class PasswordFile {
      * format.
      * <p/>
      * Content of password file is not read from file so at least administrator password from
-     * {@link GlassFishServer} must be provided.
+     * {@link PayaraServer} must be provided.
      * <p/>
      *
      * @param server GlassFish server instance.
      */
-    PasswordFile(final GlassFishServer server) {
+    PasswordFile(final PayaraServer server) {
         file = buildPasswordFilePath(server);
         this.adminPassword = server.getAdminPassword();
         masterPassword = null;

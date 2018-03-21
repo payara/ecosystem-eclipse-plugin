@@ -9,7 +9,7 @@
 
 package org.eclipse.payara.tools.sdk.admin;
 
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * Runner executes add-resources command via HTTP interface.
@@ -54,7 +54,7 @@ public class RunnerHttpAddResources extends RunnerHttp {
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
-    public RunnerHttpAddResources(final GlassFishServer server,
+    public RunnerHttpAddResources(final PayaraServer server,
             final Command command) {
         super(server, command, query(command));
     }

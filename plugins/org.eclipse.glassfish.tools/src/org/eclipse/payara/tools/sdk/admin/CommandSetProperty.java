@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import org.eclipse.payara.tools.sdk.GlassFishIdeException;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * Command that sets property (properties) on the server.
@@ -80,7 +80,7 @@ public class CommandSetProperty extends Command {
      * @throws GlassFishIdeException When error occurred during administration command execution.
      */
     public static ResultString setProperty(
-            final GlassFishServer server, final CommandSetProperty command)
+            final PayaraServer server, final CommandSetProperty command)
             throws GlassFishIdeException {
         Future<ResultString> future = ServerAdmin.<ResultString>exec(server, command);
         try {
@@ -102,7 +102,7 @@ public class CommandSetProperty extends Command {
      * @throws GlassFishIdeException When error occurred during administration command execution.
      */
     public static ResultString setProperty(
-            final GlassFishServer server, final CommandSetProperty command,
+            final PayaraServer server, final CommandSetProperty command,
             final long timeout) throws GlassFishIdeException {
         Future<ResultString> future = ServerAdmin.<ResultString>exec(server, command);
         try {

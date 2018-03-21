@@ -12,7 +12,7 @@ package org.eclipse.payara.tools.sdk.server.state;
 import org.eclipse.payara.tools.sdk.GlassFishStatus;
 import org.eclipse.payara.tools.sdk.data.GlassFishServerStatus;
 import org.eclipse.payara.tools.sdk.logging.Logger;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * GlassFish server status entity.
@@ -34,7 +34,7 @@ public class GlassFishStatusEntity implements GlassFishServerStatus {
     ////////////////////////////////////////////////////////////////////////////
 
     /** GlassFish server entity. */
-    private GlassFishServer server;
+    private PayaraServer server;
 
     /** Current GlassFish server status. */
     private GlassFishStatus status;
@@ -51,7 +51,7 @@ public class GlassFishStatusEntity implements GlassFishServerStatus {
      *
      * @param server GlassFish server entity.
      */
-    public GlassFishStatusEntity(final GlassFishServer server) {
+    public GlassFishStatusEntity(final PayaraServer server) {
         this.server = server;
         this.status = GlassFishStatus.UNKNOWN;
     }
@@ -67,7 +67,7 @@ public class GlassFishStatusEntity implements GlassFishServerStatus {
      * @return GlassFish server entity.
      */
     @Override
-    public GlassFishServer getServer() {
+    public PayaraServer getServer() {
         return server;
     }
 
@@ -77,7 +77,7 @@ public class GlassFishStatusEntity implements GlassFishServerStatus {
      *
      * @param server GlassFish server entity.
      */
-    void setServer(final GlassFishServer server) {
+    void setServer(final PayaraServer server) {
         this.server = server;
     }
 

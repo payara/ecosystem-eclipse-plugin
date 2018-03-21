@@ -10,7 +10,7 @@
 package org.eclipse.payara.tools.sdk.admin;
 
 import org.eclipse.payara.tools.sdk.utils.Utils;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * GlassFish Server <code>enable</code> and <code>disable</code> administration command execution
@@ -89,7 +89,7 @@ public class RunnerHttpEnableDisable extends RunnerHttp {
      * @param server GlassFish server entity object.
      * @param command GlassFish Server Admin Command Entity.
      */
-    public RunnerHttpEnableDisable(final GlassFishServer server,
+    public RunnerHttpEnableDisable(final PayaraServer server,
             final Command command) {
         super(server, command, query(command));
     }

@@ -21,7 +21,7 @@ import java.util.logging.Level;
 
 import org.eclipse.payara.tools.sdk.GlassFishIdeException;
 import org.eclipse.payara.tools.sdk.logging.Logger;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * Command runner for deploying directory or file.
@@ -47,7 +47,7 @@ public class RunnerRestDeploy extends RunnerRest {
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
-    public RunnerRestDeploy(final GlassFishServer server,
+    public RunnerRestDeploy(final PayaraServer server,
             final Command command) {
         super(server, command);
         this.command = (CommandDeploy) command;

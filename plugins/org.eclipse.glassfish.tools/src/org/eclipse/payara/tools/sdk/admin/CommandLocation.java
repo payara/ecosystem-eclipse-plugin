@@ -13,7 +13,7 @@ import java.io.File;
 import java.net.URI;
 
 import org.eclipse.payara.tools.sdk.utils.ServerUtils;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * Locations command used to determine locations (installation, domain etc.) where the DAS is
@@ -64,7 +64,7 @@ public class CommandLocation extends Command {
      */
     public static boolean verifyResult(
             final ResultMap<String, String> resultMap,
-            final GlassFishServer server) {
+            final PayaraServer server) {
         if (!server.isRemote()) {
             boolean result = false;
             String domainRootResult = resultMap.getValue().get(DOMAIN_ROOT_RESULT_KEY);

@@ -64,8 +64,8 @@ import org.eclipse.payara.tools.log.IGlassFishConsole;
 import org.eclipse.payara.tools.sdk.admin.ResultProcess;
 import org.eclipse.payara.tools.sdk.server.FetchLogPiped;
 import org.eclipse.payara.tools.sdk.server.ServerTasks.StartMode;
-import org.eclipse.payara.tools.server.GlassFishServer;
-import org.eclipse.payara.tools.server.deploying.GlassFishServerBehaviour;
+import org.eclipse.payara.tools.server.PayaraServer;
+import org.eclipse.payara.tools.server.deploying.PayaraServerBehaviour;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.server.core.IServer;
@@ -83,7 +83,7 @@ import org.eclipse.wst.server.core.model.ServerDelegate;
  *
  */
 @SuppressWarnings("restriction")
-public class GlassfishServerLaunchDelegate extends AbstractJavaLaunchConfigurationDelegate {
+public class PayaraServerLaunchDelegate extends AbstractJavaLaunchConfigurationDelegate {
 
     public static final String GFV3_MODULES_DIR_NAME = "modules"; //$NON-NLS-1$
 
@@ -103,8 +103,8 @@ public class GlassfishServerLaunchDelegate extends AbstractJavaLaunchConfigurati
             abort("missing Server", null, ERR_INTERNAL_ERROR); //$NON-NLS-1$
         }
 
-        GlassFishServerBehaviour serverBehavior = load(server, GlassFishServerBehaviour.class);
-        GlassFishServer serverAdapter = load(server, GlassFishServer.class);
+        PayaraServerBehaviour serverBehavior = load(server, PayaraServerBehaviour.class);
+        PayaraServer serverAdapter = load(server, PayaraServer.class);
 
         serverBehavior.setLaunch(launch);
 
@@ -176,7 +176,7 @@ public class GlassfishServerLaunchDelegate extends AbstractJavaLaunchConfigurati
 
     // #### Private methods
 
-    private void startDASAndTarget(GlassFishServer serverAdapter, GlassFishServerBehaviour serverBehavior,
+    private void startDASAndTarget(PayaraServer serverAdapter, PayaraServerBehaviour serverBehavior,
             ILaunchConfiguration configuration, ILaunch launch, String mode, IProgressMonitor monitor)
             throws CoreException, InterruptedException {
 
@@ -264,7 +264,7 @@ public class GlassfishServerLaunchDelegate extends AbstractJavaLaunchConfigurati
 
     }
 
-    private void addJavaOptions(GlassFishServer serverAdapter, String mode, StartupArgsImpl args, String vmArgs) {
+    private void addJavaOptions(PayaraServer serverAdapter, String mode, StartupArgsImpl args, String vmArgs) {
 
         // Debug port was specified by user, use it
         if (DEBUG_MODE.equals(mode)) {
@@ -298,21 +298,21 @@ public class GlassfishServerLaunchDelegate extends AbstractJavaLaunchConfigurati
         monitor.worked(work);
     }
 
-    private boolean isRunning(GlassFishServerBehaviour serverBehavior) throws CoreException {
+    private boolean isRunning(PayaraServerBehaviour serverBehavior) throws CoreException {
         IServer thisServer = serverBehavior.getServer();
 
         for (IServer server : ServerCore.getServers()) {
 
             if (server != thisServer && server.getServerState() == STATE_STARTED) {
                 ServerDelegate delegate = load(server, ServerDelegate.class);
-                if (delegate instanceof GlassFishServer) {
-                    GlassFishServer runingGfServer = (GlassFishServer) delegate;
+                if (delegate instanceof PayaraServer) {
+                    PayaraServer runingGfServer = (PayaraServer) delegate;
 
                     if (runingGfServer.isRemote()) {
                         continue;
                     }
 
-                    GlassFishServer thisGfServer = (GlassFishServer) (load(thisServer, ServerDelegate.class));
+                    PayaraServer thisGfServer = (PayaraServer) (load(thisServer, ServerDelegate.class));
                     if (runingGfServer.getPort() == thisGfServer.getPort()
                             || runingGfServer.getAdminPort() == thisGfServer.getAdminPort()) {
                         abort(canntCommunicate, new RuntimeException(domainNotMatch), ERR_INTERNAL_ERROR);
@@ -347,7 +347,7 @@ public class GlassfishServerLaunchDelegate extends AbstractJavaLaunchConfigurati
         return false;
     }
 
-    private void startLogging(final GlassFishServer serverAdapter, final GlassFishServerBehaviour serverBehavior) {
+    private void startLogging(final PayaraServer serverAdapter, final PayaraServerBehaviour serverBehavior) {
         try {
             PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
                 File logFile = new File(serverAdapter.getDomainPath() + "/logs/server.log"); //$NON-NLS-1$
@@ -388,10 +388,10 @@ public class GlassfishServerLaunchDelegate extends AbstractJavaLaunchConfigurati
 
     static class GlassfishServerDebugListener implements IDebugEventSetListener {
 
-        private GlassFishServerBehaviour serverBehavior;
+        private PayaraServerBehaviour serverBehavior;
         private String debugTargetIdentifier;
 
-        public GlassfishServerDebugListener(GlassFishServerBehaviour serverBehavior, String debugTargetIdentifier) {
+        public GlassfishServerDebugListener(PayaraServerBehaviour serverBehavior, String debugTargetIdentifier) {
             this.serverBehavior = serverBehavior;
             this.debugTargetIdentifier = debugTargetIdentifier;
         }

@@ -15,7 +15,7 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * Command runner for creating a cluster.
@@ -32,7 +32,7 @@ public class RunnerRestCreateCluster extends RunnerRest {
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
-    public RunnerRestCreateCluster(final GlassFishServer server,
+    public RunnerRestCreateCluster(final PayaraServer server,
             final Command command) {
         super(server, command, "/management/domain/clusters/cluster/", null);
     }

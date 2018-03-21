@@ -14,7 +14,7 @@ import java.io.InputStream;
 import java.util.logging.Level;
 
 import org.eclipse.payara.tools.sdk.logging.Logger;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * Fetch GlassFish log from server.
@@ -36,7 +36,7 @@ public abstract class FetchLog {
     ////////////////////////////////////////////////////////////////////////////
 
     /** GlassFish server for fetching server log. */
-    GlassFishServer server;
+    PayaraServer server;
 
     /** Input stream which will provide access to log retrieved from server. */
     final InputStream in;
@@ -86,7 +86,7 @@ public abstract class FetchLog {
      * @param skip Skip to the end of the log file.
      */
     @SuppressWarnings("OverridableMethodCallInConstructor")
-    FetchLog(GlassFishServer server, boolean skip) {
+    FetchLog(PayaraServer server, boolean skip) {
         this.server = server;
         this.in = initInputStream();
         this.skip = skip;

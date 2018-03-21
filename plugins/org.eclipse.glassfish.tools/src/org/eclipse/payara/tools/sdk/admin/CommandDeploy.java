@@ -16,7 +16,7 @@ import java.util.concurrent.ExecutionException;
 
 import org.eclipse.payara.tools.sdk.GlassFishIdeException;
 import org.eclipse.payara.tools.sdk.TaskStateListener;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * GlassFish Server Deploy Command Entity.
@@ -54,7 +54,7 @@ public class CommandDeploy extends CommandTargetName {
      * @return Deploy task response.
      * @throws GlassFishIdeException When error occurred during administration command execution.
      */
-    public static ResultString deploy(GlassFishServer server, File application, TaskStateListener listener) throws GlassFishIdeException {
+    public static ResultString deploy(PayaraServer server, File application, TaskStateListener listener) throws GlassFishIdeException {
         try {
             return ServerAdmin.<ResultString>exec(server, new CommandDeploy(null, null, application, null, null, null), listener).get();
         } catch (InterruptedException | ExecutionException | CancellationException ie) {

@@ -22,7 +22,7 @@ import org.eclipse.payara.tools.sdk.admin.response.ResponseParserFactory;
 import org.eclipse.payara.tools.sdk.admin.response.RestActionReport;
 import org.eclipse.payara.tools.sdk.admin.response.RestResponseParser;
 import org.eclipse.payara.tools.sdk.utils.ServerUtils;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * GlassFish server administration command execution using REST interface.
@@ -65,7 +65,7 @@ public class RunnerRest extends Runner {
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
-    public RunnerRest(final GlassFishServer server, final Command command) {
+    public RunnerRest(final PayaraServer server, final Command command) {
         this(server, command, null);
     }
 
@@ -77,7 +77,7 @@ public class RunnerRest extends Runner {
      * @param command GlassFish server administration command entity.
      * @param query Query string for this command.
      */
-    public RunnerRest(final GlassFishServer server, final Command command,
+    public RunnerRest(final PayaraServer server, final Command command,
             final String query) {
         this(server, command, "/command/", query);
     }
@@ -91,7 +91,7 @@ public class RunnerRest extends Runner {
      * @param path path which builds URL we speak to.
      * @param query Query string for this command.
      */
-    public RunnerRest(final GlassFishServer server, final Command command,
+    public RunnerRest(final PayaraServer server, final Command command,
             final String path, final String query) {
         super(server, command, path, query);
         silentFailureAllowed = false;

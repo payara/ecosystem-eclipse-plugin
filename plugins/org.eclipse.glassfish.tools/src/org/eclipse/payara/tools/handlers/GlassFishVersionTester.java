@@ -14,7 +14,7 @@ import static org.eclipse.payara.tools.utils.WtpUtil.load;
 import java.io.File;
 
 import org.eclipse.core.expressions.PropertyTester;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 import org.eclipse.wst.server.core.IServer;
 
 public class GlassFishVersionTester extends PropertyTester {
@@ -23,7 +23,7 @@ public class GlassFishVersionTester extends PropertyTester {
     public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
         IServer server = (IServer) receiver;
 
-        return new File(load(server, GlassFishServer.class).getServerInstallationDirectory() + "/modules").exists();
+        return new File(load(server, PayaraServer.class).getServerInstallationDirectory() + "/modules").exists();
     }
 
 }

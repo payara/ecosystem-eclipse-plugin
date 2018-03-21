@@ -9,7 +9,7 @@
 
 package org.eclipse.payara.tools.sdk.admin;
 
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  *
@@ -28,7 +28,7 @@ public class RunnerRestStopDAS extends RunnerRest {
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
-    public RunnerRestStopDAS(final GlassFishServer server,
+    public RunnerRestStopDAS(final PayaraServer server,
             final Command command) {
         super(server, command);
     }

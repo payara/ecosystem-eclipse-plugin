@@ -12,7 +12,7 @@ package org.eclipse.payara.tools.sdk.admin;
 import java.util.HashMap;
 import java.util.Properties;
 
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  *
@@ -41,7 +41,7 @@ public class RunnerRestLocation extends RunnerRest {
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
-    public RunnerRestLocation(final GlassFishServer server,
+    public RunnerRestLocation(final PayaraServer server,
             final Command command) {
         super(server, command);
         this.command = (CommandLocation) command;

@@ -14,7 +14,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import org.eclipse.payara.tools.sdk.GlassFishIdeException;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * GlassFish Server Stop Instance Command Entity.
@@ -51,7 +51,7 @@ public class CommandStopInstance extends CommandTarget {
      * @return Stop instance task response.
      * @throws GlassFishIdeException When error occurred during administration command execution.
      */
-    public static ResultString stopInstance(final GlassFishServer server,
+    public static ResultString stopInstance(final PayaraServer server,
             final String target) throws GlassFishIdeException {
         Command command = new CommandStopInstance(target);
         Future<ResultString> future = ServerAdmin.<ResultString>exec(server, command);

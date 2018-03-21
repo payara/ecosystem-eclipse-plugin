@@ -21,7 +21,7 @@ import java.util.zip.ZipOutputStream;
 
 import org.eclipse.payara.tools.sdk.logging.Logger;
 import org.eclipse.payara.tools.sdk.utils.Utils;
-import org.eclipse.payara.tools.server.GlassFishServer;
+import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
  * GlassFish Server <code>deploy</code> Administration Command Execution using HTTP interface.
@@ -165,7 +165,7 @@ public class RunnerHttpDeploy extends RunnerHttp {
      * @param server GlassFish server entity object.
      * @param command GlassFish server administration command entity.
      */
-    public RunnerHttpDeploy(final GlassFishServer server,
+    public RunnerHttpDeploy(final PayaraServer server,
             final Command command) {
         super(server, command, query(command));
         this.command = (CommandDeploy) command;
