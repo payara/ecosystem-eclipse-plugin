@@ -13,31 +13,21 @@
 
 <plugin>
 
-  <extension-point 
-    id="runtimeComponentProviders" 
-    name="%runtimeComponentProvidersExtensionPoint" 
-    schema="schema/runtimeComponentProviders.exsd"/>
-    
-    
-    
-    <extension point="org.eclipse.debug.core.launchConfigurationTypes">
-        
-        <launchConfigurationType
-            id="org.glassfish.jst.server.GlassfishServerLaunchConfigurationType"
-            name="%glassfish.runConfigurationName"
-            delegate="org.eclipse.payara.tools.server.starting.PayaraServerLaunchDelegate"
-            modes="run, debug"
-            sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector"
-            sourcePathComputerId="org.eclipse.jst.server.generic.core.sourcePathComputer"/>
-            
-    </extension> 
-    
-    <extension point="org.eclipse.wst.server.core.launchableAdapters">
-      <launchableAdapter
-            id="org.glassfish.launchableAdapter"
-            class="org.eclipse.payara.tools.server.archives.EclipseToPayaraArchiveConverter"
-            priority="999"
-            typeIds="payara.server"/>
+    <extension point="org.eclipse.wst.server.core.serverTypes">
+        <serverType
+             id="payara.server"
+             class="org.eclipse.payara.tools.server.PayaraServer"
+             behaviourClass="org.eclipse.payara.tools.server.deploying.PayaraServerBehaviour"
+             name="%serverTypeNameglassfish"
+             description="%serverTypeDescriptionglassfish"
+             hasConfiguration="false"
+             launchConfigId="org.payara.jst.server.GlassfishServerLaunchConfigurationType"
+             launchModes="run,debug"
+             runtime="true"
+             runtimeTypeId="payara.runtime"
+             startBeforePublish="true"
+             supportsRemoteHosts="true">
+       </serverType>
     </extension>
     
     <extension point="org.eclipse.wst.server.core.runtimeTypes">
@@ -56,147 +46,108 @@
        </runtimeType>
     </extension>
     
-    <extension point="org.eclipse.wst.server.core.serverTypes">
-        <serverType
-             id="payara.server"
-             class="org.eclipse.payara.tools.server.PayaraServer"
-             behaviourClass="org.eclipse.payara.tools.server.deploying.PayaraServerBehaviour"
-             name="%serverTypeNameglassfish"
-             description="%serverTypeDescriptionglassfish"
-             hasConfiguration="false"
-             launchConfigId="org.glassfish.jst.server.GlassfishServerLaunchConfigurationType"
-             launchModes="run,debug"
-             runtime="true"
-             runtimeTypeId="payara.runtime"
-             startBeforePublish="true"
-             supportsRemoteHosts="true">
-       </serverType>
+    <extension point="org.eclipse.wst.server.core.launchableAdapters">
+      <launchableAdapter
+            id="org.payara.launchableAdapter"
+            class="org.eclipse.payara.tools.server.archives.EclipseToPayaraArchiveConverter"
+            priority="999"
+            typeIds="payara.server"/>
     </extension>
     
+    <extension point="org.eclipse.debug.core.launchConfigurationTypes">
+        <launchConfigurationType
+            id="org.payara.jst.server.GlassfishServerLaunchConfigurationType"
+            name="%glassfish.runConfigurationName"
+            delegate="org.eclipse.payara.tools.server.starting.PayaraServerLaunchDelegate"
+            modes="run, debug"
+            sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector"
+            sourcePathComputerId="org.eclipse.jst.server.generic.core.sourcePathComputer"/>
+    </extension> 
     
-    
+    <extension-point id="runtimeComponentProviders" 
+        name="%runtimeComponentProvidersExtensionPoint" 
+        schema="schema/runtimeComponentProviders.exsd"
+    />
     
     
 
-  <!--
-    ********************
-    * System Libraries *
-    ********************
-  -->
+    <!--
+        System Libraries
+     -->
 
-  <extension point="org.eclipse.jdt.core.classpathContainerInitializer">
-    <classpathContainerInitializer
-      id="org.eclipse.payara.tools.lib.system"
-      class="org.eclipse.payara.tools.internal.SystemLibrariesContainer$Initializer"/>
-  </extension>
+    <extension point="org.eclipse.jdt.core.classpathContainerInitializer">
+        <classpathContainerInitializer
+          id="org.eclipse.payara.tools.lib.system"
+          class="org.eclipse.payara.tools.internal.SystemLibrariesContainer$Initializer"/>
+    </extension>
   
-  <extension point="org.eclipse.wst.common.project.facet.core.runtimes">
-    <adapter>
-      <runtime-component id="payara.runtime"/>
-      <factory class="org.eclipse.payara.tools.internal.PayaraClasspathProvider$Factory"/>
-      <type class="org.eclipse.jst.common.project.facet.core.IClasspathProvider"/>
-    </adapter>
-  </extension>
-  
-  <extension point="org.eclipse.jst.j2ee.classpathdep">
-    <filteredClasspathContainer containerID="org.eclipse.payara.tools.lib.system"/>
-  </extension>
-  
-  <extension point="org.eclipse.jst.common.project.facet.core.libraryProviders">
-    <provider id="GlassFish-3.1-SystemLibrary-JSF" extends="no-op-library-provider">
-      <label>%GF31.SystemLibrary.JSF.Label</label>
-      <priority>1000</priority>
-      <param name="message" value="%GF31.SystemLibrary.JSF.Message"/>
-      <enablement>
-        <with variable="requestingProjectFacet">
-          <test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jst.jsf" forcePluginActivation="true"/>
-        </with>
-	    <with variable="targetedRuntimes">
-	      <count value="+"/>
-	      <iterate operator="and">
-            <test property="org.eclipse.payara.tools.internal.containsRuntimeComponentType" value="payara.runtime:3.1" forcePluginActivation="true"/>
-	      </iterate>
-	    </with>     
-      </enablement>
-    </provider>
-  </extension>
-
-  <extension point="org.eclipse.jst.common.project.facet.core.libraryProviders">
-    <provider id="GlassFish-3.1-SystemLibrary-JPA" extends="no-op-library-provider">
-      <label>%GF31.SystemLibrary.JPA.Label</label>
-      <priority>1000</priority>
-      <param name="message" value="%GF31.SystemLibrary.JPA.Message"/>
-      <enablement>
-        <with variable="requestingProjectFacet">
-          <test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jpt.jpa" forcePluginActivation="true"/>
-        </with>
-	    <with variable="targetedRuntimes">
-	      <count value="+"/>
-	      <iterate operator="and">
-            <test property="org.eclipse.payara.tools.internal.containsRuntimeComponentType" value="payara.runtime:3.1" forcePluginActivation="true"/>
-	      </iterate>
-	    </with>     
-      </enablement>
-    </provider>
-  </extension>
-
-  <extension point="org.eclipse.jst.common.project.facet.core.libraryProviders">
-    <provider id="GlassFish-4-SystemLibrary-JSF" extends="no-op-library-provider">
-      <label>%GF4.SystemLibrary.JSF.Label</label>
-      <priority>1000</priority>
-      <param name="message" value="%GF4.SystemLibrary.JSF.Message"/>
-      <enablement>
-        <with variable="requestingProjectFacet">
-          <test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jst.jsf" forcePluginActivation="true"/>
-        </with>
-	    <with variable="targetedRuntimes">
-	      <count value="+"/>
-	      <iterate operator="and">
-            <test property="org.eclipse.payara.tools.internal.containsRuntimeComponentType" value="payara.runtime:4,5" forcePluginActivation="true"/>
-	      </iterate>
-	    </with>     
-      </enablement>
-    </provider>
-  </extension>
+    <extension point="org.eclipse.jst.j2ee.classpathdep">
+        <filteredClasspathContainer containerID="org.eclipse.payara.tools.lib.system"/>
+    </extension>
     
-  <extension point="org.eclipse.jst.common.project.facet.core.libraryProviders">
-    <provider id="GlassFish-4-SystemLibrary-JPA" extends="no-op-library-provider">
-      <label>%GF4.SystemLibrary.JPA.Label</label>
-      <priority>1000</priority>
-      <param name="message" value="%GF4.SystemLibrary.JPA.Message"/>
-      <enablement>
-        <with variable="requestingProjectFacet">
-          <test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jpt.jpa" forcePluginActivation="true"/>
-        </with>
-	    <with variable="targetedRuntimes">
-	      <count value="+"/>
-	      <iterate operator="and">
-            <test property="org.eclipse.payara.tools.internal.containsRuntimeComponentType" value="payara.runtime:4,5" forcePluginActivation="true"/>
-	      </iterate>
-	    </with>     
-      </enablement>
-    </provider>
-  </extension>
+  
+  
+    <!--
+        WST Facets
+    -->
 
-
-
-
-  <!--
-    *********
-    * Other *
-    *********
-  -->
-
-   
+    <extension point="org.eclipse.wst.common.project.facet.core.runtimes">
     
-	<extension point="org.eclipse.wst.common.project.facet.core.runtimeBridges">	
-		<bridge
-			id="org.eclipse.payara.tools.bridge"
- 			class="org.eclipse.payara.tools.internal.PayaraRuntimeBridge"/>
-	</extension>
+        <runtime-component-type id="payara.runtime"/>
+
+        <runtime-component-version type="payara.runtime" version="3.1"/>
+        <runtime-component-version type="payara.runtime" version="4"/>
+        <runtime-component-version type="payara.runtime" version="5"/>
+        
+        <supported>
+            <runtime-component id="payara.runtime" version="3.1"/>
+            <facet id="glassfish.web" version="3.1"/>
+            <facet id="glassfish.ejb" version="3.1"/>
+            <facet id="jst.web" version="3.0]"/>
+            <facet id="jst.ejb" version="3.1]"/>
+            <facet id="jst.ear" version="6.0]"/>
+            <facet id="jst.connector" version="1.6]"/>
+            <facet id="jst.appclient" version="6.0]"/>
+            <facet id="jst.utility" version="1.0"/> 
+            <facet id="jst.webfragment" version="3.0" />
+        </supported>
+        
+        <supported>
+            <runtime-component id="payara.runtime" version="4"/>
+            <facet id="glassfish.web" version="4.0]"/>
+            <facet id="glassfish.ejb" version="4.0]"/>
+            <facet id="jst.web" version="3.1]"/>
+            <facet id="jst.ejb" version="3.2]"/>
+            <facet id="jst.ear" version="7.0]"/>
+            <facet id="jst.connector" version="1.6]"/>
+            <facet id="jst.appclient" version="7.0]"/>
+            <facet id="jst.utility" version="1.0"/> 
+            <facet id="jst.webfragment" version="3.1]" />
+        </supported>
+        
+        <supported>
+            <runtime-component id="payara.runtime" version="5"/>
+            <facet id="glassfish.web" version="5]"/>
+            <facet id="glassfish.ejb" version="5]"/>
+            <facet id="jst.web" version="4.0]"/>
+            <facet id="jst.ejb" version="3.2]"/>
+            <facet id="jst.ear" version="8.0]"/>
+            <facet id="jst.connector" version="1.7]"/>
+            <facet id="jst.appclient" version="8.0]"/>
+            <facet id="jst.utility" version="1.0"/> 
+            <facet id="jst.webfragment" version="4.0]" />
+        </supported>
+    </extension>
+    
+    <extension point="org.eclipse.wst.common.project.facet.core.runtimes">
+        <adapter>
+          <runtime-component id="payara.runtime"/>
+          <factory class="org.eclipse.payara.tools.internal.PayaraClasspathProvider$Factory"/>
+          <type class="org.eclipse.jst.common.project.facet.core.IClasspathProvider"/>
+        </adapter>
+    </extension>
     
     <extension point="org.eclipse.wst.common.project.facet.core.facets">
-    
         <project-facet id="glassfish.web">
             <label>%glassfish.web.facet</label>
             <description>%glassfish.web.facet.description</description>
@@ -259,7 +210,7 @@
             <action type="INSTALL">
                 <delegate class="org.eclipse.payara.tools.facets.GlassfishEjbFacetInstallDelegate"/>
             </action>
-            <action  type="UNINSTALL">
+            <action type="UNINSTALL">
                 <delegate class="org.eclipse.payara.tools.facets.GlassfishEjbFacetUninstallDelegate"/>
             </action>   
             <constraint>
@@ -271,65 +222,16 @@
             <action type="INSTALL">
                 <delegate class="org.eclipse.payara.tools.facets.GlassfishEjbFacetInstallDelegate"/>
             </action>
-            <action  type="UNINSTALL">
+            <action type="UNINSTALL">
                 <delegate class="org.eclipse.payara.tools.facets.GlassfishEjbFacetUninstallDelegate"/>
             </action>   
             <constraint>
                 <requires facet="jst.ejb"/>
             </constraint>
         </project-facet-version>
-        
-    </extension>
-
-    <extension point="org.eclipse.wst.common.project.facet.core.runtimes">
-    
-        <runtime-component-type id="payara.runtime"/>
-
-        <runtime-component-version type="payara.runtime" version="3.1"/>
-        <runtime-component-version type="payara.runtime" version="4"/>
-        <runtime-component-version type="payara.runtime" version="5"/>
-        
-        <supported>
-            <runtime-component id="payara.runtime" version="3.1"/>
-            <facet id="glassfish.web" version="3.1"/>
-            <facet id="glassfish.ejb" version="3.1"/>
-            <facet id="jst.web" version="3.0]"/>
-            <facet id="jst.ejb" version="3.1]"/>
-            <facet id="jst.ear" version="6.0]"/>
-            <facet id="jst.connector" version="1.6]"/>
-            <facet id="jst.appclient" version="6.0]"/>
-            <facet id="jst.utility" version="1.0"/> 
-            <facet id="jst.webfragment" version="3.0" />
-        </supported>
-        <supported>
-            <runtime-component id="payara.runtime" version="4"/>
-            <facet id="glassfish.web" version="4.0]"/>
-            <facet id="glassfish.ejb" version="4.0]"/>
-            <facet id="jst.web" version="3.1]"/>
-            <facet id="jst.ejb" version="3.2]"/>
-            <facet id="jst.ear" version="7.0]"/>
-            <facet id="jst.connector" version="1.6]"/>
-            <facet id="jst.appclient" version="7.0]"/>
-            <facet id="jst.utility" version="1.0"/> 
-            <facet id="jst.webfragment" version="3.1]" />
-        </supported>
-        <supported>
-            <runtime-component id="payara.runtime" version="5"/>
-            <facet id="glassfish.web" version="5]"/>
-            <facet id="glassfish.ejb" version="5]"/>
-            <facet id="jst.web" version="4.0]"/>
-            <facet id="jst.ejb" version="3.2]"/>
-            <facet id="jst.ear" version="8.0]"/>
-            <facet id="jst.connector" version="1.7]"/>
-            <facet id="jst.appclient" version="8.0]"/>
-            <facet id="jst.utility" version="1.0"/> 
-            <facet id="jst.webfragment" version="4.0]" />
-        </supported>
-	    
     </extension>
     
     <extension point="org.eclipse.wst.common.project.facet.core.defaultFacets">
-        
         <default-facets>
             <context>
                 <runtime-component id="payara.runtime" version="3.1"/>
@@ -377,8 +279,145 @@
             </context>
             <facet id="glassfish.ejb" version="5" />
         </default-facets>        
-        
     </extension>
+    
+    <extension point="org.eclipse.wst.common.project.facet.core.runtimeBridges">    
+        <bridge
+            id="org.eclipse.payara.tools.bridge"
+            class="org.eclipse.payara.tools.internal.PayaraRuntimeBridge"/>
+    </extension>
+  
+  
+  
+  
+     <!--
+        JST Facets
+     -->
+     
+    <extension point="org.eclipse.jst.common.project.facet.core.libraryProviders">
+        <provider id="GlassFish-4-SystemLibrary-JSF" extends="no-op-library-provider">
+          <label>%GF4.SystemLibrary.JSF.Label</label>
+          <priority>1000</priority>
+          <param name="message" value="%GF4.SystemLibrary.JSF.Message"/>
+          <enablement>
+            <with variable="requestingProjectFacet">
+              <test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jst.jsf" forcePluginActivation="true"/>
+            </with>
+            <with variable="targetedRuntimes">
+              <count value="+"/>
+              <iterate operator="and">
+                <test property="org.eclipse.payara.tools.internal.containsRuntimeComponentType" value="payara.runtime:4,5" forcePluginActivation="true"/>
+              </iterate>
+            </with>     
+          </enablement>
+        </provider>
+    </extension>
+    
+    <extension point="org.eclipse.jst.common.project.facet.core.libraryProviders">
+        <provider id="GlassFish-4-SystemLibrary-JPA" extends="no-op-library-provider">
+          <label>%GF4.SystemLibrary.JPA.Label</label>
+          <priority>1000</priority>
+          <param name="message" value="%GF4.SystemLibrary.JPA.Message"/>
+          <enablement>
+            <with variable="requestingProjectFacet">
+              <test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jpt.jpa" forcePluginActivation="true"/>
+            </with>
+            <with variable="targetedRuntimes">
+              <count value="+"/>
+              <iterate operator="and">
+                <test property="org.eclipse.payara.tools.internal.containsRuntimeComponentType" value="payara.runtime:4,5" forcePluginActivation="true"/>
+              </iterate>
+            </with>     
+          </enablement>
+        </provider>
+    </extension>
+  
+    <extension point="org.eclipse.jst.common.project.facet.core.libraryProviders">
+        <provider id="GlassFish-3.1-SystemLibrary-JSF" extends="no-op-library-provider">
+            <label>%GF31.SystemLibrary.JSF.Label</label>
+            <priority>1000</priority>
+            <param name="message" value="%GF31.SystemLibrary.JSF.Message"/>
+            <enablement>
+              <with variable="requestingProjectFacet">
+                  <test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jst.jsf" forcePluginActivation="true"/>
+              </with>
+    	          <with variable="targetedRuntimes">
+    	              <count value="+"/>
+    	              <iterate operator="and">
+                      <test property="org.eclipse.payara.tools.internal.containsRuntimeComponentType" value="payara.runtime:3.1" forcePluginActivation="true"/>
+    	              </iterate>
+    	            </with>     
+            </enablement>
+        </provider>
+    </extension>
+
+    <extension point="org.eclipse.jst.common.project.facet.core.libraryProviders">
+        <provider id="GlassFish-3.1-SystemLibrary-JPA" extends="no-op-library-provider">
+          <label>%GF31.SystemLibrary.JPA.Label</label>
+          <priority>1000</priority>
+          <param name="message" value="%GF31.SystemLibrary.JPA.Message"/>
+          <enablement>
+            <with variable="requestingProjectFacet">
+              <test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jpt.jpa" forcePluginActivation="true"/>
+            </with>
+    	    <with variable="targetedRuntimes">
+    	      <count value="+"/>
+    	      <iterate operator="and">
+                <test property="org.eclipse.payara.tools.internal.containsRuntimeComponentType" value="payara.runtime:3.1" forcePluginActivation="true"/>
+    	      </iterate>
+    	    </with>     
+          </enablement>
+        </provider>
+    </extension>
+    
+    <extension point="org.eclipse.jst.common.project.facet.core.libraryProviders">
+        <provider id="org.eclipse.payara.tools.jaxrsLibraryproviderID">
+            <label>JAX-RS GlassFish Library</label>
+            <priority>10000</priority>
+            <enablement>
+                <with variable="requestingProjectFacet">
+                    <test
+                property="org.eclipse.wst.common.project.facet.core.projectFacet"
+                value="jst.jaxrs:1.1" forcePluginActivation="true"/>
+                </with>
+                <with variable="projectFacets">
+                    <count value="+"/>
+                    <iterate operator="or">
+                        <test
+                     property="org.eclipse.wst.common.project.facet.core.projectFacet"
+                     value="jst.web:[3.0" forcePluginActivation="true"/>
+                    </iterate>
+                </with>        
+                <with variable="targetedRuntimes">
+                    <count value="+"/>
+                    <iterate operator="and">
+                        <test property="org.eclipse.payara.tools.internal.containsRuntimeComponentType" value="payara.runtime:[3.1" forcePluginActivation="true"/>
+                    </iterate>
+                </with>     
+            </enablement>
+            <action type="INSTALL">
+                <operation class="org.eclipse.payara.tools.internal.InstallJAXRS"/>
+            </action>
+            <action type="UNINSTALL">
+                <operation class="org.eclipse.payara.tools.internal.InstallJAXRS"/>
+            </action>
+        </provider>
+    </extension>
+    
+    <extension point="org.eclipse.jst.ws.jaxrs.core.jaxrsLibraryProvider" id="MyJAXRSLibraryProvider" >
+        <jaxrsLibraryprovider
+                libraryProviderID="org.eclipse.payara.tools.jaxrsLibraryproviderID" 
+                showUpdateDD="true"
+            updateDDSelected="true" 
+            sevletClassName="com.sun.jersey.spi.container.servlet.ServletContainer"/>
+    </extension>
+    
+    
+    
+    
+     <!--
+        DTDs
+     -->
 
     <extension point = "org.eclipse.wst.xml.core.catalogContributions">
         <catalogContribution id="default">
@@ -629,59 +668,49 @@
     </extension> 
     
     
-    <extension
-          point="org.eclipse.ui.preferenceTransfer">
+    <extension point="org.eclipse.ui.preferenceTransfer">
     </extension>
-    <extension
-          point="org.eclipse.core.runtime.preferences">
+    
+    <extension point="org.eclipse.core.runtime.preferences">
         <initializer
              class="org.eclipse.payara.tools.preferences.PreferenceInitializer">
         </initializer>
     </extension>
 
+    
+    <extension point="org.eclipse.core.expressions.propertyTesters">
+     <propertyTester
+           class="org.eclipse.payara.tools.handlers.PayaraStateTester"
+           id="org.eclipse.payara.tools.PayaraStateTester"
+           namespace="org.eclipse.payara.tools"
+           properties="isRunning,isRemote"
+           type="org.eclipse.wst.server.core.IServer">
+     </propertyTester>
+     <propertyTester
+           class="org.eclipse.payara.tools.handlers.PayaraVersionTester"
+           id="org.eclipse.payara.tools.PayaraVersionTester"
+           namespace="org.eclipse.payara.tools"
+           properties="v3Test"
+           type="org.eclipse.wst.server.core.IServer">
+     </propertyTester>
+  </extension>
 
-    <extension point="org.eclipse.jst.common.project.facet.core.libraryProviders">
-        <provider id="org.eclipse.payara.tools.jaxrsLibraryproviderID">
-            <enablement>
-                <with variable="requestingProjectFacet">
-                    <test
-                property="org.eclipse.wst.common.project.facet.core.projectFacet"
-                value="jst.jaxrs:1.1" forcePluginActivation="true"/>
-                </with>
-                <with variable="projectFacets">
-                    <count value="+"/>
-                    <iterate operator="or">
-                        <test
-                     property="org.eclipse.wst.common.project.facet.core.projectFacet"
-                     value="jst.web:[3.0" forcePluginActivation="true"/>
-                    </iterate>
-                </with>        
-	    		<with variable="targetedRuntimes">
-	      			<count value="+"/>
-	      			<iterate operator="and">
-            			<test property="org.eclipse.payara.tools.internal.containsRuntimeComponentType" value="payara.runtime:[3.1" forcePluginActivation="true"/>
-	      			</iterate>
-	    		</with>     
-            </enablement>
-            <action type="INSTALL">
-                <operation class="org.eclipse.payara.tools.internal.InstallJAXRS"/>
-            </action>
-            <action type="UNINSTALL">
-                <operation class="org.eclipse.payara.tools.internal.InstallJAXRS"/>
-            </action>
-            <label>JAX-RS GlassFish Library</label>
-            <priority>10000</priority>
-        </provider>
-    </extension>
-
-
-    <extension id="MyJAXRSLibraryProvider" point="org.eclipse.jst.ws.jaxrs.core.jaxrsLibraryProvider" >
-        <jaxrsLibraryprovider
-        		libraryProviderID="org.eclipse.payara.tools.jaxrsLibraryproviderID" 
-        		showUpdateDD="true"
-			updateDDSelected="true" 
-			sevletClassName="com.sun.jersey.spi.container.servlet.ServletContainer"/>
-    </extension>
+  <extension point="org.eclipse.core.expressions.propertyTesters">
+    <propertyTester
+      id="org.eclipse.payara.tools.internal.ContainsRuntimeComponentTypeForRuntime"
+      type="org.eclipse.wst.common.project.facet.core.runtime.IRuntime"
+      namespace="org.eclipse.payara.tools"
+      properties="containsRuntimeComponentType"
+      class="org.eclipse.payara.tools.internal.ContainsRuntimeComponentType">
+    </propertyTester>
+    <propertyTester
+      id="org.eclipse.payara.tools.internal.ContainsRuntimeComponentTypeForCollection"
+      type="java.util.Collection"
+      namespace="org.eclipse.payara.tools"
+      properties="containsRuntimeComponentType"
+      class="org.eclipse.payara.tools.internal.ContainsRuntimeComponentType">
+    </propertyTester>
+  </extension>
 
 
   <extension point="org.eclipse.core.expressions.definitions">
@@ -745,39 +774,6 @@
      </definition>
   </extension>
   
-  <extension
-        point="org.eclipse.core.expressions.propertyTesters">
-     <propertyTester
-           class="org.eclipse.payara.tools.handlers.PayaraStateTester"
-           id="org.eclipse.payara.tools.GlassFishStateTester"
-           namespace="org.eclipse.payara.tools"
-           properties="isRunning,isRemote"
-           type="org.eclipse.wst.server.core.IServer">
-     </propertyTester>
-     <propertyTester
-           class="org.eclipse.payara.tools.handlers.PayaraVersionTester"
-           id="org.eclipse.payara.tools.GlassFishVersionTester"
-           namespace="org.eclipse.payara.tools"
-           properties="v3Test"
-           type="org.eclipse.wst.server.core.IServer">
-     </propertyTester>
-  </extension>
-
-  <extension point="org.eclipse.core.expressions.propertyTesters">
-    <propertyTester
-      id="org.eclipse.payara.tools.internal.ContainsRuntimeComponentTypeForRuntime"
-      type="org.eclipse.wst.common.project.facet.core.runtime.IRuntime"
-      namespace="org.eclipse.payara.tools"
-      properties="containsRuntimeComponentType"
-      class="org.eclipse.payara.tools.internal.ContainsRuntimeComponentType">
-    </propertyTester>
-    <propertyTester
-      id="org.eclipse.payara.tools.internal.ContainsRuntimeComponentTypeForCollection"
-      type="java.util.Collection"
-      namespace="org.eclipse.payara.tools"
-      properties="containsRuntimeComponentType"
-      class="org.eclipse.payara.tools.internal.ContainsRuntimeComponentType">
-    </propertyTester>
-  </extension>
+ 
 
 </plugin>

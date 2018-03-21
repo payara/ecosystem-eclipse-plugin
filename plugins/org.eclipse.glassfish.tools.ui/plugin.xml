@@ -39,8 +39,16 @@
     </extension>
     
     
+    <extension point="org.eclipse.wst.server.core.runtimeLocators">
+        <runtimeLocator
+            id="org.eclipse.payara.tools"
+            class="org.eclipse.payara.tools.ui.internal.PayaraRuntimeLocatorDelegate"
+            typeIds="payara.runtime"/>
+    </extension> 
+    
+    
     <!--
-        The label associated with the Payara runtime, i.e. "Payara 5.181"
+        The label associated with the Payara runtime, i.e. "Payara 5.181" (this may be unused?)
     -->
     <extension point="org.eclipse.wst.common.project.facet.core.runtimes">
         <adapter>
@@ -49,7 +57,6 @@
             <type class="org.eclipse.wst.common.project.facet.ui.IRuntimeComponentLabelProvider"/>
         </adapter>
     </extension>
-    
     
     
     <!-- 
@@ -70,15 +77,15 @@
     -->
     <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
        <launchConfigurationTabGroup
-             id="org.glassfish.jst.server.launchConfigurationTabGroup"
+             id="org.payara.jst.server.launchConfigurationTabGroup"
              class="org.eclipse.payara.tools.ui.editorsections.LaunchConfigurationTabGroup"
-             type="org.glassfish.jst.server.GlassfishServerLaunchConfigurationType">
+             type="org.payara.jst.server.GlassfishServerLaunchConfigurationType">
        </launchConfigurationTabGroup>
     </extension>
     <extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
        <launchConfigurationTypeImage 
              id="org.eclipse.payara.tools.ui.launchConfigurationTypeImage"
-             configTypeID="org.glassfish.jst.server.GlassfishServerLaunchConfigurationType"
+             configTypeID="org.payara.jst.server.GlassfishServerLaunchConfigurationType"
              icon="icons/obj16/glassfishserver.gif">
        </launchConfigurationTypeImage>
     </extension>
@@ -240,8 +247,8 @@
     -->
     <extension point="org.eclipse.ui.propertyPages">
         <page
-           id="org.eclipse.payara.tools.ui.server.properties.glassfish"
-           name="GlassFish"
+           id="org.eclipse.payara.tools.ui.server.properties.payara"
+           name="Payara"
            class="org.eclipse.payara.tools.ui.properties.ServerPropertyPage">
            <enabledWhen>
                <and>
@@ -264,7 +271,7 @@
     </extension>
     <extension point="org.eclipse.ui.navigator.navigatorContent">
        <navigatorContent
-             id="glassfish31.serverview.contentprovider"
+             id="payara.serverview.contentprovider"
              contentProvider="org.eclipse.payara.tools.ui.serverview.ServerViewDynamicNodeProvider"
              name="Payara Management Nodes"
              icon="icons/obj16/sunappsrv.gif"
@@ -313,7 +320,7 @@
     -->
     <extension point="org.eclipse.ui.console.consolePageParticipants">
        <consolePageParticipant
-             id="org.eclipse.payara.tools.log.GlassFishLogPageParticipant"
+             id="org.eclipse.payara.tools.log.PayaraLogPageParticipant"
              class="org.eclipse.payara.tools.ui.log.PayaraLogPageParticipant">
           <enablement>
              <instanceof value="org.eclipse.payara.tools.log.GlassfishConsole"/>
@@ -344,10 +351,10 @@
              name="%sunappserver.wizardcategory">
        </category>
        <wizard
+             id="org.eclipse.payara.tools.ui.resources.wizards.JDBCWizard"
              category="org.eclipse.payara.tools"
              class="org.eclipse.payara.tools.ui.resources.wizards.JDBCWizard"
              icon="icons/obj16/glassfishserver.gif"
-             id="org.eclipse.payara.tools.ui.resources.wizards.JDBCWizard"
              name="%sunappserver.sunresourceslabel">
           <description>
              %sunappserver.sunresources.BeanWebRegionWizard.description
@@ -357,10 +364,10 @@
           </selection>
        </wizard>
        <wizard
+             id="org.eclipse.payara.tools.ui.resources.wizards.MailWizard"
              category="org.eclipse.payara.tools"
              class="org.eclipse.payara.tools.ui.resources.wizards.MailWizard"
              icon="icons/obj16/glassfishserver.gif"
-             id="org.eclipse.payara.tools.ui.resources.wizards.MailWizard"
              name="%sunappserver.mailresourceslabel">
           <description>
              %sunappserver.mailresources.BeanWebRegionWizard.description
@@ -370,10 +377,10 @@
           </selection>
        </wizard>
        <wizard
+             id="org.eclipse.payara.tools.ui.resources.wizards.JMSWizard"
              category="org.eclipse.payara.tools"
              class="org.eclipse.payara.tools.ui.resources.wizards.JMSWizard"
              icon="icons/obj16/glassfishserver.gif"
-             id="org.eclipse.payara.tools.ui.resources.wizards.JMSWizard"
              name="%sunappserver.jmsresourceslabel">
           <description>
              %sunappserver.jmsresources.BeanWebRegionWizard.description
@@ -383,17 +390,16 @@
           </selection>
        </wizard>
        <wizard
+             id="org.eclipse.payara.tools.v3.wizards.AddGenericResourceWizard"
              category="org.eclipse.payara.tools"
              class="org.eclipse.payara.tools.ui.rest.wizards.AddGenericResourceWizard"
              icon="icons/obj16/glassfishserver.gif"
-             id="org.eclipse.payara.tools.v3.wizards.AddGenericResourceWizard"
              name="%sunappserver.restfulfrompatternlabel">
           <description>
              %sunappserver.restfulfrompattern.BeanWebRegionWizard.description
           </description>
        </wizard>
     </extension>
-  
  
   
    <extension point="org.eclipse.jst.common.project.facet.ui.libraryProviderActionPanels">
@@ -402,15 +408,7 @@
              provider="org.eclipse.payara.tools.jaxrsLibraryproviderID">
        </panel>
     </extension>
-    
   
-  
-  
-  <extension point="org.eclipse.wst.server.core.runtimeLocators">
-    <runtimeLocator
-      id="org.eclipse.payara.tools"
-      class="org.eclipse.payara.tools.ui.internal.PayaraRuntimeLocatorDelegate"
-	  typeIds="payara.runtime"/>
-  </extension> 
+   
 
 </plugin>
