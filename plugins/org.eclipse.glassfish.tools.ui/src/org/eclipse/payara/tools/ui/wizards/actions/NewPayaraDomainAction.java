@@ -17,7 +17,7 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.payara.tools.sapphire.ICreateGlassfishDomainOp;
 import org.eclipse.payara.tools.sapphire.IGlassfishServerModel;
-import org.eclipse.payara.tools.server.GlassFishRuntime;
+import org.eclipse.payara.tools.server.PayaraRuntime;
 import org.eclipse.payara.tools.server.GlassFishServer;
 import org.eclipse.payara.tools.ui.wizards.BaseWizardFragment;
 import org.eclipse.sapphire.ui.Presentation;
@@ -43,12 +43,11 @@ public class NewPayaraDomainAction extends SapphireActionHandler {
         ICreateGlassfishDomainOp createDomainOperation = ICreateGlassfishDomainOp.TYPE.instantiate();
 
         // Set existing domain location
-        createDomainOperation.setLocation(
-                fromPortableString(runtime.getLocation().toPortableString()));
+        createDomainOperation.setLocation(fromPortableString(runtime.getLocation().toPortableString()));
 
         // Set existing JDK location
         createDomainOperation.setJavaLocation(
-                load(runtime, GlassFishRuntime.class).getVMInstall().getInstallLocation().getAbsolutePath());
+                load(runtime, PayaraRuntime.class).getVMInstall().getInstallLocation().getAbsolutePath());
 
         // Explicitly open Sapphire dialog that asks the user to fill out fields for new domain
         WizardDialog dlg = new WizardDialog(

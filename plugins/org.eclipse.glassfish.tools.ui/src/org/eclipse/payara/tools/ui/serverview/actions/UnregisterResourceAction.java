@@ -10,7 +10,7 @@
 package org.eclipse.payara.tools.ui.serverview.actions;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
-import static org.eclipse.payara.tools.GlassfishToolsPlugin.logError;
+import static org.eclipse.payara.tools.PayaraToolsPlugin.logError;
 import static org.eclipse.payara.tools.ui.serverview.dynamicnodes.NodeTypes.ADMINOBJECT_RESOURCE;
 import static org.eclipse.payara.tools.ui.serverview.dynamicnodes.NodeTypes.CONN_CONNECTION_POOL;
 import static org.eclipse.payara.tools.ui.serverview.dynamicnodes.NodeTypes.CONN_RESOURCE;
@@ -29,7 +29,7 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.TreeSelection;
-import org.eclipse.payara.tools.GlassfishToolsPlugin;
+import org.eclipse.payara.tools.PayaraToolsPlugin;
 import org.eclipse.payara.tools.sdk.TaskState;
 import org.eclipse.payara.tools.sdk.admin.CommandDeleteResource;
 import org.eclipse.payara.tools.sdk.admin.ResultString;
@@ -112,7 +112,7 @@ public class UnregisterResourceAction extends Action {
                             try {
                                 result = future.get(30, SECONDS);
                                 if (!TaskState.COMPLETED.equals(result.getState())) {
-                                    GlassfishToolsPlugin.logMessage("Unable to delete resource " + resourceName
+                                    PayaraToolsPlugin.logMessage("Unable to delete resource " + resourceName
                                             + ". Message: " + result.getValue());
                                 }
                             } catch (InterruptedException | ExecutionException | TimeoutException e) {

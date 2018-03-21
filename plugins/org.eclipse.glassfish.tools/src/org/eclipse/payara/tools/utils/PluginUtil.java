@@ -9,7 +9,7 @@
 
 package org.eclipse.payara.tools.utils;
 
-import static org.eclipse.payara.tools.GlassfishToolsPlugin.log;
+import static org.eclipse.payara.tools.PayaraToolsPlugin.log;
 
 import java.util.ArrayList;
 import java.util.Collection;

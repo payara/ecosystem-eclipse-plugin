@@ -21,7 +21,7 @@ import java.net.URI;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeSelection;
-import org.eclipse.payara.tools.GlassfishToolsPlugin;
+import org.eclipse.payara.tools.PayaraToolsPlugin;
 import org.eclipse.payara.tools.server.GlassFishServer;
 import org.eclipse.payara.tools.server.deploying.GlassFishServerBehaviour;
 import org.eclipse.payara.tools.ui.serverview.dynamicnodes.DeployedApplicationsNode;
@@ -69,7 +69,7 @@ public class OpenInBrowserAction extends Action {
                     browser.openURL(uri.toURL());
 
                 } catch (Exception e) {
-                    GlassfishToolsPlugin.logMessage("Error opening browser: " + e.getMessage());
+                    PayaraToolsPlugin.logMessage("Error opening browser: " + e.getMessage());
                 }
             }
             super.run();

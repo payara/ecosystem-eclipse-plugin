@@ -19,10 +19,10 @@ import static org.eclipse.debug.core.DebugEvent.TERMINATE;
 import static org.eclipse.debug.core.ILaunchManager.DEBUG_MODE;
 import static org.eclipse.debug.core.ILaunchManager.RUN_MODE;
 import static org.eclipse.osgi.util.NLS.bind;
-import static org.eclipse.payara.tools.GlassfishToolsPlugin.SYMBOLIC_NAME;
-import static org.eclipse.payara.tools.GlassfishToolsPlugin.createErrorStatus;
-import static org.eclipse.payara.tools.GlassfishToolsPlugin.logError;
-import static org.eclipse.payara.tools.GlassfishToolsPlugin.logMessage;
+import static org.eclipse.payara.tools.PayaraToolsPlugin.SYMBOLIC_NAME;
+import static org.eclipse.payara.tools.PayaraToolsPlugin.createErrorStatus;
+import static org.eclipse.payara.tools.PayaraToolsPlugin.logError;
+import static org.eclipse.payara.tools.PayaraToolsPlugin.logMessage;
 import static org.eclipse.payara.tools.Messages.serverDirectoryGone;
 import static org.eclipse.payara.tools.log.GlassfishConsoleManager.getStandardConsole;
 import static org.eclipse.payara.tools.sdk.TaskState.COMPLETED;
@@ -79,7 +79,7 @@ import org.eclipse.jdt.internal.debug.core.model.JDIDebugTarget;
 import org.eclipse.jdt.internal.launching.JavaRemoteApplicationLaunchConfigurationDelegate;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jst.server.core.IEnterpriseApplication;
-import org.eclipse.payara.tools.GlassfishToolsPlugin;
+import org.eclipse.payara.tools.PayaraToolsPlugin;
 import org.eclipse.payara.tools.Messages;
 import org.eclipse.payara.tools.exceptions.GlassfishLaunchException;
 import org.eclipse.payara.tools.exceptions.HttpPortUpdateException;
@@ -105,7 +105,7 @@ import org.eclipse.payara.tools.sdk.admin.ServerAdmin;
 import org.eclipse.payara.tools.sdk.server.FetchLogSimple;
 import org.eclipse.payara.tools.sdk.server.ServerTasks;
 import org.eclipse.payara.tools.sdk.server.ServerTasks.StartMode;
-import org.eclipse.payara.tools.server.GlassFishRuntime;
+import org.eclipse.payara.tools.server.PayaraRuntime;
 import org.eclipse.payara.tools.server.GlassFishServer;
 import org.eclipse.payara.tools.server.ServerStatus;
 import org.eclipse.payara.tools.server.archives.AssembleModules;
@@ -335,8 +335,8 @@ public final class GlassFishServerBehaviour extends ServerBehaviourDelegate impl
         }
     }
 
-    public GlassFishRuntime getRuntimeDelegate() {
-        return (GlassFishRuntime) getServer().getRuntime().loadAdapter(GlassFishRuntime.class, null);
+    public PayaraRuntime getRuntimeDelegate() {
+        return (PayaraRuntime) getServer().getRuntime().loadAdapter(PayaraRuntime.class, null);
     }
 
     public ResultProcess launchServer(StartupArgsImpl gfStartArguments, StartMode launchMode, IProgressMonitor monitor)
@@ -470,7 +470,7 @@ public final class GlassFishServerBehaviour extends ServerBehaviourDelegate impl
 
             config.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CONNECT_MAP, args);
         } catch (CoreException ce) {
-            GlassfishToolsPlugin.logError("Error when setting debug argument for remote GF", ce);
+            PayaraToolsPlugin.logError("Error when setting debug argument for remote GF", ce);
         }
     }
 
@@ -570,7 +570,7 @@ public final class GlassFishServerBehaviour extends ServerBehaviourDelegate impl
 
         if (deltaKind == REMOVED) {
             String publishPath = (String) p.get(module[0].getId());
-            GlassfishToolsPlugin.logMessage("REMOVED in publishPath" + publishPath);
+            PayaraToolsPlugin.logMessage("REMOVED in publishPath" + publishPath);
             String name = Utils.simplifyModuleID(module[0].getName());
             try {
                 undeploy(name);
@@ -882,10 +882,10 @@ public final class GlassFishServerBehaviour extends ServerBehaviourDelegate impl
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
-            GlassfishToolsPlugin.logError("Stop server could not be finished because of exception.", e);
+            PayaraToolsPlugin.logError("Stop server could not be finished because of exception.", e);
         } catch (TimeoutException e1) {
             res.cancel(true);
-            GlassfishToolsPlugin.logMessage("Stop server could not be finished in time.");
+            PayaraToolsPlugin.logMessage("Stop server could not be finished in time.");
         }
 
         setLaunch(null);
@@ -933,7 +933,7 @@ public final class GlassFishServerBehaviour extends ServerBehaviourDelegate impl
                             if (exit_code != 0) {
                                 // something bad happened, show user startup
                                 // console
-                                GlassfishToolsPlugin.logMessage("launch failed with exit code " + exit_code);
+                                PayaraToolsPlugin.logMessage("launch failed with exit code " + exit_code);
                                 GlassfishConsoleManager.showConsole(startupConsole);
                                 throw new GlassfishLaunchException("Launch process failed with exit code " + exit_code);
                             }
@@ -985,12 +985,12 @@ public final class GlassFishServerBehaviour extends ServerBehaviourDelegate impl
             try {
                 result = CommandStopDAS.stopDAS(getGlassfishServerDelegate());
             } catch (GlassFishIdeException e) {
-                GlassfishToolsPlugin.logMessage("Stop command failed in library code." + e.getMessage());
+                PayaraToolsPlugin.logMessage("Stop command failed in library code." + e.getMessage());
                 throw e;
             }
 
             if (!TaskState.COMPLETED.equals(result.getState())) {
-                GlassfishToolsPlugin.logMessage("Stop call failed. Reason: " + result.getValue()); //$NON-NLS-1$
+                PayaraToolsPlugin.logMessage("Stop call failed. Reason: " + result.getValue()); //$NON-NLS-1$
                 throw new Exception("Stop call failed. Reason: " + result.getValue());
             }
 

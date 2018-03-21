@@ -11,7 +11,7 @@ package org.eclipse.payara.tools.ui.wizards.actions;
 
 import static org.eclipse.core.runtime.IStatus.ERROR;
 import static org.eclipse.core.runtime.IStatus.INFO;
-import static org.eclipse.payara.tools.GlassfishToolsPlugin.SYMBOLIC_NAME;
+import static org.eclipse.payara.tools.PayaraToolsPlugin.SYMBOLIC_NAME;
 import static org.eclipse.payara.tools.Messages.versionsNotMatching;
 import static org.eclipse.payara.tools.server.ServerStatus.RUNNING_CONNECTION_ERROR;
 import static org.eclipse.payara.tools.server.ServerStatus.RUNNING_CREDENTIAL_PROBLEM;
@@ -24,7 +24,7 @@ import static org.eclipse.payara.tools.utils.WtpUtil.load;
 import static org.eclipse.wst.common.frameworks.internal.dialog.ui.MessageDialog.openMessage;
 
 import org.eclipse.core.runtime.Status;
-import org.eclipse.payara.tools.server.GlassFishRuntime;
+import org.eclipse.payara.tools.server.PayaraRuntime;
 import org.eclipse.payara.tools.server.GlassFishServer;
 import org.eclipse.payara.tools.server.ServerStatus;
 import org.eclipse.payara.tools.server.deploying.GlassFishServerBehaviour;
@@ -86,7 +86,7 @@ public class TestRemotePayaraConnectionAction extends SapphireActionHandler {
 
             String remoteServerVersion = GlassFishServerBehaviour.getVersion(glassfish);
             String thisServerVersion = wc.getRuntime()
-                    .getAdapter(GlassFishRuntime.class)
+                    .getAdapter(PayaraRuntime.class)
                     .getVersion()
                     .toString();
 

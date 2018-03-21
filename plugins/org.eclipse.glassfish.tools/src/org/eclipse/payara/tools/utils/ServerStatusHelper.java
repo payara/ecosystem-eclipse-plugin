@@ -9,7 +9,7 @@
 
 package org.eclipse.payara.tools.utils;
 
-import static org.eclipse.payara.tools.GlassfishToolsPlugin.logMessage;
+import static org.eclipse.payara.tools.PayaraToolsPlugin.logMessage;
 import static org.eclipse.payara.tools.sdk.TaskEvent.AUTH_FAILED;
 import static org.eclipse.payara.tools.sdk.TaskEvent.BAD_GATEWAY;
 import static org.eclipse.payara.tools.sdk.utils.ServerUtils.isAdminPortListening;
@@ -30,14 +30,14 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import org.eclipse.payara.tools.GlassfishToolsPlugin;
+import org.eclipse.payara.tools.PayaraToolsPlugin;
 import org.eclipse.payara.tools.sdk.TaskEvent;
 import org.eclipse.payara.tools.sdk.TaskState;
 import org.eclipse.payara.tools.sdk.TaskStateListener;
 import org.eclipse.payara.tools.sdk.admin.CommandLocation;
 import org.eclipse.payara.tools.sdk.admin.ResultMap;
 import org.eclipse.payara.tools.sdk.admin.ServerAdmin;
-import org.eclipse.payara.tools.server.GlassFishRuntime;
+import org.eclipse.payara.tools.server.PayaraRuntime;
 import org.eclipse.payara.tools.server.GlassFishServer;
 import org.eclipse.payara.tools.server.ServerStatus;
 import org.eclipse.payara.tools.server.deploying.GlassFishServerBehaviour;
@@ -60,7 +60,7 @@ public class ServerStatusHelper {
         if (server.isRemote()) {
             IServer server1 = server.getServer();
             String remoteServerVersion = GlassFishServerBehaviour.getVersion(server);
-            GlassFishRuntime gfRuntime = (GlassFishRuntime) server1.getRuntime().loadAdapter(GlassFishRuntime.class,
+            PayaraRuntime gfRuntime = (PayaraRuntime) server1.getRuntime().loadAdapter(PayaraRuntime.class,
                     null);
             String thisServerVersion = gfRuntime.getVersion().toString();
             int n = thisServerVersion.indexOf(".X");
@@ -81,7 +81,7 @@ public class ServerStatusHelper {
             locationTask = ServerAdmin.<ResultMap<String, String>>exec(server, command, listener);
             result = locationTask.get(10, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
-            GlassfishToolsPlugin.logMessage("ServerStatusMonitor for " + server.getName() + " location interrupted");
+            PayaraToolsPlugin.logMessage("ServerStatusMonitor for " + server.getName() + " location interrupted");
         } catch (ExecutionException e) {
             logMessage("ServerStatusMonitor for " + server.getName() + " location throws exception");
             e.printStackTrace();

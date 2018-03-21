@@ -4,7 +4,7 @@ Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.payara.tools;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Localization: plugin
-Bundle-Activator: org.eclipse.payara.tools.GlassfishToolsPlugin
+Bundle-Activator: org.eclipse.payara.tools.PayaraToolsPlugin
 Bundle-Vendor: %providerName
 Require-Bundle: org.apache.xerces,
  org.apache.ant,

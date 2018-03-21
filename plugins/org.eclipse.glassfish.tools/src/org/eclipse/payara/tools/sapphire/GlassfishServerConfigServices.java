@@ -20,9 +20,9 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.payara.tools.Messages;
-import org.eclipse.payara.tools.server.GlassFishRuntime;
+import org.eclipse.payara.tools.server.PayaraRuntime;
 import org.eclipse.payara.tools.server.GlassFishServer;
-import org.eclipse.payara.tools.utils.GlassFishLocationUtils;
+import org.eclipse.payara.tools.utils.PayaraLocationUtils;
 import org.eclipse.payara.tools.utils.JavaLocationDefaultValueService;
 import org.eclipse.payara.tools.utils.JavaLocationValidationService;
 import org.eclipse.sapphire.DefaultValueService;
@@ -135,7 +135,7 @@ public final class GlassfishServerConfigServices {
         protected boolean acceptable(final IVMInstall jvm) {
             if (context(IGlassfishRuntimeModel.class).getServerRoot().validation().ok()) {
                 final IRuntime r = context(Value.class).element().adapt(IRuntime.class);
-                final GlassFishRuntime gf = (GlassFishRuntime) r.loadAdapter(GlassFishRuntime.class, null);
+                final PayaraRuntime gf = (PayaraRuntime) r.loadAdapter(PayaraRuntime.class, null);
                 return validateJvm(jvm).jdk().version(gf.getJavaVersionConstraint()).result().ok();
             }
 
@@ -163,7 +163,7 @@ public final class GlassfishServerConfigServices {
         @Override
         protected Status validate(final File location) {
             final IRuntime r = context(Value.class).element().adapt(IRuntime.class);
-            final GlassFishRuntime gf = (GlassFishRuntime) r.loadAdapter(GlassFishRuntime.class, null);
+            final PayaraRuntime gf = (PayaraRuntime) r.loadAdapter(PayaraRuntime.class, null);
             return validateJvm(location).jdk().version(gf.getJavaVersionConstraint()).result();
         }
     }
@@ -173,7 +173,7 @@ public final class GlassfishServerConfigServices {
         @Override
         protected Status compute() {
             IRuntime r = context(Value.class).element().adapt(IRuntime.class);
-            GlassFishRuntime runtimeDelegate = (GlassFishRuntime) r.loadAdapter(GlassFishRuntime.class, null);
+            PayaraRuntime runtimeDelegate = (PayaraRuntime) r.loadAdapter(PayaraRuntime.class, null);
             IStatus s = runtimeDelegate.validateServerLocation();
             if (!s.isOK()) {
                 return StatusBridge.create(s);
@@ -196,12 +196,12 @@ public final class GlassfishServerConfigServices {
             final Path location = model.getServerRoot().content();
 
             if (location != null) {
-                GlassFishLocationUtils gfInstall = GlassFishLocationUtils.find(location.toFile());
+                PayaraLocationUtils gfInstall = PayaraLocationUtils.find(location.toFile());
 
                 if (gfInstall == null) {
                     for (final Path sf : subFoldersToSearch) {
                         final Path p = location.append(sf);
-                        gfInstall = GlassFishLocationUtils.find(p.toFile());
+                        gfInstall = PayaraLocationUtils.find(p.toFile());
 
                         if (gfInstall != null) {
                             model.setServerRoot(p);
@@ -215,7 +215,7 @@ public final class GlassfishServerConfigServices {
                 }
             }
 
-            model.setName(GlassFishRuntime.createDefaultRuntimeName(gfVersion));
+            model.setName(PayaraRuntime.createDefaultRuntimeName(gfVersion));
         }
     }
 

@@ -13,7 +13,7 @@ import static org.eclipse.sapphire.modeling.util.MiscUtil.equal;
 import static org.eclipse.sapphire.modeling.util.MiscUtil.normalizeToNull;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.payara.tools.utils.GlassFishLocationUtils;
+import org.eclipse.payara.tools.utils.PayaraLocationUtils;
 import org.eclipse.sapphire.Version;
 import org.eclipse.sapphire.modeling.xml.RootXmlResource;
 import org.eclipse.sapphire.modeling.xml.StandardRootElementController;
@@ -82,7 +82,7 @@ public class GlassfishDescriptorRootController extends StandardRootElementContro
 
     private GlassfishRootElementInfo getGlassfishRootElementInfo() {
         GlassfishRootElementInfo defaultInfo = GlassfishDescriptorType.getGlassfishRootElementInfo(type);
-        GlassFishLocationUtils gfInstall = GlassFishLocationUtils.find(resource().adapt(IProject.class));
+        PayaraLocationUtils gfInstall = PayaraLocationUtils.find(resource().adapt(IProject.class));
         if (gfInstall == null) {
             return defaultInfo;
         }

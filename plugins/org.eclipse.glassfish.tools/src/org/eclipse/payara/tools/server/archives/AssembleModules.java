@@ -26,7 +26,7 @@ import org.eclipse.jst.server.core.IJ2EEModule;
 import org.eclipse.jst.server.core.IWebModule;
 import org.eclipse.jst.server.generic.core.internal.CorePlugin;
 import org.eclipse.jst.server.generic.core.internal.publishers.ModulePackager;
-import org.eclipse.payara.tools.GlassfishToolsPlugin;
+import org.eclipse.payara.tools.PayaraToolsPlugin;
 import org.eclipse.payara.tools.server.GlassFishServer;
 import org.eclipse.payara.tools.server.deploying.GlassFishServerBehaviour;
 import org.eclipse.wst.server.core.IModule;
@@ -59,7 +59,7 @@ public class AssembleModules {
         this.assembleRoot = assembleRoot;
         this.server = server;
         this.publishHelper = helper;
-        GlassfishToolsPlugin.logMessage("AssembleModules assembleRoot=" + assembleRoot);
+        PayaraToolsPlugin.logMessage("AssembleModules assembleRoot=" + assembleRoot);
 
     }
 
@@ -120,7 +120,7 @@ public class AssembleModules {
     protected void packModule(IModule module, String deploymentUnitName, IPath destination) throws CoreException {
 
         String dest = destination.append(deploymentUnitName).toString();
-        GlassfishToolsPlugin.logMessage("AssembleModules dest=" + dest);
+        PayaraToolsPlugin.logMessage("AssembleModules dest=" + dest);
 
         ModulePackager packager = null;
         try {
@@ -128,12 +128,12 @@ public class AssembleModules {
             ProjectModule pm = (ProjectModule) module.loadAdapter(ProjectModule.class, null);
             IModuleResource[] resources = pm.members();
             for (IModuleResource resource : resources) {
-                GlassfishToolsPlugin.logMessage("AssembleModules resources=" + resource);
+                PayaraToolsPlugin.logMessage("AssembleModules resources=" + resource);
 
                 doPackModule(resource, packager);
             }
         } catch (IOException e) {
-            IStatus status = new Status(IStatus.ERROR, GlassfishToolsPlugin.SYMBOLIC_NAME, 0,
+            IStatus status = new Status(IStatus.ERROR, PayaraToolsPlugin.SYMBOLIC_NAME, 0,
                     "unable to assemble module", e); //$NON-NLS-1$
             throw new CoreException(status);
         } finally {
@@ -148,17 +148,17 @@ public class AssembleModules {
         if (resource instanceof IModuleFolder) {
             IModuleFolder mFolder = (IModuleFolder) resource;
             IModuleResource[] resources = mFolder.members();
-            GlassfishToolsPlugin.logMessage("AssembleModules  doPackModule IModuleFolder=" + mFolder);
-            GlassfishToolsPlugin.logMessage("AssembleModules  doPackModule resource.getModuleRelativePath()="
+            PayaraToolsPlugin.logMessage("AssembleModules  doPackModule IModuleFolder=" + mFolder);
+            PayaraToolsPlugin.logMessage("AssembleModules  doPackModule resource.getModuleRelativePath()="
                     + resource.getModuleRelativePath());
-            GlassfishToolsPlugin.logMessage(
+            PayaraToolsPlugin.logMessage(
                     "AssembleModules  resource.getModuleRelativePath().append(resource.getName()).toPortableString()="
                             + resource.getModuleRelativePath().append(resource.getName()).toPortableString());
 
             packager.writeFolder(resource.getModuleRelativePath().append(resource.getName()).toPortableString());
 
             for (int i = 0; resources != null && i < resources.length; i++) {
-                GlassfishToolsPlugin.logMessage("AssembleModules resources[i]=" + resources[i]);
+                PayaraToolsPlugin.logMessage("AssembleModules resources[i]=" + resources[i]);
 
                 doPackModule(resources[i], packager);
             }
@@ -198,7 +198,7 @@ public class AssembleModules {
             // no need to emit an error like CoreException(status[0]); just log in the entry
             // see https://glassfishplugins.dev.java.net/issues/show_bug.cgi?id=268
             for (IStatus statu : status) {
-                GlassfishToolsPlugin.logMessage("warning copying module: " + statu.getMessage());
+                PayaraToolsPlugin.logMessage("warning copying module: " + statu.getMessage());
             }
         }
 
@@ -212,7 +212,7 @@ public class AssembleModules {
         // get publish paths of child modules so we do not delete them with publishSmart
         // call
         IModule[] childModules = earModule.getModules();
-        GlassfishToolsPlugin.logMessage("copyEarModule childModules.length=" + childModules.length);
+        PayaraToolsPlugin.logMessage("copyEarModule childModules.length=" + childModules.length);
         ArrayList<IPath> ignorePaths = new ArrayList<>(childModules.length);
         for (IModule childModule2 : childModules) {
 
@@ -242,7 +242,7 @@ public class AssembleModules {
             // no need to emit an error like CoreException(status[0]); just log in the entry
             // see https://glassfishplugins.dev.java.net/issues/show_bug.cgi?id=268
             for (IStatus statu : status) {
-                GlassfishToolsPlugin.logMessage("warning copying module: " + statu.getMessage());
+                PayaraToolsPlugin.logMessage("warning copying module: " + statu.getMessage());
             }
         }
 
@@ -344,7 +344,7 @@ public class AssembleModules {
 
         for (IModuleResourceDelta delta : deltas) {
             if (delta.getModuleResource().getName().endsWith(".class")) {// class file
-                GlassfishToolsPlugin.logMessage(
+                PayaraToolsPlugin.logMessage(
                         "Class Changed in AssembleModules criticalResourceChangeThatNeedsARedeploy DELTA IS="
                                 + delta.getKind() + delta.getModuleResource().getName());
                 return true;
@@ -354,18 +354,18 @@ public class AssembleModules {
             }
             if (delta.getModuleResource().getName().endsWith(".xml")) {// all XML files, including DD files or
                                                                        // config files
-                GlassfishToolsPlugin
+                PayaraToolsPlugin
                         .logMessage("XML Changed in AssembleModules criticalResourceChangeThatNeedsARedeploy DELTA IS="
                                 + delta.getKind() + delta.getModuleResource().getName());
                 return true;
             }
             if (delta.getModuleResource().getName().equalsIgnoreCase("manifest.mf")) {
-                GlassfishToolsPlugin.logMessage(
+                PayaraToolsPlugin.logMessage(
                         "MANIFEST FIle  Changed in AssembleModules criticalResourceChangeThatNeedsARedeploy DELTA IS="
                                 + delta.getKind() + delta.getModuleResource().getName());
                 return true;
             }
-            GlassfishToolsPlugin.logMessage("AssembleModules neither class manifest or xml file");
+            PayaraToolsPlugin.logMessage("AssembleModules neither class manifest or xml file");
 
             IModuleResourceDelta[] childrenDeltas = delta.getAffectedChildren();
             if (criticalResourceChangeThatNeedsARedeploy(childrenDeltas)) {
@@ -379,18 +379,18 @@ public class AssembleModules {
 
     protected void packModuleEARModule(IModule module, String deploymentUnitName, IPath destination)
             throws CoreException {
-        GlassfishToolsPlugin
+        PayaraToolsPlugin
                 .logMessage("AssembleModules packModuleEARModule=" + module.getId() + " " + module.getName());
-        GlassfishToolsPlugin.logMessage("AssembleModules deploymentUnitName=" + deploymentUnitName); // ie foo.war or
+        PayaraToolsPlugin.logMessage("AssembleModules deploymentUnitName=" + deploymentUnitName); // ie foo.war or
                                                                                                      // myejbs.jar
         // need to replace the , with_ ie _war or _jar as the dirname for dir deploy
-        GlassfishToolsPlugin.logMessage("AssembleModules destination=" + destination);
+        PayaraToolsPlugin.logMessage("AssembleModules destination=" + destination);
         if (module.getModuleType().getId().equals("jst.web")) {//$NON-NLS-1$
 
             AssembleModules assembler = new AssembleModules(modulePath, assembleRoot, server, publishHelper);
             IPath webAppPath = assembler.assembleWebModule(new NullProgressMonitor());
             String realDestination = destination.append(deploymentUnitName).toString();
-            GlassfishToolsPlugin.logMessage("AssembleModules realDestination=" + realDestination);
+            PayaraToolsPlugin.logMessage("AssembleModules realDestination=" + realDestination);
             ModulePackager packager = null;
             try {
                 packager = new ModulePackager(realDestination, false);
@@ -425,7 +425,7 @@ public class AssembleModules {
         IEnterpriseApplication earModule = (IEnterpriseApplication) module.loadAdapter(IEnterpriseApplication.class,
                 monitor);
         IModule[] childModules = earModule.getModules();
-        GlassfishToolsPlugin.logMessage("assembleDirDeployedEARModule childModules.length=" + childModules.length);
+        PayaraToolsPlugin.logMessage("assembleDirDeployedEARModule childModules.length=" + childModules.length);
         for (IModule childModule2 : childModules) {
 
             IModule childModule = childModule2;

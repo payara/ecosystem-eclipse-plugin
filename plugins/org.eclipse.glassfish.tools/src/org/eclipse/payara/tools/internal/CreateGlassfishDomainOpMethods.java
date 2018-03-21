@@ -20,7 +20,7 @@ import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.Launch;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.jdt.internal.launching.LaunchingPlugin;
-import org.eclipse.payara.tools.GlassfishToolsPlugin;
+import org.eclipse.payara.tools.PayaraToolsPlugin;
 import org.eclipse.payara.tools.sapphire.ICreateGlassfishDomainOp;
 import org.eclipse.sapphire.modeling.Path;
 import org.eclipse.sapphire.modeling.ProgressMonitor;
@@ -64,8 +64,8 @@ public class CreateGlassfishDomainOpMethods {
                     if (process.isTerminated()) {
                         String msg = output.toString() + "\n" + errOutput.toString();
                         org.eclipse.core.runtime.Status status = new org.eclipse.core.runtime.Status(IStatus.INFO,
-                                GlassfishToolsPlugin.SYMBOLIC_NAME, 1, msg, null);
-                        GlassfishToolsPlugin.getInstance().getLog().log(status);
+                                PayaraToolsPlugin.SYMBOLIC_NAME, 1, msg, null);
+                        PayaraToolsPlugin.getInstance().getLog().log(status);
                         break;
                     }
                     try {

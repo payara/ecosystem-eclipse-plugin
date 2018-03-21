@@ -25,7 +25,7 @@ import org.eclipse.jdt.launching.IVMInstall2;
 import org.eclipse.jdt.launching.IVMInstallType;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jdt.launching.VMStandin;
-import org.eclipse.payara.tools.GlassfishToolsPlugin;
+import org.eclipse.payara.tools.PayaraToolsPlugin;
 import org.eclipse.sapphire.Filter;
 import org.eclipse.sapphire.LocalizableText;
 import org.eclipse.sapphire.Text;
@@ -226,7 +226,7 @@ public final class JdtUtil {
                     JavaRuntime.saveVMConfiguration();
                     JavaRuntime.getDefaultVMInstall();
                 } catch (final Exception e) {
-                    GlassfishToolsPlugin.log(e);
+                    PayaraToolsPlugin.log(e);
                 }
             }
         }
@@ -367,7 +367,7 @@ public final class JdtUtil {
                                 jvmLocationToVersionMap.put(location, version);
                             }
                         } catch (final Exception e) {
-                            GlassfishToolsPlugin.log(e);
+                            PayaraToolsPlugin.log(e);
                         }
                     }
                 }

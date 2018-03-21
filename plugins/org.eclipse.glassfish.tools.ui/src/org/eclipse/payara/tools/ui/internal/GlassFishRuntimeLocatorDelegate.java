@@ -18,10 +18,10 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.payara.tools.GlassfishToolsPlugin;
+import org.eclipse.payara.tools.PayaraToolsPlugin;
 import org.eclipse.payara.tools.sapphire.IGlassfishRuntimeModel;
-import org.eclipse.payara.tools.server.GlassFishRuntime;
-import org.eclipse.payara.tools.utils.GlassFishLocationUtils;
+import org.eclipse.payara.tools.server.PayaraRuntime;
+import org.eclipse.payara.tools.utils.PayaraLocationUtils;
 import org.eclipse.sapphire.Value;
 import org.eclipse.sapphire.ui.def.DefinitionLoader;
 import org.eclipse.sapphire.ui.forms.swt.SapphireDialog;
@@ -57,7 +57,7 @@ public final class GlassFishRuntimeLocatorDelegate extends RuntimeLocatorDelegat
                 return;
             }
         } catch (final CoreException e) {
-            GlassfishToolsPlugin.log(e);
+            PayaraToolsPlugin.log(e);
             return;
         }
 
@@ -70,8 +70,8 @@ public final class GlassFishRuntimeLocatorDelegate extends RuntimeLocatorDelegat
         }
     }
 
-    private static IRuntime create(final File gfhome) throws CoreException {
-        GlassFishLocationUtils install = GlassFishLocationUtils.find(gfhome);
+    private static IRuntime create(File gfhome) throws CoreException {
+        PayaraLocationUtils install = PayaraLocationUtils.find(gfhome);
         if (install == null) {
             return null;
         }
@@ -80,7 +80,7 @@ public final class GlassFishRuntimeLocatorDelegate extends RuntimeLocatorDelegat
             return null;
         }
 
-        final String name = GlassFishRuntime.createDefaultRuntimeName(install.version());
+        String name = PayaraRuntime.createDefaultRuntimeName(install.version());
 
         final IRuntimeWorkingCopy created = RUNTIME_TYPE.createRuntime(name, null);
         created.setLocation(new Path(gfhome.getAbsolutePath()));
@@ -92,7 +92,7 @@ public final class GlassFishRuntimeLocatorDelegate extends RuntimeLocatorDelegat
         props.put("sunappserver.rootdirectory", rwc.getLocation().toPortableString());
         rwc.setAttribute("generic_server_instance_properties", props);
 
-        final GlassFishRuntime gf = (GlassFishRuntime) rwc.loadAdapter(GlassFishRuntime.class, null);
+        final PayaraRuntime gf = (PayaraRuntime) rwc.loadAdapter(PayaraRuntime.class, null);
         final IGlassfishRuntimeModel gfmodel = gf.getModel();
         final Value<org.eclipse.sapphire.modeling.Path> javaRuntimeEnvironmentProperty = gfmodel
                 .getJavaRuntimeEnvironment();

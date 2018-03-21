@@ -24,7 +24,7 @@ import org.eclipse.jst.j2ee.internal.common.operations.NewJavaClassDataModelProv
 import org.eclipse.jst.j2ee.internal.common.operations.NewJavaEEArtifactClassOperation;
 import org.eclipse.jst.j2ee.internal.web.operations.AddWebClassOperation;
 import org.eclipse.jst.j2ee.internal.web.operations.NewWebClassDataModelProvider;
-import org.eclipse.payara.tools.GlassfishToolsPlugin;
+import org.eclipse.payara.tools.PayaraToolsPlugin;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelProvider;
@@ -142,7 +142,7 @@ public class AddGenericResourceDataModelProvider extends
         if (MIME_TYPE.equals(propertyName)) {
             String value = (String) getProperty(MIME_TYPE);
             if (value == null || value.trim().length() == 0) {
-                return GlassfishToolsPlugin.createErrorStatus(
+                return PayaraToolsPlugin.createErrorStatus(
                         Messages.errorMimeTypeMissing, null);
             }
         }
@@ -160,7 +160,7 @@ public class AddGenericResourceDataModelProvider extends
             if (CONTAINER_PATH.equals(propertyName)) {
                 String value = (String) getProperty(CONTAINER_PATH);
                 if (value == null || value.trim().length() == 0) {
-                    return GlassfishToolsPlugin.createErrorStatus(
+                    return PayaraToolsPlugin.createErrorStatus(
                             Messages.errorContainerPathMissing, null);
                 }
             }
@@ -184,7 +184,7 @@ public class AddGenericResourceDataModelProvider extends
     protected IStatus validateRepClass(String propertyName, String errorMessageKeyMissing, String errorMessageKeyInvalid) {
         String value = (String) getProperty(propertyName);
         if (value == null || value.trim().length() == 0) {
-            return GlassfishToolsPlugin.createErrorStatus(errorMessageKeyMissing, null);
+            return PayaraToolsPlugin.createErrorStatus(errorMessageKeyMissing, null);
         }
         // Check that unqualified class name is valid by standard java conventions
         String className = value;
@@ -212,7 +212,7 @@ public class AddGenericResourceDataModelProvider extends
 
     private IStatus validatePath(String path) {
         if (path == null || path.trim().length() == 0) {
-            return GlassfishToolsPlugin.createErrorStatus(
+            return PayaraToolsPlugin.createErrorStatus(
                     Messages.errorPathMissing, null);
         }
         if (!isSimplePattern()) {

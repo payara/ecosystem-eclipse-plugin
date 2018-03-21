@@ -33,8 +33,8 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.payara.tools.GlassfishToolsPlugin;
-import org.eclipse.payara.tools.utils.GlassFishLocationUtils;
+import org.eclipse.payara.tools.PayaraToolsPlugin;
+import org.eclipse.payara.tools.utils.PayaraLocationUtils;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IRuntimeLifecycleListener;
 import org.eclipse.wst.server.core.ServerCore;
@@ -67,7 +67,7 @@ public final class SystemLibrariesContainer implements IClasspathContainer {
     }
 
     private SystemLibrariesContainer(final IJavaProject project) {
-        final GlassFishLocationUtils gf = GlassFishLocationUtils.find(project);
+        final PayaraLocationUtils gf = PayaraLocationUtils.find(project);
         this.entries = (gf == null ? Collections.<IClasspathEntry>emptyList() : gf.classpath(project.getProject()));
     }
 
@@ -265,7 +265,7 @@ public final class SystemLibrariesContainer implements IClasspathContainer {
                             containersRefresherThread.addProjectToQueue(project);
                         }
                     } catch (CoreException e) {
-                        GlassfishToolsPlugin.log(e);
+                        PayaraToolsPlugin.log(e);
                     }
                 }
             }
@@ -299,7 +299,7 @@ public final class SystemLibrariesContainer implements IClasspathContainer {
                                 relevant = true;
                             }
                         } catch (CoreException e) {
-                            GlassfishToolsPlugin.log(e);
+                            PayaraToolsPlugin.log(e);
                         }
 
                         break;
@@ -356,7 +356,7 @@ public final class SystemLibrariesContainer implements IClasspathContainer {
                     final IWorkspace ws = ResourcesPlugin.getWorkspace();
                     ws.run(wsr, ws.getRoot(), 0, null);
                 } catch (CoreException e) {
-                    GlassfishToolsPlugin.log(e);
+                    PayaraToolsPlugin.log(e);
                 }
             }
         }

@@ -16,10 +16,10 @@ import static org.eclipse.core.runtime.Status.OK_STATUS;
 import static org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities.getServerContextRoot;
 import static org.eclipse.jst.server.core.FacetUtil.getRuntime;
 import static org.eclipse.osgi.util.NLS.bind;
-import static org.eclipse.payara.tools.GlassfishToolsPlugin.SYMBOLIC_NAME;
-import static org.eclipse.payara.tools.GlassfishToolsPlugin.createErrorStatus;
-import static org.eclipse.payara.tools.GlassfishToolsPlugin.logError;
-import static org.eclipse.payara.tools.GlassfishToolsPlugin.logMessage;
+import static org.eclipse.payara.tools.PayaraToolsPlugin.SYMBOLIC_NAME;
+import static org.eclipse.payara.tools.PayaraToolsPlugin.createErrorStatus;
+import static org.eclipse.payara.tools.PayaraToolsPlugin.logError;
+import static org.eclipse.payara.tools.PayaraToolsPlugin.logMessage;
 import static org.eclipse.payara.tools.Messages.facetNotSupported;
 import static org.eclipse.payara.tools.Messages.invalidPortNumbers;
 import static org.eclipse.payara.tools.Messages.pathDoesNotExist;
@@ -59,7 +59,7 @@ import org.eclipse.jst.server.core.IEnterpriseApplication;
 import org.eclipse.jst.server.core.IWebModule;
 import org.eclipse.jst.server.core.internal.J2EEUtil;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.payara.tools.GlassfishToolsPlugin;
+import org.eclipse.payara.tools.PayaraToolsPlugin;
 import org.eclipse.payara.tools.Messages;
 import org.eclipse.payara.tools.facets.IGlassfishWebDeploymentDescriptor;
 import org.eclipse.payara.tools.facets.internal.GlassfishDeploymentDescriptorFactory;
@@ -70,7 +70,7 @@ import org.eclipse.payara.tools.sdk.server.parser.HttpListenerReader;
 import org.eclipse.payara.tools.sdk.server.parser.NetworkListenerReader;
 import org.eclipse.payara.tools.sdk.server.parser.TargetConfigNameReader;
 import org.eclipse.payara.tools.server.deploying.GlassFishServerBehaviour;
-import org.eclipse.payara.tools.utils.GlassFishLocationUtils;
+import org.eclipse.payara.tools.utils.PayaraLocationUtils;
 import org.eclipse.payara.tools.utils.ModuleUtil;
 import org.eclipse.payara.tools.utils.Utils;
 import org.eclipse.sapphire.Property;
@@ -498,7 +498,7 @@ public final class GlassFishServer extends ServerDelegate implements IURLProvide
                 HttpData adminData = httpMap.remove("admin-listener"); //$NON-NLS-1$
                 int adminPort = adminData != null ? adminData.getPort() : -1;
                 setAttribute(ATTR_ADMINPORT, String.valueOf(adminPort));
-                GlassfishToolsPlugin.logMessage("reading from domain.xml adminServerPortNumber=" + getAdminPort()); //$NON-NLS-1$
+                PayaraToolsPlugin.logMessage("reading from domain.xml adminServerPortNumber=" + getAdminPort()); //$NON-NLS-1$
 
                 HttpData httpPortData = httpMap.remove("http-listener-1"); //$NON-NLS-1$
                 int httpPort = httpPortData != null ? httpPortData.getPort() : -1;
@@ -506,7 +506,7 @@ public final class GlassFishServer extends ServerDelegate implements IURLProvide
 
                 result = adminPort != -1;
             } catch (IllegalStateException ex) {
-                GlassfishToolsPlugin.logError("error IllegalStateException ", ex); //$NON-NLS-1$
+                PayaraToolsPlugin.logError("error IllegalStateException ", ex); //$NON-NLS-1$
             }
         }
         return result;
@@ -564,7 +564,7 @@ public final class GlassFishServer extends ServerDelegate implements IURLProvide
         final IPath location = getServer().getRuntime().getLocation();
 
         if (location != null) {
-            final GlassFishLocationUtils gfInstall = GlassFishLocationUtils.find(location.toFile());
+            final PayaraLocationUtils gfInstall = PayaraLocationUtils.find(location.toFile());
 
             if (gfInstall != null) {
                 return gfInstall.version();

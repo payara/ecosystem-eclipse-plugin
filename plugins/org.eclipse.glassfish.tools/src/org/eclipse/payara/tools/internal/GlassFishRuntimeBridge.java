@@ -21,7 +21,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.common.project.facet.core.StandardJreRuntimeComponent;
-import org.eclipse.payara.tools.server.GlassFishRuntime;
+import org.eclipse.payara.tools.server.PayaraRuntime;
 import org.eclipse.sapphire.Version;
 import org.eclipse.sapphire.util.SetFactory;
 import org.eclipse.wst.common.project.facet.core.runtime.IRuntimeBridge;
@@ -76,7 +76,7 @@ public final class GlassFishRuntimeBridge implements IRuntimeBridge {
                 return components;
             }
 
-            final GlassFishRuntime gfRuntime = (GlassFishRuntime) runtime.loadAdapter(GlassFishRuntime.class, new NullProgressMonitor());
+            final PayaraRuntime gfRuntime = (PayaraRuntime) runtime.loadAdapter(PayaraRuntime.class, new NullProgressMonitor());
 
             if (gfRuntime != null) {
                 final Version gfVersion = gfRuntime.getVersion();

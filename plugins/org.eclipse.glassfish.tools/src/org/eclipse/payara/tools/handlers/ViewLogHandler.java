@@ -9,7 +9,7 @@
 
 package org.eclipse.payara.tools.handlers;
 
-import static org.eclipse.payara.tools.GlassfishToolsPlugin.logMessage;
+import static org.eclipse.payara.tools.PayaraToolsPlugin.logMessage;
 import static org.eclipse.payara.tools.log.GlassfishConsoleManager.getServerLogFileConsole;
 import static org.eclipse.payara.tools.log.GlassfishConsoleManager.removeServerLogFileConsole;
 import static org.eclipse.payara.tools.log.GlassfishConsoleManager.showConsole;

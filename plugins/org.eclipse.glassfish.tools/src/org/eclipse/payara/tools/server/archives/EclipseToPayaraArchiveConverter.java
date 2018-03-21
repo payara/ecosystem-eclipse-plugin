@@ -9,7 +9,7 @@
 
 package org.eclipse.payara.tools.server.archives;
 
-import static org.eclipse.payara.tools.GlassfishToolsPlugin.logError;
+import static org.eclipse.payara.tools.PayaraToolsPlugin.logError;
 import static org.eclipse.payara.tools.utils.Utils.hasProjectFacet;
 import static org.eclipse.payara.tools.utils.WtpUtil.load;
 import static org.eclipse.wst.common.componentcore.internal.util.IModuleConstants.JST_WEB_MODULE;

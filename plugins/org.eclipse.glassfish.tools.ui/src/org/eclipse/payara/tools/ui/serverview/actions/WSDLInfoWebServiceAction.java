@@ -14,7 +14,7 @@ import java.net.URL;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeSelection;
-import org.eclipse.payara.tools.GlassfishToolsPlugin;
+import org.eclipse.payara.tools.PayaraToolsPlugin;
 import org.eclipse.payara.tools.server.GlassFishServer;
 import org.eclipse.payara.tools.server.deploying.GlassFishServerBehaviour;
 import org.eclipse.payara.tools.ui.serverview.dynamicnodes.DeployedWebServicesNode;
@@ -63,7 +63,7 @@ public class WSDLInfoWebServiceAction extends Action {
                     browser.openURL(new URL(url));
 
                 } catch (Exception e) {
-                    GlassfishToolsPlugin.logMessage("Error opening browser: "
+                    PayaraToolsPlugin.logMessage("Error opening browser: "
                             + e.getMessage());
                 }
             }

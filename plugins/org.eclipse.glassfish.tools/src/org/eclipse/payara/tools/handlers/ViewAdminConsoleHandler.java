@@ -9,7 +9,7 @@
 
 package org.eclipse.payara.tools.handlers;
 
-import static org.eclipse.payara.tools.GlassfishToolsPlugin.logMessage;
+import static org.eclipse.payara.tools.PayaraToolsPlugin.logMessage;
 import static org.eclipse.payara.tools.utils.URIHelper.getServerAdminURI;
 import static org.eclipse.payara.tools.utils.WtpUtil.load;
 import static org.eclipse.ui.browser.IWorkbenchBrowserSupport.LOCATION_BAR;

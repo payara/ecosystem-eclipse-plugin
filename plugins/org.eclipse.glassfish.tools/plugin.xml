@@ -43,7 +43,7 @@
     <extension point="org.eclipse.wst.server.core.runtimeTypes">
         <runtimeType
              id="payara.runtime"
-             class="org.eclipse.payara.tools.server.GlassFishRuntime"
+             class="org.eclipse.payara.tools.server.PayaraRuntime"
              name="%runtimeTypeNameglassfish"
              description="%runtimeTypeDescriptionglassfish"
              vendor="%runtimeTypeGlassFishVendor">

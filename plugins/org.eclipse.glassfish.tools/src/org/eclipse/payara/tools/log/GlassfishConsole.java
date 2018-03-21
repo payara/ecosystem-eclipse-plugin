@@ -18,7 +18,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
-import org.eclipse.payara.tools.GlassfishToolsPlugin;
+import org.eclipse.payara.tools.PayaraToolsPlugin;
 import org.eclipse.payara.tools.sdk.server.FetchLog;
 
 // TODO will be GlassfishLocalConsole in the future, new GlassfishRemoteConsole to be implemented
@@ -28,7 +28,7 @@ public class GlassfishConsole extends AbstractGlassfishConsole implements IGlass
 
     GlassfishConsole(String name, ILogFilter filter) {
         super(name,
-                GlassfishToolsPlugin.getInstance().getImageRegistry().getDescriptor(GlassfishToolsPlugin.GF_SERVER_IMG),
+                PayaraToolsPlugin.getInstance().getImageRegistry().getDescriptor(PayaraToolsPlugin.GF_SERVER_IMG),
                 filter);
     }
 

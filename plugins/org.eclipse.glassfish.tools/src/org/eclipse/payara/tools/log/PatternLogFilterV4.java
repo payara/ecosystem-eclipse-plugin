@@ -12,7 +12,7 @@ package org.eclipse.payara.tools.log;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.eclipse.payara.tools.GlassfishToolsPlugin;
+import org.eclipse.payara.tools.PayaraToolsPlugin;
 
 public class PatternLogFilterV4 extends AbstractLogFilter {
 
@@ -47,8 +47,8 @@ public class PatternLogFilterV4 extends AbstractLogFilter {
                 result = formatter.formatLogRecord(record);
                 reset();
             } else if (!isReadingUserMessage()) {
-                GlassfishToolsPlugin.logMessage("Log record that does not match expected format detected!");
-                GlassfishToolsPlugin.logMessage(buffer.toString());
+                PayaraToolsPlugin.logMessage("Log record that does not match expected format detected!");
+                PayaraToolsPlugin.logMessage(buffer.toString());
             }
         } else {
             buffer.append(line);

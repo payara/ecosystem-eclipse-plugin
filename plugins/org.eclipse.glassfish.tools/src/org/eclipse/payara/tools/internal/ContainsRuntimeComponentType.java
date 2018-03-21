@@ -13,7 +13,7 @@ import java.util.Collection;
 
 import org.eclipse.core.expressions.PropertyTester;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.payara.tools.GlassfishToolsPlugin;
+import org.eclipse.payara.tools.PayaraToolsPlugin;
 import org.eclipse.wst.common.project.facet.core.runtime.IRuntime;
 import org.eclipse.wst.common.project.facet.core.runtime.IRuntimeComponent;
 import org.eclipse.wst.common.project.facet.core.runtime.IRuntimeComponentType;
@@ -82,7 +82,7 @@ public final class ContainsRuntimeComponentType extends PropertyTester {
                 throw new IllegalStateException();
             }
         } catch (CoreException e) {
-            GlassfishToolsPlugin.log(e);
+            PayaraToolsPlugin.log(e);
             return false;
         }
     }

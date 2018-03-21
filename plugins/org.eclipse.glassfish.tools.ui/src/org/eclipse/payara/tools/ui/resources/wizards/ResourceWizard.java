@@ -9,6 +9,9 @@
 
 package org.eclipse.payara.tools.ui.resources.wizards;
 
+import static org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities.getServerRuntime;
+import static org.eclipse.wst.common.project.facet.core.FacetedProjectFramework.hasProjectFacet;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -24,14 +27,12 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.payara.tools.server.GlassFishRuntime;
+import org.eclipse.payara.tools.server.PayaraRuntime;
 import org.eclipse.payara.tools.utils.ResourceUtils;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWizard;
-import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
 import org.eclipse.wst.server.core.IRuntime;
 
 /**
@@ -104,14 +105,14 @@ public abstract class ResourceWizard extends Wizard implements INewWizard {
 
         for (IProject project2 : allProjects) {
             try {
-                if (FacetedProjectFramework.hasProjectFacet(project2, "sun.facet")) { //$NON-NLS-1$
+                if (hasProjectFacet(project2, "sun.facet")) { //$NON-NLS-1$
                     returnProjects.add(project2);
                 } else {
-                    IRuntime runtime = J2EEProjectUtilities.getServerRuntime(project2);
+                    IRuntime runtime = getServerRuntime(project2);
                     if (runtime != null) {
                         String runtimeId = runtime.getRuntimeType().getId();
 
-                        if (runtimeId.equals(GlassFishRuntime.TYPE_ID)) {
+                        if (runtimeId.equals(PayaraRuntime.TYPE_ID)) {
                             returnProjects.add(project2);
                         }
                     }
@@ -120,6 +121,7 @@ public abstract class ResourceWizard extends Wizard implements INewWizard {
                 // just skip from list
             }
         }
+        
         return returnProjects;
     }
 

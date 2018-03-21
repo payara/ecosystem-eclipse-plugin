@@ -15,7 +15,7 @@ import static org.eclipse.payara.tools.preferences.PreferenceConstants.ENABLE_ST
 
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
-import org.eclipse.payara.tools.GlassfishToolsPlugin;
+import org.eclipse.payara.tools.PayaraToolsPlugin;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
@@ -34,7 +34,7 @@ public class GlassFishPreferencePage extends FieldEditorPreferencePage implement
 
     public GlassFishPreferencePage() {
         super(GRID);
-        setPreferenceStore(GlassfishToolsPlugin.getInstance().getPreferenceStore());
+        setPreferenceStore(PayaraToolsPlugin.getInstance().getPreferenceStore());
         setDescription("You can configure Payara Enterprise Server Plugin global preferences");
     }
 

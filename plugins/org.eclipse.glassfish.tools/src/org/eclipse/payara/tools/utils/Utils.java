@@ -33,7 +33,7 @@ import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.jst.j2ee.model.IEARModelProvider;
 import org.eclipse.jst.j2ee.model.ModelProviderManager;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.payara.tools.GlassfishToolsPlugin;
+import org.eclipse.payara.tools.PayaraToolsPlugin;
 import org.eclipse.payara.tools.Messages;
 import org.eclipse.payara.tools.sdk.logging.Logger;
 import org.eclipse.payara.tools.sdk.utils.OsUtils;
@@ -321,12 +321,12 @@ public class Utils {
                         final org.eclipse.jst.javaee.application.Application ee5App = (org.eclipse.jst.javaee.application.Application) model;
                         final org.eclipse.jst.javaee.application.Module ee5Module = ee5App.getFirstModule(uri);
                         if (ee5Module == null) {
-                            GlassfishToolsPlugin.logMessage(NLS.bind(Messages.errorAppWebContentRootMapping,
+                            PayaraToolsPlugin.logMessage(NLS.bind(Messages.errorAppWebContentRootMapping,
                                     module.getName()));
                         } else {
                             final org.eclipse.jst.javaee.application.Web ee5Web = ee5Module.getWeb();
                             if (ee5Web == null) {
-                                GlassfishToolsPlugin.logMessage(NLS.bind(Messages.errorAppWebContentRootMapping,
+                                PayaraToolsPlugin.logMessage(NLS.bind(Messages.errorAppWebContentRootMapping,
                                         module.getName()));
                             } else {
                                 final String contextRoot = ee5Web.getContextRoot();
@@ -348,15 +348,15 @@ public class Utils {
             } else {
                 // is 1.4 EAR
                 if (!appXmlFile.exists()) {
-                    GlassfishToolsPlugin.logMessage("Error reading application.xml");
+                    PayaraToolsPlugin.logMessage("Error reading application.xml");
                 } else if (model instanceof org.eclipse.jst.j2ee.application.Application) {
                     final org.eclipse.jst.j2ee.application.Application ee14App = (org.eclipse.jst.j2ee.application.Application) model;
                     final Module ee14Module = ee14App.getFirstModule(uri);
                     if (ee14Module == null) {
-                        GlassfishToolsPlugin.logMessage(NLS.bind(Messages.errorAppWebContentRootMapping,
+                        PayaraToolsPlugin.logMessage(NLS.bind(Messages.errorAppWebContentRootMapping,
                                 module.getName()));
                     } else if (ee14Module instanceof WebModule == false) {
-                        GlassfishToolsPlugin.logMessage(NLS.bind(Messages.errorAppWebContentRootMapping,
+                        PayaraToolsPlugin.logMessage(NLS.bind(Messages.errorAppWebContentRootMapping,
                                 module.getName()));
                     } else {
                         final String contextRoot = ((WebModule) ee14Module).getContextRoot();
@@ -371,7 +371,7 @@ public class Utils {
             }
         } catch (Exception e) {
             // CR302872
-            GlassfishToolsPlugin.logMessage(NLS.bind(Messages.errorAppWebContentRootMapping,
+            PayaraToolsPlugin.logMessage(NLS.bind(Messages.errorAppWebContentRootMapping,
                     module.getName()));
         }
         return context;

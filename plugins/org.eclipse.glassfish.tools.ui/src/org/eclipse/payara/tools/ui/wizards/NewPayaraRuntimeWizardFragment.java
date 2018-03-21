@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.payara.tools.exceptions.UniqueNameNotFound;
 import org.eclipse.payara.tools.sapphire.IGlassfishRuntimeModel;
-import org.eclipse.payara.tools.server.GlassFishRuntime;
+import org.eclipse.payara.tools.server.PayaraRuntime;
 import org.eclipse.sapphire.Element;
 import org.eclipse.wst.server.core.IRuntimeWorkingCopy;
 import org.eclipse.wst.server.core.TaskModel;
@@ -64,7 +64,7 @@ public class NewPayaraRuntimeWizardFragment extends BaseWizardFragment {
     @Override
     protected Element getModel() {
         IRuntimeWorkingCopy runtime = (IRuntimeWorkingCopy) getTaskModel().getObject(TASK_RUNTIME);
-        final GlassFishRuntime runtimeDelegate = (GlassFishRuntime) runtime.loadAdapter(GlassFishRuntime.class, null);
+        PayaraRuntime runtimeDelegate = (PayaraRuntime) runtime.loadAdapter(PayaraRuntime.class, null);
         IGlassfishRuntimeModel model = runtimeDelegate.getModel();
 
         return model;

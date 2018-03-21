@@ -13,7 +13,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.jst.j2ee.project.JavaEEProjectUtilities;
-import org.eclipse.payara.tools.GlassfishToolsPlugin;
+import org.eclipse.payara.tools.PayaraToolsPlugin;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.server.core.IRuntime;
 
@@ -56,7 +56,7 @@ public class WizardUtil {
     public static boolean hasGF3Runtime(IProject project) {
         try {
             IRuntime runtime = J2EEProjectUtilities.getServerRuntime(project);
-            if ((runtime != null) && GlassfishToolsPlugin.is31OrAbove(runtime)) {
+            if ((runtime != null) && PayaraToolsPlugin.is31OrAbove(runtime)) {
                 return true;
             }
         } catch (CoreException e) {

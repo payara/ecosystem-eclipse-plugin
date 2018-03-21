@@ -36,7 +36,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jst.j2ee.project.JavaEEProjectUtilities;
-import org.eclipse.payara.tools.GlassfishToolsPlugin;
+import org.eclipse.payara.tools.PayaraToolsPlugin;
 import org.eclipse.payara.tools.sdk.TaskState;
 import org.eclipse.payara.tools.sdk.admin.Command;
 import org.eclipse.payara.tools.sdk.admin.CommandGetProperty;
@@ -233,7 +233,7 @@ public class ResourceUtils {
                 }
             }
         } else {
-            GlassfishToolsPlugin.logMessage("No valid project selected");
+            PayaraToolsPlugin.logMessage("No valid project selected");
         }
         return resources;
     }
@@ -252,7 +252,7 @@ public class ResourceUtils {
             TreeParser.readXml(sunResourcesXml, cpReader, jdbcReader, connectorPoolReader,
                     connectorResourceReader, aoReader, mailReader);
         } catch (IllegalStateException ex) {
-            GlassfishToolsPlugin.logError("Exception while reading resource file : " + sunResourcesXml, ex); //$NON-NLS-1$
+            PayaraToolsPlugin.logError("Exception while reading resource file : " + sunResourcesXml, ex); //$NON-NLS-1$
         }
         Map<String, String> allRemoteData = getResourceData(sunAppsrv, null);
         changedData = checkResources(cpReader, "resources.jdbc-connection-pool.", allRemoteData, changedData); //$NON-NLS-1$
@@ -266,7 +266,7 @@ public class ResourceUtils {
             try {
                 putResourceData(sunAppsrv, changedData);
             } catch (PartialCompletionException e) {
-                GlassfishToolsPlugin.logError("Some of the resources were not updated!", e);
+                PayaraToolsPlugin.logError("Some of the resources were not updated!", e);
             }
         }
     }

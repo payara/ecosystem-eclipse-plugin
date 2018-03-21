@@ -19,7 +19,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.payara.tools.GlassfishToolsPlugin;
+import org.eclipse.payara.tools.PayaraToolsPlugin;
 import org.eclipse.payara.tools.utils.PluginUtil.InvalidExtensionException;
 import org.eclipse.wst.common.project.facet.core.runtime.IRuntimeComponent;
 import org.eclipse.wst.server.core.IRuntime;
@@ -48,7 +48,7 @@ public final class RuntimeComponentProvidersExtensionPoint {
                     components.addAll(res);
                 }
             } catch (final Exception e) {
-                GlassfishToolsPlugin.log(e);
+                PayaraToolsPlugin.log(e);
             }
         }
 
@@ -77,7 +77,7 @@ public final class RuntimeComponentProvidersExtensionPoint {
         final List<ProviderDef> providers = new ArrayList<>();
 
         for (final IConfigurationElement element : getTopLevelElements(
-                findExtensions(GlassfishToolsPlugin.SYMBOLIC_NAME, EXTENSION_POINT_ID))) {
+                findExtensions(PayaraToolsPlugin.SYMBOLIC_NAME, EXTENSION_POINT_ID))) {
             final String pluginId = element.getContributor().getName();
 
             if (element.getName().equals(EL_RUNTIME_COMPONENT_PROVIDER)) {

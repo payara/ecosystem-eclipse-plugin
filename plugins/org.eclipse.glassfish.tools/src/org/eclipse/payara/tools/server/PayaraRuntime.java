@@ -12,11 +12,11 @@ package org.eclipse.payara.tools.server;
 import static org.eclipse.core.runtime.IStatus.ERROR;
 import static org.eclipse.core.runtime.Status.OK_STATUS;
 import static org.eclipse.osgi.util.NLS.bind;
-import static org.eclipse.payara.tools.GlassfishToolsPlugin.SYMBOLIC_NAME;
+import static org.eclipse.payara.tools.PayaraToolsPlugin.SYMBOLIC_NAME;
 import static org.eclipse.payara.tools.Messages.notValidGlassfishInstall;
 import static org.eclipse.payara.tools.Messages.pathDoesNotExist;
 import static org.eclipse.payara.tools.sapphire.IGlassfishRuntimeModel.PROP_JAVA_RUNTIME_ENVIRONMENT;
-import static org.eclipse.payara.tools.utils.GlassFishLocationUtils.find;
+import static org.eclipse.payara.tools.utils.PayaraLocationUtils.find;
 import static org.eclipse.payara.tools.utils.JdtUtil.findOrCreateJvm;
 
 import org.eclipse.core.runtime.IPath;
@@ -26,10 +26,10 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jst.server.core.IJavaRuntime;
-import org.eclipse.payara.tools.GlassfishToolsPlugin;
+import org.eclipse.payara.tools.PayaraToolsPlugin;
 import org.eclipse.payara.tools.Messages;
 import org.eclipse.payara.tools.sapphire.IGlassfishRuntimeModel;
-import org.eclipse.payara.tools.utils.GlassFishLocationUtils;
+import org.eclipse.payara.tools.utils.PayaraLocationUtils;
 import org.eclipse.sapphire.Property;
 import org.eclipse.sapphire.PropertyBinding;
 import org.eclipse.sapphire.PropertyDef;
@@ -60,7 +60,7 @@ import org.eclipse.wst.server.core.model.RuntimeDelegate;
  *
  */
 @SuppressWarnings("restriction")
-public final class GlassFishRuntime extends RuntimeDelegate implements IJavaRuntime {
+public final class PayaraRuntime extends RuntimeDelegate implements IJavaRuntime {
 
     public static final String TYPE_ID = "payara.runtime";
     public static final IRuntimeType TYPE = ServerCore.findRuntimeType(TYPE_ID);
@@ -157,7 +157,7 @@ public final class GlassFishRuntime extends RuntimeDelegate implements IJavaRunt
         final IPath location = getRuntime().getLocation();
 
         if (location != null) {
-            final GlassFishLocationUtils gfInstall = GlassFishLocationUtils.find(location.toFile());
+            final PayaraLocationUtils gfInstall = PayaraLocationUtils.find(location.toFile());
 
             if (gfInstall != null) {
                 return gfInstall.version();
@@ -172,10 +172,10 @@ public final class GlassFishRuntime extends RuntimeDelegate implements IJavaRunt
 
         if (version == null) {
             // should not happen if called after validateServerLocation
-            return new Status(IStatus.ERROR, GlassfishToolsPlugin.SYMBOLIC_NAME, Messages.runtimeNotValid);
+            return new Status(IStatus.ERROR, PayaraToolsPlugin.SYMBOLIC_NAME, Messages.runtimeNotValid);
         }
         if (!version.matches("[3.1-6)")) {
-            return new Status(IStatus.ERROR, GlassfishToolsPlugin.SYMBOLIC_NAME, Messages.unsupportedVersion);
+            return new Status(IStatus.ERROR, PayaraToolsPlugin.SYMBOLIC_NAME, Messages.unsupportedVersion);
         }
         return Status.OK_STATUS;
     }

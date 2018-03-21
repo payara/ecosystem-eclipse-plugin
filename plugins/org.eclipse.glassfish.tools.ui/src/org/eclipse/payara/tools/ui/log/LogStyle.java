@@ -18,7 +18,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
-import org.eclipse.payara.tools.GlassfishToolsPlugin;
+import org.eclipse.payara.tools.PayaraToolsPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.LineStyleEvent;
 import org.eclipse.swt.custom.LineStyleListener;
@@ -29,7 +29,7 @@ import org.eclipse.ui.PlatformUI;
 public class LogStyle implements LineStyleListener, IPropertyChangeListener {
     Display display = Display.getCurrent();
 
-    IPreferenceStore store = GlassfishToolsPlugin.getInstance().getPreferenceStore();
+    IPreferenceStore store = PayaraToolsPlugin.getInstance().getPreferenceStore();
     boolean colorInConsole = store.getBoolean(ENABLE_COLORS_CONSOLE);
 
     // private IDocument document;

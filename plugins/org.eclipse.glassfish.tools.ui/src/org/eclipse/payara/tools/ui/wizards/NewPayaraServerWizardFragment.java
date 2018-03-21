@@ -9,7 +9,7 @@
 
 package org.eclipse.payara.tools.ui.wizards;
 
-import static org.eclipse.payara.tools.GlassfishToolsPlugin.log;
+import static org.eclipse.payara.tools.PayaraToolsPlugin.log;
 import static org.eclipse.payara.tools.sapphire.IGlassfishServerModel.PROP_NAME;
 import static org.eclipse.payara.tools.server.GlassFishServer.getDefaultDomainDir;
 import static org.eclipse.payara.tools.ui.wizards.GlassfishWizardResources.wzdServerDescription;
