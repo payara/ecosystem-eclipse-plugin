@@ -21,7 +21,7 @@ import org.eclipse.payara.tools.server.PayaraServer;
 import org.eclipse.payara.tools.server.ServerStatus;
 import org.eclipse.wst.server.core.IServer;
 
-public class ViewLogHandler extends AbstractGlassfishSelectionHandler {
+public class ViewLogHandler extends AbstractPayaraSelectionHandler {
 
     @Override
     public void processSelection(IServer server) {

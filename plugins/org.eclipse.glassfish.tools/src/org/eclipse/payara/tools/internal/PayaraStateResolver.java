@@ -24,7 +24,7 @@ import java.util.Map;
 import org.eclipse.payara.tools.server.ServerStatus;
 import org.eclipse.wst.server.core.IServer;
 
-public class GlassfishStateResolver {
+public class PayaraStateResolver {
 
     private static final Map<ServerStatus, Map<Integer, Integer>> matrix = new HashMap<>();
 

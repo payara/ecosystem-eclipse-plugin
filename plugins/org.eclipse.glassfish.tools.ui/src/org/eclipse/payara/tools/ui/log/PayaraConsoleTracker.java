@@ -16,21 +16,22 @@ import org.eclipse.ui.console.IPatternMatchListenerDelegate;
 import org.eclipse.ui.console.PatternMatchEvent;
 import org.eclipse.ui.console.TextConsole;
 
-public class GlassfishConsoleTracker implements IPatternMatchListenerDelegate {
+@SuppressWarnings("restriction")
+public class PayaraConsoleTracker implements IPatternMatchListenerDelegate {
 
     /**
      * The console associated with this line tracker
      */
-    private TextConsole gfConsole;
+    private TextConsole payaraConsole;
 
     @Override
     public void connect(TextConsole console) {
-        gfConsole = console;
+        payaraConsole = console;
     }
 
     @Override
     public void disconnect() {
-        gfConsole = null;
+        payaraConsole = null;
     }
 
     @Override
@@ -38,8 +39,8 @@ public class GlassfishConsoleTracker implements IPatternMatchListenerDelegate {
         try {
             int offset = event.getOffset();
             int length = event.getLength();
-            IHyperlink link = new JavaStackTraceHyperlink(gfConsole);
-            gfConsole.addHyperlink(link, offset + 1, length - 2);
+            IHyperlink link = new JavaStackTraceHyperlink(payaraConsole);
+            payaraConsole.addHyperlink(link, offset + 1, length - 2);
         } catch (BadLocationException e) {
             // Ignore
         }

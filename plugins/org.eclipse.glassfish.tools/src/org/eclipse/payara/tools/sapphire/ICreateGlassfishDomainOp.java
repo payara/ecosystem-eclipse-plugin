@@ -9,7 +9,7 @@
 
 package org.eclipse.payara.tools.sapphire;
 
-import org.eclipse.payara.tools.internal.CreateGlassfishDomainOpMethods;
+import org.eclipse.payara.tools.internal.CreatePayaraDomainOpMethods;
 import org.eclipse.sapphire.ElementType;
 import org.eclipse.sapphire.ExecutableElement;
 import org.eclipse.sapphire.Type;
@@ -103,7 +103,7 @@ public interface ICreateGlassfishDomainOp extends ExecutableElement {
 
     // *** Method: execute ***
     @Override
-    @DelegateImplementation(CreateGlassfishDomainOpMethods.class)
+    @DelegateImplementation(CreatePayaraDomainOpMethods.class)
     Status execute(ProgressMonitor monitor);
 
 }

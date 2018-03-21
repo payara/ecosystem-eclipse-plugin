@@ -17,7 +17,7 @@ import static org.eclipse.payara.tools.utils.WtpUtil.load;
 import org.eclipse.payara.tools.server.deploying.PayaraServerBehaviour;
 import org.eclipse.wst.server.core.IServer;
 
-public class OpenServerHomeHandler extends AbstractGlassfishSelectionHandler {
+public class OpenServerHomeHandler extends AbstractPayaraSelectionHandler {
 
     @Override
     public void processSelection(IServer server) {

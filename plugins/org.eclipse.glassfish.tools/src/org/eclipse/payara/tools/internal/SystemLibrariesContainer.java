@@ -9,7 +9,8 @@
 
 package org.eclipse.payara.tools.internal;
 
-import static org.eclipse.payara.tools.utils.IsGlassFishUtil.isGlassFish;
+import static org.eclipse.core.resources.IResourceChangeEvent.POST_CHANGE;
+import static org.eclipse.payara.tools.utils.IsPayaraUtil.isPayara;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -258,7 +259,7 @@ public final class SystemLibrariesContainer implements IClasspathContainer {
         }
 
         private void handleEvent(final IRuntime runtime) {
-            if (isGlassFish(runtime)) {
+            if (isPayara(runtime)) {
                 for (IProject project : ResourcesPlugin.getWorkspace().getRoot().getProjects()) {
                     try {
                         if (isOnClasspath(project)) {
@@ -278,7 +279,7 @@ public final class SystemLibrariesContainer implements IClasspathContainer {
         public static void register() {
             final IWorkspace ws = ResourcesPlugin.getWorkspace();
 
-            ws.addResourceChangeListener(new ResourceChangeListener(), IResourceChangeEvent.POST_CHANGE);
+            ws.addResourceChangeListener(new ResourceChangeListener(), POST_CHANGE);
         }
 
         private ResourceChangeListener() {

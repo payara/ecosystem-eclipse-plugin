@@ -15,12 +15,12 @@ import org.eclipse.ui.console.IConsolePageParticipant;
 import org.eclipse.ui.console.TextConsole;
 import org.eclipse.ui.part.IPageBookViewPage;
 
-public class GlassFishLogPageParticipant implements IConsolePageParticipant {
+public class PayaraLogPageParticipant implements IConsolePageParticipant {
 
     @Override
     public void init(IPageBookViewPage page, IConsole console) {
         if (page.getControl() instanceof StyledText) {
-            StyledText viewer = (StyledText) (page.getControl());
+            StyledText viewer = (StyledText) page.getControl();
             viewer.addLineStyleListener(new LogStyle(((TextConsole) console).getDocument()));
         }
     }

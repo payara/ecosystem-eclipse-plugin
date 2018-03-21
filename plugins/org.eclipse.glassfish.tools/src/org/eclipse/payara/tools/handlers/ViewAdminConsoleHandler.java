@@ -19,7 +19,7 @@ import org.eclipse.payara.tools.server.deploying.PayaraServerBehaviour;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.server.core.IServer;
 
-public class ViewAdminConsoleHandler extends AbstractGlassfishSelectionHandler {
+public class ViewAdminConsoleHandler extends AbstractPayaraSelectionHandler {
 
     @Override
     public void processSelection(IServer server) {

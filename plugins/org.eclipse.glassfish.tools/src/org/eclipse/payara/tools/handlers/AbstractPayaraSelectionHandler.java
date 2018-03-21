@@ -11,6 +11,7 @@ package org.eclipse.payara.tools.handlers;
 
 import static org.eclipse.ui.browser.IWorkbenchBrowserSupport.LOCATION_BAR;
 import static org.eclipse.ui.browser.IWorkbenchBrowserSupport.NAVIGATION_BAR;
+import static org.eclipse.ui.handlers.HandlerUtil.getActiveWorkbenchWindow;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -23,14 +24,13 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.wst.server.core.IServer;
 
-public abstract class AbstractGlassfishSelectionHandler extends AbstractHandler {
+public abstract class AbstractPayaraSelectionHandler extends AbstractHandler {
 
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
-        ISelection selection = HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().getSelection();
+        ISelection selection = getActiveWorkbenchWindow(event).getActivePage().getSelection();
         if (selection != null && !selection.isEmpty()) {
             processSelection((IStructuredSelection) selection);
         }

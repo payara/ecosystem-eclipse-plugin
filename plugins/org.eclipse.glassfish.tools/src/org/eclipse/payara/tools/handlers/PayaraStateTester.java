@@ -10,20 +10,31 @@
 package org.eclipse.payara.tools.handlers;
 
 import static org.eclipse.payara.tools.utils.WtpUtil.load;
-
-import java.io.File;
+import static org.eclipse.wst.server.core.IServer.STATE_STARTED;
 
 import org.eclipse.core.expressions.PropertyTester;
 import org.eclipse.payara.tools.server.PayaraServer;
 import org.eclipse.wst.server.core.IServer;
 
-public class GlassFishVersionTester extends PropertyTester {
+public class PayaraStateTester extends PropertyTester {
 
     @Override
     public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
         IServer server = (IServer) receiver;
 
-        return new File(load(server, PayaraServer.class).getServerInstallationDirectory() + "/modules").exists();
+        if (property.equals("isRunning")) {
+            return (server.getServerState() == STATE_STARTED);
+        }
+
+        if (property.equals("isRemote")) {
+            PayaraServer payaraServer = load(server, PayaraServer.class);
+
+            if (payaraServer != null) {
+                return payaraServer.isRemote();
+            }
+        }
+
+        return false;
     }
 
 }

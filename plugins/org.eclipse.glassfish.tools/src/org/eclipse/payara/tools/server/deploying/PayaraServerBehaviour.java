@@ -81,9 +81,9 @@ import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jst.server.core.IEnterpriseApplication;
 import org.eclipse.payara.tools.PayaraToolsPlugin;
 import org.eclipse.payara.tools.Messages;
-import org.eclipse.payara.tools.exceptions.GlassfishLaunchException;
+import org.eclipse.payara.tools.exceptions.PayaraLaunchException;
 import org.eclipse.payara.tools.exceptions.HttpPortUpdateException;
-import org.eclipse.payara.tools.internal.GlassfishStateResolver;
+import org.eclipse.payara.tools.internal.PayaraStateResolver;
 import org.eclipse.payara.tools.internal.ServerStateListener;
 import org.eclipse.payara.tools.internal.ServerStatusMonitor;
 import org.eclipse.payara.tools.log.GlassfishConsoleManager;
@@ -137,7 +137,7 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
     // initialized
     protected boolean needARedeploy = true; // by default, will be calculated..
 
-    private GlassfishStateResolver stateResolver = new GlassfishStateResolver();
+    private PayaraStateResolver stateResolver = new PayaraStateResolver();
 
     private ServerStatusMonitor statusMonitor;
 
@@ -911,7 +911,7 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
             try {
                 process = ServerTasks.startServer(getGlassfishServerDelegate(), args, mode);
             } catch (GlassFishIdeException e) {
-                throw new GlassfishLaunchException("Exception in startup library.", e);
+                throw new PayaraLaunchException("Exception in startup library.", e);
             }
 
             Process gfProcess = process.getValue().getProcess();
@@ -935,7 +935,7 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
                                 // console
                                 PayaraToolsPlugin.logMessage("launch failed with exit code " + exit_code);
                                 GlassfishConsoleManager.showConsole(startupConsole);
-                                throw new GlassfishLaunchException("Launch process failed with exit code " + exit_code);
+                                throw new PayaraLaunchException("Launch process failed with exit code " + exit_code);
                             }
                         } catch (IllegalThreadStateException e) {// still running, keep waiting
                         }
@@ -943,13 +943,13 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
                     case RUNNING_PROXY_ERROR:
                         startupConsole.stopLogging();
                         gfProcess.destroy();
-                        throw new GlassfishLaunchException(
+                        throw new PayaraLaunchException(
                                 "BAD GATEWAY response code returned. Check your proxy settings. Killing startup process.",
                                 gfProcess);
                     case RUNNING_CREDENTIAL_PROBLEM:
                         startupConsole.stopLogging();
                         gfProcess.destroy();
-                        throw new GlassfishLaunchException("Wrong user name or password. Killing startup process.",
+                        throw new PayaraLaunchException("Wrong user name or password. Killing startup process.",
                                 gfProcess);
                     case RUNNING_DOMAIN_MATCHING:
                         startupConsole.stopLogging();

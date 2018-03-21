@@ -9,14 +9,16 @@
 
 package org.eclipse.payara.tools.internal;
 
+import static org.eclipse.core.runtime.IStatus.INFO;
+import static org.eclipse.debug.core.ILaunchManager.RUN_MODE;
+import static org.eclipse.payara.tools.PayaraToolsPlugin.SYMBOLIC_NAME;
+
 import java.io.File;
 import java.util.Arrays;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.DebugPlugin;
-import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.Launch;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.jdt.internal.launching.LaunchingPlugin;
@@ -27,13 +29,13 @@ import org.eclipse.sapphire.modeling.ProgressMonitor;
 import org.eclipse.sapphire.modeling.Status;
 
 @SuppressWarnings("restriction")
-public class CreateGlassfishDomainOpMethods {
+public class CreatePayaraDomainOpMethods {
 
     public static Status execute(ICreateGlassfishDomainOp op, ProgressMonitor mon) {
         Path root = op.getLocation().content();
         File asadmin = new File(new File(root.toFile(), "bin"),
                 Platform.getOS().equals(Platform.OS_WIN32) ? "asadmin.bat" : "asadmin");
-        ;
+        
         if (asadmin.exists()) {
             String javaExecutablePath = asadmin.getAbsolutePath();
             String[] cmdLine = new String[] { javaExecutablePath, "create-domain",
@@ -41,7 +43,9 @@ public class CreateGlassfishDomainOpMethods {
                     "--portbase", String.valueOf(op.getPortBase().content()),
                     "--domaindir", op.getDomainDir().content().toPortableString(),
                     op.getName().content() };
+            
             Process p = null;
+            
             try {
                 final StringBuilder output = new StringBuilder();
                 final StringBuilder errOutput = new StringBuilder();
@@ -52,7 +56,7 @@ public class CreateGlassfishDomainOpMethods {
                 envp[0] = "AS_JAVA=" + op.getJavaLocation().content();
 
                 p = DebugPlugin.exec(cmdLine, null, envp);
-                IProcess process = DebugPlugin.newProcess(new Launch(null, ILaunchManager.RUN_MODE, null), p, "GlassFish asadmin"); //$NON-NLS-1$
+                IProcess process = DebugPlugin.newProcess(new Launch(null, RUN_MODE, null), p, "GlassFish asadmin"); //$NON-NLS-1$
 
                 // Log output
                 process.getStreamsProxy().getOutputStreamMonitor().addListener((text, monitor) -> output.append(text));
@@ -62,10 +66,10 @@ public class CreateGlassfishDomainOpMethods {
                 for (int i = 0; i < 600; i++) {
                     // Wait no more than 30 seconds (600 * 50 milliseconds)
                     if (process.isTerminated()) {
-                        String msg = output.toString() + "\n" + errOutput.toString();
-                        org.eclipse.core.runtime.Status status = new org.eclipse.core.runtime.Status(IStatus.INFO,
-                                PayaraToolsPlugin.SYMBOLIC_NAME, 1, msg, null);
-                        PayaraToolsPlugin.getInstance().getLog().log(status);
+                        PayaraToolsPlugin.getInstance().getLog().log(
+                                new org.eclipse.core.runtime.Status(INFO, SYMBOLIC_NAME, 1, 
+                                output.toString() + "\n" + errOutput.toString(), 
+                                null));
                         break;
                     }
                     try {

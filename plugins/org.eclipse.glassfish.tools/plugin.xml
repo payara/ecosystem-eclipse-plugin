@@ -93,7 +93,7 @@
   <extension point="org.eclipse.wst.common.project.facet.core.runtimes">
     <adapter>
       <runtime-component id="payara.runtime"/>
-      <factory class="org.eclipse.payara.tools.internal.GlassFishClasspathProvider$Factory"/>
+      <factory class="org.eclipse.payara.tools.internal.PayaraClasspathProvider$Factory"/>
       <type class="org.eclipse.jst.common.project.facet.core.IClasspathProvider"/>
     </adapter>
   </extension>
@@ -192,7 +192,7 @@
 	<extension point="org.eclipse.wst.common.project.facet.core.runtimeBridges">	
 		<bridge
 			id="org.eclipse.payara.tools.bridge"
- 			class="org.eclipse.payara.tools.internal.GlassFishRuntimeBridge"/>
+ 			class="org.eclipse.payara.tools.internal.PayaraRuntimeBridge"/>
 	</extension>
     
     <extension point="org.eclipse.wst.common.project.facet.core.facets">
@@ -748,14 +748,14 @@
   <extension
         point="org.eclipse.core.expressions.propertyTesters">
      <propertyTester
-           class="org.eclipse.payara.tools.handlers.GlassFishStateTester"
+           class="org.eclipse.payara.tools.handlers.PayaraStateTester"
            id="org.eclipse.payara.tools.GlassFishStateTester"
            namespace="org.eclipse.payara.tools"
            properties="isRunning,isRemote"
            type="org.eclipse.wst.server.core.IServer">
      </propertyTester>
      <propertyTester
-           class="org.eclipse.payara.tools.handlers.GlassFishVersionTester"
+           class="org.eclipse.payara.tools.handlers.PayaraVersionTester"
            id="org.eclipse.payara.tools.GlassFishVersionTester"
            namespace="org.eclipse.payara.tools"
            properties="v3Test"

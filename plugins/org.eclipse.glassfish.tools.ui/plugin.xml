@@ -59,7 +59,7 @@
        <page
              id="org.eclipse.payara.tools.preferences.GlassFishPreferencePage"
              class="org.eclipse.payara.tools.ui.preferences.GlassFishPreferencePage"
-             name="GlassFish Preferences">
+             name="Payara Preferences">
        </page>
     </extension>
     
@@ -240,7 +240,7 @@
     -->
     <extension point="org.eclipse.ui.propertyPages">
         <page
-           id="oorg.eclipse.payara.tools.ui.server.properties.glassfish"
+           id="org.eclipse.payara.tools.ui.server.properties.glassfish"
            name="GlassFish"
            class="org.eclipse.payara.tools.ui.properties.ServerPropertyPage">
            <enabledWhen>
@@ -314,7 +314,7 @@
     <extension point="org.eclipse.ui.console.consolePageParticipants">
        <consolePageParticipant
              id="org.eclipse.payara.tools.log.GlassFishLogPageParticipant"
-             class="org.eclipse.payara.tools.ui.log.GlassFishLogPageParticipant">
+             class="org.eclipse.payara.tools.ui.log.PayaraLogPageParticipant">
           <enablement>
              <instanceof value="org.eclipse.payara.tools.log.GlassfishConsole"/>
           </enablement>
@@ -324,7 +324,7 @@
     <extension point="org.eclipse.ui.console.consolePatternMatchListeners">
         <consolePatternMatchListener
            id="org.eclipse.payara.tools.ui.consolePatternMatchListener"
-           class="org.eclipse.payara.tools.ui.log.GlassfishConsoleTracker"
+           class="org.eclipse.payara.tools.ui.log.PayaraConsoleTracker"
            qualifier="${java_extensions_regex}"
            regex="\(\S*${java_extensions_regex}\S*\)">
         <enablement></enablement>

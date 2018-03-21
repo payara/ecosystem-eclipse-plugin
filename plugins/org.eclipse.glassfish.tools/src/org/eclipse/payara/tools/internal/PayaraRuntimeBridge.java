@@ -9,6 +9,11 @@
 
 package org.eclipse.payara.tools.internal;
 
+import static org.eclipse.core.runtime.Status.OK_STATUS;
+import static org.eclipse.wst.common.project.facet.core.runtime.RuntimeManager.createRuntimeComponent;
+import static org.eclipse.wst.common.project.facet.core.runtime.RuntimeManager.getRuntimeComponentType;
+import static org.eclipse.wst.server.core.ServerCore.getRuntimes;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,29 +24,27 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.common.project.facet.core.StandardJreRuntimeComponent;
 import org.eclipse.payara.tools.server.PayaraRuntime;
 import org.eclipse.sapphire.Version;
 import org.eclipse.sapphire.util.SetFactory;
 import org.eclipse.wst.common.project.facet.core.runtime.IRuntimeBridge;
 import org.eclipse.wst.common.project.facet.core.runtime.IRuntimeComponent;
-import org.eclipse.wst.common.project.facet.core.runtime.IRuntimeComponentType;
 import org.eclipse.wst.common.project.facet.core.runtime.IRuntimeComponentVersion;
-import org.eclipse.wst.common.project.facet.core.runtime.RuntimeManager;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IRuntimeType;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.core.internal.Runtime;
 
-public final class GlassFishRuntimeBridge implements IRuntimeBridge {
+@SuppressWarnings("restriction")
+public final class PayaraRuntimeBridge implements IRuntimeBridge {
 
     @Override
     public Set<String> getExportedRuntimeNames() throws CoreException {
         final SetFactory<String> namesSetFactory = SetFactory.start();
 
-        for (final IRuntime runtime : ServerCore.getRuntimes()) {
-            final IRuntimeType type = runtime.getRuntimeType();
+        for (IRuntime runtime : getRuntimes()) {
+            IRuntimeType type = runtime.getRuntimeType();
 
             if (type != null && "payara.runtime".equals(type.getId())) {
                 namesSetFactory.add(runtime.getId());
@@ -76,17 +79,15 @@ public final class GlassFishRuntimeBridge implements IRuntimeBridge {
                 return components;
             }
 
-            final PayaraRuntime gfRuntime = (PayaraRuntime) runtime.loadAdapter(PayaraRuntime.class, new NullProgressMonitor());
+            final PayaraRuntime payaraRuntime = (PayaraRuntime) runtime.loadAdapter(PayaraRuntime.class, new NullProgressMonitor());
 
-            if (gfRuntime != null) {
-                final Version gfVersion = gfRuntime.getVersion();
+            if (payaraRuntime != null) {
+                final Version payaraVersion = payaraRuntime.getVersion();
 
-                if (gfVersion != null) {
-                    // GlassFish
+                if (payaraVersion != null) {
 
-                    final IRuntimeComponentType gfComponentType = RuntimeManager.getRuntimeComponentType("payara.runtime");
-                    final String gfComponentVersionStr = gfVersion.matches("[5") ? "5" : (gfVersion.matches("[4") ? "4" : "3.1");
-                    final IRuntimeComponentVersion gfComponentVersion = gfComponentType.getVersion(gfComponentVersionStr);
+                    String payaraMainVersion = payaraVersion.matches("[5") ? "5" : (payaraVersion.matches("[4") ? "4" : "3.1");
+                    IRuntimeComponentVersion payaraComponentVersion = getRuntimeComponentType("payara.runtime").getVersion(payaraMainVersion);
 
                     Map<String, String> properties = new HashMap<>(5);
                     if (runtime.getLocation() != null) {
@@ -102,11 +103,11 @@ public final class GlassFishRuntimeBridge implements IRuntimeBridge {
                         properties.put("type-id", runtime.getRuntimeType().getId());
                     }
 
-                    components.add(RuntimeManager.createRuntimeComponent(gfComponentVersion, properties));
+                    components.add(createRuntimeComponent(payaraComponentVersion, properties));
 
                     // Java Runtime Environment
 
-                    components.add(StandardJreRuntimeComponent.create(gfRuntime.getVMInstall()));
+                    components.add(StandardJreRuntimeComponent.create(payaraRuntime.getVMInstall()));
 
                     // Other
 
@@ -119,17 +120,18 @@ public final class GlassFishRuntimeBridge implements IRuntimeBridge {
 
         @Override
         public Map<String, String> getProperties() {
-            final Map<String, String> props = new HashMap<>();
-            final IRuntime runtime = findRuntime(this.id);
+            Map<String, String> properties = new HashMap<>();
+            IRuntime runtime = findRuntime(id);
             if (runtime != null) {
-                props.put("id", runtime.getId());
-                props.put("localized-name", runtime.getName());
+                properties.put("id", runtime.getId());
+                properties.put("localized-name", runtime.getName());
                 String s = ((Runtime) runtime).getAttribute("alternate-names", (String) null);
                 if (s != null) {
-                    props.put("alternate-names", s);
+                    properties.put("alternate-names", s);
                 }
             }
-            return props;
+            
+            return properties;
         }
 
         @Override
@@ -138,7 +140,7 @@ public final class GlassFishRuntimeBridge implements IRuntimeBridge {
             if (runtime != null) {
                 return runtime.validate(monitor);
             }
-            return Status.OK_STATUS;
+            return OK_STATUS;
         }
 
         private static final IRuntime findRuntime(final String id) {
@@ -154,6 +156,7 @@ public final class GlassFishRuntimeBridge implements IRuntimeBridge {
                 }
 
             }
+            
             return null;
         }
     }

@@ -19,9 +19,9 @@ import org.eclipse.wst.common.project.facet.core.runtime.IRuntimeComponent;
  * @author <a href="mailto:konstantin.komissarchik@oracle.com">Konstantin Komissarchik</a>
  */
 
-public final class IsGlassFishUtil {
+public final class IsPayaraUtil {
 
-    public static boolean isGlassFish(org.eclipse.wst.server.core.IRuntime runtime) {
+    public static boolean isPayara(org.eclipse.wst.server.core.IRuntime runtime) {
         if (runtime != null) {
             return runtime.getRuntimeType().getId().equals("payara.runtime");
         }
@@ -29,17 +29,17 @@ public final class IsGlassFishUtil {
         return false;
     }
 
-    public static boolean isGlassFish(IRuntime runtime) {
+    public static boolean isPayara(IRuntime runtime) {
         if (runtime != null) {
             for (IRuntimeComponent component : runtime.getRuntimeComponents()) {
-                return isGlassFish(component);
+                return isPayara(component);
             }
         }
 
         return false;
     }
 
-    public static boolean isGlassFish(IRuntimeComponent component) {
+    public static boolean isPayara(IRuntimeComponent component) {
         if (component != null) {
             return component.getRuntimeComponentType().getId().equals("payara.runtime");
         }

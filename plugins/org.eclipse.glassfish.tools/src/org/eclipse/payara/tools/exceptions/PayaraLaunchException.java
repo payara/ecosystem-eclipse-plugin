@@ -9,42 +9,39 @@
 
 package org.eclipse.payara.tools.exceptions;
 
-public class GlassfishLaunchException extends Exception {
+public class PayaraLaunchException extends Exception {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = -3931653934641477601L;
 
-    private Process gfProcess;
+    private Process payaraProcess;
 
-    public GlassfishLaunchException() {
+    public PayaraLaunchException() {
         super();
     }
 
-    public GlassfishLaunchException(String message, Throwable cause) {
+    public PayaraLaunchException(String message, Throwable cause) {
         this(message, cause, null);
     }
 
-    public GlassfishLaunchException(String message, Process gfProcess) {
+    public PayaraLaunchException(String message, Process gfProcess) {
         this(message, null, gfProcess);
     }
 
-    public GlassfishLaunchException(String message, Throwable cause, Process gfProcess) {
+    public PayaraLaunchException(String message, Throwable cause, Process payaraProcess) {
         super(message, cause);
-        this.gfProcess = gfProcess;
+        this.payaraProcess = payaraProcess;
     }
 
-    public GlassfishLaunchException(String message) {
+    public PayaraLaunchException(String message) {
         this(message, null, null);
     }
 
-    public GlassfishLaunchException(Throwable cause) {
+    public PayaraLaunchException(Throwable cause) {
         this(null, cause, null);
     }
 
     public Process getStartedProcess() {
-        return gfProcess;
+        return payaraProcess;
     }
 
 }
