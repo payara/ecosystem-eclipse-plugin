@@ -5,4 +5,4 @@ Bundle-Vendor: %BundleVendor
 Bundle-SymbolicName: org.eclipse.payara.tools.jver
 Bundle-Version: 1.0.0.qualifier
 Bundle-Localization: bundle
-Bundle-RequiredExecutionEnvironment: J2SE-1.4
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

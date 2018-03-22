@@ -2,3 +2,12 @@
 /dev-eclipse
 /dev-target
 .DS_Store
+/pool/
+/assemble.org.eclipse.payara.tools.everything.all.xml
+/assemble.org.eclipse.payara.tools.everything.xml
+/finalFeaturesVersions.ANY_ANY_ANY.properties
+/finalFeaturesVersions.properties
+/finalPluginsVersions.ANY_ANY_ANY.properties
+/finalPluginsVersions.properties
+/package.org.eclipse.payara.tools.everything.all.xml
+/package.org.eclipse.payara.tools.everything.xml

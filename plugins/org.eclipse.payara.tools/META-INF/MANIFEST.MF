@@ -34,9 +34,8 @@ Require-Bundle: org.apache.xerces,
  org.eclipse.jst.j2ee.core,
  org.eclipse.jst.server.generic.core,
  org.eclipse.sapphire.platform,
- org.eclipse.jem.util;bundle-version="2.1.200"
+ org.eclipse.jem.util
 Bundle-ActivationPolicy: lazy
-Import-Package: javax.xml.bind; version="0.0.0"
 Export-Package: org.eclipse.payara.tools;
   uses:="org.eclipse.debug.core,
    org.eclipse.core.runtime,
