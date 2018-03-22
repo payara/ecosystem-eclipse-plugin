@@ -10,6 +10,12 @@
 package org.eclipse.payara.tools.sapphire;
 
 import static org.eclipse.sapphire.modeling.annotations.FileSystemResourceType.FOLDER;
+import static org.eclipse.payara.tools.sapphire.GlassfishServerConfigServices.UniqueRuntimeNameValidationService;
+import static org.eclipse.payara.tools.sapphire.GlassfishServerConfigServices.ServerLocationValidationService;
+import static org.eclipse.payara.tools.sapphire.GlassfishServerConfigServices.ServerLocationListener;
+
+import static org.eclipse.payara.tools.sapphire.GlassfishServerConfigServices.JdkValidationService;
+import static org.eclipse.payara.tools.sapphire.GlassfishServerConfigServices.JdkDefaultValueService;
 
 import org.eclipse.sapphire.Element;
 import org.eclipse.sapphire.ElementType;
@@ -35,13 +41,12 @@ public interface IGlassfishRuntimeModel extends Element {
     @XmlBinding(path = "name")
     @Label(standard = "na&me")
     @Required
-    @Service(impl = GlassfishServerConfigServices.UniqueRuntimeNameValidationService.class)
+    @Service(impl = UniqueRuntimeNameValidationService.class)
     ValueProperty PROP_NAME = new ValueProperty(TYPE, "Name");
-
     Value<String> getName();
-
     void setName(String value);
 
+    
     // *** ServerRoot ***
 
     @Type(base = Path.class)
@@ -51,16 +56,14 @@ public interface IGlassfishRuntimeModel extends Element {
     @XmlBinding(path = "server-root")
     @Label(standard = "&GlassFish location")
     @Required
-    @Service(impl = GlassfishServerConfigServices.ServerLocationValidationService.class)
-    @Listeners(GlassfishServerConfigServices.ServerLocationListener.class)
+    @Service(impl = ServerLocationValidationService.class)
+    @Listeners(ServerLocationListener.class)
     ValueProperty PROP_SERVER_ROOT = new ValueProperty(TYPE, "ServerRoot");
-
     Value<Path> getServerRoot();
-
     void setServerRoot(Path value);
-
     void setServerRoot(String value);
 
+    
     // *** JavaRuntimeEnvironment ***
 
     @Type(base = Path.class)
@@ -69,13 +72,10 @@ public interface IGlassfishRuntimeModel extends Element {
     @ValidFileSystemResourceType(FOLDER)
     @Label(standard = "&Java location")
     @Required
-    @Service(impl = GlassfishServerConfigServices.JdkValidationService.class)
-    @Service(impl = GlassfishServerConfigServices.JdkDefaultValueService.class)
+    @Service(impl = JdkValidationService.class)
+    @Service(impl = JdkDefaultValueService.class)
     ValueProperty PROP_JAVA_RUNTIME_ENVIRONMENT = new ValueProperty(TYPE, "JavaRuntimeEnvironment");
-
     Value<Path> getJavaRuntimeEnvironment();
-
     void setJavaRuntimeEnvironment(Path value);
-
     void setJavaRuntimeEnvironment(String value);
 }

@@ -9,22 +9,27 @@
 
 package org.eclipse.payara.tools.sapphire;
 
+import static org.eclipse.osgi.util.NLS.bind;
+import static org.eclipse.payara.tools.Messages.duplicateRuntimeName;
+import static org.eclipse.payara.tools.server.PayaraRuntime.createDefaultRuntimeName;
 import static org.eclipse.payara.tools.utils.JdtUtil.validateJvm;
+import static org.eclipse.payara.tools.utils.PayaraLocationUtils.find;
 import static org.eclipse.payara.tools.utils.WtpUtil.findUniqueServerName;
+import static org.eclipse.sapphire.modeling.Status.createErrorStatus;
+import static org.eclipse.sapphire.modeling.Status.createOkStatus;
+import static org.eclipse.wst.server.core.ServerCore.getRuntimes;
+import static org.eclipse.wst.server.core.ServerCore.getServers;
 
 import java.io.File;
 import java.util.List;
 
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.launching.IVMInstall;
-import org.eclipse.osgi.util.NLS;
-import org.eclipse.payara.tools.Messages;
 import org.eclipse.payara.tools.server.PayaraRuntime;
 import org.eclipse.payara.tools.server.PayaraServer;
-import org.eclipse.payara.tools.utils.PayaraLocationUtils;
 import org.eclipse.payara.tools.utils.JavaLocationDefaultValueService;
 import org.eclipse.payara.tools.utils.JavaLocationValidationService;
+import org.eclipse.payara.tools.utils.PayaraLocationUtils;
 import org.eclipse.sapphire.DefaultValueService;
 import org.eclipse.sapphire.Event;
 import org.eclipse.sapphire.FilteredListener;
@@ -45,7 +50,6 @@ import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IRuntimeWorkingCopy;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
-import org.eclipse.wst.server.core.ServerCore;
 
 public final class GlassfishServerConfigServices {
 
@@ -53,7 +57,7 @@ public final class GlassfishServerConfigServices {
 
         @Override
         protected Status compute() {
-            final Value<?> name = context(Value.class);
+            Value<?> name = context(Value.class);
 
             if (!name.empty()) {
                 IRuntime thisRuntime = name.element().adapt(IRuntime.class);
@@ -62,14 +66,14 @@ public final class GlassfishServerConfigServices {
                     thisRuntime = ((IRuntimeWorkingCopy) thisRuntime).getOriginal();
                 }
 
-                for (final IRuntime r : ServerCore.getRuntimes()) {
-                    if (r != thisRuntime && name.text().equals(r.getName())) {
-                        return Status.createErrorStatus(NLS.bind(Messages.duplicateRuntimeName, name.text()));
+                for (final IRuntime runtime : getRuntimes()) {
+                    if (runtime != thisRuntime && name.text().equals(runtime.getName())) {
+                        return createErrorStatus(bind(duplicateRuntimeName, name.text()));
                     }
                 }
             }
 
-            return Status.createOkStatus();
+            return createOkStatus();
         }
     }
 
@@ -83,20 +87,20 @@ public final class GlassfishServerConfigServices {
 
         @Override
         protected Status compute() {
-            final Value<?> name = context(Value.class);
+            Value<?> name = context(Value.class);
 
             if (!name.empty()) {
                 final IServerWorkingCopy thisServerWorkingCopy = name.element().adapt(IServerWorkingCopy.class);
                 final IServer thisServer = thisServerWorkingCopy.getOriginal();
 
-                for (final IServer s : ServerCore.getServers()) {
-                    if (s != thisServer && name.text().equals(s.getName())) {
-                        return Status.createErrorStatus(duplicateServerName.format(name.text()));
+                for (final IServer server : getServers()) {
+                    if (server != thisServer && name.text().equals(server.getName())) {
+                        return createErrorStatus(duplicateServerName.format(name.text()));
                     }
                 }
             }
 
-            return Status.createOkStatus();
+            return createOkStatus();
         }
     }
 
@@ -107,10 +111,14 @@ public final class GlassfishServerConfigServices {
 
         @Override
         protected String compute() {
-            IServerWorkingCopy wc = context(Value.class).element().adapt(IServerWorkingCopy.class);
-            IRuntime runtime = wc.getRuntime();
-            IPath serverLocation = runtime.getLocation();
-            return serverLocation.append(DEFAULT_DOMAINS_DIR).append(DEFAULT_DOMAIN_NAME).toString();
+            return context(Value.class)
+                    .element()
+                    .adapt(IServerWorkingCopy.class)
+                    .getRuntime()
+                    .getLocation()
+                    .append(DEFAULT_DOMAINS_DIR)
+                    .append(DEFAULT_DOMAIN_NAME)
+                    .toString();
         }
     }
 
@@ -120,8 +128,7 @@ public final class GlassfishServerConfigServices {
             super.initDefaultValueService();
 
             // There is no need to detach the listener as the life cycle of the JDK and
-            // GlassFish
-            // location properties is the same.
+            // Payara location properties is the same.
 
             context(IGlassfishRuntimeModel.class).getServerRoot().attach(new FilteredListener<PropertyEvent>() {
                 @Override
@@ -183,39 +190,42 @@ public final class GlassfishServerConfigServices {
     }
 
     public static final class ServerLocationListener extends Listener {
-        private static final List<Path> subFoldersToSearch = ListFactory.<Path>start().add(new Path("glassfish"))
-                .add(new Path("glassfish4/glassfish")).add(new Path("glassfish3/glassfish")).result();
+        private static final List<Path> subFoldersToSearch = ListFactory.<Path>start()
+                .add(new Path("glassfish"))
+                .add(new Path("glassfish4/glassfish"))
+                .add(new Path("glassfish3/glassfish")).result();
 
         @Override
         public void handle(final Event event) {
-            final IGlassfishRuntimeModel model = ((PropertyEvent) event).property()
+            IGlassfishRuntimeModel model = ((PropertyEvent) event)
+                    .property()
                     .nearest(IGlassfishRuntimeModel.class);
 
-            Version gfVersion = null;
+            Version payaraVersion = null;
 
-            final Path location = model.getServerRoot().content();
+            Path payaraRootLocation = model.getServerRoot().content();
 
-            if (location != null) {
-                PayaraLocationUtils gfInstall = PayaraLocationUtils.find(location.toFile());
+            if (payaraRootLocation != null) {
+                PayaraLocationUtils payaraInstall = find(payaraRootLocation.toFile());
 
-                if (gfInstall == null) {
-                    for (final Path sf : subFoldersToSearch) {
-                        final Path p = location.append(sf);
-                        gfInstall = PayaraLocationUtils.find(p.toFile());
+                if (payaraInstall == null) {
+                    for (Path subFolder : subFoldersToSearch) {
+                        Path potentialRootLocation = payaraRootLocation.append(subFolder);
+                        payaraInstall = PayaraLocationUtils.find(potentialRootLocation.toFile());
 
-                        if (gfInstall != null) {
-                            model.setServerRoot(p);
+                        if (payaraInstall != null) {
+                            model.setServerRoot(potentialRootLocation);
                             break;
                         }
                     }
                 }
 
-                if (gfInstall != null) {
-                    gfVersion = gfInstall.version();
+                if (payaraInstall != null) {
+                    payaraVersion = payaraInstall.version();
                 }
             }
 
-            model.setName(PayaraRuntime.createDefaultRuntimeName(gfVersion));
+            model.setName(createDefaultRuntimeName(payaraVersion));
         }
     }
 

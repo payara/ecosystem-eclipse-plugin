@@ -11,6 +11,7 @@ package org.eclipse.payara.tools.ui.wizards;
 
 import static org.eclipse.sapphire.ui.forms.swt.GridLayoutUtil.gdfill;
 import static org.eclipse.sapphire.ui.forms.swt.GridLayoutUtil.glayout;
+import static org.eclipse.swt.SWT.NONE;
 
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -22,7 +23,6 @@ import org.eclipse.sapphire.modeling.Status.Severity;
 import org.eclipse.sapphire.ui.PartValidationEvent;
 import org.eclipse.sapphire.ui.def.DefinitionLoader;
 import org.eclipse.sapphire.ui.forms.swt.SapphireForm;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.wst.server.ui.wizard.IWizardHandle;
@@ -61,7 +61,7 @@ public abstract class BaseWizardFragment extends WizardFragment {
         this.wizard.setDescription(getDescription());
         this.wizard.setImageDescriptor(getImageDescriptor());
 
-        this.composite = new Composite(parent, SWT.NONE);
+        this.composite = new Composite(parent, NONE);
         this.composite.setLayout(glayout(1, 0, 0));
 
         render();

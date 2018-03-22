@@ -12,6 +12,7 @@ package org.eclipse.payara.tools.ui.wizards.actions;
 import static org.eclipse.payara.tools.utils.WtpUtil.load;
 import static org.eclipse.sapphire.modeling.Path.fromPortableString;
 import static org.eclipse.sapphire.ui.def.DefinitionLoader.context;
+import static org.eclipse.jface.window.Window.OK;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -59,7 +60,7 @@ public class NewPayaraDomainAction extends SapphireActionHandler {
                                 .wizard("new-domain-wizard")));
 
         // If user okay'ed dialog, copy the provided values to our model
-        if (dlg.open() == Dialog.OK) {
+        if (dlg.open() == OK) {
             IGlassfishServerModel model = (IGlassfishServerModel) context.part().getModelElement();
 
             model.setDomainPath(createDomainOperation.getDomainDir().content().append(createDomainOperation.getName().content()));

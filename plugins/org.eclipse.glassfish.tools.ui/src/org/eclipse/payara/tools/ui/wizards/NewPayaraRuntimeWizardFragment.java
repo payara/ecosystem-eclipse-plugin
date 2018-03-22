@@ -34,7 +34,7 @@ import org.eclipse.wst.server.core.internal.RuntimeWorkingCopy;
  * This fragment essentially causes the screen with <code>Name</code>, <code>Payara location</code>,
  * <code>Java Location</code> etc to be rendered, although a lot of the actual work is delegated by
  * the {@link BaseWizardFragment} to Sapphire. The UI layout for this wizard fragment is specified
- * in the file <code>PayaraUI.sdef</code> in the "glassfish.runtime" section.
+ * in the file <code>PayaraUI.sdef</code> in the "payara.runtime" section.
  *
  */
 @SuppressWarnings("restriction")
@@ -65,13 +65,17 @@ public class NewPayaraRuntimeWizardFragment extends BaseWizardFragment {
     protected Element getModel() {
         IRuntimeWorkingCopy runtime = (IRuntimeWorkingCopy) getTaskModel().getObject(TASK_RUNTIME);
         PayaraRuntime runtimeDelegate = (PayaraRuntime) runtime.loadAdapter(PayaraRuntime.class, null);
+        
+        // IGlassfishRuntimeModel contains the entries corresponding to PayaraUI.sdef, which are the fields
+        // that will be rendered by Saphire, e.g. Name, ServerRoot, JavaRuntimeEnvironment, etc
+        
         IGlassfishRuntimeModel model = runtimeDelegate.getModel();
 
         return model;
     }
 
     @Override
-    public void setTaskModel(final TaskModel taskModel) {
+    public void setTaskModel(TaskModel taskModel) {
         super.setTaskModel(taskModel);
 
         IRuntimeWorkingCopy runtime = (IRuntimeWorkingCopy) getTaskModel().getObject(TASK_RUNTIME);
@@ -89,17 +93,17 @@ public class NewPayaraRuntimeWizardFragment extends BaseWizardFragment {
     public void performFinish(IProgressMonitor monitor) throws CoreException {
         super.performFinish(monitor);
 
-        IRuntimeWorkingCopy runtime = (IRuntimeWorkingCopy) getTaskModel().getObject(TASK_RUNTIME);
+        RuntimeWorkingCopy runtime = (RuntimeWorkingCopy) getTaskModel().getObject(TASK_RUNTIME);
         runtime.save(true, monitor);
-        ((RuntimeWorkingCopy) runtime).dispose();
+        runtime.dispose();
     }
 
     @Override
     public void performCancel(final IProgressMonitor monitor) throws CoreException {
         super.performCancel(monitor);
 
-        IRuntimeWorkingCopy runtime = (IRuntimeWorkingCopy) getTaskModel().getObject(TASK_RUNTIME);
-        ((RuntimeWorkingCopy) runtime).dispose();
+        RuntimeWorkingCopy runtime = (RuntimeWorkingCopy) getTaskModel().getObject(TASK_RUNTIME);
+        runtime.dispose();
     }
 
     @Override

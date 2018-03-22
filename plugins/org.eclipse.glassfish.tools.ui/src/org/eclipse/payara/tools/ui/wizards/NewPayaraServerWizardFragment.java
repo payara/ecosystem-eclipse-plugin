@@ -57,10 +57,6 @@ public final class NewPayaraServerWizardFragment extends BaseWizardFragment {
         return "payara.server";
     }
 
-    private IServerWorkingCopy server() {
-        return (IServerWorkingCopy) getTaskModel().getObject(TASK_SERVER);
-    }
-
     @Override
     protected Element getModel() {
         try {
@@ -69,6 +65,9 @@ public final class NewPayaraServerWizardFragment extends BaseWizardFragment {
             log(e);
         }
 
+        // IGlassfishServerModel contains the entries corresponding to PayaraUI.sdef, which are the fields
+        // that will be rendered by Saphire, e.g. Name, HostName, Remote, etc
+        
         return load(server(), PayaraServer.class).getModel();
     }
 
@@ -85,6 +84,10 @@ public final class NewPayaraServerWizardFragment extends BaseWizardFragment {
     @Override
     protected String getInitialFocus() {
         return PROP_NAME.name();
+    }
+    
+    private IServerWorkingCopy server() {
+        return (IServerWorkingCopy) getTaskModel().getObject(TASK_SERVER);
     }
 
 }

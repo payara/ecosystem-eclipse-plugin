@@ -12,12 +12,14 @@ package org.eclipse.payara.tools.server;
 import static org.eclipse.core.runtime.IStatus.ERROR;
 import static org.eclipse.core.runtime.Status.OK_STATUS;
 import static org.eclipse.osgi.util.NLS.bind;
-import static org.eclipse.payara.tools.PayaraToolsPlugin.SYMBOLIC_NAME;
 import static org.eclipse.payara.tools.Messages.notValidGlassfishInstall;
 import static org.eclipse.payara.tools.Messages.pathDoesNotExist;
+import static org.eclipse.payara.tools.Messages.runtimeNotValid;
+import static org.eclipse.payara.tools.Messages.unsupportedVersion;
+import static org.eclipse.payara.tools.PayaraToolsPlugin.SYMBOLIC_NAME;
 import static org.eclipse.payara.tools.sapphire.IGlassfishRuntimeModel.PROP_JAVA_RUNTIME_ENVIRONMENT;
-import static org.eclipse.payara.tools.utils.PayaraLocationUtils.find;
 import static org.eclipse.payara.tools.utils.JdtUtil.findOrCreateJvm;
+import static org.eclipse.payara.tools.utils.PayaraLocationUtils.find;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
@@ -26,8 +28,6 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jst.server.core.IJavaRuntime;
-import org.eclipse.payara.tools.PayaraToolsPlugin;
-import org.eclipse.payara.tools.Messages;
 import org.eclipse.payara.tools.sapphire.IGlassfishRuntimeModel;
 import org.eclipse.payara.tools.utils.PayaraLocationUtils;
 import org.eclipse.sapphire.Property;
@@ -94,9 +94,9 @@ public final class PayaraRuntime extends RuntimeDelegate implements IJavaRuntime
         super.dispose();
 
         synchronized (this) {
-            if (this.model != null) {
-                this.model.dispose();
-                this.model = null;
+            if (model != null) {
+                model.dispose();
+                model = null;
             }
         }
     }
@@ -113,8 +113,8 @@ public final class PayaraRuntime extends RuntimeDelegate implements IJavaRuntime
         return false;
     }
 
-    public static String createDefaultRuntimeName(final Version version) {
-        String baseName = "GlassFish";
+    public static String createDefaultRuntimeName(Version version) {
+        String baseName = "Payara Server"; // TODO: - detect GF
 
         if (version != null) {
             if (version.matches("[5-6)")) {
@@ -125,6 +125,8 @@ public final class PayaraRuntime extends RuntimeDelegate implements IJavaRuntime
                 baseName += " 3.1";
             }
         }
+        
+        baseName += " (" + version + ")";
 
         int counter = 1;
 
@@ -139,28 +141,28 @@ public final class PayaraRuntime extends RuntimeDelegate implements IJavaRuntime
         }
     }
 
-    private static String createDefaultRuntimeName(final String baseName, final int counter) {
-        final StringBuilder buf = new StringBuilder();
+    private static String createDefaultRuntimeName(String baseName, int counter) {
+        StringBuilder buf = new StringBuilder();
 
         buf.append(baseName);
 
         if (counter != 1) {
-            buf.append(" (");
-            buf.append(counter);
-            buf.append(')');
+            buf.append(" (")
+               .append(counter)
+               .append(')');
         }
 
         return buf.toString();
     }
 
     public Version getVersion() {
-        final IPath location = getRuntime().getLocation();
+        IPath location = getRuntime().getLocation();
 
         if (location != null) {
-            final PayaraLocationUtils gfInstall = PayaraLocationUtils.find(location.toFile());
+            PayaraLocationUtils payaraInstall = find(location.toFile());
 
-            if (gfInstall != null) {
-                return gfInstall.version();
+            if (payaraInstall != null) {
+                return payaraInstall.version();
             }
         }
 
@@ -168,48 +170,52 @@ public final class PayaraRuntime extends RuntimeDelegate implements IJavaRuntime
     }
 
     public IStatus validateVersion() {
-        final Version version = getVersion();
+        Version version = getVersion();
 
         if (version == null) {
-            // should not happen if called after validateServerLocation
-            return new Status(IStatus.ERROR, PayaraToolsPlugin.SYMBOLIC_NAME, Messages.runtimeNotValid);
+            // Should not happen if called after validateServerLocation
+            return new Status(ERROR, SYMBOLIC_NAME, runtimeNotValid);
         }
         if (!version.matches("[3.1-6)")) {
-            return new Status(IStatus.ERROR, PayaraToolsPlugin.SYMBOLIC_NAME, Messages.unsupportedVersion);
+            return new Status(ERROR, SYMBOLIC_NAME, unsupportedVersion);
         }
-        return Status.OK_STATUS;
+        
+        return OK_STATUS;
     }
 
     public VersionConstraint getJavaVersionConstraint() {
-        final Version version = getVersion();
+        Version version = getVersion();
 
         if (version != null) {
             if (version.matches("[5")) {
                 return VERSION_CONSTRAINT_5;
-            } else if (version.matches("[4")) {
-                return VERSION_CONSTRAINT_4;
-            } else {
-                return VERSION_CONSTRAINT_3_1;
             }
+            
+            if (version.matches("[4")) {
+                return VERSION_CONSTRAINT_4;
+            } 
+            
+            return VERSION_CONSTRAINT_3_1;
         }
 
         return null;
     }
 
     public synchronized IGlassfishRuntimeModel getModel() {
-        if (this.model == null) {
-            this.model = IGlassfishRuntimeModel.TYPE.instantiate(new ConfigResource(getRuntime()));
-            this.model.initialize();
+        if (model == null) {
+            model = IGlassfishRuntimeModel.TYPE.instantiate(new ConfigResource(getRuntime()));
+            model.initialize();
         }
 
-        return this.model;
+        return model;
     }
 
     public IStatus validateServerLocation() {
         IPath location = getRuntime().getLocation();
 
         // This is maybe a redundant check to GUI annotation but
-        // needed in case where GUI is not involved
+        // needed in case where a GUI is not involved
+        
         if (location == null || !location.toFile().exists()) {
             return new Status(ERROR, SYMBOLIC_NAME, bind(pathDoesNotExist, "Specified path"));
         }
