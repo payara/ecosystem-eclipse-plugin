@@ -11,22 +11,23 @@ package org.eclipse.payara.tools.server.starting;
 
 import static org.eclipse.core.runtime.IStatus.ERROR;
 import static org.eclipse.core.runtime.IStatus.OK;
+import static org.eclipse.debug.core.DebugEvent.TERMINATE;
 import static org.eclipse.debug.core.DebugPlugin.ATTR_CAPTURE_OUTPUT;
 import static org.eclipse.debug.core.ILaunchManager.DEBUG_MODE;
 import static org.eclipse.debug.core.ILaunchManager.RUN_MODE;
 import static org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants.ERR_INTERNAL_ERROR;
 import static org.eclipse.jface.dialogs.MessageDialog.openError;
-import static org.eclipse.payara.tools.PayaraToolsPlugin.SYMBOLIC_NAME;
-import static org.eclipse.payara.tools.PayaraToolsPlugin.logError;
-import static org.eclipse.payara.tools.PayaraToolsPlugin.logMessage;
 import static org.eclipse.payara.tools.Messages.abortLaunchMsg;
 import static org.eclipse.payara.tools.Messages.badGateway;
 import static org.eclipse.payara.tools.Messages.canntCommunicate;
 import static org.eclipse.payara.tools.Messages.checkVpnOrProxy;
 import static org.eclipse.payara.tools.Messages.domainNotMatch;
 import static org.eclipse.payara.tools.Messages.wrongUsernamePassword;
-import static org.eclipse.payara.tools.log.GlassfishConsoleManager.getStandardConsole;
-import static org.eclipse.payara.tools.log.GlassfishConsoleManager.showConsole;
+import static org.eclipse.payara.tools.PayaraToolsPlugin.SYMBOLIC_NAME;
+import static org.eclipse.payara.tools.PayaraToolsPlugin.logError;
+import static org.eclipse.payara.tools.PayaraToolsPlugin.logMessage;
+import static org.eclipse.payara.tools.log.PayaraConsoleManager.getStandardConsole;
+import static org.eclipse.payara.tools.log.PayaraConsoleManager.showConsole;
 import static org.eclipse.payara.tools.sdk.server.ServerTasks.StartMode.DEBUG;
 import static org.eclipse.payara.tools.sdk.server.ServerTasks.StartMode.START;
 import static org.eclipse.payara.tools.sdk.utils.ServerUtils.GFV3_JAR_MATCHER;
@@ -58,9 +59,8 @@ import org.eclipse.jdt.internal.debug.core.model.JDIDebugTarget;
 import org.eclipse.jdt.launching.AbstractJavaLaunchConfigurationDelegate;
 import org.eclipse.jdt.launching.AbstractVMInstall;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
-import org.eclipse.payara.tools.Messages;
 import org.eclipse.payara.tools.exceptions.HttpPortUpdateException;
-import org.eclipse.payara.tools.log.IGlassFishConsole;
+import org.eclipse.payara.tools.log.IPayaraConsole;
 import org.eclipse.payara.tools.sdk.admin.ResultProcess;
 import org.eclipse.payara.tools.sdk.server.FetchLogPiped;
 import org.eclipse.payara.tools.sdk.server.ServerTasks.StartMode;
@@ -156,11 +156,11 @@ public class PayaraServerLaunchDelegate extends AbstractJavaLaunchConfigurationD
             getStandardConsole(serverAdapter).stopLogging(3);
             logError("Server start interrupted.", e);
 
-            serverBehavior.setGFServerState(STATE_STOPPED);
+            serverBehavior.setPayaraServerState(STATE_STOPPED);
             abort("Unable to start server due interruption.", e, ERR_INTERNAL_ERROR);
         } catch (CoreException e) {
             getStandardConsole(serverAdapter).stopLogging(3);
-            serverBehavior.setGFServerState(STATE_STOPPED);
+            serverBehavior.setPayaraServerState(STATE_STOPPED);
             throw e;
         } finally {
             monitor.done();
@@ -221,7 +221,7 @@ public class PayaraServerLaunchDelegate extends AbstractJavaLaunchConfigurationD
 
         checkMonitorAndProgress(monitor, WORK_STEP);
 
-        Process processGF = null;
+        Process payaraProcess = null;
 
         checkMonitorAndProgress(monitor, WORK_STEP);
         startLogging(serverAdapter, serverBehavior);
@@ -229,10 +229,10 @@ public class PayaraServerLaunchDelegate extends AbstractJavaLaunchConfigurationD
 
         try {
             process = serverBehavior.launchServer(startArgs, startMode, monitor);
-            processGF = process.getValue().getProcess();
+            payaraProcess = process.getValue().getProcess();
             launch.setAttribute(ATTR_CAPTURE_OUTPUT, "false");
 
-            new RuntimeProcess(launch, processGF, "Payara Application Server", null);
+            new RuntimeProcess(launch, payaraProcess, "Payara Application Server", null);
         } catch (TimeoutException e) {
             abort("Unable to start server on time.", e, ERR_INTERNAL_ERROR);
         } catch (ExecutionException e) {
@@ -244,7 +244,7 @@ public class PayaraServerLaunchDelegate extends AbstractJavaLaunchConfigurationD
         try {
             checkMonitorAndProgress(monitor, WORK_STEP);
         } catch (InterruptedException e) {
-            killProcesses(processGF);
+            killProcesses(payaraProcess);
             throw e;
         }
 
@@ -255,7 +255,7 @@ public class PayaraServerLaunchDelegate extends AbstractJavaLaunchConfigurationD
             try {
                 debugPort = getDebugPort(process.getValue().getArguments());
             } catch (IllegalArgumentException e) {
-                killProcesses(processGF);
+                killProcesses(payaraProcess);
                 abort("Server run in debug mode but the debug port couldn't be determined!", e, ERR_INTERNAL_ERROR);
             }
 
@@ -280,13 +280,15 @@ public class PayaraServerLaunchDelegate extends AbstractJavaLaunchConfigurationD
 
     private String ignoreDebugArgs(String vmArgs) {
         StringBuilder args = new StringBuilder(vmArgs.length());
-        for (String a : vmArgs.split("\\s")) {
-            if ("-Xdebug".equalsIgnoreCase(a) || (a.startsWith("-agentlib")) || a.startsWith("-Xrunjdwp")) {
+        
+        for (String vmArgument : vmArgs.split("\\s")) {
+            if ("-Xdebug".equalsIgnoreCase(vmArgument) || (vmArgument.startsWith("-agentlib")) || vmArgument.startsWith("-Xrunjdwp")) {
                 break;
             }
-            args.append(a);
+            args.append(vmArgument);
             args.append(" ");
         }
+        
         return args.toString();
     }
 
@@ -325,10 +327,10 @@ public class PayaraServerLaunchDelegate extends AbstractJavaLaunchConfigurationD
 
         switch (serverBehavior.getServerStatus(true)) {
         case RUNNING_CONNECTION_ERROR:
-            abort(canntCommunicate, new RuntimeException(Messages.abortLaunchMsg + domainNotMatch + checkVpnOrProxy), ERR_INTERNAL_ERROR);
+            abort(canntCommunicate, new RuntimeException(abortLaunchMsg + domainNotMatch + checkVpnOrProxy), ERR_INTERNAL_ERROR);
             break;
         case RUNNING_CREDENTIAL_PROBLEM:
-            abort(canntCommunicate, new RuntimeException(Messages.abortLaunchMsg + wrongUsernamePassword), ERR_INTERNAL_ERROR);
+            abort(canntCommunicate, new RuntimeException(abortLaunchMsg + wrongUsernamePassword), ERR_INTERNAL_ERROR);
             break;
         case RUNNING_DOMAIN_MATCHING:
             return true;
@@ -358,7 +360,7 @@ public class PayaraServerLaunchDelegate extends AbstractJavaLaunchConfigurationD
                     e.printStackTrace();
                 }
 
-                IGlassFishConsole console = getStandardConsole(serverAdapter);
+                IPayaraConsole console = getStandardConsole(serverAdapter);
                 showConsole(console);
                 if (!console.isLogging()) {
                     console.startLogging(FetchLogPiped.create(serverAdapter, true));
@@ -399,18 +401,17 @@ public class PayaraServerLaunchDelegate extends AbstractJavaLaunchConfigurationD
         @Override
         public void handleDebugEvents(DebugEvent[] events) {
             if (events != null) {
-                int size = events.length;
-                for (int i = 0; i < size; i++) {
-                    if (events[i].getSource() instanceof JDIDebugTarget) {
-                        JDIDebugTarget dt = (JDIDebugTarget) events[i].getSource();
+                for (DebugEvent debugEvent : events) {
+                    if (debugEvent.getSource() instanceof JDIDebugTarget) {
+                        
+                        JDIDebugTarget debugTarget = (JDIDebugTarget) debugEvent.getSource();
                         try {
 
-                            logMessage("JDIDebugTarget=" + dt.getName()); //$NON-NLS-1$
-                            if ((dt.getName().indexOf(debugTargetIdentifier) != -1)
-                                    && events[i].getKind() == DebugEvent.TERMINATE) { // $NON-NLS-1$
+                            logMessage("JDIDebugTarget=" + debugTarget.getName());
+                            if (debugTarget.getName().indexOf(debugTargetIdentifier) != -1 && debugEvent.getKind() == TERMINATE) {
                                 DebugPlugin.getDefault().removeDebugEventListener(this);
 
-                                if (!dt.isTerminated()) {
+                                if (!debugTarget.isTerminated()) {
                                     serverBehavior.stop(true);
                                 }
 

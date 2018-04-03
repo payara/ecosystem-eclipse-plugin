@@ -10,16 +10,15 @@
 package org.eclipse.payara.tools.server;
 
 import static java.io.File.separator;
+import static java.net.URLEncoder.encode;
 import static java.text.MessageFormat.format;
+import static java.util.Arrays.asList;
 import static org.eclipse.core.runtime.IStatus.ERROR;
 import static org.eclipse.core.runtime.Status.OK_STATUS;
 import static org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities.getServerContextRoot;
 import static org.eclipse.jst.server.core.FacetUtil.getRuntime;
+import static org.eclipse.jst.server.core.internal.J2EEUtil.getEnterpriseApplications;
 import static org.eclipse.osgi.util.NLS.bind;
-import static org.eclipse.payara.tools.PayaraToolsPlugin.SYMBOLIC_NAME;
-import static org.eclipse.payara.tools.PayaraToolsPlugin.createErrorStatus;
-import static org.eclipse.payara.tools.PayaraToolsPlugin.logError;
-import static org.eclipse.payara.tools.PayaraToolsPlugin.logMessage;
 import static org.eclipse.payara.tools.Messages.facetNotSupported;
 import static org.eclipse.payara.tools.Messages.invalidPortNumbers;
 import static org.eclipse.payara.tools.Messages.pathDoesNotExist;
@@ -27,10 +26,34 @@ import static org.eclipse.payara.tools.Messages.pathNotDirectory;
 import static org.eclipse.payara.tools.Messages.pathNotValidDomain;
 import static org.eclipse.payara.tools.Messages.pathNotWritable;
 import static org.eclipse.payara.tools.Messages.serverWithSameDomainPathExisting;
-import static org.eclipse.payara.tools.sapphire.IGlassfishServerModel.PROP_HOST_NAME;
-import static org.eclipse.payara.tools.sapphire.IGlassfishServerModel.PROP_NAME;
+import static org.eclipse.payara.tools.PayaraToolsPlugin.SYMBOLIC_NAME;
+import static org.eclipse.payara.tools.PayaraToolsPlugin.createErrorStatus;
+import static org.eclipse.payara.tools.PayaraToolsPlugin.logError;
+import static org.eclipse.payara.tools.PayaraToolsPlugin.logMessage;
+import static org.eclipse.payara.tools.facets.internal.GlassfishDeploymentDescriptorFactory.getWebDeploymentDescriptor;
+import static org.eclipse.payara.tools.sapphire.IPayaraServerModel.PROP_ADMIN_NAME;
+import static org.eclipse.payara.tools.sapphire.IPayaraServerModel.PROP_ADMIN_PASSWORD;
+import static org.eclipse.payara.tools.sapphire.IPayaraServerModel.PROP_ADMIN_PORT;
+import static org.eclipse.payara.tools.sapphire.IPayaraServerModel.PROP_DEBUG_PORT;
+import static org.eclipse.payara.tools.sapphire.IPayaraServerModel.PROP_DOMAIN_PATH;
+import static org.eclipse.payara.tools.sapphire.IPayaraServerModel.PROP_HOST_NAME;
+import static org.eclipse.payara.tools.sapphire.IPayaraServerModel.PROP_NAME;
+import static org.eclipse.payara.tools.sapphire.IPayaraServerModel.PROP_PRESERVE_SESSIONS;
+import static org.eclipse.payara.tools.sapphire.IPayaraServerModel.PROP_SERVER_PORT;
+import static org.eclipse.payara.tools.sapphire.IPayaraServerModel.PROP_USE_ANONYMOUS_CONNECTIONS;
+import static org.eclipse.payara.tools.sapphire.IPayaraServerModel.PROP_USE_JAR_DEPLOYMENT;
 import static org.eclipse.payara.tools.sdk.server.parser.TreeParser.readXml;
+import static org.eclipse.payara.tools.utils.ModuleUtil.isEARModule;
+import static org.eclipse.payara.tools.utils.ModuleUtil.isEJBModule;
+import static org.eclipse.payara.tools.utils.ModuleUtil.isWebModule;
+import static org.eclipse.payara.tools.utils.PayaraLocationUtils.find;
 import static org.eclipse.payara.tools.utils.Utils.canWrite;
+import static org.eclipse.payara.tools.utils.Utils.getAppWebContextRoot;
+import static org.eclipse.payara.tools.utils.Utils.getHttpListenerProtocol;
+import static org.eclipse.payara.tools.utils.Utils.hasProjectFacet;
+import static org.eclipse.wst.common.componentcore.internal.util.IModuleConstants.JST_WEB_MODULE;
+import static org.eclipse.wst.common.project.facet.core.ProjectFacetsManager.getProjectFacet;
+import static org.eclipse.wst.server.core.ServerUtil.getModules;
 import static org.eclipse.wst.server.core.util.SocketUtil.isLocalhost;
 
 import java.beans.PropertyChangeEvent;
@@ -39,9 +62,7 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -57,13 +78,8 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.server.core.IEnterpriseApplication;
 import org.eclipse.jst.server.core.IWebModule;
-import org.eclipse.jst.server.core.internal.J2EEUtil;
-import org.eclipse.osgi.util.NLS;
-import org.eclipse.payara.tools.PayaraToolsPlugin;
 import org.eclipse.payara.tools.Messages;
-import org.eclipse.payara.tools.facets.IGlassfishWebDeploymentDescriptor;
-import org.eclipse.payara.tools.facets.internal.GlassfishDeploymentDescriptorFactory;
-import org.eclipse.payara.tools.sapphire.IGlassfishServerModel;
+import org.eclipse.payara.tools.sapphire.IPayaraServerModel;
 import org.eclipse.payara.tools.sdk.data.GlassFishAdminInterface;
 import org.eclipse.payara.tools.sdk.server.parser.HttpData;
 import org.eclipse.payara.tools.sdk.server.parser.HttpListenerReader;
@@ -71,8 +87,6 @@ import org.eclipse.payara.tools.sdk.server.parser.NetworkListenerReader;
 import org.eclipse.payara.tools.sdk.server.parser.TargetConfigNameReader;
 import org.eclipse.payara.tools.server.deploying.PayaraServerBehaviour;
 import org.eclipse.payara.tools.utils.PayaraLocationUtils;
-import org.eclipse.payara.tools.utils.ModuleUtil;
-import org.eclipse.payara.tools.utils.Utils;
 import org.eclipse.sapphire.Property;
 import org.eclipse.sapphire.PropertyBinding;
 import org.eclipse.sapphire.PropertyDef;
@@ -80,7 +94,6 @@ import org.eclipse.sapphire.Resource;
 import org.eclipse.sapphire.ValuePropertyBinding;
 import org.eclipse.sapphire.Version;
 import org.eclipse.sapphire.modeling.Path;
-import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
@@ -92,7 +105,6 @@ import org.eclipse.wst.server.core.IServerType;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.core.ServerPort;
-import org.eclipse.wst.server.core.ServerUtil;
 import org.eclipse.wst.server.core.internal.IMonitoredServerPort;
 import org.eclipse.wst.server.core.internal.IServerMonitorManager;
 import org.eclipse.wst.server.core.internal.ServerMonitorManager;
@@ -147,7 +159,7 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
 
     private List<PropertyChangeListener> propChangeListeners;
 
-    private IGlassfishServerModel model;
+    private IPayaraServerModel model;
 
     // #### ServerDelegate overridden methods
 
@@ -159,7 +171,7 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
             readDomainConfig();
         }
 
-        model = IGlassfishServerModel.TYPE.instantiate(new ConfigResource(getServerWorkingCopy()));
+        model = IPayaraServerModel.TYPE.instantiate(new ConfigResource(getServerWorkingCopy()));
     }
 
     /**
@@ -174,11 +186,10 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
     @Override
     public ServerPort[] getServerPorts() {
         try {
-            ServerPort[] sp = new ServerPort[2];
-            sp[0] = new ServerPort("adminserver", "Admin Server Port", getAdminPort(), "HTTP");
-            sp[1] = new ServerPort("server", "Server Port", getPort(), "HTTP");
-
-            return sp;
+            return new ServerPort[] {
+                new ServerPort("adminserver", "Admin Server Port", getAdminPort(), "HTTP"),
+                new ServerPort("server", "Server Port", getPort(), "HTTP")
+            };
         } catch (Exception e) {
             return new ServerPort[0];
         }
@@ -188,7 +199,7 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
 
     @Override
     public URL getModuleRootURL(IModule module) {
-        String protocol = Utils.getHttpListenerProtocol(getHost(), getPort());
+        String protocol = getHttpListenerProtocol(getHost(), getPort());
         String path = getModuleRootPath(module);
         int serverPort = getMonitorPort(getPort());
         String hostname = getHost();
@@ -199,6 +210,7 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
             // shouldn't happen
             e.printStackTrace();
         }
+        
         return null;
     }
 
@@ -215,7 +227,7 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
         return serverBehavior;
     }
 
-    public IGlassfishServerModel getModel() {
+    public IPayaraServerModel getModel() {
         return this.model;
     }
 
@@ -321,7 +333,7 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
 
     IStatus validateDomainLocation() {
         if (isRemote()) {
-            return Status.OK_STATUS;
+            return OK_STATUS;
         }
 
         String domainPath = getDomainPath();
@@ -329,20 +341,18 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
 
         File domainConfigLocation = new File(domainConfigPath);
         if (!domainConfigLocation.exists()) {
-            return new Status(IStatus.ERROR, SYMBOLIC_NAME, Messages.pathNotValidDomain);
+            return new Status(ERROR, SYMBOLIC_NAME, pathNotValidDomain);
         }
 
         // Check if domain and config dir are writable
         File domainLocation = domainConfigLocation.getParentFile().getParentFile();
         if (!canWrite(domainLocation)) {
-            return new Status(IStatus.ERROR, SYMBOLIC_NAME,
-                    NLS.bind(Messages.pathNotWritable, domainLocation.getAbsolutePath()));
+            return new Status(ERROR, SYMBOLIC_NAME, bind(pathNotWritable, domainLocation.getAbsolutePath()));
         }
 
         File domainConfigDir = domainConfigLocation.getParentFile();
         if (!canWrite(domainConfigDir)) {
-            return new Status(IStatus.ERROR, SYMBOLIC_NAME,
-                    NLS.bind(Messages.pathNotWritable, domainConfigDir.getAbsolutePath()));
+            return new Status(ERROR, SYMBOLIC_NAME, bind(pathNotWritable, domainConfigDir.getAbsolutePath()));
         }
 
         return OK_STATUS;
@@ -354,12 +364,12 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
     public IStatus validate() {
 
         logMessage("in  validate");
-        IStatus s = null;
+        IStatus status = null;
         if (!isRemote()) {
 
             // validate domain before reading domain.xml
-            if (!(s = validateDomainLocation()).isOK()) {
-                return s;
+            if (!(status = validateDomainLocation()).isOK()) {
+                return status;
             }
 
             for (IServer server : ServerCore.getServers()) {
@@ -368,11 +378,11 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
                 }
 
                 if (server.getServerType() == this.getServer().getServerType()) {
-                    PayaraServer gfServer = (PayaraServer) server.loadAdapter(PayaraServer.class, null);
-                    File p1 = new File(getDomainPath());
-                    File p2 = new File(gfServer.getDomainPath());
+                    PayaraServer payaraServer = (PayaraServer) server.loadAdapter(PayaraServer.class, null);
+                    File otherDomainPath = new File(getDomainPath());
+                    File payaraDomainPath = new File(payaraServer.getDomainPath());
 
-                    if (p1.equals(p2)) {
+                    if (otherDomainPath.equals(payaraDomainPath)) {
                         return new Status(ERROR, SYMBOLIC_NAME, serverWithSameDomainPathExisting);
                     }
                 }
@@ -481,10 +491,9 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
 
                 httpMap.putAll(httpListenerReader.getResult());
                 httpMap.putAll(networkListenerReader.getResult());
-                // !PW This probably more convoluted than it had to be, but
-                // while
-                // http-listeners are usually named "http-listener-1",
-                // "http-listener-2", ...
+                
+                // !PW This is probably more convoluted than it had to be, but while
+                // http-listeners are usually named "http-listener-1",  "http-listener-2", ...
                 // technically they could be named anything.
                 //
                 // For now, the logic is as follows:
@@ -498,7 +507,7 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
                 HttpData adminData = httpMap.remove("admin-listener"); //$NON-NLS-1$
                 int adminPort = adminData != null ? adminData.getPort() : -1;
                 setAttribute(ATTR_ADMINPORT, String.valueOf(adminPort));
-                PayaraToolsPlugin.logMessage("reading from domain.xml adminServerPortNumber=" + getAdminPort()); //$NON-NLS-1$
+                logMessage("reading from domain.xml adminServerPortNumber=" + getAdminPort()); //$NON-NLS-1$
 
                 HttpData httpPortData = httpMap.remove("http-listener-1"); //$NON-NLS-1$
                 int httpPort = httpPortData != null ? httpPortData.getPort() : -1;
@@ -506,9 +515,10 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
 
                 result = adminPort != -1;
             } catch (IllegalStateException ex) {
-                PayaraToolsPlugin.logError("error IllegalStateException ", ex); //$NON-NLS-1$
+                logError("error IllegalStateException ", ex); //$NON-NLS-1$
             }
         }
+        
         return result;
     }
 
@@ -564,10 +574,10 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
         final IPath location = getServer().getRuntime().getLocation();
 
         if (location != null) {
-            final PayaraLocationUtils gfInstall = PayaraLocationUtils.find(location.toFile());
+            PayaraLocationUtils payaraInstall = find(location.toFile());
 
-            if (gfInstall != null) {
-                return gfInstall.version();
+            if (payaraInstall != null) {
+                return payaraInstall.version();
             }
         }
 
@@ -704,31 +714,39 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
                         this.listener = null;
                     }
                 };
-            } else if (propertyDef == IGlassfishServerModel.PROP_ADMIN_NAME) {
+            } else if (propertyDef == PROP_ADMIN_NAME) {
                 return new AttributeValueBinding(workingCopy, ATTR_ADMIN);
             }
-            if (propertyDef == IGlassfishServerModel.PROP_ADMIN_PASSWORD) {
+            
+            if (propertyDef == PROP_ADMIN_PASSWORD) {
                 return new AttributeValueBinding(workingCopy, ATTR_ADMINPASS);
             }
-            if (propertyDef == IGlassfishServerModel.PROP_ADMIN_PORT) {
+            
+            if (propertyDef == PROP_ADMIN_PORT) {
                 return new AttributeValueBinding(workingCopy, ATTR_ADMINPORT);
             }
-            if (propertyDef == IGlassfishServerModel.PROP_DEBUG_PORT) {
+            
+            if (propertyDef == PROP_DEBUG_PORT) {
                 return new AttributeValueBinding(workingCopy, ATTR_DEBUG_PORT);
             }
-            if (propertyDef == IGlassfishServerModel.PROP_SERVER_PORT) {
+            
+            if (propertyDef == PROP_SERVER_PORT) {
                 return new AttributeValueBinding(workingCopy, ATTR_SERVERPORT);
             }
-            if (propertyDef == IGlassfishServerModel.PROP_DOMAIN_PATH) {
+            
+            if (propertyDef == PROP_DOMAIN_PATH) {
                 return new AttributeValueBinding(workingCopy, ATTR_DOMAINPATH);
             }
-            if (propertyDef == IGlassfishServerModel.PROP_PRESERVE_SESSIONS) {
+            
+            if (propertyDef == PROP_PRESERVE_SESSIONS) {
                 return new AttributeValueBinding(workingCopy, ATTR_KEEPSESSIONS);
             }
-            if (propertyDef == IGlassfishServerModel.PROP_USE_ANONYMOUS_CONNECTIONS) {
+            
+            if (propertyDef == PROP_USE_ANONYMOUS_CONNECTIONS) {
                 return new AttributeValueBinding(workingCopy, ATTR_USEANONYMOUSCONNECTIONS);
             }
-            if (propertyDef == IGlassfishServerModel.PROP_USE_JAR_DEPLOYMENT) {
+            
+            if (propertyDef == PROP_USE_JAR_DEPLOYMENT) {
                 return new AttributeValueBinding(workingCopy, ATTR_JARDEPLOY);
             }
 
@@ -747,22 +765,22 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
     };
 
     private static class AttributeValueBinding extends ValuePropertyBinding {
-        private final IServerWorkingCopy wc;
+        private final IServerWorkingCopy workingCopy;
         private final String attribute;
 
-        public AttributeValueBinding(final IServerWorkingCopy wc, final String attribute) {
-            this.wc = wc;
+        public AttributeValueBinding(IServerWorkingCopy wc, String attribute) {
+            this.workingCopy = wc;
             this.attribute = attribute;
         }
 
         @Override
         public String read() {
-            return this.wc.getAttribute(this.attribute, (String) null);
+            return this.workingCopy.getAttribute(this.attribute, (String) null);
         }
 
         @Override
-        public void write(final String value) {
-            this.wc.setAttribute(this.attribute, value);
+        public void write(String value) {
+            this.workingCopy.setAttribute(this.attribute, value);
         }
     }
 
@@ -777,9 +795,9 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
                 return createErrorStatus("Module is not supported on this server", null);
             }
 
-            IStatus s = checkModule(module);
-            if (s.getSeverity() == ERROR) {
-                return s;
+            IStatus status = checkModule(module);
+            if (status.getSeverity() == ERROR) {
+                return status;
             }
 
             IModule[] root = doGetParentModules(module);
@@ -793,7 +811,7 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
     }
 
     protected boolean isModuleSupported(IModule module) {
-        return ModuleUtil.isEARModule(module) || ModuleUtil.isWebModule(module) || ModuleUtil.isEJBModule(module);
+        return isEARModule(module) || isWebModule(module) || isEJBModule(module);
     }
 
     @Override
@@ -801,6 +819,7 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
         if ((modulePath == null) || (modulePath.length == 0)) {
             return new IModule[0];
         }
+        
         IModule module = modulePath[modulePath.length - 1];
         if (module != null && module.getModuleType() != null) {
             IModuleType moduleType = module.getModuleType();
@@ -821,6 +840,7 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
                 }
             }
         }
+        
         return new IModule[0];
     }
 
@@ -829,26 +849,28 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
         if (!isModuleSupported(module)) {
             return null;
         }
+        
         IModule[] parents = doGetParentModules(module);
         if (parents.length > 0) {
             return parents;
         }
+        
         return new IModule[] { module };
     }
 
     private IModule[] doGetParentModules(IModule module) {
-        IModule[] ears = ServerUtil.getModules("jst.ear"); //$NON-NLS-1$
         ArrayList<IModule> list = new ArrayList<>();
-        for (IModule ear2 : ears) {
-            IEnterpriseApplication ear = (IEnterpriseApplication) ear2.loadAdapter(IEnterpriseApplication.class,
-                    null);
-            IModule[] childs = ear.getModules();
-            for (IModule child : childs) {
+        
+        for (IModule earModule : getModules("jst.ear")) {
+            IEnterpriseApplication ear = (IEnterpriseApplication) earModule.loadAdapter(IEnterpriseApplication.class, null);
+            
+            for (IModule child : ear.getModules()) {
                 if (child.equals(module)) {
-                    list.add(ear2);
+                    list.add(earModule);
                 }
             }
         }
+        
         return list.toArray(new IModule[list.size()]);
     }
 
@@ -856,29 +878,28 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
         return canSupportModule(module);
     }
 
-    @SuppressWarnings("rawtypes")
     public IStatus canSupportModule(final IModule module) {
-        final IProject proj = module.getProject();
+        IProject project = module.getProject();
 
-        if (proj == null) {
+        if (project == null) {
             return createErrorStatus("module type not supported", null);
         }
 
         try {
-            final IFacetedProject fproj = ProjectFacetsManager.create(module.getProject());
+            IFacetedProject facetedProject = ProjectFacetsManager.create(module.getProject());
 
-            if (fproj != null) {
-                final IRuntime runtime = getRuntime(getServer().getRuntime());
+            if (facetedProject != null) {
+                IRuntime runtime = getRuntime(getServer().getRuntime());
 
                 if (runtime == null) {
                     return createErrorStatus("cannot bridge runtimes", null);
                 }
 
-                for (Object element : fproj.getProjectFacets()) {
-                    IProjectFacetVersion fv = (IProjectFacetVersion) element;
+                for (Object element : facetedProject.getProjectFacets()) {
+                    IProjectFacetVersion facetVersion = (IProjectFacetVersion) element;
 
-                    if (!runtime.supports(fv)) {
-                        return createErrorStatus(bind(facetNotSupported, fv.toString()), null);
+                    if (!runtime.supports(facetVersion)) {
+                        return createErrorStatus(bind(facetNotSupported, facetVersion.toString()), null);
                     }
                 }
             }
@@ -887,10 +908,10 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
         }
 
         for (IModule child : getChildModules(new IModule[] { module })) {
-            final IStatus st = canSupportModule(child);
+            IStatus status = canSupportModule(child);
 
-            if (st.getSeverity() == ERROR) {
-                return st;
+            if (status.getSeverity() == ERROR) {
+                return status;
             }
         }
 
@@ -902,20 +923,17 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
             return "/";
         }
 
-        // If we are dealing with web module, look if there is root ear module
+        // If we are dealing with a web module, look if there is a root ear module
 
-        if (Utils.hasProjectFacet(module, ProjectFacetsManager.getProjectFacet(IModuleConstants.JST_WEB_MODULE))) {
+        if (hasProjectFacet(module, getProjectFacet(JST_WEB_MODULE))) {
             IModule[] rootEars = getRootEarModulesOnThisServer(module);
-            if ((rootEars != null) && (rootEars.length > 0)) {
+            if (rootEars != null && rootEars.length > 0) {
                 return getModuleRootPath(module, rootEars[0]);
             }
 
             // Try to get context root from glassfish-web.xml
 
-            IGlassfishWebDeploymentDescriptor webDesc = GlassfishDeploymentDescriptorFactory
-                    .getWebDeploymentDescriptor(module.getProject());
-
-            String path = webDesc.getContext();
+            String path = getWebDeploymentDescriptor(module.getProject()).getContext();
             if (path != null) {
                 return path;
             }
@@ -933,16 +951,16 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
      * @return
      */
     private String getModuleRootPath(IModule module, IModule parent) {
-        String context = Utils.getAppWebContextRoot(parent, module);
+        String context = getAppWebContextRoot(parent, module);
 
         if (context != null && context.length() > 0) {
             try {
-                context = URLEncoder.encode(context, "UTF-8");
-                return "/" + context;
+                return "/" + encode(context, "UTF-8");
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
         }
+        
         return "/";
     }
 
@@ -950,29 +968,35 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
      * Return only the root modules already being added to this Glassfish server
      */
     private IModule[] getRootEarModulesOnThisServer(IModule module) {
-        // determine the root
-        IModule[] ear = J2EEUtil.getEnterpriseApplications(module, null);
+        // Determine the root
+        IModule[] ear = getEnterpriseApplications(module, null);
         if (ear != null && ear.length > 0) {
-            ArrayList<IModule> ret = new ArrayList<>();
+            ArrayList<IModule> rootEarModules = new ArrayList<>();
+            
             // Return only the EAR modules on current server.
-            HashSet<IModule> allmodules = new HashSet<>(Arrays.asList(getServer().getModules()));
+            
+            HashSet<IModule> allmodules = new HashSet<>(asList(getServer().getModules()));
             for (IModule element : ear) {
                 if (allmodules.contains(element)) {
-                    ret.add(element);
+                    rootEarModules.add(element);
                 }
             }
-            return ret.toArray(new IModule[ret.size()]);
+            
+            return rootEarModules.toArray(new IModule[rootEarModules.size()]);
         }
+        
         return null;
     }
 
     private int getMonitorPort(int configedPort) {
         IServerMonitorManager manager = ServerMonitorManager.getInstance();
+        
         for (IMonitoredServerPort port : manager.getMonitoredPorts(getServer())) {
             if (port.getServerPort().getPort() == configedPort) {
                 return port.getMonitorPort();
             }
         }
+        
         return configedPort;
     }
 

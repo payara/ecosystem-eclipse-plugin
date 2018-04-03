@@ -10,12 +10,12 @@
 package org.eclipse.payara.tools.sapphire;
 
 import static org.eclipse.sapphire.modeling.annotations.FileSystemResourceType.FOLDER;
-import static org.eclipse.payara.tools.sapphire.GlassfishServerConfigServices.UniqueRuntimeNameValidationService;
-import static org.eclipse.payara.tools.sapphire.GlassfishServerConfigServices.ServerLocationValidationService;
-import static org.eclipse.payara.tools.sapphire.GlassfishServerConfigServices.ServerLocationListener;
+import static org.eclipse.payara.tools.sapphire.PayaraServerConfigServices.UniqueRuntimeNameValidationService;
+import static org.eclipse.payara.tools.sapphire.PayaraServerConfigServices.ServerLocationValidationService;
+import static org.eclipse.payara.tools.sapphire.PayaraServerConfigServices.ServerLocationListener;
 
-import static org.eclipse.payara.tools.sapphire.GlassfishServerConfigServices.JdkValidationService;
-import static org.eclipse.payara.tools.sapphire.GlassfishServerConfigServices.JdkDefaultValueService;
+import static org.eclipse.payara.tools.sapphire.PayaraServerConfigServices.JdkValidationService;
+import static org.eclipse.payara.tools.sapphire.PayaraServerConfigServices.JdkDefaultValueService;
 
 import org.eclipse.sapphire.Element;
 import org.eclipse.sapphire.ElementType;
@@ -32,9 +32,9 @@ import org.eclipse.sapphire.modeling.annotations.Service;
 import org.eclipse.sapphire.modeling.annotations.ValidFileSystemResourceType;
 import org.eclipse.sapphire.modeling.xml.annotations.XmlBinding;
 
-public interface IGlassfishRuntimeModel extends Element {
+public interface IPayaraRuntimeModel extends Element {
 
-    ElementType TYPE = new ElementType(IGlassfishRuntimeModel.class);
+    ElementType TYPE = new ElementType(IPayaraRuntimeModel.class);
 
     // *** Name ***
 
@@ -54,7 +54,7 @@ public interface IGlassfishRuntimeModel extends Element {
     @AbsolutePath
     @ValidFileSystemResourceType(FOLDER)
     @XmlBinding(path = "server-root")
-    @Label(standard = "&GlassFish location")
+    @Label(standard = "&Payara location")
     @Required
     @Service(impl = ServerLocationValidationService.class)
     @Listeners(ServerLocationListener.class)

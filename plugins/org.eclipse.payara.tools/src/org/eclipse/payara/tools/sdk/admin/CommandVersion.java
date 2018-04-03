@@ -9,6 +9,8 @@
 
 package org.eclipse.payara.tools.sdk.admin;
 
+import static org.eclipse.payara.tools.sdk.admin.ServerAdmin.exec;
+
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -53,16 +55,13 @@ public class CommandVersion extends Command {
      * @return GlassFish command result containing version string returned by server.
      * @throws GlassFishIdeException When error occurred during administration command execution.
      */
-    public static ResultString getVersion(final PayaraServer server)
-            throws GlassFishIdeException {
-        final String METHOD = "getVersion";
-        Future<ResultString> future = ServerAdmin.<ResultString>exec(server, new CommandVersion());
+    public static ResultString getVersion(final PayaraServer server) throws GlassFishIdeException {
+        Future<ResultString> future = exec(server, new CommandVersion());
+        
         try {
             return future.get();
-        } catch (ExecutionException | InterruptedException
-                | CancellationException ee) {
-            throw new CommandException(LOGGER.excMsg(METHOD, "exception"),
-                    ee.getLocalizedMessage());
+        } catch (ExecutionException | InterruptedException | CancellationException e) {
+            throw new CommandException(LOGGER.excMsg("getVersion", "exception"), e.getLocalizedMessage());
         }
     }
 
@@ -75,22 +74,23 @@ public class CommandVersion extends Command {
      * or <code>null</code> if no version was returned.
      * @throws GlassFishIdeException When error occurred during administration command execution.
      */
-    public static Version getGlassFishVersion(
-            final PayaraServer server) {
+    public static Version getGlassFishVersion(PayaraServer server) {
         ResultString result;
         try {
             result = getVersion(server);
         } catch (CommandException ce) {
             return null;
         }
+        
         String value = result != null
                 ? ServerUtils.getVersionString(result.getValue())
                 : null;
-        if (value != null) {
+        
+                if (value != null) {
             return new Version(value);
-        } else {
-            return null;
         }
+        
+        return null;
     }
 
     /**
@@ -104,8 +104,7 @@ public class CommandVersion extends Command {
      * value matches values returned by version command and value of <code>false</code> that they
      * differs.
      */
-    public static boolean verifyResult(
-            final ResultString result, final PayaraServer server) {
+    public static boolean verifyResult(ResultString result, PayaraServer server) {
         boolean verifyResult = false;
         String value = ServerUtils.getVersionString(result.getValue());
         if (value != null) {
@@ -115,6 +114,7 @@ public class CommandVersion extends Command {
                 verifyResult = serverVersion.equals(valueVersion);
             }
         }
+        
         return verifyResult;
     }
 

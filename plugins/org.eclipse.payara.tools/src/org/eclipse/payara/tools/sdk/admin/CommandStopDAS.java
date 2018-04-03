@@ -9,6 +9,8 @@
 
 package org.eclipse.payara.tools.sdk.admin;
 
+import static org.eclipse.payara.tools.sdk.admin.ServerAdmin.exec;
+
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -51,12 +53,11 @@ public class CommandStopDAS extends Command {
      * @throws GlassFishIdeException When error occurred during administration command execution.
      */
     public static ResultString stopDAS(final PayaraServer server) throws GlassFishIdeException {
-        Command command = new CommandStopDAS();
-        Future<ResultString> future = ServerAdmin.<ResultString>exec(server, command);
+        Future<ResultString> future = exec(server, new CommandStopDAS());
+        
         try {
             return future.get();
-        } catch (InterruptedException | ExecutionException
-                | CancellationException ie) {
+        } catch (InterruptedException | ExecutionException | CancellationException ie) {
             throw new GlassFishIdeException(ERROR_MESSAGE, ie);
         }
     }

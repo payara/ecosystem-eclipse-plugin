@@ -27,7 +27,7 @@ public abstract class Command {
     protected String command;
 
     /** Indicate whether we shall retry command execution. */
-    protected boolean retry = false;
+    protected boolean retry;
 
     ////////////////////////////////////////////////////////////////////////////
     // Constructors //
@@ -68,7 +68,7 @@ public abstract class Command {
      * In such cases, we set a flag and have the option to reissue the command.
      * <p/>
      *
-     * @return true if server responded with it's "please wait" message.
+     * @return true if server responded with its "please wait" message.
      */
     public boolean retry() {
         return retry;

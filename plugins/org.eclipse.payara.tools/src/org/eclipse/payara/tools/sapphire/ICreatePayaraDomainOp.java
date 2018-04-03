@@ -9,6 +9,8 @@
 
 package org.eclipse.payara.tools.sapphire;
 
+import static org.eclipse.sapphire.modeling.annotations.FileSystemResourceType.FOLDER;
+
 import org.eclipse.payara.tools.internal.CreatePayaraDomainOpMethods;
 import org.eclipse.sapphire.ElementType;
 import org.eclipse.sapphire.ExecutableElement;
@@ -22,7 +24,6 @@ import org.eclipse.sapphire.modeling.annotations.AbsolutePath;
 import org.eclipse.sapphire.modeling.annotations.DefaultValue;
 import org.eclipse.sapphire.modeling.annotations.DelegateImplementation;
 import org.eclipse.sapphire.modeling.annotations.Documentation;
-import org.eclipse.sapphire.modeling.annotations.FileSystemResourceType;
 import org.eclipse.sapphire.modeling.annotations.Label;
 import org.eclipse.sapphire.modeling.annotations.MustExist;
 import org.eclipse.sapphire.modeling.annotations.NumericRange;
@@ -30,54 +31,48 @@ import org.eclipse.sapphire.modeling.annotations.Required;
 import org.eclipse.sapphire.modeling.annotations.Service;
 import org.eclipse.sapphire.modeling.annotations.ValidFileSystemResourceType;
 
-public interface ICreateGlassfishDomainOp extends ExecutableElement {
+public interface ICreatePayaraDomainOp extends ExecutableElement {
 
-    ElementType TYPE = new ElementType(ICreateGlassfishDomainOp.class);
+    ElementType TYPE = new ElementType(ICreatePayaraDomainOp.class);
 
     @Label(standard = "&Name")
     @Service(impl = DomainNameValidationService.class)
     @Required
     ValueProperty PROP_NAME = new ValueProperty(TYPE, "Name");
-
     Value<String> getName();
-
     void setName(String name);
 
-    @Label(standard = "Java location used to run GlassFish asadmin")
+    
+    @Label(standard = "Java location used to run Payara asadmin")
     ValueProperty PROP_JAVA_LOCATION = new ValueProperty(TYPE, "JavaLocation");
-
     Value<Path> getJavaLocation();
-
     void setJavaLocation(String location);
 
+    
     @Type(base = Path.class)
     @AbsolutePath
     @MustExist
-    @ValidFileSystemResourceType(FileSystemResourceType.FOLDER)
+    @ValidFileSystemResourceType(FOLDER)
     @Required
     ValueProperty PROP_LOCATION = new ValueProperty(TYPE, "Location");
-
     Value<Path> getLocation();
-
     void setLocation(String location);
-
     void setLocation(Path location);
 
+    
     @Label(standard = "&Domain directory")
     @Type(base = Path.class)
     @AbsolutePath
     @MustExist
     @DefaultValue(text = "${Location}/domains")
-    @ValidFileSystemResourceType(FileSystemResourceType.FOLDER)
+    @ValidFileSystemResourceType(FOLDER)
     @Required
     ValueProperty PROP_DOMAIN_DIR = new ValueProperty(TYPE, "DomainDir");
-
     Value<Path> getDomainDir();
-
     void setDomainDir(String location);
-
     void setDomainDir(Path location);
 
+    
     @Label(standard = "&Portbase")
     @Type(base = Integer.class)
     @Documentation(content = "Determines the number with which port assignments"
@@ -94,13 +89,11 @@ public interface ICreateGlassfishDomainOp extends ExecutableElement {
     @NumericRange(min = "1025", max = "65535")
     @DefaultValue(text = "8000")
     ValueProperty PROP_PORT_BASE = new ValueProperty(TYPE, "PortBase");
-
     Value<Integer> getPortBase();
-
     void setPortBase(String val);
-
     void setPortBase(int val);
 
+    
     // *** Method: execute ***
     @Override
     @DelegateImplementation(CreatePayaraDomainOpMethods.class)

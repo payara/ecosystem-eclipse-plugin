@@ -9,9 +9,12 @@
 
 package org.eclipse.payara.tools.sdk.admin;
 
+import static java.util.logging.Level.WARNING;
+import static org.eclipse.payara.tools.sdk.admin.CommandException.RUNNER_INIT;
+import static org.eclipse.payara.tools.sdk.admin.CommandException.UNKNOWN_ADMIN_INTERFACE;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.logging.Level;
 
 import org.eclipse.payara.tools.sdk.data.GlassFishAdminInterface;
 import org.eclipse.payara.tools.sdk.logging.Logger;
@@ -48,8 +51,7 @@ public abstract class AdminFactory {
      * @param version GlassFish server version.
      * @return Child factory class instance to work with given GlassFish server.
      */
-    static AdminFactory getInstance(final Version version)
-            throws CommandException {
+    static AdminFactory getInstance(Version version) throws CommandException {
         // Use REST interface for GlassFish 3 and 4.
         return AdminFactoryRest.getInstance();
     }
@@ -63,8 +65,7 @@ public abstract class AdminFactory {
      * @param adminInterface GlassFish server administration interface type.
      * @return Child factory class instance to work with given GlassFish server.
      */
-    public static AdminFactory getInstance(
-            final GlassFishAdminInterface adminInterface) throws CommandException {
+    public static AdminFactory getInstance(GlassFishAdminInterface adminInterface) throws CommandException {
         switch (adminInterface) {
         case REST:
             return AdminFactoryRest.getInstance();
@@ -72,8 +73,7 @@ public abstract class AdminFactory {
             return AdminFactoryHttp.getInstance();
         // Anything else is unknown.
         default:
-            throw new CommandException(
-                    CommandException.UNKNOWN_ADMIN_INTERFACE);
+            throw new CommandException(UNKNOWN_ADMIN_INTERFACE);
         }
     }
 
@@ -86,12 +86,11 @@ public abstract class AdminFactory {
      * instance.
      * <p/>
      *
-     * @param srv Target GlassFish server.
-     * @param cmd GlassFish server administration command entity.
+     * @param payaraServer Target GlassFish server.
+     * @param command GlassFish server administration command entity.
      * @return GlassFish server administration command execution object.
      */
-    public abstract Runner getRunner(
-            final PayaraServer srv, final Command cmd);
+    public abstract Runner getRunner(PayaraServer payaraServer, Command command);
 
     ////////////////////////////////////////////////////////////////////////////
     // Methods //
@@ -101,38 +100,40 @@ public abstract class AdminFactory {
      * Constructs an instance of selected <code>Runner</code> child class.
      * <p/>
      *
-     * @param srv Target GlassFish server.
-     * @param cmd GlassFish server administration command entity.
+     * @param payaraServer Target GlassFish server.
+     * @param command GlassFish server administration command entity.
      * @param runnerClass Class of newly instantiated <code>runner</code>
      * @return GlassFish server administration command execution object.
      * @throws <code>CommandException</code> if construction of new instance fails.
      */
-    Runner newRunner(final PayaraServer srv, final Command cmd,
-            final Class runnerClass) throws CommandException {
-        final String METHOD = "newRunner";
-        Constructor<Runner> con = null;
+    Runner newRunner(PayaraServer payaraServer, Command command, Class<? extends Runner> runnerClass) throws CommandException {
+        
+        Constructor<? extends Runner> runnerConstructor = null;
         Runner runner = null;
         try {
-            con = runnerClass.getConstructor(
-                    PayaraServer.class, Command.class);
+            runnerConstructor = runnerClass.getConstructor(PayaraServer.class, Command.class);
         } catch (NoSuchMethodException | SecurityException nsme) {
-            throw new CommandException(CommandException.RUNNER_INIT, nsme);
+            throw new CommandException(RUNNER_INIT, nsme);
         }
-        if (con == null) {
+        
+        if (runnerConstructor == null) {
             return runner;
         }
+        
         try {
-            runner = con.newInstance(srv, cmd);
+            runner = runnerConstructor.newInstance(payaraServer, command);
         } catch (InstantiationException | IllegalAccessException ie) {
-            throw new CommandException(CommandException.RUNNER_INIT, ie);
+            throw new CommandException(RUNNER_INIT, ie);
         } catch (InvocationTargetException ite) {
-            LOGGER.log(Level.WARNING, "exceptionMsg", ite.getMessage());
+            LOGGER.log(WARNING, "exceptionMsg", ite.getMessage());
             Throwable t = ite.getCause();
             if (t != null) {
-                LOGGER.log(Level.WARNING, "cause", t.getMessage());
+                LOGGER.log(WARNING, "cause", t.getMessage());
             }
-            throw new CommandException(CommandException.RUNNER_INIT, ite);
+            
+            throw new CommandException(RUNNER_INIT, ite);
         }
+        
         return runner;
     }
 

@@ -57,8 +57,7 @@ public class JpaSupport {
          * @param jpa_2_1 JPA 2.1 supported.
          * @param provider JPA provider class.
          */
-        ApiVersion(boolean jpa_1_0, boolean jpa_2_0,
-                boolean jpa_2_1, String provider) {
+        ApiVersion(boolean jpa_1_0, boolean jpa_2_0, boolean jpa_2_1, String provider) {
             this._1_0 = jpa_1_0;
             this._2_0 = jpa_2_0;
             this._2_1 = jpa_2_1;
@@ -128,9 +127,9 @@ public class JpaSupport {
     public static ApiVersion getApiVersion(Version version) {
         if (version.matches("[4")) {
             return new ApiVersion(true, true, true, JPA_PROVIDER_SINCE_V3);
-        } else {
-            return new ApiVersion(true, true, false, JPA_PROVIDER_SINCE_V3);
-        }
+        } 
+        
+        return new ApiVersion(true, true, false, JPA_PROVIDER_SINCE_V3);
     }
 
 }

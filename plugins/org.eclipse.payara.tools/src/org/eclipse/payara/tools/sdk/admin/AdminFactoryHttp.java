@@ -12,9 +12,9 @@ package org.eclipse.payara.tools.sdk.admin;
 import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
- * GlassFish Server HTTP Command Factory.
+ * Payara Server HTTP Command Factory.
  * <p>
- * Selects correct GlassFish server administration functionality using HTTP command interface.
+ * Selects correct Payara server administration functionality using HTTP command interface.
  * <p>
  * Factory is implemented as singleton.
  * <p>
@@ -44,11 +44,13 @@ public class AdminFactoryHttp extends AdminFactory {
         if (instance != null) {
             return instance;
         }
+        
         synchronized (AdminFactoryHttp.class) {
             if (instance == null) {
                 instance = new AdminFactoryHttp();
             }
         }
+        
         return instance;
     }
 
@@ -61,26 +63,27 @@ public class AdminFactoryHttp extends AdminFactory {
      * <code>Command</code> instance.
      * <p>
      *
-     * @param srv GlassFish server entity object.
+     * @param server GlassFish server entity object.
      * @param cmd GlassFish server administration command entity.
      * @return GlassFish server administration command execution object.
      */
     @Override
-    public Runner getRunner(final PayaraServer srv, final Command cmd) {
+    public Runner getRunner(PayaraServer server, Command cmd) {
         Runner runner;
-        Class cmcClass = cmd.getClass();
-        RunnerHttpClass rc = (RunnerHttpClass) cmcClass.getAnnotation(
-                RunnerHttpClass.class);
-        if (rc != null) {
-            Class runnerClass = rc.runner();
-            String command = rc.command();
-            runner = newRunner(srv, cmd, runnerClass);
-            if (command != null && command.length() > 0) {
+        
+        Class<? extends Command> commandClass = cmd.getClass();
+        RunnerHttpClass runnerHttpClass = (RunnerHttpClass) commandClass.getAnnotation(RunnerHttpClass.class);
+        
+        if (runnerHttpClass != null) {
+            String command = runnerHttpClass.command();
+            runner = newRunner(server, cmd, runnerHttpClass.runner());
+            if (command != null && !command.isEmpty()) {
                 cmd.command = command;
             }
         } else {
-            runner = new RunnerHttp(srv, cmd);
+            runner = new RunnerHttp(server, cmd);
         }
+        
         return runner;
     }
 

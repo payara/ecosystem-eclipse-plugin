@@ -97,7 +97,7 @@
 				<property-editor>PortBase</property-editor>
 			</content>
 		</page>
-		<element-type>org.eclipse.payara.tools.sapphire.ICreateGlassfishDomainOp</element-type>
+		<element-type>org.eclipse.payara.tools.sapphire.ICreatePayaraDomainOp</element-type>
 	</wizard>
     
 </definition>

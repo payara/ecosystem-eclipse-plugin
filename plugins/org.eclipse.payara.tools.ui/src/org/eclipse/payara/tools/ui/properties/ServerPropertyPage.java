@@ -25,7 +25,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.payara.tools.sapphire.IGlassfishServerModel;
+import org.eclipse.payara.tools.sapphire.IPayaraServerModel;
 import org.eclipse.payara.tools.server.PayaraServer;
 import org.eclipse.payara.tools.server.deploying.PayaraServerBehaviour;
 import org.eclipse.payara.tools.ui.wizards.BaseWizardFragment;
@@ -53,7 +53,7 @@ public class ServerPropertyPage extends PropertyPage {
 
     private IServerWorkingCopy serverWC;
     private PayaraServer payaraServer;
-    private IGlassfishServerModel model;
+    private IPayaraServerModel model;
 
     FilteredListener<PropertyValidationEvent> listener = new FilteredListener<PropertyValidationEvent>() {
         @Override

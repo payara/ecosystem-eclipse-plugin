@@ -17,7 +17,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.console.MessageConsoleStream;
 
-public abstract class AbstractGlassfishConsole extends MessageConsole implements IGlassFishConsole {
+public abstract class AbstractPayaraConsole extends MessageConsole implements IPayaraConsole {
 
     protected List<LogReader> readers;
     protected MessageConsoleStream out;
@@ -25,7 +25,7 @@ public abstract class AbstractGlassfishConsole extends MessageConsole implements
     protected ILogFilter filter;
     protected ScheduledFuture<?> stopJobResult;
 
-    public AbstractGlassfishConsole(String name, ImageDescriptor imageDescriptor, ILogFilter filter) {
+    public AbstractPayaraConsole(String name, ImageDescriptor imageDescriptor, ILogFilter filter) {
         super(name, imageDescriptor);
         this.filter = filter;
         this.out = newMessageStream();

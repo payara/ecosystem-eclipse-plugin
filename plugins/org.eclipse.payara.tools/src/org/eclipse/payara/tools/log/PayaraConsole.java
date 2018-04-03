@@ -22,21 +22,21 @@ import org.eclipse.payara.tools.PayaraToolsPlugin;
 import org.eclipse.payara.tools.sdk.server.FetchLog;
 
 // TODO will be GlassfishLocalConsole in the future, new GlassfishRemoteConsole to be implemented
-public class GlassfishConsole extends AbstractGlassfishConsole implements IGlassFishConsole {
+public class PayaraConsole extends AbstractPayaraConsole implements IPayaraConsole {
 
     private static ScheduledExecutorService stopService = Executors.newSingleThreadScheduledExecutor();
 
-    GlassfishConsole(String name, ILogFilter filter) {
+    PayaraConsole(String name, ILogFilter filter) {
         super(name,
                 PayaraToolsPlugin.getInstance().getImageRegistry().getDescriptor(PayaraToolsPlugin.GF_SERVER_IMG),
                 filter);
     }
 
-    // GlassfishConsole(String name, FetchLog[] logFetchers) {
+    // PayaraConsole(String name, FetchLog[] logFetchers) {
     // this(name);
     // }
     //
-    // GlassfishConsole(String name, FetchLog logFetcher) {
+    // PayaraConsole(String name, FetchLog logFetcher) {
     // this(name, new FetchLog[] {logFetcher});
     // }
 

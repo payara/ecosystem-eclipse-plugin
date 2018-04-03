@@ -9,13 +9,14 @@
 
 package org.eclipse.payara.tools.internal;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.eclipse.payara.tools.server.ServerStatus.NOT_DEFINED;
+
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
 import org.eclipse.payara.tools.server.PayaraServer;
 import org.eclipse.payara.tools.server.ServerStatus;
@@ -26,16 +27,12 @@ public class ServerStatusMonitor implements Runnable {
     private static final int DEFAULT_DELAY_IN_SEC = 5;
 
     private ScheduledExecutorService scheduler;
-
     private PayaraServer server;
-
     private int delay;
-
     private ScheduledFuture<?> scheduledTask;
 
-    private volatile ServerStatus status = ServerStatus.NOT_DEFINED;
-
-    private CopyOnWriteArrayList<ServerStateListener> listeners = null;
+    private volatile ServerStatus status = NOT_DEFINED;
+    private CopyOnWriteArrayList<ServerStateListener> listeners;
 
     private ServerStatusMonitor(PayaraServer server) {
         this(server, DEFAULT_DELAY_IN_SEC);
@@ -64,56 +61,48 @@ public class ServerStatusMonitor implements Runnable {
     }
 
     public void start() {
-        // System.out.println("ServerStatusMonitor for " + server.getName() + " started");
         scheduler = Executors.newSingleThreadScheduledExecutor();
-        scheduledTask = scheduler.scheduleWithFixedDelay(this, 0, delay, TimeUnit.SECONDS);
+        scheduledTask = scheduler.scheduleWithFixedDelay(this, 0, delay, SECONDS);
     }
 
     public void stop() {
-        // System.out.println("ServerStatusMonitor for " + server.getName() + " stopped");
         scheduledTask.cancel(true);
         scheduler.shutdown();
     }
 
     @Override
     public void run() {
-        // System.out.println("ServerStatusMonitor for " + server.getName() + " run");
-
-        // Check server version
-        // long t0 = System.currentTimeMillis();
         status = ServerStatusHelper.checkServerStatus(server);
-        // long t1 = System.currentTimeMillis();
-        // System.out.println("ServerStatusMonitor for " + server.getName() + " check, took " + (t1 - t0));
         notifyListeners(status);
-        // t1 = System.currentTimeMillis();
-        // System.out.println("ServerStatusMonitor for " + server.getName() + " run, took " + (t1 - t0));
     }
-
-    public ServerStatus getServerStatus(boolean forceUpdate) {
-        if (forceUpdate) {
-            Future<?> f = scheduler.submit(this);
-            try {
-                f.get();
-            } catch (InterruptedException e) {
-            } catch (ExecutionException e) {
-            }
-        }
-        return status;
-    }
-
+    
     public ServerStatus getServerStatus() {
         return getServerStatus(false);
     }
 
+    public ServerStatus getServerStatus(boolean forceUpdate) {
+        if (forceUpdate) {
+            try {
+                scheduler.submit(this).get();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            } catch (ExecutionException e) {
+            }
+        }
+        
+        return status;
+    }
+    
+    public void registerServerStatusListener(ServerStateListener listener) {
+        listeners.add(listener);
+    }
+
     private void notifyListeners(ServerStatus newStatus) {
-        // System.out.println("Notifying listeners about new status of " + server.getName());
         for (ServerStateListener listener : listeners) {
             listener.serverStatusChanged(newStatus);
         }
     }
 
-    public void registerServerStatusListener(ServerStateListener listener) {
-        listeners.add(listener);
-    }
+    
 
 }

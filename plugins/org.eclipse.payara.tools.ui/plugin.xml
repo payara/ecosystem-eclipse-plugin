@@ -27,13 +27,13 @@
        <image
              id="org.eclipse.jst.server.glassfish.image"
        		 typeIds="payara.runtime,payara.server"
-             icon="icons/obj16/glassfishserver.gif">
+             icon="icons/obj16/payara-blue.png">
        </image>
     </extension>
     
     <extension point="org.eclipse.wst.common.project.facet.ui.images">
        <image
-             path="icons/obj16/glassfishserver.gif"
+             path="icons/obj16/payara-blue.png"
              runtime-component-type="payara.runtime">
        </image>
     </extension>
@@ -86,7 +86,7 @@
        <launchConfigurationTypeImage 
              id="org.eclipse.payara.tools.ui.launchConfigurationTypeImage"
              configTypeID="org.payara.jst.server.GlassfishServerLaunchConfigurationType"
-             icon="icons/obj16/glassfishserver.gif">
+             icon="icons/obj16/payara-blue.png">
        </launchConfigurationTypeImage>
     </extension>
 
@@ -152,7 +152,7 @@
            locationURI="popup:org.eclipse.wst.server.ui.ServersView?after=additions">
         <menu
               id="org.eclipse.payara.tools.actions.subMenu"
-              icon="icons/obj16/glassfishserver.gif"
+              icon="icons/obj16/payara-blue.png"
               label="%menu.payaratopmenu">
            <separator name="group1"/>
            <visibleWhen checkEnabled="false">
@@ -161,17 +161,17 @@
            
            <command
                  commandId="org.eclipse.payara.tools.commands.ViewAdminConsoleCommand"
-                 icon="icons/obj16/glassfishserver.gif"
+                 icon="icons/obj16/payara-blue.png"
                  style="push">
            </command>
            <command
                  commandId="org.eclipse.payara.tools.commands.ViewLogCommand"
-                 icon="icons/obj16/logfile.gif"
+                 icon="icons/obj16/logfile.png"
                  style="push">
            </command>
            <command
                  commandId="org.eclipse.payara.tools.commands.OpenServerHomeCommand"
-                 icon="icons/obj16/folder_open.gif"
+                 icon="icons/obj16/folder_open.png"
                  label="%menu.openserverhome"
                  style="push">
               <visibleWhen checkEnabled="false">
@@ -180,7 +180,7 @@
            </command>
            <command
                  commandId="org.eclipse.payara.tools.commands.OpenDomainHomeCommand"
-                 icon="icons/obj16/folder_open.gif"
+                 icon="icons/obj16/folder_open.png"
                  label="%menu.opendomainhome"
                  style="push">
            </command>
@@ -266,7 +266,7 @@
     -->
     <extension point="org.eclipse.ui.navigator.viewer">
        <viewerContentBinding viewerId="org.eclipse.wst.server.ui.ServersView">
-          <includes><contentExtension pattern="glassfish31.serverview.contentprovider"/></includes>
+          <includes><contentExtension pattern="payara.serverview.contentprovider"/></includes>
        </viewerContentBinding>
     </extension>
     <extension point="org.eclipse.ui.navigator.navigatorContent">
@@ -274,7 +274,7 @@
              id="payara.serverview.contentprovider"
              contentProvider="org.eclipse.payara.tools.ui.serverview.ServerViewDynamicNodeProvider"
              name="Payara Management Nodes"
-             icon="icons/obj16/sunappsrv.gif"
+             icon="icons/obj16/payara-blue.png"
              labelProvider="org.eclipse.payara.tools.ui.serverview.ServerViewLabelProvider"
              activeByDefault="true"
              priority="highest">
@@ -323,7 +323,7 @@
              id="org.eclipse.payara.tools.log.PayaraLogPageParticipant"
              class="org.eclipse.payara.tools.ui.log.PayaraLogPageParticipant">
           <enablement>
-             <instanceof value="org.eclipse.payara.tools.log.GlassfishConsole"/>
+             <instanceof value="org.eclipse.payara.tools.log.PayaraConsole"/>
           </enablement>
        </consolePageParticipant>
     </extension>
@@ -354,7 +354,7 @@
              id="org.eclipse.payara.tools.ui.resources.wizards.JDBCWizard"
              category="org.eclipse.payara.tools"
              class="org.eclipse.payara.tools.ui.resources.wizards.JDBCWizard"
-             icon="icons/obj16/glassfishserver.gif"
+             icon="icons/obj16/payara-blue.png"
              name="%sunappserver.sunresourceslabel">
           <description>
              %sunappserver.sunresources.BeanWebRegionWizard.description
@@ -367,7 +367,7 @@
              id="org.eclipse.payara.tools.ui.resources.wizards.MailWizard"
              category="org.eclipse.payara.tools"
              class="org.eclipse.payara.tools.ui.resources.wizards.MailWizard"
-             icon="icons/obj16/glassfishserver.gif"
+             icon="icons/obj16/payara-blue.png"
              name="%sunappserver.mailresourceslabel">
           <description>
              %sunappserver.mailresources.BeanWebRegionWizard.description
@@ -380,7 +380,7 @@
              id="org.eclipse.payara.tools.ui.resources.wizards.JMSWizard"
              category="org.eclipse.payara.tools"
              class="org.eclipse.payara.tools.ui.resources.wizards.JMSWizard"
-             icon="icons/obj16/glassfishserver.gif"
+             icon="icons/obj16/payara-blue.png"
              name="%sunappserver.jmsresourceslabel">
           <description>
              %sunappserver.jmsresources.BeanWebRegionWizard.description
@@ -393,7 +393,7 @@
              id="org.eclipse.payara.tools.v3.wizards.AddGenericResourceWizard"
              category="org.eclipse.payara.tools"
              class="org.eclipse.payara.tools.ui.rest.wizards.AddGenericResourceWizard"
-             icon="icons/obj16/glassfishserver.gif"
+             icon="icons/obj16/payara-blue.png"
              name="%sunappserver.restfulfrompatternlabel">
           <description>
              %sunappserver.restfulfrompattern.BeanWebRegionWizard.description

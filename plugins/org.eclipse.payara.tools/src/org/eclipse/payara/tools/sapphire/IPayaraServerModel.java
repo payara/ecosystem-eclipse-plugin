@@ -32,15 +32,15 @@ import org.eclipse.sapphire.modeling.annotations.Service;
 import org.eclipse.sapphire.modeling.annotations.ValidFileSystemResourceType;
 import org.eclipse.sapphire.modeling.xml.annotations.XmlBinding;
 
-public interface IGlassfishServerModel extends Element {
+public interface IPayaraServerModel extends Element {
 
-    ElementType TYPE = new ElementType(IGlassfishServerModel.class);
+    ElementType TYPE = new ElementType(IPayaraServerModel.class);
 
     // *** Name ***
 
     @Label(standard = "na&me")
     @Required
-    @Service(impl = GlassfishServerConfigServices.UniqueServerNameValidationService.class)
+    @Service(impl = PayaraServerConfigServices.UniqueServerNameValidationService.class)
     ValueProperty PROP_NAME = new ValueProperty(TYPE, "Name");
     Value<String> getName();
     void setName(String value);
@@ -72,8 +72,8 @@ public interface IGlassfishServerModel extends Element {
     @MustExist
     @AbsolutePath
     @ValidFileSystemResourceType(FOLDER)
-    @Service(impl = GlassfishServerConfigServices.DomainLocationValidationService.class)
-    @Listeners(GlassfishServerConfigServices.DomainLocationListener.class)
+    @Service(impl = PayaraServerConfigServices.DomainLocationValidationService.class)
+    @Listeners(PayaraServerConfigServices.DomainLocationListener.class)
     @Enablement(expr = "${ ! Remote }")
     ValueProperty PROP_DOMAIN_PATH = new ValueProperty(TYPE, "DomainPath");
     Value<Path> getDomainPath();

@@ -34,7 +34,6 @@ public class PayaraToolsUIPlugin extends AbstractUIPlugin {
     public static final String EJB_MODULE_IMG = "ejb.img";
     public static final String GF_SERVER_IMG = "gf-server.img";
     public static final String LOG_FILE_IMG = "log-file.img";
-    public static final String UPDATE_CENTER_IMG = "update-center.img";
     public static final String WEB_MODULE_IMG = "web.img";
     public static final String WEBSERVICE_IMG = "webservice.img";
     public static final String RESOURCES_IMG = "resources.img";
@@ -89,9 +88,8 @@ public class PayaraToolsUIPlugin extends AbstractUIPlugin {
 
         reg.put(EAR_MODULE_IMG, createFromURL(getBundle().getEntry("icons/obj16/ear.gif")));
         reg.put(EJB_MODULE_IMG, createFromURL(getBundle().getEntry("icons/obj16/ejb_module.gif")));
-        reg.put(GF_SERVER_IMG, createFromURL(getBundle().getEntry("icons/obj16/glassfishserver.gif")));
-        reg.put(LOG_FILE_IMG, createFromURL(getBundle().getEntry("icons/obj16/logfile.gif")));
-        reg.put(UPDATE_CENTER_IMG, createFromURL(getBundle().getEntry("icons/obj16/updateCenter.png")));
+        reg.put(GF_SERVER_IMG, createFromURL(getBundle().getEntry("icons/obj16/payara-blue.png")));
+        reg.put(LOG_FILE_IMG, createFromURL(getBundle().getEntry("icons/obj16/logfile.png")));
         reg.put(WEB_MODULE_IMG, createFromURL(getBundle().getEntry("icons/obj16/web_module.gif")));
         reg.put(WEBSERVICE_IMG, createFromURL(getBundle().getEntry("icons/obj16/webservice.png")));
         reg.put(RESOURCES_IMG, createFromURL(getBundle().getEntry("icons/obj16/resources.gif")));

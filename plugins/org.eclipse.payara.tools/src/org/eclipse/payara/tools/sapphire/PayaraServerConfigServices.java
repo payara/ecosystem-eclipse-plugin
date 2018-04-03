@@ -51,7 +51,7 @@ import org.eclipse.wst.server.core.IRuntimeWorkingCopy;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 
-public final class GlassfishServerConfigServices {
+public final class PayaraServerConfigServices {
 
     public static final class UniqueRuntimeNameValidationService extends ValidationService {
 
@@ -130,7 +130,7 @@ public final class GlassfishServerConfigServices {
             // There is no need to detach the listener as the life cycle of the JDK and
             // Payara location properties is the same.
 
-            context(IGlassfishRuntimeModel.class).getServerRoot().attach(new FilteredListener<PropertyEvent>() {
+            context(IPayaraRuntimeModel.class).getServerRoot().attach(new FilteredListener<PropertyEvent>() {
                 @Override
                 protected void handleTypedEvent(final PropertyEvent event) {
                     refresh();
@@ -140,7 +140,7 @@ public final class GlassfishServerConfigServices {
 
         @Override
         protected boolean acceptable(final IVMInstall jvm) {
-            if (context(IGlassfishRuntimeModel.class).getServerRoot().validation().ok()) {
+            if (context(IPayaraRuntimeModel.class).getServerRoot().validation().ok()) {
                 final IRuntime r = context(Value.class).element().adapt(IRuntime.class);
                 final PayaraRuntime gf = (PayaraRuntime) r.loadAdapter(PayaraRuntime.class, null);
                 return validateJvm(jvm).jdk().version(gf.getJavaVersionConstraint()).result().ok();
@@ -156,10 +156,9 @@ public final class GlassfishServerConfigServices {
             super.initValidationService();
 
             // There is no need to detach the listener as the life cycle of the JDK and
-            // GlassFish
-            // location properties is the same.
+            // Payara location properties is the same.
 
-            context(IGlassfishRuntimeModel.class).getServerRoot().attach(new FilteredListener<PropertyContentEvent>() {
+            context(IPayaraRuntimeModel.class).getServerRoot().attach(new FilteredListener<PropertyContentEvent>() {
                 @Override
                 protected void handleTypedEvent(final PropertyContentEvent event) {
                     refresh();
@@ -179,12 +178,14 @@ public final class GlassfishServerConfigServices {
 
         @Override
         protected Status compute() {
-            IRuntime r = context(Value.class).element().adapt(IRuntime.class);
-            PayaraRuntime runtimeDelegate = (PayaraRuntime) r.loadAdapter(PayaraRuntime.class, null);
-            IStatus s = runtimeDelegate.validateServerLocation();
-            if (!s.isOK()) {
-                return StatusBridge.create(s);
+            IRuntime runtime = context(Value.class).element().adapt(IRuntime.class);
+            PayaraRuntime runtimeDelegate = (PayaraRuntime) runtime.loadAdapter(PayaraRuntime.class, null);
+            IStatus status = runtimeDelegate.validateServerLocation();
+            
+            if (!status.isOK()) {
+                return StatusBridge.create(status);
             }
+            
             return StatusBridge.create(runtimeDelegate.validateVersion());
         }
     }
@@ -197,9 +198,9 @@ public final class GlassfishServerConfigServices {
 
         @Override
         public void handle(final Event event) {
-            IGlassfishRuntimeModel model = ((PropertyEvent) event)
+            IPayaraRuntimeModel model = ((PropertyEvent) event)
                     .property()
-                    .nearest(IGlassfishRuntimeModel.class);
+                    .nearest(IPayaraRuntimeModel.class);
 
             Version payaraVersion = null;
 
@@ -246,7 +247,7 @@ public final class GlassfishServerConfigServices {
         public void handle(final Event event) {
             final Property property = ((PropertyEvent) event).property();
             final IServerWorkingCopy wc = property.element().adapt(IServerWorkingCopy.class);
-            final IGlassfishServerModel model = property.nearest(IGlassfishServerModel.class);
+            final IPayaraServerModel model = property.nearest(IPayaraServerModel.class);
 
             String name = wc.getRuntime().getName() + " [";
 

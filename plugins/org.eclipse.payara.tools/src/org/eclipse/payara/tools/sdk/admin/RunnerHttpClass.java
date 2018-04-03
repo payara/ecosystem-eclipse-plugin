@@ -9,29 +9,30 @@
 
 package org.eclipse.payara.tools.sdk.admin;
 
-import java.lang.annotation.ElementType;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
 import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation to select GlassFish server admin command runner for command entity.
+ * Annotation to select Payara server admin command runner for command entity.
  * <p>
  *
  * @author Tomas Kraus, Peter Benedikovic
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
+@Retention(RUNTIME)
+@Target(TYPE)
 public @interface RunnerHttpClass {
 
     ////////////////////////////////////////////////////////////////////////////
     // Instance attributes //
     ////////////////////////////////////////////////////////////////////////////
 
-    /** GlassFish command runner class as named value. */
-    Class runner() default RunnerHttp.class;
+    /** Payara command runner class as named value. */
+    Class<? extends Runner> runner() default RunnerHttp.class;
 
-    /** GlassFish command string if differs from default one. */
+    /** Payara command string if differs from default one. */
     String command() default "";
 
 }

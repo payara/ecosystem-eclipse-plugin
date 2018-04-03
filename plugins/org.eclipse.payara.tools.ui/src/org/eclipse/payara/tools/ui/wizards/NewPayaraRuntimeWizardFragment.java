@@ -9,7 +9,7 @@
 
 package org.eclipse.payara.tools.ui.wizards;
 
-import static org.eclipse.payara.tools.sapphire.IGlassfishRuntimeModel.PROP_NAME;
+import static org.eclipse.payara.tools.sapphire.IPayaraRuntimeModel.PROP_NAME;
 import static org.eclipse.payara.tools.ui.wizards.GlassfishWizardResources.wzdRuntimeDescription;
 import static org.eclipse.payara.tools.utils.NamingUtils.createUniqueRuntimeName;
 import static org.eclipse.wst.server.core.TaskModel.TASK_RUNTIME;
@@ -17,7 +17,7 @@ import static org.eclipse.wst.server.core.TaskModel.TASK_RUNTIME;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.payara.tools.exceptions.UniqueNameNotFound;
-import org.eclipse.payara.tools.sapphire.IGlassfishRuntimeModel;
+import org.eclipse.payara.tools.sapphire.IPayaraRuntimeModel;
 import org.eclipse.payara.tools.server.PayaraRuntime;
 import org.eclipse.sapphire.Element;
 import org.eclipse.wst.server.core.IRuntimeWorkingCopy;
@@ -66,10 +66,10 @@ public class NewPayaraRuntimeWizardFragment extends BaseWizardFragment {
         IRuntimeWorkingCopy runtime = (IRuntimeWorkingCopy) getTaskModel().getObject(TASK_RUNTIME);
         PayaraRuntime runtimeDelegate = (PayaraRuntime) runtime.loadAdapter(PayaraRuntime.class, null);
         
-        // IGlassfishRuntimeModel contains the entries corresponding to PayaraUI.sdef, which are the fields
+        // IPayaraRuntimeModel contains the entries corresponding to PayaraUI.sdef, which are the fields
         // that will be rendered by Saphire, e.g. Name, ServerRoot, JavaRuntimeEnvironment, etc
         
-        IGlassfishRuntimeModel model = runtimeDelegate.getModel();
+        IPayaraRuntimeModel model = runtimeDelegate.getModel();
 
         return model;
     }

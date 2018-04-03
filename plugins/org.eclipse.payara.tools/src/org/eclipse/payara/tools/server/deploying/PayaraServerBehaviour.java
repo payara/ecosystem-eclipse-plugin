@@ -10,6 +10,8 @@
 package org.eclipse.payara.tools.server.deploying;
 
 import static java.io.File.separatorChar;
+import static java.lang.Thread.currentThread;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.eclipse.core.runtime.IStatus.ERROR;
 import static org.eclipse.core.runtime.IStatus.OK;
@@ -18,15 +20,27 @@ import static org.eclipse.core.runtime.Status.OK_STATUS;
 import static org.eclipse.debug.core.DebugEvent.TERMINATE;
 import static org.eclipse.debug.core.ILaunchManager.DEBUG_MODE;
 import static org.eclipse.debug.core.ILaunchManager.RUN_MODE;
+import static org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants.ATTR_CONNECT_MAP;
 import static org.eclipse.osgi.util.NLS.bind;
+import static org.eclipse.payara.tools.Messages.connectionError;
+import static org.eclipse.payara.tools.Messages.invalidCredentials;
+import static org.eclipse.payara.tools.Messages.serverDirectoryGone;
+import static org.eclipse.payara.tools.Messages.serverNotMatchingLocal;
+import static org.eclipse.payara.tools.Messages.serverNotMatchingRemote;
 import static org.eclipse.payara.tools.PayaraToolsPlugin.SYMBOLIC_NAME;
 import static org.eclipse.payara.tools.PayaraToolsPlugin.createErrorStatus;
 import static org.eclipse.payara.tools.PayaraToolsPlugin.logError;
 import static org.eclipse.payara.tools.PayaraToolsPlugin.logMessage;
-import static org.eclipse.payara.tools.Messages.serverDirectoryGone;
-import static org.eclipse.payara.tools.log.GlassfishConsoleManager.getStandardConsole;
+import static org.eclipse.payara.tools.log.PayaraConsoleManager.getStandardConsole;
+import static org.eclipse.payara.tools.log.PayaraConsoleManager.getStartupProcessConsole;
+import static org.eclipse.payara.tools.log.PayaraConsoleManager.showConsole;
 import static org.eclipse.payara.tools.sdk.TaskState.COMPLETED;
+import static org.eclipse.payara.tools.sdk.admin.CommandStopDAS.stopDAS;
+import static org.eclipse.payara.tools.sdk.admin.ServerAdmin.exec;
+import static org.eclipse.payara.tools.sdk.server.ServerTasks.startServer;
 import static org.eclipse.payara.tools.server.PayaraServer.DEFAULT_DEBUG_PORT;
+import static org.eclipse.payara.tools.server.ServerStatus.RUNNING_DOMAIN_MATCHING;
+import static org.eclipse.payara.tools.server.ServerStatus.STOPPED_NOT_LISTENING;
 import static org.eclipse.payara.tools.server.archives.AssembleModules.isModuleType;
 import static org.eclipse.payara.tools.server.archives.ExportJavaEEArchive.export;
 import static org.eclipse.payara.tools.utils.ResourceUtils.RESOURCE_FILE_NAME;
@@ -42,6 +56,7 @@ import static org.eclipse.wst.server.core.IServer.PUBLISH_STATE_NONE;
 import static org.eclipse.wst.server.core.IServer.STATE_STARTED;
 import static org.eclipse.wst.server.core.IServer.STATE_STARTING;
 import static org.eclipse.wst.server.core.IServer.STATE_STOPPED;
+import static org.eclipse.wst.server.core.IServer.STATE_STOPPING;
 import static org.eclipse.wst.server.core.internal.ProgressUtil.getMonitorFor;
 import static org.eclipse.wst.server.core.util.PublishHelper.deleteDirectory;
 
@@ -66,6 +81,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugEvent;
@@ -77,24 +93,19 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jdt.internal.debug.core.model.JDIDebugTarget;
 import org.eclipse.jdt.internal.launching.JavaRemoteApplicationLaunchConfigurationDelegate;
-import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jst.server.core.IEnterpriseApplication;
 import org.eclipse.payara.tools.PayaraToolsPlugin;
-import org.eclipse.payara.tools.Messages;
-import org.eclipse.payara.tools.exceptions.PayaraLaunchException;
 import org.eclipse.payara.tools.exceptions.HttpPortUpdateException;
+import org.eclipse.payara.tools.exceptions.PayaraLaunchException;
 import org.eclipse.payara.tools.internal.PayaraStateResolver;
 import org.eclipse.payara.tools.internal.ServerStateListener;
 import org.eclipse.payara.tools.internal.ServerStatusMonitor;
-import org.eclipse.payara.tools.log.GlassfishConsoleManager;
-import org.eclipse.payara.tools.log.IGlassFishConsole;
+import org.eclipse.payara.tools.log.IPayaraConsole;
 import org.eclipse.payara.tools.sdk.GlassFishIdeException;
-import org.eclipse.payara.tools.sdk.TaskState;
 import org.eclipse.payara.tools.sdk.admin.CommandAddResources;
 import org.eclipse.payara.tools.sdk.admin.CommandDeploy;
 import org.eclipse.payara.tools.sdk.admin.CommandGetProperty;
 import org.eclipse.payara.tools.sdk.admin.CommandRedeploy;
-import org.eclipse.payara.tools.sdk.admin.CommandStopDAS;
 import org.eclipse.payara.tools.sdk.admin.CommandTarget;
 import org.eclipse.payara.tools.sdk.admin.CommandUndeploy;
 import org.eclipse.payara.tools.sdk.admin.CommandVersion;
@@ -103,7 +114,6 @@ import org.eclipse.payara.tools.sdk.admin.ResultProcess;
 import org.eclipse.payara.tools.sdk.admin.ResultString;
 import org.eclipse.payara.tools.sdk.admin.ServerAdmin;
 import org.eclipse.payara.tools.sdk.server.FetchLogSimple;
-import org.eclipse.payara.tools.sdk.server.ServerTasks;
 import org.eclipse.payara.tools.sdk.server.ServerTasks.StartMode;
 import org.eclipse.payara.tools.server.PayaraRuntime;
 import org.eclipse.payara.tools.server.PayaraServer;
@@ -114,7 +124,6 @@ import org.eclipse.payara.tools.server.starting.StartupArgsImpl;
 import org.eclipse.payara.tools.utils.ResourceUtils;
 import org.eclipse.payara.tools.utils.Utils;
 import org.eclipse.wst.server.core.IModule;
-import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.internal.DeletedModule;
 import org.eclipse.wst.server.core.internal.Server;
 import org.eclipse.wst.server.core.model.ServerBehaviourDelegate;
@@ -196,7 +205,7 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
                     logMessage("PayaraServerBehaviourDelegate restart done");
 
                 } catch (Exception e) {
-                    logError("in SunAppServerBehaviour restart", e);
+                    logError("in PayaraServerBehaviourDelegate restart", e);
                 }
             }
         };
@@ -231,11 +240,13 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
         synchronized (this) {
             int currentState = getServer().getServerState();
             int nextState = stateResolver.resolve(newStatus, currentState);
+            
             if (currentState != nextState) {
-                setGFServerState(nextState);
+                setPayaraServerState(nextState);
                 serverStateChanged(nextState);
                 updateServerStatus(newStatus);
             }
+            
             notify();
         }
     }
@@ -297,12 +308,12 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
 
     public static String getVersion(PayaraServer server) throws GlassFishIdeException {
         Future<ResultString> future = ServerAdmin.exec(server, new CommandVersion());
+        
         try {
-            ResultString result = future.get(30, SECONDS);
-            return result.getValue();
+            return future.get(30, SECONDS).getValue();
         } catch (InterruptedException e) {
             throw new GlassFishIdeException("Exception by calling getVersion", e);
-        } catch (java.util.concurrent.ExecutionException e) {
+        } catch (ExecutionException e) {
             throw new GlassFishIdeException("Exception by calling getVersion", e);
         } catch (TimeoutException e) {
             throw new GlassFishIdeException("Timeout for getting version command exceeded", e);
@@ -315,11 +326,10 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
     }
 
     public void undeploy(String moduleName, IProgressMonitor monitor) throws CoreException {
-
         undeploy(moduleName);
 
         // Retrieve the IModule for the module name
-        final List<IModule[]> moduleList = getAllModules();
+        List<IModule[]> moduleList = getAllModules();
         IModule[] module = null;
         for (IModule[] m : moduleList) {
             if (m.length == 1 && m[0].getName().equals(moduleName)) {
@@ -339,21 +349,38 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
         return (PayaraRuntime) getServer().getRuntime().loadAdapter(PayaraRuntime.class, null);
     }
 
-    public ResultProcess launchServer(StartupArgsImpl gfStartArguments, StartMode launchMode, IProgressMonitor monitor)
-            throws TimeoutException, InterruptedException, ExecutionException, HttpPortUpdateException {
-        setGFServerState(STATE_STARTING);
-
-        ResultProcess p = null;
-        StartJob j = new StartJob(gfStartArguments, launchMode);
-        Future<ResultProcess> res = asyncJobsService.submit(j);
-        try {
-            p = res.get(getServer().getStartTimeout(), SECONDS);
-        } catch (TimeoutException e) {
-            res.cancel(true);
-            throw e;
-        }
+    public ResultProcess launchServer(StartupArgsImpl payaraStartArguments, StartMode launchMode, IProgressMonitor monitor) throws TimeoutException, InterruptedException, ExecutionException, HttpPortUpdateException {
+        setPayaraServerState(STATE_STARTING);
+        
+        ResultProcess process = waitForPayaraStarted(
+            asyncJobsService.submit(new StartJob(payaraStartArguments, launchMode)), 
+            monitor);
+        
         updateHttpPort();
-        return p;
+        
+        return process;
+    }
+    
+    private ResultProcess waitForPayaraStarted(Future<ResultProcess> futureProcess, IProgressMonitor monitor) throws TimeoutException, InterruptedException, ExecutionException {
+        long endTime = System.currentTimeMillis() + (getServer().getStartTimeout() * 1000);
+        
+        while (System.currentTimeMillis() < endTime) {
+            
+            try {
+                return futureProcess.get(500, MILLISECONDS);
+            } catch (TimeoutException e) {
+                if (monitor.isCanceled()) {
+                    futureProcess.cancel(true);
+                    // TODO: check if Payara indeed stopped and if not
+                    //       explicitly give stop command
+                    serverStateChanged(STATE_STOPPED);
+                    setPayaraServerState(STATE_STOPPED);
+                    throw new OperationCanceledException();
+                }
+            }
+        }
+        
+        throw new TimeoutException("Timeout while waiting for Payara to start");
     }
 
     /**
@@ -361,7 +388,7 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
      *
      * @param state
      */
-    public synchronized void setGFServerState(int state) {
+    public synchronized void setPayaraServerState(int state) {
         setServerState(state);
     }
 
@@ -380,8 +407,7 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
         attach(launch, config, monitor, debugPort);
     }
 
-    public void attach(final ILaunch launch, ILaunchConfigurationWorkingCopy config, IProgressMonitor monitor, int debugPort)
-            throws CoreException {
+    public void attach(final ILaunch launch, ILaunchConfigurationWorkingCopy config, IProgressMonitor monitor, int debugPort) throws CoreException {
         setDebugArgument(config, "hostname", getServer().getHost());
         setDebugArgument(config, "port", String.valueOf(debugPort));
 
@@ -429,14 +455,14 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
     }
 
     private void tryAttachDebug() {
-        // try to launch configuration - if it fails, it means we are in run mode
+        // Try to launch configuration - if it fails, it means we are in run mode
         // if success - debug mode
         Thread t = new Thread("attach debugger to glassfish") {
 
             @Override
             public void run() {
                 try {
-                    // this will not really run glassfish because it is already running
+                    // This will not really run Payara because it is already running
                     // just tries to attach debugger
                     ILaunchConfiguration config = getServer().getLaunchConfiguration(true, null);
                     ILaunch launch = getServer().getLaunch();
@@ -459,7 +485,7 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
     @SuppressWarnings({ "rawtypes", "unchecked" })
     private void setDebugArgument(ILaunchConfigurationWorkingCopy config, String key, String arg) {
         try {
-            Map args = config.getAttribute(IJavaLaunchConfigurationConstants.ATTR_CONNECT_MAP, (Map) null);
+            Map args = config.getAttribute(ATTR_CONNECT_MAP, (Map) null);
 
             if (args != null) {
                 args = new HashMap(args);
@@ -468,7 +494,7 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
             }
             args.put(key, String.valueOf(arg));
 
-            config.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CONNECT_MAP, args);
+            config.setAttribute(ATTR_CONNECT_MAP, args);
         } catch (CoreException ce) {
             PayaraToolsPlugin.logError("Error when setting debug argument for remote GF", ce);
         }
@@ -520,8 +546,7 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
     /*
      * Publishes for Web apps only in V3 prelude
      */
-    private void publishModuleForGlassFishV3(int kind, int deltaKind, IModule[] module, IProgressMonitor monitor)
-            throws CoreException {
+    private void publishModuleForGlassFishV3(int kind, int deltaKind, IModule[] module, IProgressMonitor monitor) throws CoreException {
 
         if (module.length > 1) {// only publish root modules, i.e web modules
             setModulePublishState(module, PUBLISH_STATE_NONE);
@@ -655,7 +680,7 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
                     throw new CoreException(new Status(ERROR, SYMBOLIC_NAME, 0, "cannot Deploy " + name, ex));
                 }
             } else {
-                logMessage("optimal: NO NEED TO TO A REDEPLOYMENT, !!!");
+                logMessage("optimal: NO NEED TO DO A REDEPLOYMENT, !!!");
 
             }
         }
@@ -726,11 +751,9 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
                 ResultString result = future.get(120, SECONDS);
 
                 if (!COMPLETED.equals(result.getState())) {
-                    logMessage("register resource is failing=" + result.getValue());
                     throw new Exception("register resource is failing=" + result.getValue());
                 }
             } catch (Exception ex) {
-                logError("deploy of sun-resources is failing ", ex);
                 throw new CoreException(new Status(ERROR, SYMBOLIC_NAME, 0,
                         "cannot register sun-resource.xml for " + module[0].getName(), ex));
             }
@@ -743,30 +766,32 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
         try {
 
             ServerAdmin.executeOn(getGlassfishServerDelegate())
-                    .command(new CommandUndeploy(moduleName))
-                    .timeout(520)
-                    .onNotCompleted(result -> {
-                        logMessage("undeploy is failing=" + result.getValue());
-                        throw new IllegalStateException("undeploy is failing=" + result.getValue());
-                    })
-                    .get();
+                       .command(new CommandUndeploy(moduleName))
+                       .timeout(520)
+                       .onNotCompleted(result -> {
+                           throw new IllegalStateException("undeploy is failing=" + result.getValue());
+                       })
+                       .get();
 
         } catch (Exception ex) {
-            logError("Undeploy is failing=", ex);
             throw new CoreException(new Status(ERROR, SYMBOLIC_NAME, 0, "cannot UnDeploy " + moduleName, ex));
         }
     }
 
     private void updateHttpPort() throws HttpPortUpdateException {
         PayaraServer server = (PayaraServer) getServer().createWorkingCopy().loadAdapter(PayaraServer.class, null);
-        CommandGetProperty cgp = new CommandGetProperty("*.server-config.*.http-listener-1.port");
-        Future<ResultMap<String, String>> future = ServerAdmin.<ResultMap<String, String>>exec(getGlassfishServerDelegate(), cgp);
+        
+        Future<ResultMap<String, String>> future = exec(getGlassfishServerDelegate(), new CommandGetProperty("*.server-config.*.http-listener-1.port"));
+        
         ResultMap<String, String> result = null;
 
         try {
             result = future.get(20, SECONDS);
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
-            logError("Unable to retrieve server http port for server ", e);
+            if (e instanceof InterruptedException) {
+                Thread.currentThread().interrupt();
+            }
+            
             throw new HttpPortUpdateException(e);
         }
 
@@ -774,7 +799,7 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
             for (Entry<String, String> entry : result.getValue().entrySet()) {
                 String val = entry.getValue();
                 try {
-                    if (val != null && val.trim().length() > 0) {
+                    if (val != null && !val.trim().isEmpty()) {
                         server.setPort(Integer.parseInt(val));
                         server.getServerWorkingCopy().save(true, null);
                         break;
@@ -804,7 +829,6 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
     }
 
     private void analyseReturnedStatus(IStatus[] status) throws CoreException {
-
         if (status == null || status.length == 0) {
             return;
         }
@@ -818,37 +842,37 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
      * Updates server status.
      */
     private void updateServerStatus(ServerStatus status) {
-        Server server2 = ((Server) getServer());
-        if (status != ServerStatus.RUNNING_DOMAIN_MATCHING) {
-            // server2.setServerState(IServer.STATE_STOPPED);
+        Server server = ((Server) getServer());
+        
+        if (status != RUNNING_DOMAIN_MATCHING) {
             String statusMsg = null;
+            
             switch (status) {
             case RUNNING_CREDENTIAL_PROBLEM:
-                statusMsg = Messages.invalidCredentials;
+                statusMsg = invalidCredentials;
                 break;
             case STOPPED_DOMAIN_NOT_MATCHING:
                 if (!getGlassfishServerDelegate().isRemote()) {
-                    statusMsg = Messages.serverNotMatchingLocal;
+                    statusMsg = serverNotMatchingLocal;
                 } else {
-                    statusMsg = Messages.serverNotMatchingRemote;
+                    statusMsg = serverNotMatchingRemote;
                 }
                 break;
             case RUNNING_CONNECTION_ERROR:
-                if (server2.getServerState() != IServer.STATE_STOPPED) {
-                    statusMsg = Messages.connectionError;
+                if (server.getServerState() != STATE_STOPPED) {
+                    statusMsg = connectionError;
                 }
                 break;
             default:
-                server2.setServerStatus(null);
-
+                server.setServerStatus(null);
             }
 
             if (statusMsg != null) {
-                server2.setServerStatus(createErrorStatus(statusMsg, null));// $NON-NLS-1$);
+                server.setServerStatus(createErrorStatus(statusMsg));
             }
 
         } else {
-            server2.setServerStatus(null);
+            server.setServerStatus(null);
         }
     }
 
@@ -872,24 +896,27 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
     }
 
     private void stopImpl(PayaraServer server) {
-        setGFServerState(IServer.STATE_STOPPING);
-        StopJob j = new StopJob();
-        Future<?> res = asyncJobsService.submit(j);
+        setPayaraServerState(STATE_STOPPING);
+        
+        Future<ResultString> futureStop = asyncJobsService.submit(new StopJob());
 
         // TODO how to let user know about possible failures
         try {
-            res.get(getServer().getStopTimeout(), SECONDS);
+            futureStop.get(getServer().getStopTimeout(), SECONDS);
+            setPayaraServerState(STATE_STOPPED);
         } catch (InterruptedException e) {
+            currentThread().interrupt();
             e.printStackTrace();
         } catch (ExecutionException e) {
-            PayaraToolsPlugin.logError("Stop server could not be finished because of exception.", e);
+            logError("Stop server could not be finished because of exception.", e);
         } catch (TimeoutException e1) {
-            res.cancel(true);
-            PayaraToolsPlugin.logMessage("Stop server could not be finished in time.");
+            futureStop.cancel(true);
+            logMessage("Stop server could not be finished in time.");
         }
 
         setLaunch(null);
     }
+    
 
     // ### Jobs
 
@@ -909,63 +936,66 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
             ResultProcess process = null;
 
             try {
-                process = ServerTasks.startServer(getGlassfishServerDelegate(), args, mode);
+                process = startServer(getGlassfishServerDelegate(), args, mode);
             } catch (GlassFishIdeException e) {
                 throw new PayaraLaunchException("Exception in startup library.", e);
             }
 
-            Process gfProcess = process.getValue().getProcess();
-            // read process output to prevent process'es blocking
-            IGlassFishConsole startupConsole = GlassfishConsoleManager
-                    .getStartupProcessConsole(getGlassfishServerDelegate(), gfProcess);
-            startupConsole.startLogging(new FetchLogSimple(gfProcess.getInputStream()),
-                    new FetchLogSimple(gfProcess.getErrorStream()));
+            Process payaraProcess = process.getValue().getProcess();
+            
+            // Read process output to prevent process'es blocking
+            IPayaraConsole startupConsole = getStartupProcessConsole(getGlassfishServerDelegate(), payaraProcess);
+            
+            startupConsole.startLogging(
+                    new FetchLogSimple(payaraProcess.getInputStream()),
+                    new FetchLogSimple(payaraProcess.getErrorStream()));
 
             synchronized (PayaraServerBehaviour.this) {
                 check_server_status: while (true) {
                     ServerStatus status = getServerStatus(false);
-                    // System.out.println("Launch process got server status: " + status);
+                    
                     switch (status) {
-                    case STOPPED_NOT_LISTENING:
-                        try {
-                            int exit_code = gfProcess.exitValue();
-                            System.out.println("Process exit code: " + exit_code);
-                            if (exit_code != 0) {
-                                // something bad happened, show user startup
-                                // console
-                                PayaraToolsPlugin.logMessage("launch failed with exit code " + exit_code);
-                                GlassfishConsoleManager.showConsole(startupConsole);
-                                throw new PayaraLaunchException("Launch process failed with exit code " + exit_code);
+                        case STOPPED_NOT_LISTENING:
+                            try {
+                                int exitCode = payaraProcess.exitValue();
+                                
+                                if (exitCode != 0) {
+                                    // Something bad happened, show user startup console
+                                    
+                                    logMessage("launch failed with exit code " + exitCode);
+                                    showConsole(startupConsole);
+                                    
+                                    throw new PayaraLaunchException("Launch process failed with exit code " + exitCode);
+                                }
+                            } catch (IllegalThreadStateException e) {// still running, keep waiting
                             }
-                        } catch (IllegalThreadStateException e) {// still running, keep waiting
-                        }
-                        break;
-                    case RUNNING_PROXY_ERROR:
-                        startupConsole.stopLogging();
-                        gfProcess.destroy();
-                        throw new PayaraLaunchException(
-                                "BAD GATEWAY response code returned. Check your proxy settings. Killing startup process.",
-                                gfProcess);
-                    case RUNNING_CREDENTIAL_PROBLEM:
-                        startupConsole.stopLogging();
-                        gfProcess.destroy();
-                        throw new PayaraLaunchException("Wrong user name or password. Killing startup process.",
-                                gfProcess);
-                    case RUNNING_DOMAIN_MATCHING:
-                        startupConsole.stopLogging();
-                        break check_server_status;
-                    default:
-                        break;
-
+                            break;
+                        case RUNNING_PROXY_ERROR:
+                            startupConsole.stopLogging();
+                            payaraProcess.destroy();
+                            
+                            throw new PayaraLaunchException("BAD GATEWAY response code returned. Check your proxy settings. Killing startup process.",
+                                    payaraProcess);
+                        case RUNNING_CREDENTIAL_PROBLEM:
+                            startupConsole.stopLogging();
+                            payaraProcess.destroy();
+                            
+                            throw new PayaraLaunchException("Wrong user name or password. Killing startup process.", payaraProcess);
+                        case RUNNING_DOMAIN_MATCHING:
+                            startupConsole.stopLogging();
+                            break check_server_status;
+                        default:
+                            break;
                     }
-                    // wait for notification when server state changes
+                    
+                    // Wait for notification when server state changes
                     try {
-                        // limit waiting so we can check process exit code again
+                        // Limit waiting so we can check process exit code again
                         PayaraServerBehaviour.this.wait(5000);
                     } catch (InterruptedException e) {
-                        System.out.println("StartJob interrupted, killing startup process");
                         startupConsole.stopLogging();
-                        gfProcess.destroy();
+                        payaraProcess.destroy();
+                        
                         throw e;
                     }
                 }
@@ -976,33 +1006,25 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
 
     }
 
-    private class StopJob implements Callable<Object> {
+    private class StopJob implements Callable<ResultString> {
 
         @Override
-        public Object call() throws Exception {
-            ResultString result = null;
+        public ResultString call() throws Exception {
+            ResultString result = stopDAS(getGlassfishServerDelegate());
 
-            try {
-                result = CommandStopDAS.stopDAS(getGlassfishServerDelegate());
-            } catch (GlassFishIdeException e) {
-                PayaraToolsPlugin.logMessage("Stop command failed in library code." + e.getMessage());
-                throw e;
-            }
-
-            if (!TaskState.COMPLETED.equals(result.getState())) {
-                PayaraToolsPlugin.logMessage("Stop call failed. Reason: " + result.getValue()); //$NON-NLS-1$
+            // Check if server is stopped
+            if (!COMPLETED.equals(result.getState())) {
                 throw new Exception("Stop call failed. Reason: " + result.getValue());
             }
-
-            synchronized (PayaraServerBehaviour.this) {
-                // wait until is really stopped
-                while (!getServerStatus(false).equals(ServerStatus.STOPPED_NOT_LISTENING)) {
-                    PayaraServerBehaviour.this.wait();
-                }
+            
+            // Check if server is *really* stopped
+            while (!getServerStatus(true).equals(STOPPED_NOT_LISTENING)) {
+                Thread.sleep(100);
             }
-            Server server2 = ((Server) getServer());
-            server2.setServerStatus(null);
-            return null;
+            
+            ((Server) getServer()).setServerStatus(null);
+            
+            return result;
         }
 
     }

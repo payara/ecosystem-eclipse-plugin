@@ -19,7 +19,7 @@
              class="org.eclipse.payara.tools.server.PayaraServer"
              behaviourClass="org.eclipse.payara.tools.server.deploying.PayaraServerBehaviour"
              name="%serverTypeNameglassfish"
-             description="%serverTypeDescriptionglassfish"
+             description="%serverTypeDescriptionPayara"
              hasConfiguration="false"
              launchConfigId="org.payara.jst.server.GlassfishServerLaunchConfigurationType"
              launchModes="run,debug"

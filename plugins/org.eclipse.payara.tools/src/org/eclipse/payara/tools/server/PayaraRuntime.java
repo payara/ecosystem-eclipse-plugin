@@ -17,7 +17,9 @@ import static org.eclipse.payara.tools.Messages.pathDoesNotExist;
 import static org.eclipse.payara.tools.Messages.runtimeNotValid;
 import static org.eclipse.payara.tools.Messages.unsupportedVersion;
 import static org.eclipse.payara.tools.PayaraToolsPlugin.SYMBOLIC_NAME;
-import static org.eclipse.payara.tools.sapphire.IGlassfishRuntimeModel.PROP_JAVA_RUNTIME_ENVIRONMENT;
+import static org.eclipse.payara.tools.sapphire.IPayaraRuntimeModel.PROP_JAVA_RUNTIME_ENVIRONMENT;
+import static org.eclipse.payara.tools.sapphire.IPayaraRuntimeModel.PROP_NAME;
+import static org.eclipse.payara.tools.sapphire.IPayaraRuntimeModel.PROP_SERVER_ROOT;
 import static org.eclipse.payara.tools.utils.JdtUtil.findOrCreateJvm;
 import static org.eclipse.payara.tools.utils.PayaraLocationUtils.find;
 
@@ -28,7 +30,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jst.server.core.IJavaRuntime;
-import org.eclipse.payara.tools.sapphire.IGlassfishRuntimeModel;
+import org.eclipse.payara.tools.sapphire.IPayaraRuntimeModel;
 import org.eclipse.payara.tools.utils.PayaraLocationUtils;
 import org.eclipse.sapphire.Property;
 import org.eclipse.sapphire.PropertyBinding;
@@ -74,7 +76,7 @@ public final class PayaraRuntime extends RuntimeDelegate implements IJavaRuntime
     private static final VersionConstraint VERSION_CONSTRAINT_4 = new VersionConstraint("[1.7");
     private static final VersionConstraint VERSION_CONSTRAINT_5 = new VersionConstraint("[1.8");
 
-    private IGlassfishRuntimeModel model;
+    private IPayaraRuntimeModel model;
 
     // #### RuntimeDelegate overridden methods
 
@@ -142,17 +144,17 @@ public final class PayaraRuntime extends RuntimeDelegate implements IJavaRuntime
     }
 
     private static String createDefaultRuntimeName(String baseName, int counter) {
-        StringBuilder buf = new StringBuilder();
+        StringBuilder runtimeName = new StringBuilder();
 
-        buf.append(baseName);
+        runtimeName.append(baseName);
 
         if (counter != 1) {
-            buf.append(" (")
+            runtimeName.append(" (")
                .append(counter)
                .append(')');
         }
 
-        return buf.toString();
+        return runtimeName.toString();
     }
 
     public Version getVersion() {
@@ -176,6 +178,7 @@ public final class PayaraRuntime extends RuntimeDelegate implements IJavaRuntime
             // Should not happen if called after validateServerLocation
             return new Status(ERROR, SYMBOLIC_NAME, runtimeNotValid);
         }
+        
         if (!version.matches("[3.1-6)")) {
             return new Status(ERROR, SYMBOLIC_NAME, unsupportedVersion);
         }
@@ -201,9 +204,9 @@ public final class PayaraRuntime extends RuntimeDelegate implements IJavaRuntime
         return null;
     }
 
-    public synchronized IGlassfishRuntimeModel getModel() {
+    public synchronized IPayaraRuntimeModel getModel() {
         if (model == null) {
-            model = IGlassfishRuntimeModel.TYPE.instantiate(new ConfigResource(getRuntime()));
+            model = IPayaraRuntimeModel.TYPE.instantiate(new ConfigResource(getRuntime()));
             model.initialize();
         }
 
@@ -242,30 +245,32 @@ public final class PayaraRuntime extends RuntimeDelegate implements IJavaRuntime
 
         @Override
         protected PropertyBinding createBinding(Property property) {
-            final PropertyDef p = property.definition();
+            final PropertyDef propertyDef = property.definition();
 
-            if (p == IGlassfishRuntimeModel.PROP_NAME) {
+            if (propertyDef == PROP_NAME) {
                 return new ValuePropertyBinding() {
                     @Override
-
                     public String read() {
                         return ConfigResource.this.runtime.getName();
                     }
 
                     @Override
-
                     public void write(final String value) {
                         if (ConfigResource.this.runtime instanceof RuntimeWorkingCopy) {
-                            final RuntimeWorkingCopy wc = (RuntimeWorkingCopy) ConfigResource.this.runtime;
-                            wc.setName(value);
+                            RuntimeWorkingCopy workingCopy = (RuntimeWorkingCopy) ConfigResource.this.runtime;
+                            workingCopy.setName(value);
                         } else {
                             throw new UnsupportedOperationException();
                         }
                     }
                 };
-            } else if (p == PROP_JAVA_RUNTIME_ENVIRONMENT) {
+            }
+            
+            if (propertyDef == PROP_JAVA_RUNTIME_ENVIRONMENT) {
                 return new AttributeValueBinding(this.runtime, ATTR_SERVER_JDK);
-            } else if (p == IGlassfishRuntimeModel.PROP_SERVER_ROOT) {
+            }
+            
+            if (propertyDef == PROP_SERVER_ROOT) {
                 return new ValuePropertyBinding() {
                     @Override
 
@@ -278,9 +283,9 @@ public final class PayaraRuntime extends RuntimeDelegate implements IJavaRuntime
 
                     public void write(final String value) {
                         if (ConfigResource.this.runtime instanceof RuntimeWorkingCopy) {
-                            final RuntimeWorkingCopy wc = (RuntimeWorkingCopy) ConfigResource.this.runtime;
-                            final IPath path = value == null ? Path.EMPTY : new Path(value);
-                            wc.setLocation(path);
+                            RuntimeWorkingCopy workingCopy = (RuntimeWorkingCopy) ConfigResource.this.runtime;
+                            IPath path = value == null ? Path.EMPTY : new Path(value);
+                            workingCopy.setLocation(path);
                         } else {
                             throw new UnsupportedOperationException();
                         }
@@ -319,8 +324,8 @@ public final class PayaraRuntime extends RuntimeDelegate implements IJavaRuntime
         @Override
         public void write(final String value) {
             if (this.runtime instanceof RuntimeWorkingCopy) {
-                final RuntimeWorkingCopy wc = (RuntimeWorkingCopy) this.runtime;
-                wc.setAttribute(this.attribute, value);
+                RuntimeWorkingCopy workingCopy = (RuntimeWorkingCopy) this.runtime;
+                workingCopy.setAttribute(this.attribute, value);
             } else {
                 throw new UnsupportedOperationException();
             }

@@ -11,12 +11,12 @@ package org.eclipse.payara.tools;
 
 import static java.lang.Runtime.getRuntime;
 import static java.nio.charset.Charset.defaultCharset;
+import static org.eclipse.core.runtime.IStatus.ERROR;
 import static org.eclipse.core.runtime.IStatus.INFO;
 import static org.eclipse.payara.tools.preferences.PreferenceConstants.ENABLE_LOG;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -24,10 +24,8 @@ import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
-import org.eclipse.payara.tools.preferences.PreferenceConstants;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.wst.server.core.IRuntime;
 import org.osgi.framework.Bundle;
@@ -57,7 +55,7 @@ public class PayaraToolsPlugin extends AbstractUIPlugin {
     @Override
     protected void initializeImageRegistry(ImageRegistry reg) {
         super.initializeImageRegistry(reg);
-        reg.put(GF_SERVER_IMG, ImageDescriptor.createFromURL(getBundle().getEntry("icons/obj16/glassfishserver.gif")));
+        reg.put(GF_SERVER_IMG, ImageDescriptor.createFromURL(getBundle().getEntry("icons/obj16/payara-blue.png")));
     }
 
     @Override
@@ -106,29 +104,28 @@ public class PayaraToolsPlugin extends AbstractUIPlugin {
         }
     }
     
-    public static void logError(final String message, final Exception e) {
+    public static void logError(String message, Exception e) {
         log(createErrorStatus(message, e));
     }
     
-    public static void logError(final String message) {
+    public static void logError(String message) {
         logError(message, null);
     }
 
-    public static void log(final Exception e) {
+    public static void log(Exception e) {
         log(createErrorStatus(e));
     }
     
-    public static IStatus createErrorStatus(final String message) {
+    public static IStatus createErrorStatus(String message) {
         return createErrorStatus(message, null);
     }
 
-    public static IStatus createErrorStatus(final Exception e) {
+    public static IStatus createErrorStatus(Exception e) {
         return createErrorStatus(null, e);
     }
 
-    public static IStatus createErrorStatus(final String message, final Exception e) {
-        final String msg = (message == null ? e.getMessage() + "" : message);
-        return new Status(IStatus.ERROR, SYMBOLIC_NAME, 0, msg, e);
+    public static IStatus createErrorStatus(String message, Exception e) {
+        return new Status(ERROR, SYMBOLIC_NAME, 0, message == null ? e.getMessage() : message, e);
     }
     
     public static void log(final IStatus status) {

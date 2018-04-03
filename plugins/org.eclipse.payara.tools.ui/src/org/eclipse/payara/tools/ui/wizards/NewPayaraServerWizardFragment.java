@@ -10,7 +10,7 @@
 package org.eclipse.payara.tools.ui.wizards;
 
 import static org.eclipse.payara.tools.PayaraToolsPlugin.log;
-import static org.eclipse.payara.tools.sapphire.IGlassfishServerModel.PROP_NAME;
+import static org.eclipse.payara.tools.sapphire.IPayaraServerModel.PROP_NAME;
 import static org.eclipse.payara.tools.server.PayaraServer.getDefaultDomainDir;
 import static org.eclipse.payara.tools.ui.wizards.GlassfishWizardResources.wzdServerDescription;
 import static org.eclipse.payara.tools.utils.WtpUtil.load;
@@ -18,7 +18,7 @@ import static org.eclipse.wst.server.core.TaskModel.TASK_SERVER;
 import static org.eclipse.wst.server.core.internal.Server.AUTO_PUBLISH_DISABLE;
 import static org.eclipse.wst.server.core.internal.Server.PROP_AUTO_PUBLISH_SETTING;
 
-import org.eclipse.payara.tools.sapphire.IGlassfishServerModel;
+import org.eclipse.payara.tools.sapphire.IPayaraServerModel;
 import org.eclipse.payara.tools.server.PayaraServer;
 import org.eclipse.sapphire.Element;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
@@ -65,7 +65,7 @@ public final class NewPayaraServerWizardFragment extends BaseWizardFragment {
             log(e);
         }
 
-        // IGlassfishServerModel contains the entries corresponding to PayaraUI.sdef, which are the fields
+        // IPayaraServerModel contains the entries corresponding to PayaraUI.sdef, which are the fields
         // that will be rendered by Saphire, e.g. Name, HostName, Remote, etc
         
         return load(server(), PayaraServer.class).getModel();
@@ -76,7 +76,7 @@ public final class NewPayaraServerWizardFragment extends BaseWizardFragment {
         super.enter();
 
         // Set the default domain location
-        ((IGlassfishServerModel) getModel())
+        ((IPayaraServerModel) getModel())
                 .getDomainPath()
                 .write(getDefaultDomainDir(server().getRuntime().getLocation()).toOSString());
     }

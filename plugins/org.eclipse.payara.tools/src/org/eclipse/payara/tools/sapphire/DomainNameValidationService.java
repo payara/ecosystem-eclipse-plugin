@@ -19,7 +19,7 @@ public class DomainNameValidationService extends ValidationService {
 
     @Override
     protected Status compute() {
-        ICreateGlassfishDomainOp op = context(ICreateGlassfishDomainOp.class);
+        ICreatePayaraDomainOp op = context(ICreatePayaraDomainOp.class);
         Path gfInstallPath = op.getLocation().content();
         if (gfInstallPath != null && gfInstallPath.toFile().exists()) {
             String name = op.getName().content();

@@ -23,7 +23,7 @@ import org.eclipse.debug.core.Launch;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.jdt.internal.launching.LaunchingPlugin;
 import org.eclipse.payara.tools.PayaraToolsPlugin;
-import org.eclipse.payara.tools.sapphire.ICreateGlassfishDomainOp;
+import org.eclipse.payara.tools.sapphire.ICreatePayaraDomainOp;
 import org.eclipse.sapphire.modeling.Path;
 import org.eclipse.sapphire.modeling.ProgressMonitor;
 import org.eclipse.sapphire.modeling.Status;
@@ -31,7 +31,7 @@ import org.eclipse.sapphire.modeling.Status;
 @SuppressWarnings("restriction")
 public class CreatePayaraDomainOpMethods {
 
-    public static Status execute(ICreateGlassfishDomainOp op, ProgressMonitor mon) {
+    public static Status execute(ICreatePayaraDomainOp op, ProgressMonitor mon) {
         Path root = op.getLocation().content();
         File asadmin = new File(new File(root.toFile(), "bin"),
                 Platform.getOS().equals(Platform.OS_WIN32) ? "asadmin.bat" : "asadmin");

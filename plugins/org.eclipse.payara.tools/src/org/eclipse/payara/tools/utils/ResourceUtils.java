@@ -281,7 +281,7 @@ public class ResourceUtils {
                 query = "resources.*"; //$NON-NLS-1$
             }
             Command command = new CommandGetProperty(query);
-            Future<ResultMap<String, String>> future = ServerAdmin.<ResultMap<String, String>>exec(server, command, new IdeContext());
+            Future<ResultMap<String, String>> future = ServerAdmin.<ResultMap<String, String>>exec(server, command);
             ResultMap<String, String> result = future.get(30, TimeUnit.SECONDS);
 
             if (TaskState.COMPLETED.equals(result.getState())) {
@@ -366,7 +366,7 @@ public class ResourceUtils {
 
             try {
                 Command command = new CommandSetProperty(compName, compValue);
-                Future<ResultString> future = ServerAdmin.<ResultString>exec(server, command, new IdeContext());
+                Future<ResultString> future = ServerAdmin.<ResultString>exec(server, command);
                 ResultString result = future.get(30, TimeUnit.SECONDS);
                 if (!TaskState.COMPLETED.equals(result.getState())) {
                     itemsNotUpdated = addName(compName, itemsNotUpdated);

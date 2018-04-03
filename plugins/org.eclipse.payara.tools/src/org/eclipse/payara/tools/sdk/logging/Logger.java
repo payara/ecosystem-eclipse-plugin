@@ -58,21 +58,6 @@ public class Logger {
     }
 
     /**
-     * Check if a message of the given level would actually be logged by this logger. This check is
-     * based on the Loggers effective level, which may be inherited from its parent.
-     * <p>
-     *
-     * @param level A message logging level.
-     * @return <code>true</code> if the given message level is currently being logged or
-     * <code>false</code> otherwise.
-     * @deprecated Instantiate Logger class!
-     */
-    @Deprecated
-    public static boolean loggable(Level level) {
-        return getLogger().isLoggable(level);
-    }
-
-    /**
      * Log a message, with associated <code>Throwable</code> information.
      * <p>
      * If the logger is currently enabled for the given message level then the given arguments are
@@ -91,23 +76,6 @@ public class Logger {
     @Deprecated
     public static void log(Level level, String msg, Throwable thrown) {
         getLogger().log(level, msg, thrown);
-    }
-
-    /**
-     * Log a message, with one object parameter.
-     * <p>
-     * If the logger is currently enabled for the given message level then a corresponding LogRecord is
-     * created and forwarded to all the registered output Handler objects.
-     * <p>
-     *
-     * @param level One of the message level identifiers, e.g. SEVERE.
-     * @param msg The string message (or a key in the message catalog).
-     * @param param Parameter to the message.
-     * @deprecated Instantiate Logger class!
-     */
-    @Deprecated
-    public static void log(Level level, String msg, Object param) {
-        getLogger().log(level, msg, param);
     }
 
     /**
@@ -244,7 +212,7 @@ public class Logger {
     private final String name;
 
     /** Logger package (derived from class package). */
-    private final Class cl;
+    private final Class<?> clazz;
 
     /** {@link java.util.logging.Logger} instance. */
     private final java.util.logging.Logger logger;
@@ -259,9 +227,9 @@ public class Logger {
      *
      * @param c Class where logger instance was created.
      */
-    public Logger(final Class c) {
-        name = c.getName();
-        cl = c;
+    public Logger(Class<?> clazz) {
+        this.clazz = clazz;
+        name = clazz.getName();
         logger = java.util.logging.Logger.getLogger(name);
     }
 
@@ -277,19 +245,20 @@ public class Logger {
      * @param key The message string key.
      * @return Message key as <code>&lt;class_name&gt;.&lt;method_name&gt;.&lt;key&gt;</code>.
      */
-    public String buildKey(final String method, final String key) {
+    public String buildKey(String method, String key) {
         if (method == null || key == null) {
             throw new IllegalArgumentException("Key value shall not be null.");
         }
-        String clName = cl.getSimpleName();
-        StringBuilder sb = new StringBuilder(
-                clName.length() + method.length() + key.length() + 2);
-        sb.append(clName);
-        sb.append(KEY_SEPARATOR);
-        sb.append(method);
-        sb.append(KEY_SEPARATOR);
-        sb.append(key);
-        return sb.toString();
+        
+        String className = clazz.getSimpleName();
+        
+        return new StringBuilder(className.length() + method.length() + key.length() + 2)
+            .append(className)
+            .append(KEY_SEPARATOR)
+            .append(method)
+            .append(KEY_SEPARATOR)
+            .append(key)
+            .toString();
     }
 
     /**
@@ -301,7 +270,7 @@ public class Logger {
      * @return Message from exception messages properties file with given key.
      */
     public String excMsg(final String method, final String key) {
-        return message(EXCEPTIONS_FILE, excProps, cl, buildKey(method, key));
+        return message(EXCEPTIONS_FILE, excProps, clazz, buildKey(method, key));
     }
 
     /**
@@ -313,11 +282,9 @@ public class Logger {
      * @param attrs Message attributes.
      * @return Message from exception messages properties file with given key and attributes.
      */
-    public String excMsg(final String method, final String key,
-            final String... attrs) {
-        String message = message(
-                EXCEPTIONS_FILE, excProps, cl, buildKey(method, key));
-        return MessageFormat.format(message, (Object[]) attrs);
+    public String excMsg(String method, String key, String... attrs) {
+        return MessageFormat.format(
+                message(EXCEPTIONS_FILE, excProps, clazz, buildKey(method, key)), (Object[]) attrs);
     }
 
     /**
@@ -345,7 +312,7 @@ public class Logger {
      * @param key The message string key.
      */
     public void log(Level level, final String method, final String key) {
-        logger.log(level, logMsg(cl, buildKey(method, key)));
+        logger.log(level, logMsg(clazz, buildKey(method, key)));
     }
 
     /**
@@ -366,7 +333,7 @@ public class Logger {
      */
     public void log(final Level level, final String method, final String key,
             final Throwable thrown) {
-        logger.log(level, logMsg(cl, buildKey(method, key)), thrown);
+        logger.log(level, logMsg(clazz, buildKey(method, key)), thrown);
     }
 
     /**
@@ -383,7 +350,7 @@ public class Logger {
      */
     public void log(final Level level, final String method, final String key,
             final Object param) {
-        logger.log(level, logMsg(cl, buildKey(method, key)), param);
+        logger.log(level, logMsg(clazz, buildKey(method, key)), param);
     }
 
     /**
@@ -400,7 +367,7 @@ public class Logger {
      */
     public void log(final Level level, final String method, final String key,
             final Object params[]) {
-        logger.log(level, logMsg(cl, buildKey(method, key)), params);
+        logger.log(level, logMsg(clazz, buildKey(method, key)), params);
     }
 
     /**

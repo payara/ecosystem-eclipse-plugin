@@ -16,8 +16,8 @@ import static org.eclipse.jface.window.Window.OK;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.payara.tools.sapphire.ICreateGlassfishDomainOp;
-import org.eclipse.payara.tools.sapphire.IGlassfishServerModel;
+import org.eclipse.payara.tools.sapphire.ICreatePayaraDomainOp;
+import org.eclipse.payara.tools.sapphire.IPayaraServerModel;
 import org.eclipse.payara.tools.server.PayaraRuntime;
 import org.eclipse.payara.tools.server.PayaraServer;
 import org.eclipse.payara.tools.ui.wizards.BaseWizardFragment;
@@ -41,7 +41,7 @@ public class NewPayaraDomainAction extends SapphireActionHandler {
                 .getServer()
                 .getRuntime();
 
-        ICreateGlassfishDomainOp createDomainOperation = ICreateGlassfishDomainOp.TYPE.instantiate();
+        ICreatePayaraDomainOp createDomainOperation = ICreatePayaraDomainOp.TYPE.instantiate();
 
         // Set existing domain location
         createDomainOperation.setLocation(fromPortableString(runtime.getLocation().toPortableString()));
@@ -61,7 +61,7 @@ public class NewPayaraDomainAction extends SapphireActionHandler {
 
         // If user okay'ed dialog, copy the provided values to our model
         if (dlg.open() == OK) {
-            IGlassfishServerModel model = (IGlassfishServerModel) context.part().getModelElement();
+            IPayaraServerModel model = (IPayaraServerModel) context.part().getModelElement();
 
             model.setDomainPath(createDomainOperation.getDomainDir().content().append(createDomainOperation.getName().content()));
             model.setDebugPort(createDomainOperation.getPortBase().content() + 9);

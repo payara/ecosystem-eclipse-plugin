@@ -12,7 +12,7 @@ package org.eclipse.payara.tools.log;
 import org.eclipse.payara.tools.sdk.server.FetchLog;
 import org.eclipse.ui.console.IConsole;
 
-public interface IGlassFishConsole extends IConsole {
+public interface IPayaraConsole extends IConsole {
 
     public void startLogging();
 

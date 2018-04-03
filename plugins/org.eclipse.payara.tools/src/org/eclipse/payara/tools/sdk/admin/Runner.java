@@ -9,6 +9,9 @@
 
 package org.eclipse.payara.tools.sdk.admin;
 
+import static org.eclipse.payara.tools.sdk.TaskEvent.SUBMIT;
+import static org.eclipse.payara.tools.sdk.TaskState.READY;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Authenticator;
@@ -589,7 +592,7 @@ public abstract class Runner implements Callable<Result> {
      */
     public void setReadyState() {
         result = createResult();
-        handleStateChange(TaskState.READY, TaskEvent.SUBMIT, stateChangeArgs(null));
+        handleStateChange(READY, SUBMIT, stateChangeArgs(null));
     }
 
     /**
@@ -610,7 +613,7 @@ public abstract class Runner implements Callable<Result> {
      * @param executor {@link ExecutorService} instance used to run this task.
      * @return <code>Future</code> object to retrieve receiveResult of asynchronous execution.
      */
-    Future<? extends Result> execute(final ExecutorService executor) {
+    Future<? extends Result> execute(ExecutorService executor) {
         setReadyState();
         return executor.submit(this);
     }

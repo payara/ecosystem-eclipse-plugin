@@ -19,7 +19,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.payara.tools.PayaraToolsPlugin;
-import org.eclipse.payara.tools.sapphire.IGlassfishRuntimeModel;
+import org.eclipse.payara.tools.sapphire.IPayaraRuntimeModel;
 import org.eclipse.payara.tools.server.PayaraRuntime;
 import org.eclipse.payara.tools.utils.PayaraLocationUtils;
 import org.eclipse.sapphire.Value;
@@ -93,7 +93,7 @@ public final class PayaraRuntimeLocatorDelegate extends RuntimeLocatorDelegate {
         rwc.setAttribute("generic_server_instance_properties", props);
 
         final PayaraRuntime gf = (PayaraRuntime) rwc.loadAdapter(PayaraRuntime.class, null);
-        final IGlassfishRuntimeModel gfmodel = gf.getModel();
+        final IPayaraRuntimeModel gfmodel = gf.getModel();
         final Value<org.eclipse.sapphire.modeling.Path> javaRuntimeEnvironmentProperty = gfmodel
                 .getJavaRuntimeEnvironment();
 

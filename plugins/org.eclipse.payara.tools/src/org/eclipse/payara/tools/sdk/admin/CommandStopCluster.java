@@ -9,6 +9,8 @@
 
 package org.eclipse.payara.tools.sdk.admin;
 
+import static org.eclipse.payara.tools.sdk.admin.ServerAdmin.exec;
+
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -51,14 +53,12 @@ public class CommandStopCluster extends CommandTarget {
      * @return Stop cluster task response.
      * @throws GlassFishIdeException When error occurred during administration command execution.
      */
-    public static ResultString stopCluster(PayaraServer server,
-            String target) throws GlassFishIdeException {
-        Command command = new CommandStopCluster(target);
-        Future<ResultString> future = ServerAdmin.<ResultString>exec(server, command);
+    public static ResultString stopCluster(PayaraServer server, String target) throws GlassFishIdeException {
+        Future<ResultString> future = exec(server, new CommandStopCluster(target));
+        
         try {
             return future.get();
-        } catch (InterruptedException | ExecutionException
-                | CancellationException ie) {
+        } catch (InterruptedException | ExecutionException| CancellationException ie) {
             throw new GlassFishIdeException(ERROR_MESSAGE, ie);
         }
     }

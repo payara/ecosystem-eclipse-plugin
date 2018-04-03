@@ -11,13 +11,12 @@ package org.eclipse.payara.tools.sdk.admin;
 
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 import org.eclipse.payara.tools.sdk.GlassFishIdeException;
 import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
- * GlassFish Server Stop Instance Command Entity.
+ * Payara Server Stop Instance Command Entity.
  * <p/>
  * Holds data for command. Objects of this class are created by API user.
  * <p/>
@@ -51,14 +50,10 @@ public class CommandStopInstance extends CommandTarget {
      * @return Stop instance task response.
      * @throws GlassFishIdeException When error occurred during administration command execution.
      */
-    public static ResultString stopInstance(final PayaraServer server,
-            final String target) throws GlassFishIdeException {
-        Command command = new CommandStopInstance(target);
-        Future<ResultString> future = ServerAdmin.<ResultString>exec(server, command);
+    public static ResultString stopInstance(PayaraServer server, String target) throws GlassFishIdeException {
         try {
-            return future.get();
-        } catch (InterruptedException | ExecutionException
-                | CancellationException ie) {
+            return ServerAdmin.<ResultString>exec(server, new CommandStopInstance(target)).get();
+        } catch (InterruptedException | ExecutionException | CancellationException ie) {
             throw new GlassFishIdeException(ERROR_MESSAGE, ie);
         }
     }
@@ -73,7 +68,7 @@ public class CommandStopInstance extends CommandTarget {
      *
      * @param target Target GlassFish instance.
      */
-    public CommandStopInstance(final String target) {
+    public CommandStopInstance(String target) {
         super(COMMAND, target);
     }
 

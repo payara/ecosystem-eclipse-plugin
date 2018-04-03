@@ -9,9 +9,9 @@
 
 package org.eclipse.payara.tools.log;
 
-public class GlassfishStartupConsole extends GlassfishConsole {
+public class PayaraStartupConsole extends PayaraConsole {
 
-    GlassfishStartupConsole(String name, ILogFilter filter) {
+    PayaraStartupConsole(String name, ILogFilter filter) {
         super(name, filter);
     }
 

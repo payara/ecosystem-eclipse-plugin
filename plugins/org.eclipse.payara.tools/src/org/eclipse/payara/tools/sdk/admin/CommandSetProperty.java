@@ -9,10 +9,12 @@
 
 package org.eclipse.payara.tools.sdk.admin;
 
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static org.eclipse.payara.tools.sdk.admin.ServerAdmin.exec;
+
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import org.eclipse.payara.tools.sdk.GlassFishIdeException;
@@ -58,16 +60,17 @@ public class CommandSetProperty extends Command {
         int valueLen = command.value != null
                 ? command.value.length()
                 : 0;
+                
         int propertyLen = command.property != null
                 ? command.property.length()
                 : 0;
-        StringBuilder sb = new StringBuilder(ERROR_MESSAGE_PREFIX.length()
-                + ERROR_MESSAGE_MIDDLE.length() + valueLen + propertyLen);
-        sb.append(ERROR_MESSAGE_PREFIX);
-        sb.append(valueLen > 0 ? command.value : "");
-        sb.append(ERROR_MESSAGE_MIDDLE);
-        sb.append(propertyLen > 0 ? command.property : "");
-        return sb.toString();
+                
+        return new StringBuilder(ERROR_MESSAGE_PREFIX.length() + ERROR_MESSAGE_MIDDLE.length() + valueLen + propertyLen)
+            .append(ERROR_MESSAGE_PREFIX)
+            .append(valueLen > 0 ? command.value : "")
+            .append(ERROR_MESSAGE_MIDDLE)
+            .append(propertyLen > 0 ? command.property : "")
+            .toString();
     }
 
     /**
@@ -79,14 +82,12 @@ public class CommandSetProperty extends Command {
      * @return GlassFish command result containing <code>String</code> with result message.
      * @throws GlassFishIdeException When error occurred during administration command execution.
      */
-    public static ResultString setProperty(
-            final PayaraServer server, final CommandSetProperty command)
-            throws GlassFishIdeException {
-        Future<ResultString> future = ServerAdmin.<ResultString>exec(server, command);
+    public static ResultString setProperty(PayaraServer server, CommandSetProperty command) throws GlassFishIdeException {
+        Future<ResultString> future = exec(server, command);
+        
         try {
             return future.get();
-        } catch (ExecutionException | InterruptedException
-                | CancellationException ee) {
+        } catch (ExecutionException | InterruptedException | CancellationException ee) {
             throw new GlassFishIdeException(errorMessage(command), ee);
         }
     }
@@ -101,14 +102,12 @@ public class CommandSetProperty extends Command {
      * @return GlassFish command result containing <code>String</code> with result message.
      * @throws GlassFishIdeException When error occurred during administration command execution.
      */
-    public static ResultString setProperty(
-            final PayaraServer server, final CommandSetProperty command,
-            final long timeout) throws GlassFishIdeException {
-        Future<ResultString> future = ServerAdmin.<ResultString>exec(server, command);
+    public static ResultString setProperty(PayaraServer server, CommandSetProperty command, long timeout) throws GlassFishIdeException {
+        Future<ResultString> future = exec(server, command);
+        
         try {
-            return future.get(timeout, TimeUnit.MILLISECONDS);
-        } catch (ExecutionException | InterruptedException
-                | CancellationException ee) {
+            return future.get(timeout, MILLISECONDS);
+        } catch (ExecutionException | InterruptedException | CancellationException ee) {
             throw new GlassFishIdeException(errorMessage(command), ee);
         } catch (TimeoutException te) {
             throw new GlassFishIdeException(errorMessage(command)
@@ -141,8 +140,7 @@ public class CommandSetProperty extends Command {
      * @param value Value of the property to set.
      * @param format Format for the query string.
      */
-    public CommandSetProperty(final String property, final String value,
-            final String format) {
+    public CommandSetProperty(String property, String value, String format) {
         super(COMMAND);
         this.property = property;
         this.value = value;
@@ -156,7 +154,7 @@ public class CommandSetProperty extends Command {
      * @param property Name of the property to set.
      * @param value Value of the property to set.
      */
-    public CommandSetProperty(final String property, final String value) {
+    public CommandSetProperty(String property, String value) {
         super(COMMAND);
         this.property = property;
         this.value = value;

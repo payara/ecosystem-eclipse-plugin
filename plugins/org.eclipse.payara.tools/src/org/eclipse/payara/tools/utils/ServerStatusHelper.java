@@ -9,6 +9,7 @@
 
 package org.eclipse.payara.tools.utils;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.eclipse.payara.tools.PayaraToolsPlugin.logMessage;
 import static org.eclipse.payara.tools.sdk.TaskEvent.AUTH_FAILED;
 import static org.eclipse.payara.tools.sdk.TaskEvent.BAD_GATEWAY;
@@ -27,10 +28,8 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import org.eclipse.payara.tools.PayaraToolsPlugin;
 import org.eclipse.payara.tools.sdk.TaskEvent;
 import org.eclipse.payara.tools.sdk.TaskState;
 import org.eclipse.payara.tools.sdk.TaskStateListener;
@@ -46,10 +45,12 @@ import org.eclipse.wst.server.core.IServer;
 public class ServerStatusHelper {
 
     public static ServerStatus checkServerStatus(PayaraServer server) {
+        
+        // Randomly wait for some random reason
         try {
             Thread.sleep(Math.round(Math.random() * 1000));
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Thread.currentThread().interrupt();
             return NOT_DEFINED;
         }
 
@@ -60,13 +61,15 @@ public class ServerStatusHelper {
         if (server.isRemote()) {
             IServer server1 = server.getServer();
             String remoteServerVersion = PayaraServerBehaviour.getVersion(server);
-            PayaraRuntime gfRuntime = (PayaraRuntime) server1.getRuntime().loadAdapter(PayaraRuntime.class,
-                    null);
-            String thisServerVersion = gfRuntime.getVersion().toString();
+            PayaraRuntime payaraRuntime = (PayaraRuntime) server1.getRuntime().loadAdapter(PayaraRuntime.class, null);
+            
+            String thisServerVersion = payaraRuntime.getVersion().toString();
             int n = thisServerVersion.indexOf(".X");
+            
             if (n > 0) {
                 thisServerVersion = thisServerVersion.substring(0, n + 1);
             }
+            
             if (remoteServerVersion != null && remoteServerVersion.indexOf(thisServerVersion) < 0) {
                 return STOPPED_DOMAIN_NOT_MATCHING;
             }
@@ -78,10 +81,11 @@ public class ServerStatusHelper {
         Future<ResultMap<String, String>> locationTask = null;
 
         try {
-            locationTask = ServerAdmin.<ResultMap<String, String>>exec(server, command, listener);
-            result = locationTask.get(10, TimeUnit.SECONDS);
+            locationTask = ServerAdmin.exec(server, command, listener);
+            result = locationTask.get(10, SECONDS);
         } catch (InterruptedException e) {
-            PayaraToolsPlugin.logMessage("ServerStatusMonitor for " + server.getName() + " location interrupted");
+            Thread.currentThread().interrupt();
+            logMessage("ServerStatusMonitor for " + server.getName() + " location interrupted");
         } catch (ExecutionException e) {
             logMessage("ServerStatusMonitor for " + server.getName() + " location throws exception");
             e.printStackTrace();
@@ -92,18 +96,19 @@ public class ServerStatusHelper {
                 if (locationTask != null) {
                     locationTask.cancel(true);
                 }
+                
                 return RUNNING_CONNECTION_ERROR;
             }
         }
 
-        ServerStatus s = null;
+        ServerStatus serverStatus = null;
         switch (result.getState()) {
         case COMPLETED:
             try {
                 if (domainMatching(server, result.getValue())) {
-                    s = RUNNING_DOMAIN_MATCHING;
+                    serverStatus = RUNNING_DOMAIN_MATCHING;
                 } else {
-                    s = STOPPED_DOMAIN_NOT_MATCHING;
+                    serverStatus = STOPPED_DOMAIN_NOT_MATCHING;
                 }
             } catch (IOException e) {
 
@@ -111,39 +116,40 @@ public class ServerStatusHelper {
             break;
         case FAILED:
             if (isAuthException(listener.getLastEvent(), result)) {
-                s = RUNNING_CREDENTIAL_PROBLEM;
+                serverStatus = RUNNING_CREDENTIAL_PROBLEM;
             } else if (isRemoteAdminException(result)) {
-                s = RUNNING_REMOTE_NOT_SECURE;
+                serverStatus = RUNNING_REMOTE_NOT_SECURE;
             } else if (listener.getLastEvent().equals(BAD_GATEWAY)) {
-                s = RUNNING_PROXY_ERROR;
+                serverStatus = RUNNING_PROXY_ERROR;
             } else {
-                s = RUNNING_CONNECTION_ERROR;
+                serverStatus = RUNNING_CONNECTION_ERROR;
             }
             break;
         case RUNNING:
             logMessage("ServerStatusMonitor for " + server.getName() + " location takes long time...");
             locationTask.cancel(true);
-            s = NOT_DEFINED;
+            serverStatus = NOT_DEFINED;
             break;
         default:
             logMessage("ServerStatusMonitor for " + server.getName() + " location in ready state");
-            s = NOT_DEFINED;
+            serverStatus = NOT_DEFINED;
             break;
         }
 
-        return s;
+        return serverStatus;
     }
 
-    private static boolean domainMatching(PayaraServer server, Map<String, String> locationResult)
-            throws IOException {
+    private static boolean domainMatching(PayaraServer server, Map<String, String> locationResult) throws IOException {
         if (server.isRemote()) {
             return true;
         }
+        
         String expectedDomainRoot = server.getDomainsFolder() + File.separator + server.getDomainName();
         String actualDomainRoot = locationResult.get("Domain-Root_value");
-        if ((expectedDomainRoot != null) && (actualDomainRoot != null)) {
+        if (expectedDomainRoot != null && actualDomainRoot != null) {
             File expected = new File(expectedDomainRoot);
             File actual = new File(actualDomainRoot);
+            
             if (expected.getCanonicalPath().equals(actual.getCanonicalPath())) {
                 return true;
             }

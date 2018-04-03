@@ -44,11 +44,13 @@ public class AdminFactoryRest extends AdminFactory {
         if (instance != null) {
             return instance;
         }
+        
         synchronized (AdminFactoryRest.class) {
             if (instance == null) {
                 instance = new AdminFactoryRest();
             }
         }
+        
         return instance;
     }
 
@@ -61,26 +63,28 @@ public class AdminFactoryRest extends AdminFactory {
      * <code>Command</code> instance.
      * <p>
      *
-     * @param srv GlassFish server entity object.
+     * @param payaraServer GlassFish server entity object.
      * @param cmd GlassFish server administration command entity.
      * @return GlassFish server administration command execution object.
      */
     @Override
-    public Runner getRunner(final PayaraServer srv, final Command cmd) {
+    public Runner getRunner(final PayaraServer payaraServer, final Command cmd) {
         Runner runner;
-        Class cmcClass = cmd.getClass();
-        RunnerRestClass rc = (RunnerRestClass) cmcClass.getAnnotation(
-                RunnerRestClass.class);
-        if (rc != null) {
-            Class runnerClass = rc.runner();
-            String command = rc.command();
-            runner = newRunner(srv, cmd, runnerClass);
-            if (command != null && command.length() > 0) {
+        
+        Class<? extends Command> commandClass = cmd.getClass();
+        RunnerRestClass runnerRestClass = (RunnerRestClass) commandClass.getAnnotation(RunnerRestClass.class);
+        
+        if (runnerRestClass != null) {
+            String command = runnerRestClass.command();
+            runner = newRunner(payaraServer, cmd, runnerRestClass.runner());
+            
+            if (command != null && !command.isEmpty()) {
                 cmd.command = command;
             }
         } else {
-            runner = new RunnerRest(srv, cmd);
+            runner = new RunnerRest(payaraServer, cmd);
         }
+        
         return runner;
     }
 
