@@ -68,8 +68,8 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.model.RuntimeProcess;
 import org.eclipse.jdt.internal.debug.core.model.JDIDebugTarget;
 import org.eclipse.jdt.launching.AbstractJavaLaunchConfigurationDelegate;
-import org.eclipse.jdt.launching.AbstractVMInstall;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
+import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.payara.tools.exceptions.HttpPortUpdateException;
 import org.eclipse.payara.tools.log.IPayaraConsole;
 import org.eclipse.payara.tools.sdk.admin.ResultProcess;
@@ -199,8 +199,14 @@ public class PayaraServerLaunchDelegate extends AbstractJavaLaunchConfigurationD
             abort("bootstrap jar not found", null, ERR_INTERNAL_ERROR);
         }
 
-        // TODO which java to use? for now ignore the one from launch config
-        AbstractVMInstall/* IVMInstall */ vm = (AbstractVMInstall) serverBehavior.getRuntimeDelegate().getVMInstall();
+        final IVMInstall vm;
+        final IVMInstall vmFromLaunchConfiguration = verifyVMInstall(configuration);
+        if (vmFromLaunchConfiguration != null && vmFromLaunchConfiguration.getInstallLocation() != null) {
+            vm = vmFromLaunchConfiguration;
+        } else {
+            // silently fallback to server runtime setting
+            vm = serverBehavior.getRuntimeDelegate().getVMInstall();            
+        }
 
         if (vm == null || vm.getInstallLocation() == null) {
             abort("Invalid Java VM location for server " + serverAdapter.getName(), null, ERR_INTERNAL_ERROR);
