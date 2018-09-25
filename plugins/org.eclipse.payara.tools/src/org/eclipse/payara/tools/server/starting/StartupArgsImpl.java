@@ -31,7 +31,6 @@ public class StartupArgsImpl implements StartupArgs {
     private String javaHome;
     private ArrayList<String> javaArgs;
     private ArrayList<String> glassfishArgs;
-    private boolean isReplaceNativeEnvironment;
     private final Map<String, String> environmentVars = new HashMap<>();
 
     public StartupArgsImpl() {
@@ -92,13 +91,5 @@ public class StartupArgsImpl implements StartupArgs {
         return javaHome;
     }
 
-    @Override
-    public boolean isReplaceNativeEnvironment() {
-        return isReplaceNativeEnvironment;
-    }
-    
-    public void setReplaceNativeEnvironment(boolean isReplaceNativeEnvironment) {
-        this.isReplaceNativeEnvironment = isReplaceNativeEnvironment;
-    }
 
 }

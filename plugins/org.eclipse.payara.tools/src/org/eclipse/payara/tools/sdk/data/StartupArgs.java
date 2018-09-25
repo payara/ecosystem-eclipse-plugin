@@ -39,8 +39,4 @@ public interface StartupArgs {
     /** Installation home of Java SDK used to run GlassFish. */
     public String getJavaHome();
 
-    /** Whether to replace or add getAdditionalEnvironmentVars() to the native Environment 
-     * variables before JVM execution. */
-    public boolean isReplaceNativeEnvironment();
-
 }
