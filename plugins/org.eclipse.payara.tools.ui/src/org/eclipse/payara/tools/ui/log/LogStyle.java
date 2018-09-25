@@ -21,7 +21,9 @@ package org.eclipse.payara.tools.ui.log;
 import static org.eclipse.payara.tools.preferences.PreferenceConstants.ENABLE_COLORS_CONSOLE;
 
 import java.util.Arrays;
+import java.util.function.Predicate;
 import java.util.logging.Level;
+import java.util.regex.Pattern;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.IDocument;
@@ -47,6 +49,14 @@ public class LogStyle implements LineStyleListener, IPropertyChangeListener {
         store.addPropertyChangeListener(this);
     }
 
+    private final StyleRange styleRangeTime = new StyleRange();
+    {
+        styleRangeTime.foreground = display.getSystemColor(SWT.COLOR_GRAY);
+        styleRangeTime.length = 12;
+    }
+    private final Predicate<String> timePattern = Pattern.compile("^(\\d\\d:\\d\\d:\\d\\d)").asPredicate();
+    
+    
     @Override
     public void lineGetStyle(LineStyleEvent event) {
         StyleRange styleRange = null;
@@ -54,7 +64,18 @@ public class LogStyle implements LineStyleListener, IPropertyChangeListener {
         int start;
 
         if (colorInConsole) {
-            if ((start = buf.indexOf(Level.WARNING.getName())) != -1) {
+            
+            if(timePattern.test(buf)) {
+                styleRangeTime.start = event.lineOffset;
+                appendStyleRange(styleRangeTime, event);
+            }
+            
+            if ((start = buf.indexOf(Level.INFO.getName())) != -1) {
+                styleRange = new StyleRange();
+                styleRange.start = event.lineOffset + start;
+                styleRange.length = 3;
+                styleRange.foreground = display.getSystemColor(SWT.COLOR_DARK_GRAY);
+            } else if ((start = buf.indexOf(Level.WARNING.getName())) != -1) {
                 styleRange = new StyleRange();
                 styleRange.start = event.lineOffset + start;
                 styleRange.length = 6;
@@ -78,18 +99,22 @@ public class LogStyle implements LineStyleListener, IPropertyChangeListener {
                 styleRange.fontStyle = SWT.BOLD;
             }
 
-            if (styleRange != null) {
-                StyleRange[] styles;
-                if (event.styles != null) {
-                    styles = Arrays.copyOf(event.styles, event.styles.length + 1);
-                } else {
-                    styles = new StyleRange[1];
-                }
-                styles[styles.length - 1] = styleRange;
-
-                // Set the styles for the line
-                event.styles = styles;
+            appendStyleRange(styleRange, event);
+        }
+    }
+    
+    private static void appendStyleRange(StyleRange styleRange, LineStyleEvent event) {
+        if (styleRange != null) {
+            StyleRange[] styles;
+            if (event.styles != null) {
+                styles = Arrays.copyOf(event.styles, event.styles.length + 1);
+            } else {
+                styles = new StyleRange[1];
             }
+            styles[styles.length - 1] = styleRange;
+
+            // Set the styles for the line
+            event.styles = styles;
         }
     }
 

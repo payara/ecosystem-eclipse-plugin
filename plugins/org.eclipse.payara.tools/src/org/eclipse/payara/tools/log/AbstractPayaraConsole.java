@@ -23,6 +23,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ScheduledFuture;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.console.MessageConsoleStream;
 
@@ -38,6 +40,12 @@ public abstract class AbstractPayaraConsole extends MessageConsole implements IP
         super(name, imageDescriptor);
         this.filter = filter;
         this.out = newMessageStream();
+                
+        
+        final MessageConsole console = out.getConsole();
+        final Font font = new Font(null, "Segoe UI", 8, SWT.NORMAL);
+        
+        console.setFont(font);
     }
 
 }

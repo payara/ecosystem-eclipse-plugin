@@ -55,9 +55,13 @@ class LevelResolver implements ILevelResolver {
     }
 
     private String getLocalized(String text, String logBundleName, Locale logLocale) {
-        ResourceBundle bundle = ResourceBundle.getBundle(logBundleName, logLocale);
-        String localized = bundle.getString(text);
-        return localized;
+        try {
+            ResourceBundle bundle = ResourceBundle.getBundle(logBundleName, logLocale);
+            String localized = bundle.getString(text);
+            return localized;
+        } catch (Exception e) {
+            return text; // fallback
+        }
     }
 
     @Override

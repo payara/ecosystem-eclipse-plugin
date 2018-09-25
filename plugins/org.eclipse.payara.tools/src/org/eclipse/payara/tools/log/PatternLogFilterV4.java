@@ -18,6 +18,7 @@
 
 package org.eclipse.payara.tools.log;
 
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -38,7 +39,7 @@ public class PatternLogFilterV4 extends AbstractLogFilter {
     private static final Pattern endOfMessagePattern = Pattern.compile("^//s*[^//]]{2}\\s$"); // log message
 
     PatternLogFilterV4() {
-        super();
+        super(new MyLogFormatter(), new LevelResolver());
     }
 
     @Override
@@ -63,12 +64,38 @@ public class PatternLogFilterV4 extends AbstractLogFilter {
             buffer.append(line);
             buffer.append('\n');
         }
-        return result;
+        return (result!=null && result.length()==0) ? null : result;
     }
 
     @Override
     protected boolean isReadingUserMessage() {
         return !endOfMessagePattern.matcher(buffer).matches();
     }
+    
+    //XXX custom formatter
+    
+    public static class MyLogFormatter implements ILogFormatter {
+
+        private final Predicate<String> timePattern1 = Pattern.compile("^(\\d\\d:\\d\\d:\\d\\d,\\d\\d\\d)").asPredicate();
+        private final Predicate<String> timePattern2 = Pattern.compile("^(\\d\\d:\\d\\d:\\d\\d\\.\\d\\d\\d)").asPredicate();
+        
+        public MyLogFormatter() {
+        }
+
+        @Override
+        public String formatLogRecord(LogRecord record) {
+            
+            final String time = record.getTime().substring(11, 11+12);
+            String message = record.getMessage();
+            
+            if(timePattern1.test(message) || timePattern2.test(message)) {
+                message = message.substring(12).trim();
+            }
+            
+            return String.format("%s|%s: %s", time, record.getLevel(), message);
+        }
+
+    }
+    
 
 }
