@@ -48,6 +48,8 @@ import static org.eclipse.wst.server.core.IServer.STATE_STOPPED;
 import static org.eclipse.wst.server.core.ServerUtil.getServer;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 import java.util.regex.Matcher;
@@ -91,7 +93,6 @@ import org.eclipse.wst.server.core.model.ServerDelegate;
  * </p>
  *
  */
-@SuppressWarnings("restriction")
 public class PayaraServerLaunchDelegate extends AbstractJavaLaunchConfigurationDelegate {
 
     public static final String GFV3_MODULES_DIR_NAME = "modules"; //$NON-NLS-1$
@@ -225,6 +226,24 @@ public class PayaraServerLaunchDelegate extends AbstractJavaLaunchConfigurationD
         startArgs.addGlassfishArgs(programArgs);
         startArgs.addGlassfishArgs("--domain " + domain);
         startArgs.addGlassfishArgs("--domaindir " + quote(domainAbsolutePath));
+        
+        // -- Process Environment
+        // NOTE: eclipse already honors the flag
+        // configuration.getAttribute("org.eclipse.debug.core.appendEnvironmentVariables",...)
+        final String[] envp = getEnvironment(configuration);
+        if (envp != null && envp.length > 0) {
+            
+            final Map<String, String> environmentVars = new HashMap<>(); 
+            for(String env: envp) {
+                final String[] keyValue = env.split("=");
+                final String key = keyValue.length>0 ? keyValue[0] : null;
+                final String value = keyValue.length>1 ? keyValue[1] : null;
+                if(value!=null) {
+                    environmentVars.put(key, value!=null ? value.trim() : "");
+                }
+            }
+            startArgs.addAdditionalEnvironmentVars(environmentVars);
+        }
 
         setDefaultSourceLocator(launch, configuration);
 

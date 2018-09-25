@@ -57,7 +57,6 @@ import org.eclipse.payara.tools.server.PayaraServer;
  * This class should contain task methods for GF server.
  * <p/>
  *
- * @author Tomas Kraus, Peter Benedikovic
  */
 public class ServerTasks {
 
@@ -157,7 +156,8 @@ public class ServerTasks {
                             classPath,
                             javaOpts.toString(),
                             glassfishArgs.toString(),
-                            domainAbsolutePath))
+                            domainAbsolutePath, 
+                            args.getEnvironmentVars()))
                     .get();
         } catch (InterruptedException | ExecutionException e) {
             throw new GlassFishIdeException(LOGGER.excMsg(METHOD, "failed"), e);

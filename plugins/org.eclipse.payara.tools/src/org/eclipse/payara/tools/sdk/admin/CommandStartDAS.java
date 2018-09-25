@@ -18,13 +18,14 @@
 
 package org.eclipse.payara.tools.sdk.admin;
 
+import java.util.Map;
+
 /**
  * GlassFish Server Start DAS Command Entity.
  * <p/>
  * Holds data for command. Objects of this class are created by API user.
  * <p/>
  *
- * @author Tomas Kraus, Peter Benedikovic
  */
 @RunnerHttpClass(runner = RunnerLocal.class)
 @RunnerRestClass(runner = RunnerLocal.class)
@@ -70,9 +71,16 @@ public class CommandStartDAS extends CommandJavaClassPath {
      * @param javaOptions JVM options to be passed to java executable.
      * @param glassfishArgs GlassFish specific arguments to be passed to bootstrap main method.
      * @param domainDir GlassFish server domain directory (full path).
+     * @param environmentVars variables to append to the process-environment
      */
-    public CommandStartDAS(String javaHome, String classPath, String javaOptions, String glassfishArgs, String domainDir) {
-        super(COMMAND, javaHome, classPath);
+    public CommandStartDAS(
+            final String javaHome,
+            final String classPath,
+            final String javaOptions,
+            final String glassfishArgs,
+            final String domainDir, 
+            final Map<? extends String, ? extends String> environmentVars) {
+        super(COMMAND, javaHome, classPath, environmentVars);
         this.javaOpts = javaOptions;
         this.glassfishArgs = glassfishArgs;
         this.domainDir = domainDir;

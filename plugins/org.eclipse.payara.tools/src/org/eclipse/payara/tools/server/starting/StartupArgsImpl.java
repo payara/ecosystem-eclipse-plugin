@@ -20,6 +20,7 @@ package org.eclipse.payara.tools.server.starting;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +31,8 @@ public class StartupArgsImpl implements StartupArgs {
     private String javaHome;
     private ArrayList<String> javaArgs;
     private ArrayList<String> glassfishArgs;
+    private boolean isReplaceNativeEnvironment;
+    private final Map<String, String> environmentVars = new HashMap<>();
 
     public StartupArgsImpl() {
 
@@ -41,7 +44,7 @@ public class StartupArgsImpl implements StartupArgs {
 
     /**
      * Adds java arguments contained in <code>javaArgsString</code>. The parameter is parsed - the
-     * delimeter is defined as one or more whitespace characters followed by <code>-</code>.
+     * delimiter is defined as one or more whitespace characters followed by <code>-</code>.
      *
      * @param javaArgsString
      */
@@ -77,12 +80,25 @@ public class StartupArgsImpl implements StartupArgs {
 
     @Override
     public Map<String, String> getEnvironmentVars() {
-        return Collections.emptyMap();
+        return environmentVars;
+    }
+    
+    public void addAdditionalEnvironmentVars(Map<String, String> additionalEnvironmentVars) {
+        this.environmentVars.putAll(additionalEnvironmentVars);
     }
 
     @Override
     public String getJavaHome() {
         return javaHome;
+    }
+
+    @Override
+    public boolean isReplaceNativeEnvironment() {
+        return isReplaceNativeEnvironment;
+    }
+    
+    public void setReplaceNativeEnvironment(boolean isReplaceNativeEnvironment) {
+        this.isReplaceNativeEnvironment = isReplaceNativeEnvironment;
     }
 
 }

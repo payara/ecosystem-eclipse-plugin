@@ -24,16 +24,23 @@ import java.util.Map;
 /**
  * This interface provides IDE and user specific arguments for starting the server.
  *
- * @author Tomas Kraus, Peter Benedikovic
  */
 public interface StartupArgs {
 
+    /** Command line arguments passed to bootstrap jar. */
     public List<String> getGlassfishArgs();
 
+    /** Command line arguments passed to JVM. */
     public List<String> getJavaArgs();
 
+    /** Environment variables set before JVM execution. */
     public Map<String, String> getEnvironmentVars();
 
+    /** Installation home of Java SDK used to run GlassFish. */
     public String getJavaHome();
+
+    /** Whether to replace or add getAdditionalEnvironmentVars() to the native Environment 
+     * variables before JVM execution. */
+    public boolean isReplaceNativeEnvironment();
 
 }

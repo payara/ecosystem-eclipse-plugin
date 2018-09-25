@@ -291,9 +291,24 @@ abstract class RunnerJava extends Runner {
      */
     static void setJavaEnvironment(Map<String, String> env,
             CommandJava command) {
+        
+        env.clear();
+        copyIfPresent("TEMP", env);
+        copyIfPresent("TMP", env);
+        env.putAll(command.environmentVars);
+        
         // Java VM home stored in AS environment variables JAVA_HOME and AS_JAVA
         env.put(JavaUtils.JAVA_HOME_ENV, command.javaHome);
         env.put(ServerUtils.AS_JAVA_ENV, command.javaHome);
+        
+        
+    }
+    
+    private static void copyIfPresent(String varName, Map<String, String> env) {
+        final String varValue = System.getenv(varName);
+        if(varValue!=null) {
+            env.put(varName, varValue);
+        }
     }
 
     /**
