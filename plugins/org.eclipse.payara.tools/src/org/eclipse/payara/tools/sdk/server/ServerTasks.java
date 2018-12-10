@@ -20,6 +20,8 @@ package org.eclipse.payara.tools.sdk.server;
 
 import static java.io.File.separator;
 import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toList;
+import static org.eclipse.payara.tools.sdk.server.JDK.isCorrectJDK;
 import static org.eclipse.payara.tools.sdk.server.ServerTasks.StartMode.DEBUG;
 import static org.eclipse.payara.tools.sdk.server.parser.TreeParser.readXml;
 import static org.eclipse.payara.tools.sdk.utils.ServerUtils.GFV3_JAR_MATCHER;
@@ -40,6 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 import org.eclipse.payara.tools.sdk.GlassFishIdeException;
 import org.eclipse.payara.tools.sdk.admin.CommandStartDAS;
@@ -48,6 +51,7 @@ import org.eclipse.payara.tools.sdk.admin.ServerAdmin;
 import org.eclipse.payara.tools.sdk.data.StartupArgs;
 import org.eclipse.payara.tools.sdk.logging.Logger;
 import org.eclipse.payara.tools.sdk.server.parser.JvmConfigReader;
+import org.eclipse.payara.tools.sdk.server.parser.JvmConfigReader.JvmOption;
 import org.eclipse.payara.tools.sdk.utils.JavaUtils;
 import org.eclipse.payara.tools.sdk.utils.OsUtils;
 import org.eclipse.payara.tools.sdk.utils.Utils;
@@ -109,8 +113,16 @@ public class ServerTasks {
         if (!readXml(new File(domainXmlPath), jvmConfigReader)) {
             throw new GlassFishIdeException(LOGGER.excMsg(METHOD, "readXMLerror"), domainXmlPath);
         }
-
-        List<String> optList = jvmConfigReader.getOptList();
+        
+        // Filter out all options that are not applicable 
+        List<String> optList
+	        = jvmConfigReader.getJvmOptions()
+	                .stream()
+	                .filter(fullOption -> isCorrectJDK(fullOption.minVersion, fullOption.maxVersion))
+	                .map(fullOption -> fullOption.option)
+	                .collect(toList());
+        
+        
         Map<String, String> propMap = jvmConfigReader.getPropMap();
         addJavaAgent(server, jvmConfigReader);
 
@@ -190,15 +202,15 @@ public class ServerTasks {
      * @param jvmConfigReader Contains <code>jvm-options</code> from <code>domain.xwl</code>.
      */
     private static void addJavaAgent(PayaraServer server, JvmConfigReader jvmConfigReader) {
-        List<String> optList = jvmConfigReader.getOptList();
+    	List<JvmOption> optList = jvmConfigReader.getJvmOptions();
         File serverHome = new File(server.getServerHome());
         File btrace = new File(serverHome, "lib/monitor/btrace-agent.jar");
         File flight = new File(serverHome, "lib/monitor/flashlight-agent.jar");
         if (jvmConfigReader.isMonitoringEnabled()) {
             if (btrace.exists()) {
-                optList.add("-javaagent:" + Utils.quote(btrace.getAbsolutePath()) + "=unsafe=true,noServer=true"); // NOI18N
+                optList.add(new JvmOption("-javaagent:" + Utils.quote(btrace.getAbsolutePath()) + "=unsafe=true,noServer=true")); // NOI18N
             } else if (flight.exists()) {
-                optList.add("-javaagent:" + Utils.quote(flight.getAbsolutePath()));
+                optList.add(new JvmOption("-javaagent:" + Utils.quote(flight.getAbsolutePath())));
             }
         }
     }

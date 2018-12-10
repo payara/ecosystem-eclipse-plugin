@@ -1,4 +1,4 @@
-/*
+/******************************************************************************
  * Copyright (c) 2009, 2018 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
@@ -14,7 +14,18 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
+/******************************************************************************
+ * Copyright (c) 2018 Payara Foundation
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v20.html
+ * SPDX-License-Identifier: EPL-2.0
+ ******************************************************************************/
+
 package org.eclipse.payara.tools.sdk.server;
+
+import java.util.Optional;
 
 /**
  * A simple class that fills a hole in the JDK.  It parses out the version numbers
@@ -25,32 +36,6 @@ package org.eclipse.payara.tools.sdk.server;
  * @author bnevins
  */
 public final class JDK {
-
-    private JDK(String string) {
-        String[] split = string.split("[\\._\\-]+");
-
-        if (split.length > 0) {
-            major = Integer.parseInt(split[0]);
-        }
-        if (split.length > 1) {
-            minor = Integer.parseInt(split[1]);
-        }
-        if (split.length > 2) {
-            subminor = Integer.parseInt(split[2]);
-        }
-        if (split.length > 3) {
-            update = Integer.parseInt(split[3]);
-        }
-    }
-
-
-    public static JDK getVersion(String string) {
-        if (string.matches("([0-9]+[\\._\\-]+)*[0-9]+")) {
-            return new JDK(string);
-        } else {
-            return null;
-        }
-    }
     /**
      * See if the current JDK is legal for running GlassFish
      * @return true if the JDK is >= 1.6.0
@@ -74,36 +59,179 @@ public final class JDK {
         return update;
     }
 
-    public boolean newerThan(JDK version) {
-        if (major > version.getMajor()) {
-            return true;
-        } else if (major == version.getMajor()) {
-            if (minor > version.getMinor()) {
+    public static class Version {
+        private final int major;
+        private final Optional<Integer> minor;
+        private final Optional<Integer> subminor;
+        private final Optional<Integer> update;
+
+        private Version(String string) {
+            // split java version into it's constituent parts, i.e.
+            // 1.2.3.4 -> [ 1, 2, 3, 4]
+            // 1.2.3u4 -> [ 1, 2, 3, 4]
+            // 1.2.3_4 -> [ 1, 2, 3, 4]
+            String[] split = string.split("[\\._u\\-]+");
+
+            major = split.length > 0 ? Integer.parseInt(split[0]) : 0;
+            minor = split.length > 1 ? Optional.of(Integer.parseInt(split[1])) : Optional.empty();
+            subminor = split.length > 2 ? Optional.of(Integer.parseInt(split[2])) : Optional.empty();
+            update = split.length > 3 ? Optional.of(Integer.parseInt(split[3])) : Optional.empty();
+        }
+
+        private Version() {
+            major = JDK.major;
+            minor = Optional.of(JDK.minor);
+            subminor = Optional.of(JDK.subminor);
+            update = Optional.of(JDK.update);
+        }
+
+        public boolean newerThan(Version version) {
+            if (major > version.major) {
                 return true;
-            } else if (minor == version.getMinor()) {
-                if (subminor > version.getSubMinor()) {
+            } else if (major == version.major) {
+                if (greaterThan(minor, version.minor)) {
                     return true;
-                } else if (subminor == version.getSubMinor()) {
-                    if (update > version.getUpdate()) {
+                } else if (equals(minor, version.minor)) {
+                    if (greaterThan(subminor, version.subminor)) {
                         return true;
+                    } else if (equals(subminor, version.subminor)) {
+                        if (greaterThan(update, version.update)) {
+                            return true;
+                        }
                     }
                 }
             }
+
+            return false;
         }
 
-        return false;
+        public boolean olderThan(Version version) {
+            if (major < version.major) {
+                return true;
+            } else if (major == version.major) {
+                if (lessThan(minor, version.minor)) {
+                    return true;
+                } else if (equals(minor, version.minor)) {
+                    if (lessThan(subminor, version.subminor)) {
+                        return true;
+                    } else if (equals(subminor, version.subminor)) {
+                        if (lessThan(update, version.update)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private static boolean greaterThan(Optional<Integer> leftHandSide, Optional<Integer> rightHandSide) {
+            return leftHandSide.orElse(0) > rightHandSide.orElse(0);
+        }
+
+        private static boolean lessThan(Optional<Integer> leftHandSide, Optional<Integer> rightHandSide) {
+            return leftHandSide.orElse(0) < rightHandSide.orElse(0);
+        }
+
+        /**
+         * if either left-hand-side or right-hand-side is empty, it is equals
+         *
+         * @param leftHandSide
+         * @param rightHandSide
+         * @return true if equals, otherwise false
+         */
+        private static boolean equals(Optional<Integer> leftHandSide, Optional<Integer> rightHandSide) {
+            if(!leftHandSide.isPresent() || !rightHandSide.isPresent()) {
+                return true;
+            }
+            return leftHandSide.orElse(0).equals(rightHandSide.orElse(0));
+        }
+
+        @Override
+        public int hashCode() {
+            int hash = 3;
+            hash = 61 * hash + this.major;
+            hash = 61 * hash + this.minor.orElse(0);
+            hash = 61 * hash + this.subminor.orElse(0);
+            hash = 61 * hash + this.update.orElse(0);
+            return hash;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (obj == null) {
+                return false;
+            }
+            if (getClass() != obj.getClass()) {
+                return false;
+            }
+            final Version other = (Version) obj;
+            if (this.major != other.major) {
+                return false;
+            }
+            if (!equals(this.minor, other.minor)) {
+                return false;
+            }
+            if (!equals(this.subminor, other.subminor)) {
+                return false;
+            }
+            if (!equals(this.update, other.update)) {
+                return false;
+            }
+            return true;
+        }
+
+        public boolean newerOrEquals(Version version) {
+            return newerThan(version) || equals(version);
+        }
+
+        public boolean olderOrEquals(Version version) {
+            return olderThan(version) || equals(version);
+        }
+
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder(10);
+            sb.append(major);
+            if (minor.isPresent()) {
+                sb.append('.').append(minor.get());
+            }
+            if (subminor.isPresent()) {
+                sb.append('.').append(subminor.get());
+            }
+            if (update.isPresent()) {
+                sb.append('.').append(update.get());
+            }
+            return sb.toString();
+        }
     }
 
-    public boolean newerOrEquals(JDK version) {
-        return newerThan(version) || equals(version);
+    public static Version getVersion(String string) {
+        if (string != null && string.matches("([0-9]+[\\._u\\-]+)*[0-9]+")) {
+            // make sure the string is a valid JDK version, i.e.
+            // 1.8.0_162 or something that is returned by "java -version"
+            return new Version(string);
+        } else {
+            return null;
+        }
     }
 
-    public boolean olderThan(JDK version) {
-        return !newerOrEquals(version);
+    public static Version getVersion() {
+        return new Version();
     }
 
-    public boolean olderOrEquals(JDK version) {
-        return !newerThan(version);
+    public static boolean isCorrectJDK(Optional<Version> minVersion, Optional<Version> maxVersion) {
+        boolean correctJDK = true;
+        if (minVersion.isPresent()) {
+            correctJDK = JDK_VERSION.newerOrEquals(minVersion.get());
+        }
+        if (correctJDK && maxVersion.isPresent()) {
+            correctJDK = JDK_VERSION.olderOrEquals(maxVersion.get());
+        }
+        return correctJDK;
     }
 
     /**
@@ -127,6 +255,7 @@ public final class JDK {
     private static int minor;
     private static int subminor;
     private static int update;
+    private static Version JDK_VERSION;
 
     // silently fall back to ridiculous defaults if something is crazily wrong...
     private static void initialize() {
@@ -168,7 +297,7 @@ public final class JDK {
             } else {
             	if (jv == null || jv.length() <= 0) {
                     return; // not likely!!
-                }
+            	}
 
                 String[] ss = jv.split("\\.");
 
@@ -191,5 +320,7 @@ public final class JDK {
         catch(Exception e) {
             // ignore -- use defaults
         }
+
+        JDK_VERSION = new Version();
     }
 }
