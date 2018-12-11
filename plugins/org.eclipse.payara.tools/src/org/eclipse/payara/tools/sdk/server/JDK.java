@@ -29,14 +29,18 @@ import java.util.Optional;
 
 /**
  * A simple class that fills a hole in the JDK.  It parses out the version numbers
- *  of the JDK we are running.
- * Example:<p>
+ * of the JDK we are running.
+ * 
+ * <p>
+ * Example: <br>
+ * 
  * 1.6.0_u14 == major = 1 minor = 6, subminor = 0, update = 14
  *
  * @author bnevins
  */
 public final class JDK {
-    /**
+    
+	/**
      * See if the current JDK is legal for running GlassFish
      * @return true if the JDK is >= 1.6.0
      */
@@ -60,13 +64,14 @@ public final class JDK {
     }
 
     public static class Version {
-        private final int major;
+        
+    	private final int major;
         private final Optional<Integer> minor;
         private final Optional<Integer> subminor;
         private final Optional<Integer> update;
 
         private Version(String string) {
-            // split java version into it's constituent parts, i.e.
+            // Split java version into its constituent parts, i.e.
             // 1.2.3.4 -> [ 1, 2, 3, 4]
             // 1.2.3u4 -> [ 1, 2, 3, 4]
             // 1.2.3_4 -> [ 1, 2, 3, 4]
@@ -77,24 +82,30 @@ public final class JDK {
             subminor = split.length > 2 ? Optional.of(Integer.parseInt(split[2])) : Optional.empty();
             update = split.length > 3 ? Optional.of(Integer.parseInt(split[3])) : Optional.empty();
         }
-
-        private Version() {
-            major = JDK.major;
-            minor = Optional.of(JDK.minor);
-            subminor = Optional.of(JDK.subminor);
-            update = Optional.of(JDK.update);
+        
+        private Version(int major, int minor, int subminor, int update) {
+        	this.major = major;
+        	this.minor = Optional.of(minor);
+        	this.subminor = Optional.of(subminor);
+            this.update = Optional.of(update);
         }
 
         public boolean newerThan(Version version) {
             if (major > version.major) {
                 return true;
-            } else if (major == version.major) {
+            }
+            
+            if (major == version.major) {
                 if (greaterThan(minor, version.minor)) {
                     return true;
-                } else if (equals(minor, version.minor)) {
+                }
+                
+                if (equals(minor, version.minor)) {
                     if (greaterThan(subminor, version.subminor)) {
                         return true;
-                    } else if (equals(subminor, version.subminor)) {
+                    }
+                    
+                    if (equals(subminor, version.subminor)) {
                         if (greaterThan(update, version.update)) {
                             return true;
                         }
@@ -211,28 +222,41 @@ public final class JDK {
 
     public static Version getVersion(String string) {
         if (string != null && string.matches("([0-9]+[\\._u\\-]+)*[0-9]+")) {
-            // make sure the string is a valid JDK version, i.e.
+            // Make sure the string is a valid JDK version, i.e.
             // 1.8.0_162 or something that is returned by "java -version"
             return new Version(string);
-        } else {
-            return null;
         }
+        
+        return null;
+    }
+    
+    public static Version getVersion(String jv, String javaSpecificationVersion) {
+        int[] versions = parseVersions(jv, javaSpecificationVersion);
+        
+		return new Version(versions[MAJOR], versions[MINOR], versions[SUBMINOR], versions[UPDATE]);
     }
 
     public static Version getVersion() {
-        return new Version();
+        return new Version(major, minor, subminor, update);
     }
 
     public static boolean isCorrectJDK(Optional<Version> minVersion, Optional<Version> maxVersion) {
+       return isCorrectJDK(JDK_VERSION, minVersion, maxVersion);
+    }
+    
+    public static boolean isCorrectJDK(Version JDKversion, Optional<Version> minVersion, Optional<Version> maxVersion) {
         boolean correctJDK = true;
+        
         if (minVersion.isPresent()) {
-            correctJDK = JDK_VERSION.newerOrEquals(minVersion.get());
+            correctJDK = JDKversion.newerOrEquals(minVersion.get());
         }
         if (correctJDK && maxVersion.isPresent()) {
-            correctJDK = JDK_VERSION.olderOrEquals(maxVersion.get());
+            correctJDK = JDKversion.olderOrEquals(maxVersion.get());
         }
+        
         return correctJDK;
     }
+       
 
     /**
      * No instances are allowed so it is pointless to override toString
@@ -255,12 +279,22 @@ public final class JDK {
     private static int minor;
     private static int subminor;
     private static int update;
+    
+    // DO initialize these variables.  You'll be sorry if you don't!
+    private final static int MAJOR = 0;
+    private final static int MINOR = 1;
+    private final static int SUBMINOR = 2;
+    private final static int UPDATE = 3;
+    
+    // DO NOT initialize this variable.  You'll again be sorry if you do!
     private static Version JDK_VERSION;
 
-    // silently fall back to ridiculous defaults if something is crazily wrong...
     private static void initialize() {
+    	
+    	// Silently fall back to ridiculous defaults if something is crazily wrong...
         major = 1;
         minor = subminor = update = 0;
+        
         try {
             String jv = System.getProperty("java.version");
             /*In JEP 223 java.specification.version will be a single number versioning , not a dotted versioning . So if we get a single
@@ -273,54 +307,75 @@ public final class JDK {
                 java.version 9.1.2
             */
             String javaSpecificationVersion = System.getProperty("java.specification.version");
-            String[] jsvSplit = javaSpecificationVersion.split("\\.");
-            if (jsvSplit.length == 1) {
-                //This is handle Early Access build .Example 9-ea
-                String[] jvSplit = jv.split("-");
-                String jvReal = jvSplit[0];
-                String[] split = jvReal.split("[\\.]+");
-
-                if (split.length > 0) {
-                    if (split.length > 0) {
-                        major = Integer.parseInt(split[0]);
-                    }
-                    if (split.length > 1) {
-                        minor = Integer.parseInt(split[1]);
-                    }
-                    if (split.length > 2) {
-                        subminor = Integer.parseInt(split[2]);
-                    }
-                    if (split.length > 3) {
-                        update = Integer.parseInt(split[3]);
-                    }
-                }
-            } else {
-            	if (jv == null || jv.length() <= 0) {
-                    return; // not likely!!
-            	}
-
-                String[] ss = jv.split("\\.");
-
-                if (ss.length < 3 || !ss[0].equals("1"))
-                    return;
-
-                major = Integer.parseInt(ss[0]);
-                minor = Integer.parseInt(ss[1]);
-                ss = ss[2].split("_");
-
-                if (ss.length < 1)
-                    return;
-
-                subminor = Integer.parseInt(ss[0]);
-
-                if (ss.length > 1)
-                    update = Integer.parseInt(ss[1]);
-            }
+            
+            int[] versions = parseVersions(jv, javaSpecificationVersion);
+            
+            major = versions[MAJOR];
+            minor = versions[MINOR];
+            subminor = versions[SUBMINOR];
+            update = versions[UPDATE];
         }
         catch(Exception e) {
             // ignore -- use defaults
         }
 
-        JDK_VERSION = new Version();
+        JDK_VERSION = new Version(major, minor, subminor, update);
+    }
+    
+    static int[] parseVersions(String jv, String javaSpecificationVersion) {
+    	
+    	int[] versions = {1, 0, 0, 0};
+    	
+    	String[] jsvSplit = javaSpecificationVersion.split("\\.");
+        if (jsvSplit.length == 1) {
+            
+        	// This is handle early access builds. For example "9-ea"
+        	
+            String[] jvSplit = jv.split("-");
+            String jvReal = jvSplit[0];
+            String[] split = jvReal.split("[\\.]+");
+
+            if (split.length > 0) {
+                if (split.length > 0) {
+                	versions[MAJOR] = Integer.parseInt(split[0]);
+                }
+                if (split.length > 1) {
+                	versions[MINOR] = Integer.parseInt(split[1]);
+                }
+                if (split.length > 2) {
+                	versions[SUBMINOR] = Integer.parseInt(split[2]);
+                }
+                if (split.length > 3) {
+                	versions[UPDATE] = Integer.parseInt(split[3]);
+                }
+            }
+        } else {
+        	if (jv == null || jv.length() <= 0) {
+                return versions; // not likely!!
+        	}
+
+            String[] ss = jv.split("\\.");
+
+            if (ss.length < 3 || !ss[0].equals("1")) {
+                return versions;
+            }
+
+            versions[MAJOR] = Integer.parseInt(ss[0]);
+            versions[MINOR] = Integer.parseInt(ss[1]);
+            
+            
+            ss = ss[2].split("_");
+            if (ss.length < 1) {
+                return versions;
+            }
+
+            versions[SUBMINOR] = Integer.parseInt(ss[0]);
+
+            if (ss.length > 1) {
+            	versions[UPDATE] = Integer.parseInt(ss[1]);
+            }
+        }
+        
+        return versions;
     }
 }

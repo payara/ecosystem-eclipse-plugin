@@ -18,12 +18,21 @@
 
 package org.eclipse.payara.tools.sdk.utils;
 
+import static java.util.logging.Level.WARNING;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.security.CodeSource;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -42,6 +51,9 @@ public class JavaUtils {
     ////////////////////////////////////////////////////////////////////////////
     // Class attributes //
     ////////////////////////////////////////////////////////////////////////////
+	
+	/** Logger instance for this class. */
+    private static final Logger LOGGER = new Logger(JavaUtils.class);
 
     /** Java executables directory underJava home. */
     private static final String JAVA_BIN_DIR = "bin";
@@ -215,59 +227,110 @@ public class JavaUtils {
      * </ul>
      * Label <code>java version</code> is parsed as non case sensitive.
      */
-    public static JavaVersion javaVmVersion(File javaVm) {
-        // Run Java VM: java -version.
-        ProcessBuilder pb = new ProcessBuilder(
-                javaVm.getAbsolutePath(), VM_VERSION_OPT);
-        Process process;
-        pb.redirectErrorStream(true);
-        try {
-            process = pb.start();
-            // Handle I/O errors.
-        } catch (IOException ioe) {
-            Logger.log(Level.WARNING,
-                    "Caught IOException while executing Java VM.", ioe);
-            return null;
-            // Handle security issues.
-        } catch (SecurityException se) {
-            Logger.log(Level.WARNING,
-                    "Caught SecurityException while executing Java VM.", se);
-            return null;
-        }
-        // Read and parse Java VM output to search for version string.
-        BufferedReader in = new BufferedReader(
-                new InputStreamReader(process.getInputStream()));
-        int major = 0, minor = 0, revision = 0, patch = 0;
-        String line;
-        Pattern pattern = Pattern.compile(VM_VERSION_PATTERN);
-        try {
-            while ((line = in.readLine()) != null) {
-                Matcher matcher = pattern.matcher(line);
-                if (matcher.find()) {
-                    int groupCount = matcher.groupCount();
-                    if (groupCount >= VM_MIN_VERSION_TOKENS) {
-                        // [0-9]+ REGEX pattern is validating numbers in tokens.
-                        // NumberFormatException can't be thrown.
-                        major = Integer.parseInt(matcher.group(1));
-                        minor = Integer.parseInt(matcher.group(2));
-                        revision = groupCount > 2 && matcher.group(3) != null
-                                ? Integer.parseInt(matcher.group(3))
-                                : 0;
-                        patch = groupCount > 3 && matcher.group(4) != null
-                                ? Integer.parseInt(matcher.group(4))
-                                : 0;
-                        break;
-                    }
-                }
-            }
-            // Handle I/O errors.
-        } catch (IOException ioe) {
-            Logger.log(Level.WARNING,
-                    "Caught IOException while reading Java VM output.", ioe);
-            return null;
-        }
-        return new JavaVersion(major, minor, revision, patch);
-    }
+	public static JavaVersion javaVmVersion(File javaVm) {
+		// Run Java VM: java -version.
+		ProcessBuilder pb = new ProcessBuilder(javaVm.getAbsolutePath(), VM_VERSION_OPT);
+		Process process;
+		pb.redirectErrorStream(true);
+		try {
+			process = pb.start();
+			// Handle I/O errors.
+		} catch (IOException ioe) {
+			Logger.log(Level.WARNING, "Caught IOException while executing Java VM.", ioe);
+			return null;
+			// Handle security issues.
+		} catch (SecurityException se) {
+			Logger.log(Level.WARNING, "Caught SecurityException while executing Java VM.", se);
+			return null;
+		}
+		
+		// Read and parse Java VM output to search for version string.
+		BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+		int major = 0, minor = 0, revision = 0, patch = 0;
+		String line;
+		Pattern pattern = Pattern.compile(VM_VERSION_PATTERN);
+		try {
+			while ((line = in.readLine()) != null) {
+				Matcher matcher = pattern.matcher(line);
+				if (matcher.find()) {
+					int groupCount = matcher.groupCount();
+					if (groupCount >= VM_MIN_VERSION_TOKENS) {
+						// [0-9]+ REGEX pattern is validating numbers in tokens.
+						// NumberFormatException can't be thrown.
+						major = Integer.parseInt(matcher.group(1));
+						minor = Integer.parseInt(matcher.group(2));
+						revision = groupCount > 2 && matcher.group(3) != null ? Integer.parseInt(matcher.group(3)) : 0;
+						patch = groupCount > 3 && matcher.group(4) != null ? Integer.parseInt(matcher.group(4)) : 0;
+						break;
+					}
+				}
+			}
+			// Handle I/O errors.
+		} catch (IOException ioe) {
+			LOGGER.log(WARNING, "javaVmVersion", "Caught IOException while reading Java VM output.", ioe);
+			return null;
+		}
+		
+		return new JavaVersion(major, minor, revision, patch);
+	}
+	
+	public static String getJavaVersionString(String javaHome) {
+		return getJavaVersionString(new File(javaVmExecutableFullPath(javaHome)));
+	}
+	
+	public static String getJavaVersionString(File javaVm) {
+		List<String> javaVersions = new ArrayList<>();
+		
+		try {
+			CodeSource src = JavaVersionDetector.class.getProtectionDomain().getCodeSource();
+			if (src != null) {
+	
+				String className = JavaVersionDetector.class.getName();
+				String classFileName = JavaVersionDetector.class.getSimpleName() + ".class";
+				String classFilePackage = JavaVersionDetector.class.getPackage().getName().replace('.', '/');
+				
+				URL classURL = JavaVersionDetector.class.getResource(classFileName);
+				
+				if (classURL != null) {
+					try (InputStream inputStream = classURL.openConnection().getInputStream()) {
+						
+						Path rootClassPath = Files.createTempDirectory("JavaVersionDetector");
+						
+						Files.copy(
+							inputStream, 
+							Files.createDirectories(rootClassPath.resolve(classFilePackage))
+								 .resolve(classFileName));
+						
+						Process process = new ProcessBuilder(
+								javaVm.getAbsolutePath(), 
+								VM_CLASSPATH_OPTION, rootClassPath.toAbsolutePath().toString(),
+								className)
+							.start();
+						
+						try (Scanner scanner = new Scanner(process.getErrorStream())) {
+							scanner.useDelimiter("\\A")
+								   .forEachRemaining(e -> javaVersions.add(e));
+						}
+		
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOGGER.log(WARNING, "javaVmVersion", "Caught exception when getting VM version", e);
+		}
+
+		if (!javaVersions.isEmpty()) {
+			return javaVersions.get(0);
+		}
+		
+		JavaVersion version = javaVmVersion(javaVm);
+		
+		if (version != null) {
+			return version.toString();
+		}
+		
+		return null;		
+	}
 
     /**
      * Build Java VM executable full path from Java Home directory.

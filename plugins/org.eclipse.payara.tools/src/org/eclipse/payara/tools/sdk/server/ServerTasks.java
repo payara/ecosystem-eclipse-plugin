@@ -24,6 +24,8 @@ import static java.util.stream.Collectors.toList;
 import static org.eclipse.payara.tools.sdk.server.JDK.isCorrectJDK;
 import static org.eclipse.payara.tools.sdk.server.ServerTasks.StartMode.DEBUG;
 import static org.eclipse.payara.tools.sdk.server.parser.TreeParser.readXml;
+import static org.eclipse.payara.tools.sdk.utils.JavaUtils.javaVmExecutableFullPath;
+import static org.eclipse.payara.tools.sdk.utils.JavaUtils.javaVmVersion;
 import static org.eclipse.payara.tools.sdk.utils.ServerUtils.GFV3_JAR_MATCHER;
 import static org.eclipse.payara.tools.sdk.utils.ServerUtils.GF_DERBY_ROOT_PROPERTY;
 import static org.eclipse.payara.tools.sdk.utils.ServerUtils.GF_DOMAIN_ROOT_PROPERTY;
@@ -32,6 +34,7 @@ import static org.eclipse.payara.tools.sdk.utils.ServerUtils.GF_JAVA_ROOT_PROPER
 import static org.eclipse.payara.tools.sdk.utils.ServerUtils.getDerbyRoot;
 import static org.eclipse.payara.tools.sdk.utils.ServerUtils.getDomainPath;
 import static org.eclipse.payara.tools.sdk.utils.ServerUtils.getJarName;
+import static org.eclipse.payara.tools.sdk.utils.JavaUtils.JavaVersion;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -44,7 +47,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
-import org.eclipse.payara.tools.sdk.GlassFishIdeException;
+import org.eclipse.payara.tools.sdk.PayaraIdeException;
 import org.eclipse.payara.tools.sdk.admin.CommandStartDAS;
 import org.eclipse.payara.tools.sdk.admin.ResultProcess;
 import org.eclipse.payara.tools.sdk.admin.ServerAdmin;
@@ -101,9 +104,9 @@ public class ServerTasks {
      * @param mode Mode which we are starting GF in.
      * @return ResultProcess returned by CommandStartDAS to give caller opportunity to monitor the start
      * process.
-     * @throws GlassFishIdeException
+     * @throws PayaraIdeException
      */
-    public static ResultProcess startServer(PayaraServer server, StartupArgs args, StartMode mode) throws GlassFishIdeException {
+    public static ResultProcess startServer(PayaraServer server, StartupArgs args, StartMode mode) throws PayaraIdeException {
         String METHOD = "startServer";
 
         // Reading jvm config section from domain.xml
@@ -111,14 +114,26 @@ public class ServerTasks {
         String domainAbsolutePath = server.getDomainsFolder() + separator + server.getDomainName();
         String domainXmlPath = domainAbsolutePath + separator + "config" + separator + "domain.xml";
         if (!readXml(new File(domainXmlPath), jvmConfigReader)) {
-            throw new GlassFishIdeException(LOGGER.excMsg(METHOD, "readXMLerror"), domainXmlPath);
+            throw new PayaraIdeException(LOGGER.excMsg(METHOD, "readXMLerror"), domainXmlPath);
+        }
+        
+        String[] versions = JavaUtils.getJavaVersionString(args.getJavaHome()).split(":");
+        
+        JDK.Version targetJDKVersion;
+        
+        if (versions.length == 1) {
+        	// Simple way, just using version string
+        	targetJDKVersion = JDK.getVersion(versions[0]);
+        } else {
+        	// More eleborate way using both version string and spec version
+        	targetJDKVersion = JDK.getVersion(versions[0], versions[1]);
         }
         
         // Filter out all options that are not applicable 
         List<String> optList
 	        = jvmConfigReader.getJvmOptions()
 	                .stream()
-	                .filter(fullOption -> isCorrectJDK(fullOption.minVersion, fullOption.maxVersion))
+	                .filter(fullOption -> isCorrectJDK(targetJDKVersion, fullOption.minVersion, fullOption.maxVersion))
 	                .map(fullOption -> fullOption.option)
 	                .collect(toList());
         
@@ -129,7 +144,7 @@ public class ServerTasks {
         // Try to find bootstraping jar - usually glassfish.jar
         File bootstrapJar = getJarName(server.getServerHome(), GFV3_JAR_MATCHER);
         if (bootstrapJar == null) {
-            throw new GlassFishIdeException(LOGGER.excMsg(METHOD, "noBootstrapJar"));
+            throw new PayaraIdeException(LOGGER.excMsg(METHOD, "noBootstrapJar"));
         }
 
         // Compute classpath using properties from jvm-config element of
@@ -172,7 +187,7 @@ public class ServerTasks {
                             domainAbsolutePath))
                     .get();
         } catch (InterruptedException | ExecutionException e) {
-            throw new GlassFishIdeException(LOGGER.excMsg(METHOD, "failed"), e);
+            throw new PayaraIdeException(LOGGER.excMsg(METHOD, "failed"), e);
         }
     }
 
@@ -237,10 +252,14 @@ public class ServerTasks {
      * @param args Startup arguments provided by caller.
      * @return ResultProcess returned by CommandStartDAS to give caller opportunity to monitor the start
      * process.
-     * @throws GlassFishIdeException
+     * @throws PayaraIdeException
      */
-    public static ResultProcess startServer(PayaraServer server, StartupArgs args) throws GlassFishIdeException {
+    public static ResultProcess startServer(PayaraServer server, StartupArgs args) throws PayaraIdeException {
         return startServer(server, args, StartMode.START);
+    }
+    
+    private static JavaVersion getJavaVersion(String javaHome) {
+        return javaVmVersion(new File(javaVmExecutableFullPath(javaHome)));
     }
 
     /**
