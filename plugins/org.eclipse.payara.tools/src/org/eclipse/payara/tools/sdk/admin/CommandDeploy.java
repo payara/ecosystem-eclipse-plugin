@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 
-import org.eclipse.payara.tools.sdk.GlassFishIdeException;
+import org.eclipse.payara.tools.sdk.PayaraIdeException;
 import org.eclipse.payara.tools.sdk.TaskStateListener;
 import org.eclipse.payara.tools.server.PayaraServer;
 
@@ -61,13 +61,13 @@ public class CommandDeploy extends CommandTargetName {
      * @param application File object representing archive or directory to be deployed.
      * @param listener Command execution events listener.
      * @return Deploy task response.
-     * @throws GlassFishIdeException When error occurred during administration command execution.
+     * @throws PayaraIdeException When error occurred during administration command execution.
      */
-    public static ResultString deploy(PayaraServer server, File application, TaskStateListener listener) throws GlassFishIdeException {
+    public static ResultString deploy(PayaraServer server, File application, TaskStateListener listener) throws PayaraIdeException {
         try {
             return ServerAdmin.<ResultString>exec(server, new CommandDeploy(null, null, application, null, null, null), listener).get();
         } catch (InterruptedException | ExecutionException | CancellationException ie) {
-            throw new GlassFishIdeException(ERROR_MESSAGE, ie);
+            throw new PayaraIdeException(ERROR_MESSAGE, ie);
         }
     }
 

@@ -26,7 +26,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 
-import org.eclipse.payara.tools.sdk.GlassFishIdeException;
+import org.eclipse.payara.tools.sdk.PayaraIdeException;
 import org.eclipse.payara.tools.sdk.admin.Command;
 import org.eclipse.payara.tools.server.PayaraServer;
 
@@ -77,7 +77,7 @@ public class RunnerRestCloudDeploy extends RunnerRestCloud {
     protected void handleSend(HttpURLConnection hconn) throws IOException {
         // InputStream istream = getInputStream();
         if (command.path == null) {
-            throw new GlassFishIdeException("The path attribute of deploy command"
+            throw new PayaraIdeException("The path attribute of deploy command"
                     + " has to be non-empty!");
         }
         OutputStreamWriter wr = new OutputStreamWriter(hconn.getOutputStream());

@@ -34,7 +34,7 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import org.eclipse.payara.tools.sdk.GlassFishIdeException;
+import org.eclipse.payara.tools.sdk.PayaraIdeException;
 
 /**
  * Response parser implementation that can parse XML responses returned by REST admin interface.
@@ -76,7 +76,7 @@ public class RestXMLResponseParser extends RestResponseParser {
                 return null;
             }
         } catch (XMLStreamException ex) {
-            throw new GlassFishIdeException("Unable to parse XML Rest response.", ex);
+            throw new PayaraIdeException("Unable to parse XML Rest response.", ex);
         }
     }
 

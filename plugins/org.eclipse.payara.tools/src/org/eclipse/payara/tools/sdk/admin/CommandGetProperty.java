@@ -24,7 +24,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import org.eclipse.payara.tools.sdk.GlassFishIdeException;
+import org.eclipse.payara.tools.sdk.PayaraIdeException;
 import org.eclipse.payara.tools.sdk.logging.Logger;
 import org.eclipse.payara.tools.server.PayaraServer;
 
@@ -66,11 +66,11 @@ public class CommandGetProperty extends Command {
      * @param server GlassFish server entity.
      * @param propertyPattern Pattern that defines properties to retrieve.
      * @return GlassFish command result containing map with key-value pairs returned by server.
-     * @throws GlassFishIdeException When error occurred during administration command execution.
+     * @throws PayaraIdeException When error occurred during administration command execution.
      */
     public static ResultMap<String, String> getProperties(
             final PayaraServer server, final String propertyPattern)
-            throws GlassFishIdeException {
+            throws PayaraIdeException {
         final String METHOD = "getProperties";
         Future<ResultMap<String, String>> future = ServerAdmin.<ResultMap<String, String>>exec(
                 server, new CommandGetProperty(propertyPattern));
@@ -78,7 +78,7 @@ public class CommandGetProperty extends Command {
             return future.get();
         } catch (ExecutionException | InterruptedException
                 | CancellationException ee) {
-            throw new GlassFishIdeException(
+            throw new PayaraIdeException(
                     LOGGER.excMsg(METHOD, "exception", propertyPattern), ee);
         }
     }
@@ -91,12 +91,12 @@ public class CommandGetProperty extends Command {
      * @param propertyPattern Pattern that defines properties to retrieve.
      * @param timeout Administration command execution timeout [ms].
      * @return GlassFish command result containing map with key-value pairs returned by server.
-     * @throws GlassFishIdeException When error occurred during administration command execution.
+     * @throws PayaraIdeException When error occurred during administration command execution.
      */
     public static ResultMap<String, String> getProperties(
             final PayaraServer server, final String propertyPattern,
             final long timeout)
-            throws GlassFishIdeException {
+            throws PayaraIdeException {
         final String METHOD = "getProperties";
         Future<ResultMap<String, String>> future = ServerAdmin.<ResultMap<String, String>>exec(
                 server, new CommandGetProperty(propertyPattern));
@@ -104,10 +104,10 @@ public class CommandGetProperty extends Command {
             return future.get(timeout, TimeUnit.MILLISECONDS);
         } catch (ExecutionException | InterruptedException
                 | CancellationException ee) {
-            throw new GlassFishIdeException(
+            throw new PayaraIdeException(
                     LOGGER.excMsg(METHOD, "exception", propertyPattern), ee);
         } catch (TimeoutException te) {
-            throw new GlassFishIdeException(
+            throw new PayaraIdeException(
                     LOGGER.excMsg(METHOD, "exceptionWithTimeout",
                             propertyPattern, Long.toString(timeout)),
                     te);

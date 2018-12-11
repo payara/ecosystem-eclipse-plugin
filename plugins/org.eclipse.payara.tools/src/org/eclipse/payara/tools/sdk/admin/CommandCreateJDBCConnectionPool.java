@@ -25,7 +25,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import org.eclipse.payara.tools.sdk.GlassFishIdeException;
+import org.eclipse.payara.tools.sdk.PayaraIdeException;
 import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
@@ -62,12 +62,12 @@ public class CommandCreateJDBCConnectionPool extends Command {
      * @param resType Resource type.
      * @param properties Optional properties for configuring the pool.
      * @return Create JDBC connection pool task response.
-     * @throws GlassFishIdeException When error occurred during administration command execution.
+     * @throws PayaraIdeException When error occurred during administration command execution.
      */
     public static ResultString createJDBCConnectionPool(
             final PayaraServer server, final String connectionPoolId,
             final String dataSourceClassName, final String resType,
-            final Map<String, String> properties) throws GlassFishIdeException {
+            final Map<String, String> properties) throws PayaraIdeException {
         Command command = new CommandCreateJDBCConnectionPool(connectionPoolId,
                 dataSourceClassName, resType, properties);
         Future<ResultString> future = ServerAdmin
@@ -76,7 +76,7 @@ public class CommandCreateJDBCConnectionPool extends Command {
             return future.get();
         } catch (InterruptedException | ExecutionException
                 | CancellationException ie) {
-            throw new GlassFishIdeException(ERROR_MESSAGE, ie);
+            throw new PayaraIdeException(ERROR_MESSAGE, ie);
         }
     }
 
@@ -91,13 +91,13 @@ public class CommandCreateJDBCConnectionPool extends Command {
      * @param properties Optional properties for configuring the pool.
      * @param timeout Administration command execution timeout [ms].
      * @return Create JDBC connection pool task response.
-     * @throws GlassFishIdeException When error occurred during administration command execution.
+     * @throws PayaraIdeException When error occurred during administration command execution.
      */
     public static ResultString createJDBCConnectionPool(
             final PayaraServer server, final String connectionPoolId,
             final String dataSourceClassName, final String resType,
             final Map<String, String> properties, final long timeout)
-            throws GlassFishIdeException {
+            throws PayaraIdeException {
         Command command = new CommandCreateJDBCConnectionPool(connectionPoolId,
                 dataSourceClassName, resType, properties);
         Future<ResultString> future = ServerAdmin
@@ -106,9 +106,9 @@ public class CommandCreateJDBCConnectionPool extends Command {
             return future.get(timeout, TimeUnit.MILLISECONDS);
         } catch (InterruptedException | ExecutionException
                 | CancellationException ie) {
-            throw new GlassFishIdeException(ERROR_MESSAGE, ie);
+            throw new PayaraIdeException(ERROR_MESSAGE, ie);
         } catch (TimeoutException te) {
-            throw new GlassFishIdeException(
+            throw new PayaraIdeException(
                     ERROR_MESSAGE + " in " + timeout + "ms", te);
         }
     }

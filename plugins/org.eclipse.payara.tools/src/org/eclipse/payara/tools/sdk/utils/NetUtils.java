@@ -41,7 +41,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Level;
 
-import org.eclipse.payara.tools.sdk.GlassFishIdeException;
+import org.eclipse.payara.tools.sdk.PayaraIdeException;
 import org.eclipse.payara.tools.sdk.logging.Logger;
 
 /**
@@ -373,7 +373,7 @@ public class NetUtils {
      * <p/>
      *
      * @return {@link Set} of IP addresses of this host.
-     * @throws GlassFishIdeException if addresses of this host could not be retrieved.
+     * @throws PayaraIdeException if addresses of this host could not be retrieved.
      */
     public static Set<InetAddress> getHostIPs() {
         final String METHOD = "getHostIPs";
@@ -389,7 +389,7 @@ public class NetUtils {
             }
         } catch (SocketException se) {
             addrs = null;
-            throw new GlassFishIdeException(LOGGER.excMsg(METHOD, "exception"));
+            throw new PayaraIdeException(LOGGER.excMsg(METHOD, "exception"));
         }
         return addrs;
     }
@@ -417,7 +417,7 @@ public class NetUtils {
             }
         } catch (SocketException se) {
             addrs = null;
-            throw new GlassFishIdeException(LOGGER.excMsg(METHOD, "exception"));
+            throw new PayaraIdeException(LOGGER.excMsg(METHOD, "exception"));
         }
         return addrs;
     }
@@ -445,7 +445,7 @@ public class NetUtils {
             }
         } catch (SocketException se) {
             addrs = null;
-            throw new GlassFishIdeException(LOGGER.excMsg(METHOD, "exception"));
+            throw new PayaraIdeException(LOGGER.excMsg(METHOD, "exception"));
         }
         return addrs;
     }

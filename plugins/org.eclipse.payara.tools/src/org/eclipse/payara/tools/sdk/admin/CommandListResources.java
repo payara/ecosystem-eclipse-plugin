@@ -22,7 +22,7 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import org.eclipse.payara.tools.sdk.GlassFishIdeException;
+import org.eclipse.payara.tools.sdk.PayaraIdeException;
 import org.eclipse.payara.tools.sdk.logging.Logger;
 import org.eclipse.payara.tools.server.PayaraServer;
 
@@ -65,11 +65,11 @@ public class CommandListResources extends CommandTarget {
      * @param cmdSuffix Resource command suffix. Value should not be null.
      * @param target GlassFish server target.
      * @return Add resource task response.
-     * @throws GlassFishIdeException When error occurred during administration command execution.
+     * @throws PayaraIdeException When error occurred during administration command execution.
      */
     public static ResultList<String> listResources(final PayaraServer server,
             final String cmdSuffix, final String target)
-            throws GlassFishIdeException {
+            throws PayaraIdeException {
         final String METHOD = "listResources";
         Command command = new CommandListResources(command(cmdSuffix), target);
         Future<ResultList<String>> future = ServerAdmin.<ResultList<String>>exec(server, command);
@@ -77,7 +77,7 @@ public class CommandListResources extends CommandTarget {
             return future.get();
         } catch (InterruptedException | ExecutionException
                 | CancellationException ie) {
-            throw new GlassFishIdeException(
+            throw new PayaraIdeException(
                     LOGGER.excMsg(METHOD, "exception"), ie);
         }
     }

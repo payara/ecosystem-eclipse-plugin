@@ -26,7 +26,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeoutException;
 
-import org.eclipse.payara.tools.sdk.GlassFishIdeException;
+import org.eclipse.payara.tools.sdk.PayaraIdeException;
 import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
@@ -89,15 +89,15 @@ public class CommandSetProperty extends Command {
      * @param server GlassFish server entity.
      * @param command Command to set property value.
      * @return GlassFish command result containing <code>String</code> with result message.
-     * @throws GlassFishIdeException When error occurred during administration command execution.
+     * @throws PayaraIdeException When error occurred during administration command execution.
      */
-    public static ResultString setProperty(PayaraServer server, CommandSetProperty command) throws GlassFishIdeException {
+    public static ResultString setProperty(PayaraServer server, CommandSetProperty command) throws PayaraIdeException {
         Future<ResultString> future = exec(server, command);
         
         try {
             return future.get();
         } catch (ExecutionException | InterruptedException | CancellationException ee) {
-            throw new GlassFishIdeException(errorMessage(command), ee);
+            throw new PayaraIdeException(errorMessage(command), ee);
         }
     }
 
@@ -109,17 +109,17 @@ public class CommandSetProperty extends Command {
      * @param command Command to set property value.
      * @param timeout Administration command execution timeout [ms].
      * @return GlassFish command result containing <code>String</code> with result message.
-     * @throws GlassFishIdeException When error occurred during administration command execution.
+     * @throws PayaraIdeException When error occurred during administration command execution.
      */
-    public static ResultString setProperty(PayaraServer server, CommandSetProperty command, long timeout) throws GlassFishIdeException {
+    public static ResultString setProperty(PayaraServer server, CommandSetProperty command, long timeout) throws PayaraIdeException {
         Future<ResultString> future = exec(server, command);
         
         try {
             return future.get(timeout, MILLISECONDS);
         } catch (ExecutionException | InterruptedException | CancellationException ee) {
-            throw new GlassFishIdeException(errorMessage(command), ee);
+            throw new PayaraIdeException(errorMessage(command), ee);
         } catch (TimeoutException te) {
-            throw new GlassFishIdeException(errorMessage(command)
+            throw new PayaraIdeException(errorMessage(command)
                     + " in " + timeout + "ms", te);
         }
     }

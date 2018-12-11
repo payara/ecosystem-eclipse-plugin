@@ -26,7 +26,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeoutException;
 
-import org.eclipse.payara.tools.sdk.GlassFishIdeException;
+import org.eclipse.payara.tools.sdk.PayaraIdeException;
 import org.eclipse.payara.tools.sdk.logging.Logger;
 import org.eclipse.payara.tools.server.PayaraServer;
 
@@ -62,9 +62,9 @@ public class CommandAddResources extends CommandTarget {
      * @param xmlResourceFile File object pointing to XML file containing resources to be added.
      * @param target GlassFish server target.
      * @return Add resource task response.
-     * @throws GlassFishIdeException When error occurred during administration command execution.
+     * @throws PayaraIdeException When error occurred during administration command execution.
      */
-    public static ResultString addResource(PayaraServer server, File xmlResourceFile, String target) throws GlassFishIdeException {
+    public static ResultString addResource(PayaraServer server, File xmlResourceFile, String target) throws PayaraIdeException {
         String METHOD = "addResource";
 
         Command command = new CommandAddResources(xmlResourceFile, target);
@@ -72,7 +72,7 @@ public class CommandAddResources extends CommandTarget {
         try {
             return future.get();
         } catch (InterruptedException | ExecutionException | CancellationException ie) {
-            throw new GlassFishIdeException(LOGGER.excMsg(METHOD, "exception"), ie);
+            throw new PayaraIdeException(LOGGER.excMsg(METHOD, "exception"), ie);
         }
     }
 
@@ -85,10 +85,10 @@ public class CommandAddResources extends CommandTarget {
      * @param target GlassFish server target.
      * @param timeout Administration command execution timeout [ms].
      * @return Add resource task response.
-     * @throws GlassFishIdeException When error occurred during administration command execution.
+     * @throws PayaraIdeException When error occurred during administration command execution.
      */
     public static ResultString addResource(PayaraServer server, File xmlResourceFile, String target, long timeout)
-            throws GlassFishIdeException {
+            throws PayaraIdeException {
         String METHOD = "addResource";
         Command command = new CommandAddResources(xmlResourceFile, target);
         Future<ResultString> future = ServerAdmin.<ResultString>exec(server, command);
@@ -96,9 +96,9 @@ public class CommandAddResources extends CommandTarget {
         try {
             return future.get(timeout, MILLISECONDS);
         } catch (InterruptedException | ExecutionException | CancellationException ie) {
-            throw new GlassFishIdeException(LOGGER.excMsg(METHOD, "exception"), ie);
+            throw new PayaraIdeException(LOGGER.excMsg(METHOD, "exception"), ie);
         } catch (TimeoutException te) {
-            throw new GlassFishIdeException(LOGGER.excMsg(METHOD, "exceptionWithTimeout", Long.toString(timeout)), te);
+            throw new PayaraIdeException(LOGGER.excMsg(METHOD, "exceptionWithTimeout", Long.toString(timeout)), te);
         }
     }
 

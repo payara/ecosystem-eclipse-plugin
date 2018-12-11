@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.payara.tools.sdk.GlassFishIdeException;
+import org.eclipse.payara.tools.sdk.PayaraIdeException;
 import org.eclipse.payara.tools.sdk.data.GlassFishConfig;
 import org.eclipse.payara.tools.sdk.data.GlassFishJavaEEConfig;
 import org.eclipse.payara.tools.sdk.data.GlassFishJavaSEConfig;
@@ -87,7 +87,7 @@ public class ConfigBuilder {
                         ConfigUtils.processClassPath(classpath)));
             }
         } catch (FileNotFoundException e) {
-            throw new GlassFishIdeException(
+            throw new PayaraIdeException(
                     "Some files required by configuration were not found.", e);
         }
         return result;

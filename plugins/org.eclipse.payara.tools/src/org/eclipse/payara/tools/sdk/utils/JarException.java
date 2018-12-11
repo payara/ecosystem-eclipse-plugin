@@ -36,7 +36,7 @@
 
 package org.eclipse.payara.tools.sdk.utils;
 
-import org.eclipse.payara.tools.sdk.GlassFishIdeException;
+import org.eclipse.payara.tools.sdk.PayaraIdeException;
 
 /**
  * Utils JAR Exception related to JAR file handling problems.
@@ -46,7 +46,7 @@ import org.eclipse.payara.tools.sdk.GlassFishIdeException;
  *
  * @author Tomas Kraus, Peter Benedikovic
  */
-public class JarException extends GlassFishIdeException {
+public class JarException extends PayaraIdeException {
 
     ////////////////////////////////////////////////////////////////////////////
     // Class attributes //

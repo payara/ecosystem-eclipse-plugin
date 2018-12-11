@@ -110,7 +110,7 @@ import org.eclipse.payara.tools.internal.PayaraStateResolver;
 import org.eclipse.payara.tools.internal.ServerStateListener;
 import org.eclipse.payara.tools.internal.ServerStatusMonitor;
 import org.eclipse.payara.tools.log.IPayaraConsole;
-import org.eclipse.payara.tools.sdk.GlassFishIdeException;
+import org.eclipse.payara.tools.sdk.PayaraIdeException;
 import org.eclipse.payara.tools.sdk.admin.CommandAddResources;
 import org.eclipse.payara.tools.sdk.admin.CommandDeploy;
 import org.eclipse.payara.tools.sdk.admin.CommandGetProperty;
@@ -315,17 +315,17 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
         return statusMonitor.getServerStatus(forceUpdate);
     }
 
-    public static String getVersion(PayaraServer server) throws GlassFishIdeException {
+    public static String getVersion(PayaraServer server) throws PayaraIdeException {
         Future<ResultString> future = ServerAdmin.exec(server, new CommandVersion());
         
         try {
             return future.get(30, SECONDS).getValue();
         } catch (InterruptedException e) {
-            throw new GlassFishIdeException("Exception by calling getVersion", e);
+            throw new PayaraIdeException("Exception by calling getVersion", e);
         } catch (ExecutionException e) {
-            throw new GlassFishIdeException("Exception by calling getVersion", e);
+            throw new PayaraIdeException("Exception by calling getVersion", e);
         } catch (TimeoutException e) {
-            throw new GlassFishIdeException("Timeout for getting version command exceeded", e);
+            throw new PayaraIdeException("Timeout for getting version command exceeded", e);
         }
     }
 
@@ -946,7 +946,7 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
 
             try {
                 process = startServer(getGlassfishServerDelegate(), args, mode);
-            } catch (GlassFishIdeException e) {
+            } catch (PayaraIdeException e) {
                 throw new PayaraLaunchException("Exception in startup library.", e);
             }
 

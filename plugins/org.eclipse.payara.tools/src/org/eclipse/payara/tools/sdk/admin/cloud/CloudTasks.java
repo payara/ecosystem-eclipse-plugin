@@ -22,7 +22,7 @@ import java.io.File;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import org.eclipse.payara.tools.sdk.GlassFishIdeException;
+import org.eclipse.payara.tools.sdk.PayaraIdeException;
 import org.eclipse.payara.tools.sdk.TaskStateListener;
 import org.eclipse.payara.tools.sdk.admin.Command;
 import org.eclipse.payara.tools.sdk.admin.ResultString;
@@ -53,7 +53,7 @@ public class CloudTasks {
         try {
             return future.get();
         } catch (InterruptedException | ExecutionException e) {
-            throw new GlassFishIdeException(
+            throw new PayaraIdeException(
                     "Instance or cluster stop failed.", e);
         }
     }

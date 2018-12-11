@@ -24,7 +24,7 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import org.eclipse.payara.tools.sdk.GlassFishIdeException;
+import org.eclipse.payara.tools.sdk.PayaraIdeException;
 import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
@@ -60,15 +60,15 @@ public class CommandStartInstance extends CommandTarget {
      * @param server GlassFish server entity.
      * @param target Instance name.
      * @return Start instance task response.
-     * @throws GlassFishIdeException When error occurred during administration command execution.
+     * @throws PayaraIdeException When error occurred during administration command execution.
      */
-    public static ResultString startInstance(PayaraServer server, String target) throws GlassFishIdeException {
+    public static ResultString startInstance(PayaraServer server, String target) throws PayaraIdeException {
         Future<ResultString> future = exec(server, new CommandStartInstance(target));
         
         try {
             return future.get();
         } catch (InterruptedException | ExecutionException | CancellationException ie) {
-            throw new GlassFishIdeException(ERROR_MESSAGE, ie);
+            throw new PayaraIdeException(ERROR_MESSAGE, ie);
         }
     }
 

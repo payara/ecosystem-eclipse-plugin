@@ -18,7 +18,7 @@
 
 package org.eclipse.payara.tools.sdk.server.config;
 
-import org.eclipse.payara.tools.sdk.GlassFishIdeException;
+import org.eclipse.payara.tools.sdk.PayaraIdeException;
 
 /**
  * GlassFish IDE SDK Exception related to server configuration problems.
@@ -26,7 +26,7 @@ import org.eclipse.payara.tools.sdk.GlassFishIdeException;
  *
  * @author Tomas Kraus, Peter Benedikovic
  */
-public class ServerConfigException extends GlassFishIdeException {
+public class ServerConfigException extends PayaraIdeException {
 
     ////////////////////////////////////////////////////////////////////////////
     // Class attributes //

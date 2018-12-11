@@ -22,7 +22,7 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import org.eclipse.payara.tools.sdk.GlassFishIdeException;
+import org.eclipse.payara.tools.sdk.PayaraIdeException;
 import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
@@ -58,17 +58,17 @@ public class CommandStartCluster extends CommandTarget {
      * @param server GlassFish server entity.
      * @param target Cluster name.
      * @return Start cluster task response.
-     * @throws GlassFishIdeException When error occurred during administration command execution.
+     * @throws PayaraIdeException When error occurred during administration command execution.
      */
     public static ResultString startCluster(PayaraServer server,
-            String target) throws GlassFishIdeException {
+            String target) throws PayaraIdeException {
         Command command = new CommandStartCluster(target);
         Future<ResultString> future = ServerAdmin.<ResultString>exec(server, command);
         try {
             return future.get();
         } catch (InterruptedException | ExecutionException
                 | CancellationException ie) {
-            throw new GlassFishIdeException(ERROR_MESSAGE, ie);
+            throw new PayaraIdeException(ERROR_MESSAGE, ie);
         }
     }
 

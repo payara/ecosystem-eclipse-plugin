@@ -18,7 +18,7 @@
 
 package org.eclipse.payara.tools.sdk.server;
 
-import org.eclipse.payara.tools.sdk.GlassFishIdeException;
+import org.eclipse.payara.tools.sdk.PayaraIdeException;
 
 /**
  * GlassFish IDE SDK Exception related to reading logs from server.
@@ -28,7 +28,7 @@ import org.eclipse.payara.tools.sdk.GlassFishIdeException;
  *
  * @author Tomas Kraus, Peter Benedikovic
  */
-public class FetchLogException extends GlassFishIdeException {
+public class FetchLogException extends PayaraIdeException {
 
     ////////////////////////////////////////////////////////////////////////////
     // Constructors //

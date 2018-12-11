@@ -18,7 +18,7 @@
 
 package org.eclipse.payara.tools.sdk.admin.response;
 
-import org.eclipse.payara.tools.sdk.GlassFishIdeException;
+import org.eclipse.payara.tools.sdk.PayaraIdeException;
 
 /**
  * Factory that returns appropriate response parser implementation based on content type of the
@@ -50,7 +50,7 @@ public class ResponseParserFactory {
         case TEXT_PLAIN:
             return null;
         default:
-            throw new GlassFishIdeException("Not supported content type. Cannot create response parser!");
+            throw new PayaraIdeException("Not supported content type. Cannot create response parser!");
         }
     }
 

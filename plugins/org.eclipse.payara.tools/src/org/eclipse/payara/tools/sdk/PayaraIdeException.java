@@ -32,7 +32,7 @@ import org.eclipse.payara.tools.sdk.logging.Logger;
  *
  * @author Tomas Kraus, Peter Benedikovic
  */
-public class GlassFishIdeException extends RuntimeException {
+public class PayaraIdeException extends RuntimeException {
 
     ////////////////////////////////////////////////////////////////////////////
     // Class attributes //
@@ -43,7 +43,7 @@ public class GlassFishIdeException extends RuntimeException {
      */
     private static final long serialVersionUID = 1L;
     /** Logger instance for this class. */
-    private static final Logger LOGGER = new Logger(GlassFishIdeException.class);
+    private static final Logger LOGGER = new Logger(PayaraIdeException.class);
 
     ////////////////////////////////////////////////////////////////////////////
     // Static methods //
@@ -72,7 +72,7 @@ public class GlassFishIdeException extends RuntimeException {
     /**
      * Constructs an instance of <code>GlassFishIdeException</code> without detail message.
      */
-    public GlassFishIdeException() {
+    public PayaraIdeException() {
         super();
         final String METHOD = "init";
         // Log exception in WARNING level.
@@ -85,7 +85,7 @@ public class GlassFishIdeException extends RuntimeException {
      *
      * @param msg The detail message.
      */
-    public GlassFishIdeException(String msg) {
+    public PayaraIdeException(String msg) {
         super(msg);
         final String METHOD = "init";
         // Log exception in WARNING level.
@@ -113,7 +113,7 @@ public class GlassFishIdeException extends RuntimeException {
      * @param msg The detail message.
      * @param arguments Arguments to be inserted into message.
      */
-    public GlassFishIdeException(String msg, Object... arguments) {
+    public PayaraIdeException(String msg, Object... arguments) {
         this(formatMessage(msg, arguments));
     }
 
@@ -130,7 +130,7 @@ public class GlassFishIdeException extends RuntimeException {
      * @param cause the cause (which is saved for later retrieval by the {@link #getCause()} method). (A
      * <code>null</code> value is permitted, and indicates that the cause is nonexistent or unknown.)
      */
-    public GlassFishIdeException(String msg, Throwable cause) {
+    public PayaraIdeException(String msg, Throwable cause) {
         super(msg, cause);
         final String METHOD = "init";
         // Log exception in WARNING level.
