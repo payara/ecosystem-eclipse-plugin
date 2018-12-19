@@ -83,13 +83,6 @@ public abstract class GenericActionProvider extends CommonActionProvider {
 
     }
 
-    /**
-     *
-     * @return the ID of the common navigator content extension
-     *
-     */
-    abstract protected String getExtensionId();
-
     protected void refresh(Object selection) {
 
     }
@@ -106,12 +99,12 @@ public abstract class GenericActionProvider extends CommonActionProvider {
         @Override
         public void runWithEvent(Event event) {
             if (selection instanceof TreeSelection) {
-
-                TreeSelection ts = (TreeSelection) selection;
-                Object obj = ts.getFirstElement();
+                TreeSelection treeSelection = (TreeSelection) selection;
+                
+                Object obj = treeSelection.getFirstElement();
+                
                 refresh(obj);
-                StructuredViewer view = actionSite.getStructuredViewer();
-                view.refresh(obj);
+                actionSite.getStructuredViewer().refresh(obj);
             }
 
             super.run();
@@ -120,7 +113,7 @@ public abstract class GenericActionProvider extends CommonActionProvider {
 
         @Override
         public void run() {
-            this.runWithEvent(null);
+            runWithEvent(null);
         }
     }
 

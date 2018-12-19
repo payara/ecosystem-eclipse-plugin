@@ -51,15 +51,7 @@ import org.eclipse.ui.navigator.ICommonViewerWorkbenchSite;
  */
 public class ServerViewActionProvider extends GenericActionProvider {
 
-    // Used in plugin.xml as an ID.
-    private static final String SERVERVIEW_EXTENTION_ID = "payara.serverview.contentprovider";
-
     private ICommonActionExtensionSite actionSite;
-
-    @Override
-    protected String getExtensionId() {
-        return SERVERVIEW_EXTENTION_ID;
-    }
 
     @Override
     public void init(ICommonActionExtensionSite actionExtensionSite) {
@@ -85,9 +77,9 @@ public class ServerViewActionProvider extends GenericActionProvider {
 
                     // Add unregister action to resources
 
-                    ResourcesNode r = (ResourcesNode) obj;
+                    ResourcesNode resourcesNode = (ResourcesNode) obj;
 
-                    if (r.getResource() != null) {
+                    if (resourcesNode.getResource() != null) {
                         menu.add(new Separator());
                         menu.add(new UnregisterResourceAction(selection, actionSite));
                     }
@@ -106,7 +98,7 @@ public class ServerViewActionProvider extends GenericActionProvider {
 
                     menu.add(new TestWebServiceAction(selection));
                     menu.add(new WSDLInfoWebServiceAction(selection));
-                }
+                } 
             }
         }
     }

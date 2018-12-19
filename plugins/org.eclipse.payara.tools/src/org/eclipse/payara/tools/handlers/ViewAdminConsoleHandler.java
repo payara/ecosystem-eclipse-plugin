@@ -41,7 +41,7 @@ public class ViewAdminConsoleHandler extends AbstractPayaraSelectionHandler {
                     .openURL(
                             getServerAdminURI(
                                     load(server, PayaraServerBehaviour.class).getGlassfishServerDelegate())
-                                            .toURL());
+                            .toURL());
 
         } catch (Exception e) {
             logMessage("Error opening browser: " + e.getMessage());

@@ -29,12 +29,7 @@ import org.eclipse.ui.views.properties.TextPropertyDescriptor;
  *
  * A deployed web service node in the server view
  *
- *
- *
  * @author Ludovic Champenois
- *
- *
- *
  */
 public class WebServiceNode extends TreeNode {
 
