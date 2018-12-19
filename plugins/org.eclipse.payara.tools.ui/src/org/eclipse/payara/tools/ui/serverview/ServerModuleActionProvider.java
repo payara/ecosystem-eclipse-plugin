@@ -20,6 +20,7 @@ import org.eclipse.jface.bindings.TriggerSequence;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.payara.tools.server.deploying.PayaraServerBehaviour;
+import org.eclipse.payara.tools.ui.serverview.actions.GotoModuleProjectInExplorerAction;
 import org.eclipse.payara.tools.ui.serverview.actions.OpenModuleInFileBrowserAction;
 import org.eclipse.ui.keys.IBindingService;
 import org.eclipse.ui.navigator.ICommonActionExtensionSite;
@@ -97,6 +98,8 @@ public class ServerModuleActionProvider extends GenericActionProvider {
 
                         showInSubMenu.add(new OpenModuleInFileBrowserAction(selection));
                     }
+                    
+                    menu.add(new GotoModuleProjectInExplorerAction(selection));
 
                 }
             }
