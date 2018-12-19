@@ -38,3 +38,4 @@ Require-Bundle: org.eclipse.debug.ui,
  org.eclipse.sapphire.ui,
  org.eclipse.payara.tools
 Bundle-Activator: org.eclipse.payara.tools.ui.PayaraToolsUIPlugin
+Import-Package: org.eclipse.ui.navigator.resources

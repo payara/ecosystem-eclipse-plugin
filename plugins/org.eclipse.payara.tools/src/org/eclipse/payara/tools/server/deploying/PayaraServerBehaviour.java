@@ -236,12 +236,10 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
         needARedeploy = true; // by default
 
         long t = System.currentTimeMillis();
-        if (module.length > 1) {// only publish root modules, i.e web modules
-            setModulePublishState(module, PUBLISH_STATE_NONE);
-        } else {
-            publishModuleForGlassFishV3(kind, deltaKind, module, monitor);
-            logMessage("done publishModule in " + (System.currentTimeMillis() - t) + " ms");
-        }
+        
+        publishModuleForPayara(kind, deltaKind, module, monitor);
+        
+        logMessage("done publishModule in " + (System.currentTimeMillis() - t) + " ms");
     }
 
     @Override
@@ -262,9 +260,9 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
 
     @Override
     protected void publishFinish(IProgressMonitor monitor) throws CoreException {
-        IModule[] modules = getServer().getModules();
         boolean allpublished = true;
-        for (IModule module : modules) {
+        
+        for (IModule module : getServer().getModules()) {
             if (getServer().getModulePublishState(new IModule[] { module }) != PUBLISH_STATE_NONE) {
                 allpublished = false;
             }
@@ -296,6 +294,7 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
         statusMonitor.stop();
         logMessage("in Behaviour dispose for " + getGlassfishServerDelegate().getName());
     }
+    
 
     // #### API for external callers
 
@@ -320,9 +319,7 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
         
         try {
             return future.get(30, SECONDS).getValue();
-        } catch (InterruptedException e) {
-            throw new PayaraIdeException("Exception by calling getVersion", e);
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             throw new PayaraIdeException("Exception by calling getVersion", e);
         } catch (TimeoutException e) {
             throw new PayaraIdeException("Timeout for getting version command exceeded", e);
@@ -330,8 +327,11 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
     }
 
     public void updateServerStatus() {
-        ServerStatus status = getServerStatus(true);
-        updateServerStatus(status);
+        updateServerStatus(getServerStatus(true));
+    }
+    
+    public String getModuleDeployPath(IModule module) {
+    	return (String) loadPublishProperties().get(module.getId());
     }
 
     public void undeploy(String moduleName, IProgressMonitor monitor) throws CoreException {
@@ -380,8 +380,7 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
             } catch (TimeoutException e) {
                 if (monitor.isCanceled()) {
                     futureProcess.cancel(true);
-                    // TODO: check if Payara indeed stopped and if not
-                    //       explicitly give stop command
+                    // TODO: check if Payara indeed stopped and if not explicitly give stop command
                     serverStateChanged(STATE_STOPPED);
                     setPayaraServerState(STATE_STOPPED);
                     throw new OperationCanceledException();
@@ -535,28 +534,21 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
         if (AssembleModules.isModuleType(module[0], "jst.ear")) { //$NON-NLS-1$
             IEnterpriseApplication earModule = (IEnterpriseApplication) module[0]
                     .loadAdapter(IEnterpriseApplication.class, new NullProgressMonitor());
-            IModule[] childModules = earModule.getModules();
-            for (IModule m : childModules) {
+            
+            for (IModule m : earModule.getModules()) {
                 IModule[] modules = { module[0], m };
-                if (PUBLISH_STATE_NONE != getGlassfishServerDelegate().getServer()
-                        .getModulePublishState(modules)) {
+                if (PUBLISH_STATE_NONE != getGlassfishServerDelegate().getServer().getModulePublishState(modules)) {
                     return true;
                 }
             }
-        } else {
-            int publishState = getGlassfishServerDelegate().getServer().getModulePublishState(module);
-            if (PUBLISH_STATE_NONE != publishState) {
-                return true;
-            }
+        } else if (PUBLISH_STATE_NONE != getGlassfishServerDelegate().getServer().getModulePublishState(module)) {
+            return true;
         }
+        
         return false;
     }
 
-    /*
-     * Publishes for Web apps only in V3 prelude
-     */
-    private void publishModuleForGlassFishV3(int kind, int deltaKind, IModule[] module, IProgressMonitor monitor) throws CoreException {
-
+    private void publishModuleForPayara(int kind, int deltaKind, IModule[] module, IProgressMonitor monitor) throws CoreException {
         if (module.length > 1) {// only publish root modules, i.e web modules
             setModulePublishState(module, PUBLISH_STATE_NONE);
             return;
@@ -566,53 +558,66 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
             return;
         }
 
-        IPath path = getTempDirectory().append("publish.txt");
-
-        Properties prop = new Properties();
-        try (FileInputStream fis = new FileInputStream(path.toFile())) {
-            prop.load(fis);
-        } catch (Exception e) {
-            // Ignore
-        }
+        Properties publishProperties = loadPublishProperties();
 
         boolean isRemote = getGlassfishServerDelegate().isRemote();
         boolean isJarDeploy = getGlassfishServerDelegate().getJarDeploy();
+        
         if ((!isRemote && !isJarDeploy)) {
-            publishDeployedDirectory(deltaKind, prop, module, monitor);
+            publishDeployedDirectory(deltaKind, publishProperties, module, monitor);
         } else {
-            publishJarFile(kind, deltaKind, prop, module, monitor);
+            publishJarFile(kind, deltaKind, publishProperties, module, monitor);
 
         }
 
         setModulePublishState(module, PUBLISH_STATE_NONE);
-
-        try (FileOutputStream fos = new FileOutputStream(path.toFile())) {
-            prop.store(fos, "GlassFish 3");
+        savePublishProperties(publishProperties);
+    }
+    
+    private Properties loadPublishProperties() {
+    	Properties publishProperties = new Properties();
+        
+        try (FileInputStream fis = new FileInputStream(getPublishPropertiesFile())) {
+            publishProperties.load(fis);
+        } catch (Exception e) {
+            // Ignore
+        }
+        
+        return publishProperties;
+    }
+    
+    private void savePublishProperties(Properties publishProperties) {
+        try (FileOutputStream fos = new FileOutputStream(getPublishPropertiesFile())) {
+            publishProperties.store(fos, "GlassFish 3");
         } catch (Exception e) {
             logError("Error in PUBLISH_STATE_NONE", e);
         }
-
+    }
+    
+    private File getPublishPropertiesFile() {
+        return getTempDirectory().append("publish.txt").toFile();
     }
 
-    private void publishDeployedDirectory(int deltaKind, Properties p, IModule module[], IProgressMonitor monitor) throws CoreException {
+    private void publishDeployedDirectory(int deltaKind, Properties publishProperties, IModule module[], IProgressMonitor monitor) throws CoreException {
 
-        // ludo using PublishHelper now to control the temp area to be
-        // in the same file system of the deployed apps so that the mv operation
-        // Eclipse is doing sometimes can work.
+        // Using PublishHelper to control the temp area to be in the same file system of the deployed apps 
+    	// so that the move operation Eclipse is doing sometimes can work.
         PublishHelper helper = new PublishHelper(
                 new Path(getGlassfishServerDelegate().getDomainPath() + "/eclipseAppsTmp").toFile());
 
         if (deltaKind == REMOVED) {
-            String publishPath = (String) p.get(module[0].getId());
-            PayaraToolsPlugin.logMessage("REMOVED in publishPath" + publishPath);
-            String name = Utils.simplifyModuleID(module[0].getName());
+        	
+        	// Undeploy
+        	
+            String publishPath = (String) publishProperties.get(module[0].getId());
+            logMessage("REMOVED in publishPath" + publishPath);
+            
             try {
-                undeploy(name);
+                undeploy(simplifyModuleID(module[0].getName()));
             } catch (Exception e) {
-                // Bug 16876200 - UNABLE TO CLEAN GF SERVER INSTANCE
-                // In case undeploy with asadmin failed,
-                // catch the exception and try delete the app directory from server directly
-                // next
+                // Bug 16876200 - UNABLE TO CLEAN PAYARA SERVER INSTANCE
+                // In case undeploy with asadmin failed, catch the exception and 
+            	// try delete the app directory from server directly next
             }
 
             if (publishPath != null) {
@@ -628,15 +633,20 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
                 }
             }
         } else {
-            IPath path = new Path(getGlassfishServerDelegate().getDomainPath() + "/eclipseApps/" + module[0].getName());
-
-            String contextRoot = null;
-            AssembleModules assembler = new AssembleModules(module, path, getGlassfishServerDelegate(), helper);
-            logMessage("Deploy direcotry " + path.toFile().getAbsolutePath());
-
-            if (module[0] instanceof DeletedModule) {
+        	
+        	// Deploy
+        	
+        	if (module[0] instanceof DeletedModule) {
                 return;
             }
+        	
+            IPath path = new Path(getGlassfishServerDelegate().getDomainPath() + "/eclipseApps/" + module[0].getName());
+            
+            AssembleModules assembler = new AssembleModules(module, path, getGlassfishServerDelegate(), helper);
+            logMessage("Deploy direcotry " + path.toFile().getAbsolutePath());
+            
+            
+            String contextRoot = null;
 
             // Either web, ear or non of these
             if (isModuleType(module[0], "jst.web")) {
@@ -656,7 +666,7 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
             needARedeploy = assembler.needsARedeployment();
 
             // deploy the sun resource file if there is one in path:
-            registerSunResource(module, p, path);
+            registerSunResource(module, publishProperties, path);
 
             String spath = "" + path;
 
@@ -690,7 +700,6 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
                 }
             } else {
                 logMessage("optimal: NO NEED TO DO A REDEPLOYMENT, !!!");
-
             }
         }
     }

@@ -28,6 +28,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import org.eclipse.payara.tools.server.PayaraServer;
+import org.eclipse.payara.tools.server.deploying.PayaraServerBehaviour;
+import org.eclipse.wst.server.core.IModule;
 
 public class URIHelper {
 
@@ -50,5 +52,9 @@ public class URIHelper {
 
     public static final URI getDomainHomeURI(PayaraServer server) throws URISyntaxException {
         return new File(server.getDomainsFolder() + separator + server.getDomainName()).toURI();
+    }
+    
+    public static final URI getModuleDeployURI(PayaraServerBehaviour serverBehaviour, IModule module) throws URISyntaxException {
+        return new File(serverBehaviour.getModuleDeployPath(module)).toURI();
     }
 }
