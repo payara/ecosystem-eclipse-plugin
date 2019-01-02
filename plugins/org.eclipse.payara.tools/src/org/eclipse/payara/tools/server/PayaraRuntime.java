@@ -112,7 +112,8 @@ public final class PayaraRuntime extends RuntimeDelegate implements IJavaRuntime
         }
     }
 
-    // #### RuntimeDelegate overridden methods
+    
+    // #### IJavaRuntime implementation methods
 
     @Override
     public IVMInstall getVMInstall() {
@@ -123,6 +124,9 @@ public final class PayaraRuntime extends RuntimeDelegate implements IJavaRuntime
     public boolean isUsingDefaultJRE() {
         return false;
     }
+    
+    
+    // #### Static methods
 
     public static String createDefaultRuntimeName(Version version) {
         String baseName = "Payara Server"; // TODO: - detect GF
@@ -165,6 +169,9 @@ public final class PayaraRuntime extends RuntimeDelegate implements IJavaRuntime
 
         return runtimeName.toString();
     }
+    
+    
+    // #### Other public methods
 
     public Version getVersion() {
         IPath location = getRuntime().getLocation();
@@ -225,8 +232,9 @@ public final class PayaraRuntime extends RuntimeDelegate implements IJavaRuntime
     public IStatus validateServerLocation() {
         IPath location = getRuntime().getLocation();
 
-        // This is maybe a redundant check to GUI annotation but
-        // needed in case where a GUI is not involved
+        // This is maybe a redundant check to the GUI annotation but
+        // needed in case where a GUI is not involved (although we don't know
+        // yet what case that would be)
         
         if (location == null || !location.toFile().exists()) {
             return new Status(ERROR, SYMBOLIC_NAME, bind(pathDoesNotExist, "Specified path"));

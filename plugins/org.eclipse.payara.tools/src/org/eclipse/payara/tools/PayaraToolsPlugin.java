@@ -23,6 +23,8 @@ import static java.nio.charset.Charset.defaultCharset;
 import static org.eclipse.core.runtime.IStatus.ERROR;
 import static org.eclipse.core.runtime.IStatus.INFO;
 import static org.eclipse.payara.tools.preferences.PreferenceConstants.ENABLE_LOG;
+import static org.eclipse.wst.server.core.ServerCore.addRuntimeLifecycleListener;
+import static org.eclipse.wst.server.core.ServerCore.addServerLifecycleListener;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -35,6 +37,8 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.payara.tools.server.events.RuntimeLifecycleListener;
+import org.eclipse.payara.tools.server.events.ServerLifecycleListener;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.wst.server.core.IRuntime;
 import org.osgi.framework.Bundle;
@@ -59,6 +63,14 @@ public class PayaraToolsPlugin extends AbstractUIPlugin {
 
     public PayaraToolsPlugin() {
         singleton = this;
+    }
+    
+    @Override
+    public void start(BundleContext context) throws Exception {
+        super.start(context);
+        
+        addRuntimeLifecycleListener(new RuntimeLifecycleListener());
+        addServerLifecycleListener(new ServerLifecycleListener());
     }
 
     @Override

@@ -380,8 +380,7 @@
         </perspectiveExtension>
     </extension>
   
-      <extension
-          point="org.eclipse.ui.newWizards">
+    <extension point="org.eclipse.ui.newWizards">
        <category
              id="org.eclipse.payara.tools"
              name="%sunappserver.wizardcategory">
@@ -438,7 +437,7 @@
     </extension>
  
   
-   <extension point="org.eclipse.jst.common.project.facet.ui.libraryProviderActionPanels">
+    <extension point="org.eclipse.jst.common.project.facet.ui.libraryProviderActionPanels">
        <panel
              class="org.eclipse.payara.tools.ui.internal.JAXRSActionPanels"
              provider="org.eclipse.payara.tools.jaxrsLibraryproviderID">

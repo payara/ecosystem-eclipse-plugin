@@ -133,6 +133,7 @@ import org.eclipse.payara.tools.server.starting.StartupArgsImpl;
 import org.eclipse.payara.tools.utils.ResourceUtils;
 import org.eclipse.payara.tools.utils.Utils;
 import org.eclipse.wst.server.core.IModule;
+import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.internal.DeletedModule;
 import org.eclipse.wst.server.core.internal.Server;
 import org.eclipse.wst.server.core.model.ServerBehaviourDelegate;
@@ -398,6 +399,15 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
      */
     public synchronized void setPayaraServerState(int state) {
         setServerState(state);
+    }
+    
+    /**
+     * Sets the server publish state.
+     *
+     * @param state the publish state of the server
+     */
+    public void setPayaraServerPublishState(int state) {
+        setServerPublishState(state);
     }
 
     /**

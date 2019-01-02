@@ -18,6 +18,9 @@
 
 package org.eclipse.payara.tools.utils;
 
+import static org.eclipse.jdt.core.IClasspathAttribute.JAVADOC_LOCATION_ATTRIBUTE_NAME;
+import static org.eclipse.jdt.core.JavaCore.newClasspathAttribute;
+import static org.eclipse.jdt.core.JavaCore.newLibraryEntry;
 import static org.eclipse.payara.tools.internal.ManifestUtil.readManifestEntry;
 
 import java.io.File;
@@ -41,7 +44,6 @@ import org.eclipse.jdt.core.IAccessRule;
 import org.eclipse.jdt.core.IClasspathAttribute;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.payara.tools.internal.SystemLibrariesSetting;
 import org.eclipse.sapphire.Version;
 import org.eclipse.sapphire.util.ListFactory;
@@ -122,21 +124,138 @@ public final class PayaraLocationUtils {
 
     private final Version version;
     private final List<File> libraries;
+    
+    
+    // #### static factory / finder methods
+    
+    public static synchronized PayaraLocationUtils find(IJavaProject project) {
+        if (project != null) {
+            return find(project.getProject());
+        }
 
+        return null;
+    }
+
+    public static synchronized PayaraLocationUtils find(IProject project) {
+        if (project != null) {
+            IFacetedProject facetedProject = null;
+
+            try {
+                facetedProject = ProjectFacetsManager.create(project);
+            } catch (CoreException e) {
+                // Intentionally ignored. If project isn't faceted or another error occurs,
+                // all that matters is that the Payara install is not found, which is signaled by null
+                // return.
+            }
+
+            return find(facetedProject);
+        }
+
+        return null;
+    }
+    
+    public static synchronized PayaraLocationUtils find(IFacetedProject project) {
+        if (project != null) {
+            IRuntime primary = project.getPrimaryRuntime();
+
+            if (primary != null) {
+                PayaraLocationUtils payaraLocation = find(primary);
+
+                if (payaraLocation != null) {
+                    return payaraLocation;
+                }
+
+                for (IRuntime runtime : project.getTargetedRuntimes()) {
+                    if (runtime != primary) {
+                        payaraLocation = find(runtime);
+
+                        if (payaraLocation != null) {
+                            return payaraLocation;
+                        }
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+    
+    public static synchronized PayaraLocationUtils find(IRuntime runtime) {
+        if (runtime != null) {
+            for (IRuntimeComponent component : runtime.getRuntimeComponents()) {
+                PayaraLocationUtils payaraLocation = find(component);
+
+                if (payaraLocation != null) {
+                    return payaraLocation;
+                }
+            }
+        }
+
+        return null;
+    }
+    
+    public static synchronized PayaraLocationUtils find(IRuntimeComponent component) {
+        if (component != null && component.getRuntimeComponentType().getId().equals(RUNTIME_COMPONENT_ID)) {
+            String location = component.getProperty("location");
+
+            if (location != null) {
+                return find(new File(location));
+            }
+        }
+
+        return null;
+    }
+    
+    public static synchronized PayaraLocationUtils find(File location) {
+        
+        // Lazily cleanup cache keys
+        for (Iterator<Map.Entry<File, SoftReference<PayaraLocationUtils>>> itr = CACHE.entrySet().iterator(); itr.hasNext();) {
+            if (itr.next().getValue().get() == null) {
+                itr.remove();
+            }
+        }
+
+        PayaraLocationUtils payaraLocation = null;
+
+        if (location != null) {
+            SoftReference<PayaraLocationUtils> payaraLocationReference = CACHE.get(location);
+
+            if (payaraLocationReference != null) {
+                payaraLocation = payaraLocationReference.get();
+            }
+
+            if (payaraLocation == null) {
+                try {
+                    payaraLocation = new PayaraLocationUtils(location);
+                } catch (IllegalArgumentException e) {
+                    return null;
+                }
+
+                CACHE.put(location, new SoftReference<>(payaraLocation));
+            }
+        }
+
+        return payaraLocation;
+    }
+  
+    
+    
+    // #### PayaraLocation instance methods
+    
     private PayaraLocationUtils(File location) {
 
         if (location == null || !location.exists() || !location.isDirectory()) {
             throw new IllegalArgumentException();
         }
 
-        File glassFishlocation = location;
+        File payaraLocation = location;
 
-        File gfApiJar = new File(glassFishlocation, "modules/glassfish-api.jar");
+        File gfApiJar = new File(payaraLocation, "modules/glassfish-api.jar");
 
         if (!gfApiJar.exists()) {
-            glassFishlocation = new File(glassFishlocation, "glassfish");
+            payaraLocation = new File(payaraLocation, "glassfish");
 
-            gfApiJar = new File(glassFishlocation, "modules/glassfish-api.jar");
+            gfApiJar = new File(payaraLocation, "modules/glassfish-api.jar");
 
             if (!gfApiJar.exists()) {
                 throw new IllegalArgumentException();
@@ -153,7 +272,7 @@ public final class PayaraLocationUtils {
         String[] libraryIncludes = getLibraryIncludes(version);
 
         if (libraryIncludes != null) {
-            File parentFolderToLocation = glassFishlocation.getParentFile();
+            File parentFolderToLocation = payaraLocation.getParentFile();
             DirectoryScanner scanner = new DirectoryScanner();
 
             scanner.setBasedir(parentFolderToLocation);
@@ -168,7 +287,68 @@ public final class PayaraLocationUtils {
         libraries = librariesListFactory.result();
     }
 
-    private static String[] getLibraryIncludes(Version version) {
+    public Version version() {
+        return version;
+    }
+
+    public List<IClasspathEntry> classpath(IProject project) {
+        ListFactory<IClasspathEntry> classpathListFactory = ListFactory.start();
+
+        URL doc;
+        String javaEEVersion = (version.matches("[5") ? "8" : (version.matches("[4") ? "7" : "6"));
+
+        try {
+            doc = new URL("http://docs.oracle.com/javaee/" + javaEEVersion + "/api/");
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+
+        SystemLibrariesSetting libSettings = SystemLibrariesSetting.load(project);
+
+        for (File library : libraries) {
+            File srcPath = libSettings != null ? libSettings.getSourcePath(library) : null;
+            classpathListFactory.add(createLibraryEntry(new Path(library.toString()), srcPath, doc));
+        }
+
+        return classpathListFactory.result();
+    }
+    
+    
+    
+    // #### Private methods
+
+    private IClasspathEntry createLibraryEntry(final IPath library, final File src, final URL javadoc) {
+        IPath srcpath = src == null ? null : new Path(src.getAbsolutePath());
+        IAccessRule[] access = {};
+        IClasspathAttribute[] attrs;
+
+        if (javadoc == null) {
+            attrs = new IClasspathAttribute[0];
+        } else {
+            attrs = new IClasspathAttribute[] { newClasspathAttribute(JAVADOC_LOCATION_ATTRIBUTE_NAME, javadoc.toExternalForm()) };
+        }
+
+        return newLibraryEntry(library, srcpath, null, access, attrs, false);
+    }
+    
+    private Version readPayaraVerionFromAPIJar(File gfApiJar) {
+        String versionString;
+        try {
+            versionString = readManifestEntry(gfApiJar, "Bundle-Version");
+        } catch (IOException e) {
+            throw new IllegalArgumentException(e);
+        }
+
+        Matcher versionMatcher = VERSION_PATTERN.matcher(versionString);
+
+        if (!versionMatcher.matches()) {
+            throw new IllegalArgumentException();
+        }
+
+        return new Version(versionMatcher.group(1));
+    }
+    
+    private String[] getLibraryIncludes(Version version) {
 
         if (version.matches("[5")) {
             return LIBRARIES_5;
@@ -187,175 +367,6 @@ public final class PayaraLocationUtils {
         }
 
         return null;
-    }
-
-    private static Version readPayaraVerionFromAPIJar(File gfApiJar) {
-        String versionString;
-        try {
-            versionString = readManifestEntry(gfApiJar, "Bundle-Version");
-        } catch (IOException e) {
-            throw new IllegalArgumentException(e);
-        }
-
-        Matcher versionMatcher = VERSION_PATTERN.matcher(versionString);
-
-        if (!versionMatcher.matches()) {
-            throw new IllegalArgumentException();
-        }
-
-        return new Version(versionMatcher.group(1));
-    }
-
-    public static synchronized PayaraLocationUtils find(final File location) {
-        for (Iterator<Map.Entry<File, SoftReference<PayaraLocationUtils>>> itr = CACHE.entrySet().iterator(); itr
-                .hasNext();) {
-            if (itr.next().getValue().get() == null) {
-                itr.remove();
-            }
-        }
-
-        PayaraLocationUtils glassFishInstall = null;
-
-        if (location != null) {
-            SoftReference<PayaraLocationUtils> ref = CACHE.get(location);
-
-            if (ref != null) {
-                glassFishInstall = ref.get();
-            }
-
-            if (glassFishInstall == null) {
-                try {
-                    glassFishInstall = new PayaraLocationUtils(location);
-                } catch (IllegalArgumentException e) {
-                    return null;
-                }
-
-                CACHE.put(location, new SoftReference<>(glassFishInstall));
-            }
-        }
-
-        return glassFishInstall;
-    }
-
-    public static synchronized PayaraLocationUtils find(final IRuntimeComponent component) {
-        if (component != null && component.getRuntimeComponentType().getId().equals(RUNTIME_COMPONENT_ID)) {
-            String location = component.getProperty("location");
-
-            if (location != null) {
-                return find(new File(location));
-            }
-        }
-
-        return null;
-    }
-
-    public static synchronized PayaraLocationUtils find(final IRuntime runtime) {
-        if (runtime != null) {
-            for (IRuntimeComponent component : runtime.getRuntimeComponents()) {
-                final PayaraLocationUtils glassFishInstall = find(component);
-
-                if (glassFishInstall != null) {
-                    return glassFishInstall;
-                }
-            }
-        }
-
-        return null;
-    }
-
-    public static synchronized PayaraLocationUtils find(final IFacetedProject project) {
-        if (project != null) {
-            IRuntime primary = project.getPrimaryRuntime();
-
-            if (primary != null) {
-                PayaraLocationUtils gf = find(primary);
-
-                if (gf != null) {
-                    return gf;
-                }
-
-                for (IRuntime runtime : project.getTargetedRuntimes()) {
-                    if (runtime != primary) {
-                        gf = find(runtime);
-
-                        if (gf != null) {
-                            return gf;
-                        }
-                    }
-                }
-            }
-        }
-
-        return null;
-    }
-
-    public static synchronized PayaraLocationUtils find(IProject project) {
-        if (project != null) {
-            IFacetedProject fproj = null;
-
-            try {
-                fproj = ProjectFacetsManager.create(project);
-            } catch (CoreException e) {
-                // Intentionally ignored. If project isn't faceted or another error occurs,
-                // all that matters is that the Payara install is not found, which is signaled by null
-                // return.
-            }
-
-            if (fproj != null) {
-                return find(fproj);
-            }
-        }
-
-        return null;
-    }
-
-    public static synchronized PayaraLocationUtils find(final IJavaProject project) {
-        if (project != null) {
-            return find(project.getProject());
-        }
-
-        return null;
-    }
-
-    public Version version() {
-        return version;
-    }
-
-    public List<IClasspathEntry> classpath(IProject proj) {
-        ListFactory<IClasspathEntry> classpathListFactory = ListFactory.start();
-
-        URL doc;
-        String javaEEVersion = (version.matches("[5") ? "8" : (version.matches("[4") ? "7" : "6"));
-
-        try {
-            doc = new URL("http://docs.oracle.com/javaee/" + javaEEVersion + "/api/");
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-
-        SystemLibrariesSetting libSettings = SystemLibrariesSetting.load(proj);
-
-        for (File library : libraries) {
-            File srcPath = libSettings != null ? libSettings.getSourcePath(library) : null;
-            classpathListFactory.add(createLibraryEntry(new Path(library.toString()), srcPath, doc));
-        }
-
-        return classpathListFactory.result();
-    }
-
-    private static IClasspathEntry createLibraryEntry(final IPath library, final File src, final URL javadoc) {
-        final IPath srcpath = src == null ? null : new Path(src.getAbsolutePath());
-        final IAccessRule[] access = {};
-        final IClasspathAttribute[] attrs;
-
-        if (javadoc == null) {
-            attrs = new IClasspathAttribute[0];
-        } else {
-            attrs = new IClasspathAttribute[] { JavaCore.newClasspathAttribute(
-                    IClasspathAttribute.JAVADOC_LOCATION_ATTRIBUTE_NAME, javadoc.toExternalForm()) };
-        }
-
-        return JavaCore.newLibraryEntry(library, srcpath, null, access, attrs, false);
     }
 
 }

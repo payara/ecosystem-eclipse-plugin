@@ -18,22 +18,20 @@
 
 package org.eclipse.payara.tools.ui.properties;
 
-import static org.eclipse.core.runtime.Status.OK_STATUS;
 import static org.eclipse.payara.tools.server.PayaraServer.ATTR_ADMIN;
 import static org.eclipse.payara.tools.server.PayaraServer.ATTR_ADMINPASS;
 import static org.eclipse.payara.tools.server.PayaraServer.ATTR_ADMINPORT;
 import static org.eclipse.payara.tools.server.PayaraServer.ATTR_DEBUG_PORT;
 import static org.eclipse.payara.tools.server.PayaraServer.ATTR_DOMAINPATH;
 import static org.eclipse.payara.tools.server.PayaraServer.getDefaultDomainDir;
+import static org.eclipse.payara.tools.utils.Jobs.scheduleShortJob;
+import static org.eclipse.payara.tools.utils.WtpUtil.load;
 import static org.eclipse.swt.SWT.FILL;
 import static org.eclipse.wst.server.core.IServer.PUBLISH_CLEAN;
 import static org.eclipse.wst.server.core.IServer.STATE_STOPPED;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.payara.tools.sapphire.IPayaraServerModel;
 import org.eclipse.payara.tools.server.PayaraServer;
 import org.eclipse.payara.tools.server.deploying.PayaraServerBehaviour;
@@ -50,18 +48,15 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.dialogs.PropertyPage;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
-import org.eclipse.wst.server.core.internal.Server;
 
 /**
  * Properties that are being shown for the Payara / GlassFish server when e.g. the server is right
  * clicked in the Servers view and "Properties" is chosen from the context menu.
  *
  */
-@SuppressWarnings("restriction")
 public class ServerPropertyPage extends PropertyPage {
 
-    private IServerWorkingCopy serverWC;
-    private PayaraServer payaraServer;
+    private IServerWorkingCopy serverWorkingCopy;
     private IPayaraServerModel model;
 
     FilteredListener<PropertyValidationEvent> listener = new FilteredListener<PropertyValidationEvent>() {
@@ -76,17 +71,15 @@ public class ServerPropertyPage extends PropertyPage {
 
         IServer server = (IServer) getElement();
         if (server instanceof IServerWorkingCopy) {
-            serverWC = (IServerWorkingCopy) server;
+            serverWorkingCopy = (IServerWorkingCopy) server;
         } else {
-            serverWC = server.createWorkingCopy();
+            serverWorkingCopy = server.createWorkingCopy();
         }
 
-        payaraServer = (PayaraServer) serverWC.loadAdapter(PayaraServer.class, new NullProgressMonitor());
-        model = payaraServer.getModel();
-
+        model = load(serverWorkingCopy, PayaraServer.class).getModel();
         model.attach(listener, "*");
 
-        final SapphireForm control = new SapphireForm(parent, model,
+        SapphireForm control = new SapphireForm(parent, model,
                 DefinitionLoader.context(BaseWizardFragment.class)
                         .sdef("org.eclipse.payara.tools.ui.PayaraUI")
                         .form("payara.server"));
@@ -125,10 +118,6 @@ public class ServerPropertyPage extends PropertyPage {
     // }
     // }
 
-    @Override
-    public boolean isValid() {
-        return super.isValid();
-    }
 
     @Override
     public boolean performCancel() {
@@ -138,29 +127,24 @@ public class ServerPropertyPage extends PropertyPage {
 
     @Override
     protected void performApply() {
-        IProgressMonitor monitor = new NullProgressMonitor();
         try {
-            final IServer server = serverWC.save(true, monitor);
-
-            Job job = new Job("Update Glassfish server state") { //$NON-NLS-1$
-                @Override
-                protected IStatus run(IProgressMonitor monitor) {
-                    try {
-                        PayaraServerBehaviour serverBehavior = (PayaraServerBehaviour) serverWC
-                                .loadAdapter(PayaraServerBehaviour.class, monitor);
-                        serverBehavior.updateServerStatus();
-
-                        Server gfServer = (Server) server;
-                        gfServer.setServerPublishState(PUBLISH_CLEAN);
-
-                    } catch (Exception e) {
-                        ((Server) server).setServerState(STATE_STOPPED);
+            IServer server = serverWorkingCopy.save(true, new NullProgressMonitor());
+            
+            scheduleShortJob("Update Payara server state", monitor -> {
+                
+                PayaraServerBehaviour serverBehavior = null;
+                
+                try {
+                    serverBehavior = load(server, PayaraServerBehaviour.class);
+                    
+                    serverBehavior.updateServerStatus();
+                    serverBehavior.setPayaraServerPublishState(PUBLISH_CLEAN);
+                } catch (Exception e) {
+                    if (serverBehavior != null) {
+                        serverBehavior.setPayaraServerState(STATE_STOPPED);
                     }
-                    return OK_STATUS;
                 }
-            };
-
-            job.schedule();
+            });
         } catch (CoreException e) {
             // no-op
             e.printStackTrace();
@@ -177,11 +161,13 @@ public class ServerPropertyPage extends PropertyPage {
     @Override
     protected void performDefaults() {
         super.performDefaults();
-        serverWC.setAttribute(ATTR_ADMIN, "");
-        serverWC.setAttribute(ATTR_ADMINPASS, "");
-        serverWC.setAttribute(ATTR_DOMAINPATH, getDefaultDomainDir(serverWC.getRuntime().getLocation()).toString());
-        serverWC.setAttribute(ATTR_ADMINPORT, "");
-        serverWC.setAttribute(ATTR_DEBUG_PORT, "");
+        
+        serverWorkingCopy.setAttribute(ATTR_ADMIN, "");
+        serverWorkingCopy.setAttribute(ATTR_ADMINPASS, "");
+        serverWorkingCopy.setAttribute(ATTR_DOMAINPATH, getDefaultDomainDir(serverWorkingCopy.getRuntime().getLocation()).toString());
+        serverWorkingCopy.setAttribute(ATTR_ADMINPORT, "");
+        serverWorkingCopy.setAttribute(ATTR_DEBUG_PORT, "");
+        
         model.refresh();
     }
 

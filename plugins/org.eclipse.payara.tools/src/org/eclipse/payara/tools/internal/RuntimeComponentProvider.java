@@ -25,7 +25,7 @@ import org.eclipse.wst.server.core.IRuntime;
 
 /**
  * This abstract class is used in conjunction with <code>runtimeComponentProviders</code> extension
- * point to extend the list of runtime components that make up a GlassFish Server runtime.
+ * point to extend the list of runtime components that make up a Payara Server runtime.
  *
  * @author <a href="mailto:konstantin.komissarchik@oracle.com">Konstantin Komissarchik</a>
  */

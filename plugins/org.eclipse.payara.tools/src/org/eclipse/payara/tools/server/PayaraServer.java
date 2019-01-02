@@ -60,6 +60,7 @@ import static org.eclipse.payara.tools.utils.Utils.canWrite;
 import static org.eclipse.payara.tools.utils.Utils.getAppWebContextRoot;
 import static org.eclipse.payara.tools.utils.Utils.getHttpListenerProtocol;
 import static org.eclipse.payara.tools.utils.Utils.hasProjectFacet;
+import static org.eclipse.payara.tools.utils.WtpUtil.load;
 import static org.eclipse.wst.common.componentcore.internal.util.IModuleConstants.JST_WEB_MODULE;
 import static org.eclipse.wst.common.project.facet.core.ProjectFacetsManager.getProjectFacet;
 import static org.eclipse.wst.server.core.ServerUtil.getModules;
@@ -144,9 +145,6 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
     private static final String DEFAULT_DOMAIN_DIR_NAME = "domains"; // $NON-NLS-N$
     private static final String DEFAULT_DOMAIN_NAME = "domain1"; // $NON-NLS-N$
     public static final int DEFAULT_DEBUG_PORT = 9009;
-
-    public static final String ATTR_SERVER_ADDRESS = "server.address"; //$NON-NLS-1$
-
     public static final String ATTR_SERVERPORT = "glassfish.serverportnumber"; //$NON-NLS-1$
     public static final String ATTR_ADMINPORT = "glassfish.adminserverportnumber"; //$NON-NLS-1$
     public static final String ATTR_DEBUG_PORT = "glassfish.debugport";
@@ -157,14 +155,6 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
     public static final String ATTR_KEEPSESSIONS = "glassfish.keepSessions"; //$NON-NLS-1$
     public static final String ATTR_JARDEPLOY = "glassfish.jarDeploy"; //$NON-NLS-1$
     public static final String ATTR_USEANONYMOUSCONNECTIONS = "glassfish.useAnonymousConnection"; //$NON-NLS-1$
-
-    public static final String SAMPLEDBDIR = "glassfish.sampledbdir"; //$NON-NLS-1$
-
-    // used only for v2, populated from project properties or module name with
-    // no space
-    public static final String CONTEXTROOT = "glassfish.contextroot"; //$NON-NLS-1$
-
-    public static final String DOMAINUPDATE = "domainupdate"; //$NON-NLS-1$
 
     private List<PropertyChangeListener> propChangeListeners;
 
@@ -216,7 +206,7 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
         try {
             return new URL(protocol, hostname, serverPort, path);
         } catch (MalformedURLException e) {
-            // shouldn't happen
+            // Shouldn't happen
             e.printStackTrace();
         }
         
@@ -229,8 +219,7 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
         PayaraServerBehaviour serverBehavior = getServer().getAdapter(PayaraServerBehaviour.class);
 
         if (serverBehavior == null) {
-            serverBehavior = (PayaraServerBehaviour) getServer().loadAdapter(PayaraServerBehaviour.class,
-                    new NullProgressMonitor());
+            serverBehavior = load(getServer(), PayaraServerBehaviour.class);
         }
 
         return serverBehavior;
@@ -284,15 +273,14 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
 
                 syncHostAndPortsValues();
 
-                // this is mainly so serversection can listen and repopulate,
+                // This is mainly so serversection can listen and repopulate,
                 // but it is not working as intended because the sunserver
-                // instance to
-                // which the prop change listener is attached is a different one
-                // than is
-                // seeing the changes. in fact, we have multiple instances of
-                // this
-                // object and the glassfishBehaviour object per server -
-                // issue 140
+                // instance to which the prop change listener is attached is a different one
+                // than is seeing the changes.
+                //
+                // In fact, we have multiple instances of this object and the glassfishBehaviour 
+                // object per server - see issue 140
+                
                 // firePropertyChangeEvent(DOMAINUPDATE, null, null);
             } else {
                 logMessage("In Payara could not readServerConfiguration - probably invalid domain"); //$NON-NLS-1$
@@ -301,7 +289,6 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
     }
 
     public String validateDomainExists(String domainPath) {
-
         if (isRemote()) {
             return null;
         }
@@ -337,6 +324,7 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
 
             return null;
         }
+        
         return Messages.missingDomainLocation;
     }
 
@@ -540,9 +528,9 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
     }
 
     /*
-     * ************************************************************* Implementation of adapter methods
-     * used by tooling SDK library.
+     * *************Implementation of adapter methods used by tooling SDK library.
      */
+    
     public int getAdminPort() {
         return getAttribute(ATTR_ADMINPORT, -1);
     }
@@ -561,6 +549,10 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
 
     public String getDomainName() {
         return getDomainPath() != null ? new File(getDomainPath()).getName() : null;
+    }
+    
+    public String getDomainPath() {
+        return getAttribute(ATTR_DOMAINPATH, "");
     }
 
     public String getHost() {
@@ -641,11 +633,6 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
     public void setPort(int port) {
         setAttribute(ATTR_SERVERPORT, port);
     }
-
-    public String getDomainPath() {
-        return getAttribute(ATTR_DOMAINPATH, "");
-    }
-
     public boolean useAnonymousConnections() {
         return getAttribute(ATTR_USEANONYMOUSCONNECTIONS, true);
     }
@@ -660,8 +647,8 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
         return baseLocation.append(DEFAULT_SERVER_DIR_NAME).toString();
     }
 
-    // ************* CONFIG RESOURCE FOR BINDING FROM SAPPHIRE GUI
-    // *********************
+    
+    // ************* CONFIG RESOURCE FOR BINDING FROM SAPPHIRE GUI *********************
 
     private final class ConfigResource extends Resource {
 

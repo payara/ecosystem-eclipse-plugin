@@ -18,12 +18,11 @@
 
 package org.eclipse.payara.tools.ui.wizards.actions;
 
+import static org.eclipse.jface.window.Window.OK;
 import static org.eclipse.payara.tools.utils.WtpUtil.load;
 import static org.eclipse.sapphire.modeling.Path.fromPortableString;
 import static org.eclipse.sapphire.ui.def.DefinitionLoader.context;
-import static org.eclipse.jface.window.Window.OK;
 
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.payara.tools.sapphire.ICreatePayaraDomainOp;
 import org.eclipse.payara.tools.sapphire.IPayaraServerModel;

@@ -20,6 +20,8 @@ package org.eclipse.payara.tools.utils;
 
 import org.eclipse.wst.common.project.facet.core.runtime.IRuntime;
 import org.eclipse.wst.common.project.facet.core.runtime.IRuntimeComponent;
+import org.eclipse.wst.server.core.IServer;
+import org.eclipse.wst.server.core.IServerType;
 
 /**
  * Set of utility methods to help determining whether something constitutes "Payara" or "GlassFish".
@@ -51,6 +53,23 @@ public final class IsPayaraUtil {
     public static boolean isPayara(IRuntimeComponent component) {
         if (component != null) {
             return component.getRuntimeComponentType().getId().equals("payara.runtime");
+        }
+
+        return false;
+    }
+    
+    public static boolean isPayara(IServer server) {
+        if (server != null) {
+            return isPayara(server.getServerType());
+        }
+
+        return false;
+    }
+    
+    
+    public static boolean isPayara(IServerType type) {
+        if (type != null) {
+            return type.getId().equals("payara.server");
         }
 
         return false;
