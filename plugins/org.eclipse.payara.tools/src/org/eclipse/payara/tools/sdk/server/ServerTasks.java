@@ -328,28 +328,49 @@ public class ServerTasks {
      */
     private static void appendOptions(StringBuilder argumentBuf, List<String> optList, Map<String, String> varMap) {
         final String METHOD = "appendOptions";
-        HashMap<String, String> keyValueArgs = new HashMap<>();
-        LinkedList<String> keyOrder = new LinkedList<>();
+        
+        Map<String, String> keyValueArgs = new HashMap<>();
+        List<String> keyOrder = new LinkedList<>();
         String name, value;
-        // first process optList aquired from domain.xml
+        
+        // First process optList acquired from domain.xml
         for (String opt : optList) {
             // do placeholder substitution
             opt = Utils.doSub(opt.trim(), varMap);
+            
             int splitIndex = opt.indexOf('=');
+            
             // && !opt.startsWith("-agentpath:") is a temporary hack to
             // not touch already quoted -agentpath. Later we should handle it
             // in a better way.
             if (splitIndex != -1 && !opt.startsWith("-agentpath:")) {
+                
                 // key=value type of option
+                
                 name = opt.substring(0, splitIndex);
                 value = Utils.quote(opt.substring(splitIndex + 1));
                 LOGGER.log(Level.FINER, METHOD, "jvmOptVal", new Object[] { name, value });
 
+            } else if (opt.startsWith("-Xbootclasspath")) {
+
+                // -Xbootclasspath:<path> or -Xbootclasspath/p:<path> or -Xbootclasspath/a:<path>
+                
+                name = opt;
+                value = null;
+                
+                int colonIndex = opt.indexOf(':');
+                if (colonIndex != -1) {
+                    String optionName = opt.substring(0, colonIndex);
+                    String optonValue = Utils.quote(opt.substring(colonIndex + 1));
+                    
+                    name = optionName + ":" + optonValue;
+                }
             } else {
                 name = opt;
                 value = null;
                 LOGGER.log(Level.FINER, METHOD, "jvmOpt", name);
             }
+            
             if (!keyValueArgs.containsKey(name)) {
                 keyOrder.add(name);
             }
