@@ -18,6 +18,8 @@
 
 package org.eclipse.payara.tools.sdk.utils;
 
+import static java.util.logging.Level.INFO;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -135,7 +137,7 @@ public class Utils {
                         if (replacement != null) {
                             replacement = escapePath(replacement);
                         } else {
-                            replacement = "\\$\\{" + key + "\\}"; // NOI18N
+                            replacement = "\\$\\{" + key + "\\}";
                         }
                     } else {
                         replacement = escapePath(replacement);
@@ -147,8 +149,9 @@ public class Utils {
                 value = sb.toString();
             }
         } catch (Exception ex) {
-            Logger.getLogger("glassfish").log(Level.INFO, ex.getLocalizedMessage(), ex); // NOI18N
+            Logger.getLogger("glassfish").log(INFO, ex.getLocalizedMessage(), ex);
         }
+        
         return value;
     }
 

@@ -49,8 +49,7 @@ public abstract class CommandJavaClassPath extends CommandJava {
      * @param javaHome Java SE home used to select JRE for GlassFish server.
      * @param classPath Java SE class path.
      */
-    public CommandJavaClassPath(final String command, final String javaHome,
-            final String classPath) {
+    public CommandJavaClassPath(final String command, final String javaHome, final String classPath) {
         super(command, javaHome);
         this.classPath = classPath;
     }
