@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 /******************************************************************************
- * Copyright (c) 2018 Payara Foundation
+ * Copyright (c) 2019 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,9 +18,20 @@
 
 package org.eclipse.payara.tools.server.archives;
 
+import static java.lang.System.arraycopy;
+import static org.eclipse.core.runtime.IStatus.ERROR;
+import static org.eclipse.jst.server.generic.core.internal.CorePlugin.PLUGIN_ID;
+import static org.eclipse.payara.tools.PayaraToolsPlugin.SYMBOLIC_NAME;
+import static org.eclipse.payara.tools.PayaraToolsPlugin.logMessage;
+import static org.eclipse.payara.tools.sapphire.IPayaraServerModel.PROP_RESTART_PATTERN;
+import static org.eclipse.payara.tools.sapphire.IPayaraServerModel.PROP_RESTART_PATTERN_DEFAULT;
+import static org.eclipse.payara.tools.utils.WtpUtil.load;
+import static org.eclipse.wst.server.core.IServer.PUBLISH_STATE_NONE;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
@@ -47,9 +58,9 @@ import org.eclipse.wst.server.core.model.IModuleResourceDelta;
 import org.eclipse.wst.server.core.util.ProjectModule;
 import org.eclipse.wst.server.core.util.PublishHelper;
 
-/* assemble modules (i.e if a web app depends on a utility lib, we need to create the jar file for this utility and
+/* 
+ * Assemble modules (i.e if a web app depends on a utility lib, we need to create the jar file for this utility and
  * put it in the web-inf/lib area of the web app.
- * Later for v3 we need to also handle ear files
  */
 @SuppressWarnings("restriction")
 public class AssembleModules {
@@ -60,7 +71,7 @@ public class AssembleModules {
     protected IPath assembleRoot;
     protected PublishHelper publishHelper;
     protected PayaraServer server;
-    protected boolean childNeedsARedeployment = false;
+    protected boolean childNeedsARedeployment;
 
     public AssembleModules(IModule[] modulePath, IPath assembleRoot, PayaraServer server, PublishHelper helper) {
         this.modulePath = modulePath;
@@ -68,35 +79,31 @@ public class AssembleModules {
         this.assembleRoot = assembleRoot;
         this.server = server;
         this.publishHelper = helper;
-        PayaraToolsPlugin.logMessage("AssembleModules assembleRoot=" + assembleRoot);
-
+        
+        logMessage("AssembleModules assembleRoot=" + assembleRoot);
     }
 
     public IPath assembleWebModule(IProgressMonitor monitor) throws CoreException {
-
         IPath parent = assembleRoot;
-        boolean shouldCopy = (IServer.PUBLISH_STATE_NONE != server.getServer().getModulePublishState(modulePath));
-        if (shouldCopy) {
+        
+        if (PUBLISH_STATE_NONE != server.getServer().getModulePublishState(modulePath)) {
             copyModule(module, monitor);
         }
 
         IWebModule webModule = (IWebModule) module.loadAdapter(IWebModule.class, monitor);
         IModule[] childModules = webModule.getModules();
         for (IModule childModule : childModules) {
-            // packModule(module, webModule.getURI(module), parent);
             String uri = webModule.getURI(childModule);
             if (uri == null) { // The bad memories of WTP 1.0
-                IStatus status = new Status(IStatus.ERROR, CorePlugin.PLUGIN_ID, 0,
-                        "unable to assemble module null uri", null); //$NON-NLS-1$
-                throw new CoreException(status);
+                throw new CoreException(new Status(ERROR, PLUGIN_ID, 0, "unable to assemble module null uri", null));
             }
+            
             IJ2EEModule jeeModule = (IJ2EEModule) childModule.loadAdapter(IJ2EEModule.class, monitor);
             if (jeeModule != null && jeeModule.isBinary()) { // Binary module
                 ProjectModule pm = (ProjectModule) childModule.loadAdapter(ProjectModule.class, null);
                 IModuleResource[] resources = pm.members();
                 publishHelper.publishToPath(resources, parent.append(uri), monitor);
             } else { // Project module
-                // ludo 2010 packModule(module, uri, parent);
                 String version = PayaraServerBehaviour.getVersion(server);
                 if (version.indexOf(" 3.1") == -1) {
                     packModule(childModule, uri, parent);
@@ -104,8 +111,8 @@ public class AssembleModules {
 
                     if (shouldRepack(childModule)) {
 
-                        final IModule[] childModulePath = new IModule[modulePath.length + 1];
-                        System.arraycopy(modulePath, 0, childModulePath, 0, modulePath.length);
+                        IModule[] childModulePath = new IModule[modulePath.length + 1];
+                        arraycopy(modulePath, 0, childModulePath, 0, modulePath.length);
                         childModulePath[childModulePath.length - 1] = childModule;
 
                         AssembleModules assembler = new AssembleModules(childModulePath, assembleRoot.append(uri),
@@ -116,35 +123,29 @@ public class AssembleModules {
                 }
             }
         }
+        
         return parent;
     }
 
     public static boolean isModuleType(IModule module, String moduleTypeId) {
-        if (module.getModuleType() != null && moduleTypeId.equals(module.getModuleType().getId())) {
-            return true;
-        }
-        return false;
+        return module.getModuleType() != null && moduleTypeId.equals(module.getModuleType().getId()); 
     }
 
     protected void packModule(IModule module, String deploymentUnitName, IPath destination) throws CoreException {
-
         String dest = destination.append(deploymentUnitName).toString();
-        PayaraToolsPlugin.logMessage("AssembleModules dest=" + dest);
+        logMessage("AssembleModules dest=" + dest);
 
         ModulePackager packager = null;
         try {
             packager = new ModulePackager(dest, false);
-            ProjectModule pm = (ProjectModule) module.loadAdapter(ProjectModule.class, null);
-            IModuleResource[] resources = pm.members();
-            for (IModuleResource resource : resources) {
-                PayaraToolsPlugin.logMessage("AssembleModules resources=" + resource);
+            for (IModuleResource resource : load(module, ProjectModule.class).members()) {
+                logMessage("AssembleModules resources=" + resource);
 
                 doPackModule(resource, packager);
             }
         } catch (IOException e) {
-            IStatus status = new Status(IStatus.ERROR, PayaraToolsPlugin.SYMBOLIC_NAME, 0,
-                    "unable to assemble module", e); //$NON-NLS-1$
-            throw new CoreException(status);
+            throw new CoreException(new Status(ERROR, SYMBOLIC_NAME, 0,
+                    "unable to assemble module", e));
         } finally {
             try {
                 packager.finished();
@@ -157,17 +158,16 @@ public class AssembleModules {
         if (resource instanceof IModuleFolder) {
             IModuleFolder mFolder = (IModuleFolder) resource;
             IModuleResource[] resources = mFolder.members();
-            PayaraToolsPlugin.logMessage("AssembleModules  doPackModule IModuleFolder=" + mFolder);
-            PayaraToolsPlugin.logMessage("AssembleModules  doPackModule resource.getModuleRelativePath()="
-                    + resource.getModuleRelativePath());
-            PayaraToolsPlugin.logMessage(
-                    "AssembleModules  resource.getModuleRelativePath().append(resource.getName()).toPortableString()="
-                            + resource.getModuleRelativePath().append(resource.getName()).toPortableString());
+            
+            logMessage("AssembleModules  doPackModule IModuleFolder=" + mFolder);
+            logMessage("AssembleModules  doPackModule resource.getModuleRelativePath()=" + resource.getModuleRelativePath());
+            logMessage("AssembleModules  resource.getModuleRelativePath().append(resource.getName()).toPortableString()="
+                    + resource.getModuleRelativePath().append(resource.getName()).toPortableString());
 
             packager.writeFolder(resource.getModuleRelativePath().append(resource.getName()).toPortableString());
 
             for (int i = 0; resources != null && i < resources.length; i++) {
-                PayaraToolsPlugin.logMessage("AssembleModules resources[i]=" + resources[i]);
+                logMessage("AssembleModules resources[i]=" + resources[i]);
 
                 doPackModule(resources[i], packager);
             }
@@ -185,12 +185,11 @@ public class AssembleModules {
 
     protected IPath copyModule(IModule module, IProgressMonitor monitor) throws CoreException {
         ProjectModule pm = (ProjectModule) module.loadAdapter(ProjectModule.class, monitor);
-        // SunAppSrvPlugin.logMessage("AssembleModules copyModule ProjectModule
-        // is="+pm);
+        
         IPath[] jarPaths = null;
-        if (module.getModuleType().getId().equals("jst.web")) {//$NON-NLS-1$
-            // IModuleResource[] mr = getResources(module);
+        if (module.getModuleType().getId().equals("jst.web")) {
             IWebModule webModule = (IWebModule) module.loadAdapter(IWebModule.class, monitor);
+            
             // Child module of the web project, e.g., Utility project added through
             // Deployment Assembly
             IModule[] childModules = webModule.getModules();
@@ -218,10 +217,11 @@ public class AssembleModules {
         ProjectModule pm = (ProjectModule) module.loadAdapter(ProjectModule.class, monitor);
         IEnterpriseApplication earModule = (IEnterpriseApplication) module.loadAdapter(IEnterpriseApplication.class,
                 monitor);
-        // get publish paths of child modules so we do not delete them with publishSmart
+        
+        // Get publish paths of child modules so we do not delete them with publishSmart
         // call
         IModule[] childModules = earModule.getModules();
-        PayaraToolsPlugin.logMessage("copyEarModule childModules.length=" + childModules.length);
+        logMessage("copyEarModule childModules.length=" + childModules.length);
         ArrayList<IPath> ignorePaths = new ArrayList<>(childModules.length);
         for (IModule childModule2 : childModules) {
 
@@ -267,36 +267,29 @@ public class AssembleModules {
     }
 
     public IPath assembleEARModule(IProgressMonitor monitor) throws CoreException {
-        // copy ear root to the temporary assembly directory
+        // Copy ear root to the temporary assembly directory
         IPath parent = assembleRoot;
 
         boolean shouldCopy = (IServer.PUBLISH_STATE_NONE != server.getServer().getModulePublishState(modulePath));
         if (shouldCopy) {
             copyModule(module, monitor);
         }
+        
         IEnterpriseApplication earModule = (IEnterpriseApplication) module.loadAdapter(IEnterpriseApplication.class,
                 monitor);
+        
         IModule[] childModules = earModule.getModules();
         for (IModule module : childModules) {
             String uri = earModule.getURI(module);
             if (uri == null) {
-                IStatus status = new Status(IStatus.ERROR, CorePlugin.PLUGIN_ID, 0,
-                        "unable to assemble module null uri", null); //$NON-NLS-1$
-                throw new CoreException(status);
+                throw new CoreException(new Status(ERROR, PLUGIN_ID, 0,
+                        "unable to assemble module null uri", null));
             }
             IJ2EEModule jeeModule = (IJ2EEModule) module.loadAdapter(IJ2EEModule.class, monitor);
             if (jeeModule != null && jeeModule.isBinary()) {// Binary module just copy
                 ProjectModule pm = (ProjectModule) module.loadAdapter(ProjectModule.class, null);
                 IModuleResource[] resources = pm.members();
-                // ludo nbew publishHelper.publishFull(resources, parent, monitor);
-                //
-                //
-                //
                 publishHelper.publishToPath(resources, parent.append(uri), monitor);
-                //
-                //
-                //
-                //
 
                 continue;// done! no need to go further
             }
@@ -304,6 +297,7 @@ public class AssembleModules {
                 packModuleEARModule(module, uri, parent);
             }
         }
+        
         return parent;
 
     }
@@ -314,31 +308,32 @@ public class AssembleModules {
      * @param module
      * @return module changed
      */
-    /*
-     * private boolean shouldRepack( IModule module ) { final Server _server = (Server)
-     * server.getServer(); final IModule[] modules ={module}; IModuleResourceDelta[] deltas =
-     * _server.getPublishedResourceDelta( modules );
-     *
-     * return deltas.length > 0; }
-     */
     private boolean shouldRepack(IModule lmodule) {
-        final IModule[] childModulePath = new IModule[modulePath.length + 1];
-        System.arraycopy(modulePath, 0, childModulePath, 0, modulePath.length);
+        IModule[] childModulePath = new IModule[modulePath.length + 1];
+        arraycopy(modulePath, 0, childModulePath, 0, modulePath.length);
         childModulePath[childModulePath.length - 1] = lmodule;
 
-        boolean repack = (IServer.PUBLISH_STATE_NONE != server.getServer().getModulePublishState(childModulePath));
-        repack |= (IServer.PUBLISH_STATE_NONE != server.getServer().getModulePublishState(modulePath));
+        boolean repack = PUBLISH_STATE_NONE != server.getServer().getModulePublishState(childModulePath);
+        repack |= PUBLISH_STATE_NONE != server.getServer().getModulePublishState(modulePath);
+        
         return repack;
     }
 
     /*
-     * returns true is a deploy command has to be run. for example a simple JSP change does not need a
+     * Returns true is a deploy command has to be run. for example a simple JSP change does not need a
      * redeployment as the file is already been copied by the assembly in the correct directory
      */
     public boolean needsARedeployment() {
-        final Server _server = (Server) server.getServer();
-        IModuleResourceDelta[] deltas = _server.getPublishedResourceDelta(modulePath);
-        return (childNeedsARedeployment || criticalResourceChangeThatNeedsARedeploy(deltas));
+        Server _server = (Server) server.getServer();
+        
+        return 
+            childNeedsARedeployment ||
+            criticalResourceChangeThatNeedsARedeploy(
+                // The path that's going to be published
+                _server.getPublishedResourceDelta(modulePath),
+                
+                // The pattern that denotes whether a restart is needed for that path
+                Pattern.compile(_server.getAttribute(PROP_RESTART_PATTERN.name(), PROP_RESTART_PATTERN_DEFAULT)));
     }
 
     /*
@@ -346,68 +341,46 @@ public class AssembleModules {
      * .class file change needs a redepploy. a jsp or html change just needs a file copy not a redeploy
      * command.
      */
-    private boolean criticalResourceChangeThatNeedsARedeploy(IModuleResourceDelta[] deltas) {
+    private boolean criticalResourceChangeThatNeedsARedeploy(IModuleResourceDelta[] deltas, Pattern restartPattern) {
         if (deltas == null) {
             return false;
         }
 
         for (IModuleResourceDelta delta : deltas) {
-            if (delta.getModuleResource().getName().endsWith(".class")) {// class file
-                PayaraToolsPlugin.logMessage(
-                        "Class Changed in AssembleModules criticalResourceChangeThatNeedsARedeploy DELTA IS="
-                                + delta.getKind() + delta.getModuleResource().getName());
+            if (restartPattern.matcher(delta.getModuleResource().getName()).find()) {
                 return true;
             }
-            if (delta.getModuleResource().getName().endsWith(".properties")) {// properties file
-                return true;
-            }
-            if (delta.getModuleResource().getName().endsWith(".xml")) {// all XML files, including DD files or
-                                                                       // config files
-                PayaraToolsPlugin
-                        .logMessage("XML Changed in AssembleModules criticalResourceChangeThatNeedsARedeploy DELTA IS="
-                                + delta.getKind() + delta.getModuleResource().getName());
-                return true;
-            }
-            if (delta.getModuleResource().getName().equalsIgnoreCase("manifest.mf")) {
-                PayaraToolsPlugin.logMessage(
-                        "MANIFEST FIle  Changed in AssembleModules criticalResourceChangeThatNeedsARedeploy DELTA IS="
-                                + delta.getKind() + delta.getModuleResource().getName());
-                return true;
-            }
-            PayaraToolsPlugin.logMessage("AssembleModules neither class manifest or xml file");
+            
+            logMessage("AssembleModules no pattern matched.");
 
-            IModuleResourceDelta[] childrenDeltas = delta.getAffectedChildren();
-            if (criticalResourceChangeThatNeedsARedeploy(childrenDeltas)) {
+            if (criticalResourceChangeThatNeedsARedeploy(delta.getAffectedChildren(), restartPattern)) {
                 return true;
             }
         }
 
         return false;
-
     }
 
-    protected void packModuleEARModule(IModule module, String deploymentUnitName, IPath destination)
-            throws CoreException {
-        PayaraToolsPlugin
-                .logMessage("AssembleModules packModuleEARModule=" + module.getId() + " " + module.getName());
-        PayaraToolsPlugin.logMessage("AssembleModules deploymentUnitName=" + deploymentUnitName); // ie foo.war or
-                                                                                                     // myejbs.jar
-        // need to replace the , with_ ie _war or _jar as the dirname for dir deploy
-        PayaraToolsPlugin.logMessage("AssembleModules destination=" + destination);
+    protected void packModuleEARModule(IModule module, String deploymentUnitName, IPath destination) throws CoreException {
+        logMessage("AssembleModules packModuleEARModule=" + module.getId() + " " + module.getName());
+        logMessage("AssembleModules deploymentUnitName=" + deploymentUnitName); // ie foo.war or myejbs.jar
+        
+        // Need to replace the , with_ ie _war or _jar as the dirname for dir deploy
+        logMessage("AssembleModules destination=" + destination);
         if (module.getModuleType().getId().equals("jst.web")) {//$NON-NLS-1$
 
             AssembleModules assembler = new AssembleModules(modulePath, assembleRoot, server, publishHelper);
             IPath webAppPath = assembler.assembleWebModule(new NullProgressMonitor());
             String realDestination = destination.append(deploymentUnitName).toString();
-            PayaraToolsPlugin.logMessage("AssembleModules realDestination=" + realDestination);
+            logMessage("AssembleModules realDestination=" + realDestination);
+            
             ModulePackager packager = null;
             try {
                 packager = new ModulePackager(realDestination, false);
                 packager.pack(webAppPath.toFile(), webAppPath.toOSString());
 
             } catch (IOException e) {
-                IStatus status = new Status(IStatus.ERROR, CorePlugin.PLUGIN_ID, 0, "unable to assemble module", e); //$NON-NLS-1$
-                throw new CoreException(status);
+                throw new CoreException(new Status(ERROR, PLUGIN_ID, 0, "unable to assemble module", e));
             } finally {
                 if (packager != null) {
                     try {
@@ -418,40 +391,40 @@ public class AssembleModules {
             }
 
         } else {
-            /* ludo super. */packModule(module, deploymentUnitName, destination);
+            packModule(module, deploymentUnitName, destination);
         }
 
     }
 
     public IPath assembleDirDeployedEARModule(IProgressMonitor monitor) throws CoreException {
-        // copy ear root to the temporary assembly directory
+        // Copy ear root to the temporary assembly directory
         IPath parent = assembleRoot;
 
-        boolean shouldCopy = (IServer.PUBLISH_STATE_NONE != server.getServer().getModulePublishState(modulePath));
-        if (shouldCopy) {
+        if (PUBLISH_STATE_NONE != server.getServer().getModulePublishState(modulePath)) {
             copyEarModule(module, monitor);
         }
+        
         IEnterpriseApplication earModule = (IEnterpriseApplication) module.loadAdapter(IEnterpriseApplication.class,
                 monitor);
         IModule[] childModules = earModule.getModules();
-        PayaraToolsPlugin.logMessage("assembleDirDeployedEARModule childModules.length=" + childModules.length);
+        logMessage("assembleDirDeployedEARModule childModules.length=" + childModules.length);
         for (IModule childModule2 : childModules) {
 
             IModule childModule = childModule2;
             String uri = earModule.getURI(childModule);
             if (uri == null) {
-                IStatus status = new Status(IStatus.ERROR, CorePlugin.PLUGIN_ID, 0,
-                        "unable to assemble module null uri", null); //$NON-NLS-1$
-                throw new CoreException(status);
+                throw new CoreException(new Status(ERROR, PLUGIN_ID, 0, "unable to assemble module null uri", null));
             }
+            
             IJ2EEModule jeeModule = (IJ2EEModule) childModule.loadAdapter(IJ2EEModule.class, monitor);
             if (jeeModule != null && jeeModule.isBinary()) {// Binary module just copy
-                ProjectModule pm = (ProjectModule) childModule.loadAdapter(ProjectModule.class, null);
-                IModuleResource[] resources = pm.members();
-                publishHelper.publishToPath(resources, parent.append(uri), monitor);
-                // was publishHelper.publishSmart(resources, parent, monitor);
-                continue;// done! no need to go further
+                publishHelper.publishToPath(
+                    load(childModule, ProjectModule.class).members(), 
+                    parent.append(uri), monitor);
+                
+                continue; // Done! no need to go further
             }
+            
             if (!childModule.getModuleType().getId().equals("jst.utility")) {//$NON-NLS-1$ see bug
                                                                              // https://glassfishplugins.dev.java.net/issues/show_bug.cgi?id=251
                 if (uri.endsWith(".war")) {
@@ -464,9 +437,8 @@ public class AssembleModules {
             }
 
             if (shouldRepack(childModule)) {
-                // packModuleEARModule(module,uri, parent);
-                final IModule[] childModulePath = new IModule[modulePath.length + 1];
-                System.arraycopy(modulePath, 0, childModulePath, 0, modulePath.length);
+                IModule[] childModulePath = new IModule[modulePath.length + 1];
+                arraycopy(modulePath, 0, childModulePath, 0, modulePath.length);
                 childModulePath[childModulePath.length - 1] = childModule;
 
                 if (childModule.getModuleType().getId().equals("jst.web")) {//$NON-NLS-1$
@@ -475,7 +447,6 @@ public class AssembleModules {
                     childNeedsARedeployment = (childNeedsARedeployment || assembler.needsARedeployment());
                     assembler.assembleWebModule(new NullProgressMonitor());
                 } else {
-                    // /*ludo super.*/packModule(module, uri, parent);
                     AssembleModules assembler = new AssembleModules(childModulePath, assembleRoot.append(uri), server,
                             publishHelper);
                     childNeedsARedeployment = (childNeedsARedeployment || assembler.needsARedeployment());
@@ -483,8 +454,8 @@ public class AssembleModules {
                 }
 
             }
-
         }
+        
         return parent;
 
     }

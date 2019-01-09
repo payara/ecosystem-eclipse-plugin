@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 /******************************************************************************
- * Copyright (c) 2018 Payara Foundation
+ * Copyright (c) 2018-2019 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@
 
 package org.eclipse.payara.tools.utils;
 
+import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IServerAttributes;
 import org.eclipse.wst.server.core.ServerCore;
@@ -59,5 +60,11 @@ public final class WtpUtil {
     public static <T> T load(IRuntime server, Class<T> adapter) {
         return adapter.cast(server.loadAdapter(adapter, null));
     }
+    
+    public static <T> T load(IModule server, Class<T> adapter) {
+        return adapter.cast(server.loadAdapter(adapter, null));
+    }
+    
+    
 
 }

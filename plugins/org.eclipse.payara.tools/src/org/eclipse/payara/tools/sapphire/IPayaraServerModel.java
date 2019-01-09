@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 /******************************************************************************
- * Copyright (c) 2018 Payara Foundation
+ * Copyright (c) 2018-2019 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -41,6 +41,21 @@ import org.eclipse.sapphire.modeling.annotations.Service;
 import org.eclipse.sapphire.modeling.annotations.ValidFileSystemResourceType;
 import org.eclipse.sapphire.modeling.xml.annotations.XmlBinding;
 
+/**
+ * This interface represents the user properties for a Payara server.
+ * 
+ * <p>
+ * Layout of this model to create a UI is done in 
+ * <code>org.eclipse.payara.tools.ui/src/org/eclipse/payara/tools/ui/PayaraUI.sdef</code>
+ *
+ * <p>
+ * This class has direct references to XML elements in that file via
+ * the XmlBinding annotations.
+ * 
+ * <p>
+ * Data storage of this model is in the Server's general attributes, which it is
+ * coupled to via the {@link PayaraServerModelWorkingCopyAdapter} class.
+ */
 public interface IPayaraServerModel extends Element {
 
     ElementType TYPE = new ElementType(IPayaraServerModel.class);
@@ -182,4 +197,10 @@ public interface IPayaraServerModel extends Element {
     ValueProperty PROP_USE_JAR_DEPLOYMENT = new ValueProperty(TYPE, "UseJarDeployment");
     Value<Boolean> getUseJarDeployment();
     void setUseJarDeployment(Boolean value);
+    
+    String PROP_RESTART_PATTERN_DEFAULT = "//.jar$";
+    @DefaultValue(text = PROP_RESTART_PATTERN_DEFAULT)
+    ValueProperty PROP_RESTART_PATTERN = new ValueProperty(TYPE, "RestartPattern");
+    Value<String> getRestartPattern();
+    void setRestartPattern(String value);
 }

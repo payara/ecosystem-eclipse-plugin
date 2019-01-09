@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 /******************************************************************************
- * Copyright (c) 2018 Payara Foundation
+ * Copyright (c) 2018-2019 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -131,9 +131,7 @@ import org.eclipse.payara.tools.server.archives.AssembleModules;
 import org.eclipse.payara.tools.server.starting.PayaraServerLaunchDelegate;
 import org.eclipse.payara.tools.server.starting.StartupArgsImpl;
 import org.eclipse.payara.tools.utils.ResourceUtils;
-import org.eclipse.payara.tools.utils.Utils;
 import org.eclipse.wst.server.core.IModule;
-import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.internal.DeletedModule;
 import org.eclipse.wst.server.core.internal.Server;
 import org.eclipse.wst.server.core.model.ServerBehaviourDelegate;
@@ -234,13 +232,11 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
             return;
         }
 
-        needARedeploy = true; // by default
-
-        long t = System.currentTimeMillis();
+        long publishStartTime = System.currentTimeMillis();
         
         publishModuleForPayara(kind, deltaKind, module, monitor);
         
-        logMessage("done publishModule in " + (System.currentTimeMillis() - t) + " ms");
+        logMessage("done publishModule in " + (System.currentTimeMillis() - publishStartTime) + " ms");
     }
 
     @Override
@@ -654,7 +650,6 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
             
             AssembleModules assembler = new AssembleModules(module, path, getGlassfishServerDelegate(), helper);
             logMessage("Deploy direcotry " + path.toFile().getAbsolutePath());
-            
             
             String contextRoot = null;
 

@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 /******************************************************************************
- * Copyright (c) 2018 Payara Foundation
+ * Copyright (c) 2018-2019 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@
 
 package org.eclipse.payara.tools.ui.properties;
 
+import static org.eclipse.payara.tools.sapphire.IPayaraServerModel.PROP_RESTART_PATTERN;
 import static org.eclipse.payara.tools.server.PayaraServer.ATTR_ADMIN;
 import static org.eclipse.payara.tools.server.PayaraServer.ATTR_ADMINPASS;
 import static org.eclipse.payara.tools.server.PayaraServer.ATTR_ADMINPORT;
@@ -48,6 +49,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.dialogs.PropertyPage;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
+import org.eclipse.wst.server.ui.internal.editor.GlobalCommandManager;
 
 /**
  * Properties that are being shown for the Payara / GlassFish server when e.g. the server is right
@@ -129,6 +131,7 @@ public class ServerPropertyPage extends PropertyPage {
     protected void performApply() {
         try {
             IServer server = serverWorkingCopy.save(true, new NullProgressMonitor());
+            GlobalCommandManager.getInstance().reload(server.getId());
             
             scheduleShortJob("Update Payara server state", monitor -> {
                 
@@ -167,6 +170,10 @@ public class ServerPropertyPage extends PropertyPage {
         serverWorkingCopy.setAttribute(ATTR_DOMAINPATH, getDefaultDomainDir(serverWorkingCopy.getRuntime().getLocation()).toString());
         serverWorkingCopy.setAttribute(ATTR_ADMINPORT, "");
         serverWorkingCopy.setAttribute(ATTR_DEBUG_PORT, "");
+        serverWorkingCopy.setAttribute(ATTR_DEBUG_PORT, "");
+        serverWorkingCopy.setAttribute(PROP_RESTART_PATTERN.name(), "");
+        
+        
         
         model.refresh();
     }

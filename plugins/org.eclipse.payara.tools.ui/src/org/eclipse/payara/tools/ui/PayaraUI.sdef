@@ -60,8 +60,16 @@
 			<separator></separator>
 			<property-editor>PreserveSessions</property-editor>
 			<property-editor>
-				<visible-when>${ Enabled }</visible-when>
+				<visible-when>${Enabled}</visible-when>
 				<property>UseJarDeployment</property>
+			</property-editor>
+			<separator></separator>
+			<property-editor>
+				<hint>
+					<name>aux.text</name>
+					<value>In debug mode changes can be hot deployed to a local Payara without requiring reloading the application. This pattern indicates resources that when changed do trigger a reload.</value>
+				</hint>
+				<property>RestartPattern</property>
 			</property-editor>
 		</content>
 	</composite>

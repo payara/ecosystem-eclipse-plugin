@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 /******************************************************************************
- * Copyright (c) 2018 Payara Foundation
+ * Copyright (c) 2018-2019 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,8 +24,9 @@ import static org.eclipse.payara.tools.server.PayaraServer.getDefaultDomainDir;
 import static org.eclipse.payara.tools.ui.wizards.GlassfishWizardResources.wzdServerDescription;
 import static org.eclipse.payara.tools.utils.WtpUtil.load;
 import static org.eclipse.wst.server.core.TaskModel.TASK_SERVER;
-import static org.eclipse.wst.server.core.internal.Server.AUTO_PUBLISH_DISABLE;
+import static org.eclipse.wst.server.core.internal.Server.AUTO_PUBLISH_RESOURCE;
 import static org.eclipse.wst.server.core.internal.Server.PROP_AUTO_PUBLISH_SETTING;
+import static org.eclipse.wst.server.core.internal.Server.PROP_AUTO_PUBLISH_TIME;
 
 import org.eclipse.payara.tools.sapphire.IPayaraServerModel;
 import org.eclipse.payara.tools.server.PayaraServer;
@@ -69,7 +70,8 @@ public final class NewPayaraServerWizardFragment extends BaseWizardFragment {
     @Override
     protected Element getModel() {
         try {
-            server().setAttribute(PROP_AUTO_PUBLISH_SETTING, AUTO_PUBLISH_DISABLE);
+            server().setAttribute(PROP_AUTO_PUBLISH_SETTING, AUTO_PUBLISH_RESOURCE);
+            server().setAttribute(PROP_AUTO_PUBLISH_TIME, 1);
         } catch (Exception e) {
             log(e);
         }
