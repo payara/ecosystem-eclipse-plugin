@@ -570,7 +570,7 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
         boolean isJarDeploy = getGlassfishServerDelegate().getJarDeploy();
         
         if ((!isRemote && !isJarDeploy)) {
-            publishDeployedDirectory(deltaKind, publishProperties, module, monitor);
+            publishDeployedDirectory(kind, deltaKind, publishProperties, module, monitor);
         } else {
             publishJarFile(kind, deltaKind, publishProperties, module, monitor);
 
@@ -604,7 +604,7 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
         return getTempDirectory().append("publish.txt").toFile();
     }
 
-    private void publishDeployedDirectory(int deltaKind, Properties publishProperties, IModule module[], IProgressMonitor monitor) throws CoreException {
+    private void publishDeployedDirectory(int kind, int deltaKind, Properties publishProperties, IModule module[], IProgressMonitor monitor) throws CoreException {
 
         // Using PublishHelper to control the temp area to be in the same file system of the deployed apps 
     	// so that the move operation Eclipse is doing sometimes can work.
@@ -667,13 +667,15 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
                 // default
                 assembler.assembleNonWebOrNonEARModule(monitor);
             }
-
-            needARedeploy = assembler.needsARedeployment();
+            
+            if (kind == PUBLISH_INCREMENTAL || kind == PUBLISH_AUTO) {
+                needARedeploy = assembler.needsARedeployment();
+            } else {
+                needARedeploy = true;
+            }
 
             // deploy the sun resource file if there is one in path:
             registerSunResource(module, publishProperties, path);
-
-            String spath = "" + path;
 
             // BUG NEED ALSO to test if it has been deployed
             // once...isDeployed()
@@ -685,7 +687,7 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
 
                 CommandTarget command = null;
                 if (deltaKind == ADDED) {
-                    command = new CommandDeploy(name, null, new File(spath), contextRoot, properties, new File[0]);
+                    command = new CommandDeploy(name, null, new File("" + path), contextRoot, properties, new File[0]);
                 } else {
                     command = new CommandRedeploy(name, null, contextRoot, properties, new File[0], keepSession);
                 }
@@ -715,7 +717,7 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
         if (deltaKind == REMOVED) {
 
             // Same logic as directory undeploy
-            publishDeployedDirectory(deltaKind, p, module, monitor);
+            publishDeployedDirectory(kind, deltaKind, p, module, monitor);
 
         } else {
 
@@ -749,7 +751,6 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
             } catch (org.eclipse.core.commands.ExecutionException e) {
                 e.printStackTrace();
             }
-
         }
     }
 
