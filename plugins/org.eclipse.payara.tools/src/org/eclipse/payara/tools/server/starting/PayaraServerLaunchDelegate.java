@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 /******************************************************************************
- * Copyright (c) 2018 Payara Foundation
+ * Copyright (c) 2018-2019 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -55,6 +55,7 @@ import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugException;
@@ -62,12 +63,10 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.model.RuntimeProcess;
 import org.eclipse.jdt.internal.debug.core.model.JDIDebugTarget;
 import org.eclipse.jdt.launching.AbstractJavaLaunchConfigurationDelegate;
 import org.eclipse.jdt.launching.AbstractVMInstall;
-import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.payara.tools.exceptions.HttpPortUpdateException;
 import org.eclipse.payara.tools.log.IPayaraConsole;
 import org.eclipse.payara.tools.sdk.admin.ResultProcess;
@@ -94,22 +93,21 @@ import org.eclipse.wst.server.core.model.ServerDelegate;
 @SuppressWarnings("restriction")
 public class PayaraServerLaunchDelegate extends AbstractJavaLaunchConfigurationDelegate {
 
-    public static final String GFV3_MODULES_DIR_NAME = "modules"; //$NON-NLS-1$
-
     private static final int MONITOR_TOTAL_WORK = 1000;
     private static final int WORK_STEP = 200;
+    private static final IStatus DEBUG_STATUS = new Status(OK, SYMBOLIC_NAME, "Debugging");
     private static Pattern debugPortPattern = Pattern.compile("-\\S+jdwp[:=]\\S*address=([0-9]+)");
 
     @Override
     public void launch(ILaunchConfiguration configuration, String mode, ILaunch launch, IProgressMonitor monitor) throws CoreException {
 
-        logMessage("in Payara launch"); //$NON-NLS-1$
+        logMessage("in Payara launch");
 
         monitor.beginTask("Starting Payara", MONITOR_TOTAL_WORK);
 
         IServer server = getServer(configuration);
         if (server == null) {
-            abort("missing Server", null, ERR_INTERNAL_ERROR); //$NON-NLS-1$
+            abort("missing Server");
         }
 
         PayaraServerBehaviour serverBehavior = load(server, PayaraServerBehaviour.class);
@@ -123,37 +121,38 @@ public class PayaraServerLaunchDelegate extends AbstractJavaLaunchConfigurationD
             return;
         }
 
-        // Find out if our server is really running and ready
+        // Find out if our server is already running and ready
         boolean isRunning = isRunning(serverBehavior);
 
         // If server is running and the mode is debug, try to attach the debugger
         if (isRunning) {
+            
             logMessage("Server is already started!");
+            
             if (DEBUG_MODE.equals(mode)) {
                 try {
                     serverBehavior.attach(launch, configuration.getWorkingCopy(), monitor);
-                } catch (final CoreException e) {
+                } catch (CoreException e) {
                     Display.getDefault().asyncExec(() -> openError(
                             Display.getDefault().getActiveShell(),
                             "Error",
-                            "Error attaching to GlassFish Server. Please make sure the server is started in debug mode."));
+                            "Error attaching to Payara Server. Please make sure the server is started in debug mode."));
 
                     logError("Not able to attach debugger, running in normal mode", e);
-                    ((Server) serverBehavior.getServer()).setMode(RUN_MODE);
+                    
+                    serverBehavior.setPayaraServerMode(RUN_MODE);
 
                     throw e;
                 }
-                ((Server) serverBehavior.getServer())
-                        .setServerStatus(new Status(OK, SYMBOLIC_NAME, "Debugging"));
+                
+                serverBehavior.setPayaraServerStatus(DEBUG_STATUS);
             }
         }
 
         try {
             if (serverAdapter.isRemote()) {
                 if (!isRunning) {
-                    abort(
-                            "GlassFish Remote Servers cannot be start from this machine.", null,
-                            ERR_INTERNAL_ERROR);
+                    abort("Payara Remote Servers cannot be start from this machine.");
                 }
             } else {
                 if (!isRunning) {
@@ -166,7 +165,7 @@ public class PayaraServerLaunchDelegate extends AbstractJavaLaunchConfigurationD
             logError("Server start interrupted.", e);
 
             serverBehavior.setPayaraServerState(STATE_STOPPED);
-            abort("Unable to start server due interruption.", e, ERR_INTERNAL_ERROR);
+            abort("Unable to start server due interruption.");
         } catch (CoreException e) {
             getStandardConsole(serverAdapter).stopLogging(3);
             serverBehavior.setPayaraServerState(STATE_STOPPED);
@@ -175,7 +174,7 @@ public class PayaraServerLaunchDelegate extends AbstractJavaLaunchConfigurationD
             monitor.done();
         }
 
-        ((Server) serverBehavior.getServer()).setMode(mode);
+        serverBehavior.setPayaraServerMode(mode);
     }
 
     @Override
@@ -195,14 +194,14 @@ public class PayaraServerLaunchDelegate extends AbstractJavaLaunchConfigurationD
         File bootstrapJar = getJarName(serverAdapter.getServerInstallationDirectory(), GFV3_JAR_MATCHER);
 
         if (bootstrapJar == null) {
-            abort("bootstrap jar not found", null, ERR_INTERNAL_ERROR);
+            abort("bootstrap jar not found");
         }
 
         // TODO which java to use? for now ignore the one from launch config
         AbstractVMInstall/* IVMInstall */ vm = (AbstractVMInstall) serverBehavior.getRuntimeDelegate().getVMInstall();
 
         if (vm == null || vm.getInstallLocation() == null) {
-            abort("Invalid Java VM location for server " + serverAdapter.getName(), null, ERR_INTERNAL_ERROR);
+            abort("Invalid Java VM location for server " + serverAdapter.getName());
         }
 
         StartupArgsImpl startArgs = new StartupArgsImpl();
@@ -211,14 +210,6 @@ public class PayaraServerLaunchDelegate extends AbstractJavaLaunchConfigurationD
         // Program & VM args
         String programArgs = getProgramArguments(configuration);
         String vmArgs = getVMArguments(configuration);
-
-        // Bug 22543277 - required by ADF support on GF 3.1.x
-        if (vmArgs.indexOf("-Doracle.mds.cache=simple") < 0) { //$NON-NLS-1$
-            ILaunchConfigurationWorkingCopy wc = configuration.getWorkingCopy();
-            wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS,
-                    vmArgs + " -Doracle.mds.cache=simple ");//$NON-NLS-1$
-            configuration = wc.doSave();
-        }
 
         StartMode startMode = DEBUG_MODE.equals(mode) ? DEBUG : START;
         addJavaOptions(serverAdapter, mode, startArgs, vmArgs);
@@ -243,11 +234,11 @@ public class PayaraServerLaunchDelegate extends AbstractJavaLaunchConfigurationD
 
             new RuntimeProcess(launch, payaraProcess, "Payara Application Server", null);
         } catch (TimeoutException e) {
-            abort("Unable to start server on time.", e, ERR_INTERNAL_ERROR);
+            abort("Unable to start server on time.", e);
         } catch (ExecutionException e) {
-            abort("Unable to start server due following issues:", e.getCause(), ERR_INTERNAL_ERROR);
+            abort("Unable to start server due following issues:", e.getCause());
         } catch (HttpPortUpdateException e) {
-            abort("Unable to update http port. Server shut down.", e, ERR_INTERNAL_ERROR);
+            abort("Unable to update http port. Server shut down.", e);
         }
 
         try {
@@ -265,12 +256,11 @@ public class PayaraServerLaunchDelegate extends AbstractJavaLaunchConfigurationD
                 debugPort = getDebugPort(process.getValue().getArguments());
             } catch (IllegalArgumentException e) {
                 killProcesses(payaraProcess);
-                abort("Server run in debug mode but the debug port couldn't be determined!", e, ERR_INTERNAL_ERROR);
+                abort("Server run in debug mode but the debug port couldn't be determined!", e);
             }
 
             serverBehavior.attach(launch, configuration.getWorkingCopy(), monitor, debugPort);
         }
-
     }
 
     private void addJavaOptions(PayaraServer serverAdapter, String mode, StartupArgsImpl args, String vmArgs) {
@@ -326,7 +316,7 @@ public class PayaraServerLaunchDelegate extends AbstractJavaLaunchConfigurationD
                     PayaraServer thisGfServer = (PayaraServer) (load(thisServer, ServerDelegate.class));
                     if (runingGfServer.getPort() == thisGfServer.getPort()
                             || runingGfServer.getAdminPort() == thisGfServer.getAdminPort()) {
-                        abort(canntCommunicate, new RuntimeException(domainNotMatch), ERR_INTERNAL_ERROR);
+                        abort(canntCommunicate, new RuntimeException(domainNotMatch));
                         return false;
                     }
 
@@ -336,18 +326,18 @@ public class PayaraServerLaunchDelegate extends AbstractJavaLaunchConfigurationD
 
         switch (serverBehavior.getServerStatus(true)) {
         case RUNNING_CONNECTION_ERROR:
-            abort(canntCommunicate, new RuntimeException(abortLaunchMsg + domainNotMatch + checkVpnOrProxy), ERR_INTERNAL_ERROR);
+            abort(canntCommunicate, new RuntimeException(abortLaunchMsg + domainNotMatch + checkVpnOrProxy));
             break;
         case RUNNING_CREDENTIAL_PROBLEM:
-            abort(canntCommunicate, new RuntimeException(abortLaunchMsg + wrongUsernamePassword), ERR_INTERNAL_ERROR);
+            abort(canntCommunicate, new RuntimeException(abortLaunchMsg + wrongUsernamePassword));
             break;
         case RUNNING_DOMAIN_MATCHING:
             return true;
         case RUNNING_PROXY_ERROR:
-            abort(canntCommunicate, new RuntimeException(abortLaunchMsg + badGateway), ERR_INTERNAL_ERROR);
+            abort(canntCommunicate, new RuntimeException(abortLaunchMsg + badGateway));
             break;
         case STOPPED_DOMAIN_NOT_MATCHING:
-            abort(canntCommunicate, new RuntimeException(domainNotMatch), ERR_INTERNAL_ERROR);
+            abort(canntCommunicate, new RuntimeException(domainNotMatch));
             break;
         case STOPPED_NOT_LISTENING:
             return false;
@@ -358,7 +348,7 @@ public class PayaraServerLaunchDelegate extends AbstractJavaLaunchConfigurationD
         return false;
     }
 
-    private void startLogging(final PayaraServer serverAdapter, final PayaraServerBehaviour serverBehavior) {
+    private void startLogging(PayaraServer serverAdapter, PayaraServerBehaviour serverBehavior) {
         try {
             PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
                 File logFile = new File(serverAdapter.getDomainPath() + "/logs/server.log"); //$NON-NLS-1$
@@ -376,7 +366,7 @@ public class PayaraServerLaunchDelegate extends AbstractJavaLaunchConfigurationD
                 }
             });
         } catch (Exception e) {
-            logError("page.showView", e); //$NON-NLS-1$
+            logError("page.showView", e);
         }
     }
 
@@ -395,6 +385,14 @@ public class PayaraServerLaunchDelegate extends AbstractJavaLaunchConfigurationD
                 process.destroy();
             }
         }
+    }
+    
+    private void abort(String message) throws CoreException {
+        throw new CoreException(new Status(ERROR, SYMBOLIC_NAME, ERR_INTERNAL_ERROR, message, null));
+    }
+    
+    private void abort(String message, Throwable exception) throws CoreException {
+        throw new CoreException(new Status(ERROR, SYMBOLIC_NAME, ERR_INTERNAL_ERROR, message, exception));
     }
 
     static class GlassfishServerDebugListener implements IDebugEventSetListener {

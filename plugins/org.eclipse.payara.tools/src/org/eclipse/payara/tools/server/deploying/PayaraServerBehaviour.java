@@ -59,6 +59,7 @@ import static org.eclipse.payara.tools.utils.Utils.simplifyModuleID;
 import static org.eclipse.wst.common.componentcore.internal.util.ComponentUtilities.getServerContextRoot;
 import static org.eclipse.wst.server.core.IServer.PUBLISH_AUTO;
 import static org.eclipse.wst.server.core.IServer.PUBLISH_CLEAN;
+import static org.eclipse.wst.server.core.IServer.PUBLISH_FULL;
 import static org.eclipse.wst.server.core.IServer.PUBLISH_INCREMENTAL;
 import static org.eclipse.wst.server.core.IServer.PUBLISH_STATE_FULL;
 import static org.eclipse.wst.server.core.IServer.PUBLISH_STATE_NONE;
@@ -73,7 +74,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -185,7 +185,27 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
 
         return super.canStart(launchMode);
     }
+    
+    @Override
+    public boolean canRestartModule(IModule[] module) {
+        // Holds for both start, stop and restart
+        return true;
+    }
 
+    @Override
+    public void stopModule(IModule[] module, IProgressMonitor monitor) throws CoreException {
+        if (getServer().getModuleState(module) != STATE_STARTED) {
+            // Nothing to stop at this moment
+            return;
+        }
+        undeploy(module);
+    }
+    
+    @Override
+    public void startModule(IModule[] module, IProgressMonitor monitor) throws CoreException {
+        publishModule(PUBLISH_FULL, module, ADDED, monitor);
+    }
+    
     @Override
     public IStatus canRestart(String mode) {
         if (getGlassfishServerDelegate().isRemote() && !mode.equals(DEBUG_MODE)) {
@@ -335,9 +355,8 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
         undeploy(moduleName);
 
         // Retrieve the IModule for the module name
-        List<IModule[]> moduleList = getAllModules();
         IModule[] module = null;
-        for (IModule[] m : moduleList) {
+        for (IModule[] m : getAllModules()) {
             if (m.length == 1 && m[0].getName().equals(moduleName)) {
                 module = m;
                 break;
@@ -398,12 +417,30 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
     }
     
     /**
+     * Sets the server status.
+     *
+     * @param status the status of the server
+     */
+    public void setPayaraServerStatus(IStatus status) {
+        setServerStatus(status);
+    }
+    
+    /**
      * Sets the server publish state.
      *
      * @param state the publish state of the server
      */
     public void setPayaraServerPublishState(int state) {
         setServerPublishState(state);
+    }
+    
+    /**
+     * Sets the server mode.
+     *
+     * @param mode the mode of the server
+     */
+    public void setPayaraServerMode(String mode) {
+        setMode(mode);
     }
 
     /**
@@ -457,7 +494,7 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
                 updateHttpPort();
                 tryAttachDebug();
             } catch (HttpPortUpdateException e) {
-                logError("Unable to update HTTP port for server started" + "outside of IDE!", e);
+                logError("Unable to update HTTP port for server started outside of IDE!", e);
             }
             break;
         case STATE_STOPPED:
@@ -471,7 +508,7 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
     private void tryAttachDebug() {
         // Try to launch configuration - if it fails, it means we are in run mode
         // if success - debug mode
-        Thread t = new Thread("attach debugger to glassfish") {
+        Thread t = new Thread("attach debugger to Payara") {
 
             @Override
             public void run() {
@@ -605,12 +642,7 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
     }
 
     private void publishDeployedDirectory(int kind, int deltaKind, Properties publishProperties, IModule module[], IProgressMonitor monitor) throws CoreException {
-
-        // Using PublishHelper to control the temp area to be in the same file system of the deployed apps 
-    	// so that the move operation Eclipse is doing sometimes can work.
-        PublishHelper helper = new PublishHelper(
-                new Path(getGlassfishServerDelegate().getDomainPath() + "/eclipseAppsTmp").toFile());
-
+      
         if (deltaKind == REMOVED) {
         	
         	// Undeploy
@@ -619,7 +651,7 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
             logMessage("REMOVED in publishPath" + publishPath);
             
             try {
-                undeploy(simplifyModuleID(module[0].getName()));
+                undeploy(module);
             } catch (Exception e) {
                 // Bug 16876200 - UNABLE TO CLEAN PAYARA SERVER INSTANCE
                 // In case undeploy with asadmin failed, catch the exception and 
@@ -647,6 +679,12 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
             }
         	
             IPath path = new Path(getGlassfishServerDelegate().getDomainPath() + "/eclipseApps/" + module[0].getName());
+            
+            // Using PublishHelper to control the temp area to be in the same file system of the deployed apps 
+            // so that the move operation Eclipse is doing sometimes can work.
+            PublishHelper helper = new PublishHelper(
+                new Path(getGlassfishServerDelegate().getDomainPath() + "/eclipseAppsTmp").toFile());
+
             
             AssembleModules assembler = new AssembleModules(module, path, getGlassfishServerDelegate(), helper);
             logMessage("Deploy direcotry " + path.toFile().getAbsolutePath());
@@ -700,8 +738,11 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
                                 throw new IllegalStateException("deploy is failing=" + result.getValue());
                             })
                             .get();
+                    
+                    setModuleState(module, STATE_STARTED);
 
                 } catch (Exception ex) {
+                    setModuleState(module, STATE_STOPPED);
                     logError("deploy is failing=", ex);
                     throw new CoreException(new Status(ERROR, SYMBOLIC_NAME, 0, "cannot Deploy " + name, ex));
                 }
@@ -786,17 +827,21 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
         properties.put(module[0].getId(), path.toOSString());
     }
 
+    private void undeploy(IModule module[]) throws CoreException {
+        setModuleState(module, STATE_STOPPING);
+        undeploy(simplifyModuleID(module[0].getName()));
+        setModuleState(module, STATE_STOPPED);
+    }
+    
     private void undeploy(String moduleName) throws CoreException {
         try {
-
             ServerAdmin.executeOn(getGlassfishServerDelegate())
                        .command(new CommandUndeploy(moduleName))
                        .timeout(520)
                        .onNotCompleted(result -> {
                            throw new IllegalStateException("undeploy is failing=" + result.getValue());
-                       })
+                        })
                        .get();
-
         } catch (Exception ex) {
             throw new CoreException(new Status(ERROR, SYMBOLIC_NAME, 0, "cannot UnDeploy " + moduleName, ex));
         }
