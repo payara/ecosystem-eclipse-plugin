@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 /******************************************************************************
- * Copyright (c) 2018 Payara Foundation
+ * Copyright (c) 2018-2019 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,7 +31,7 @@ public class OpenServerHomeHandler extends AbstractPayaraSelectionHandler {
     @Override
     public void processSelection(IServer server) {
         try {
-            showURI(getServerHomeURI(load(server, PayaraServerBehaviour.class).getGlassfishServerDelegate()));
+            showURI(getServerHomeURI(load(server, PayaraServerBehaviour.class).getPayaraServerDelegate()));
         } catch (Exception e) {
             logMessage("Error opening folder in desktop " + e.getMessage());
         }

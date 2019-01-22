@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 /******************************************************************************
- * Copyright (c) 2018 Payara Foundation
+ * Copyright (c) 2018-2019 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,6 +33,9 @@ public class LogReader implements Runnable {
     private MessageConsoleStream output;
     private CountDownLatch latch;
     private ILogFilter filter;
+    
+    private boolean hasLogged;
+    private boolean hasProcessedPayara;
 
     LogReader(FetchLog logFetcher, MessageConsoleStream outputStream, CountDownLatch latch, ILogFilter filter) {
         this.logFetcher = logFetcher;
@@ -47,10 +50,12 @@ public class LogReader implements Runnable {
             BufferedReader reader = new BufferedReader(new InputStreamReader(logFetcher.getInputStream(), StandardCharsets.UTF_8));
 
             for (String line = null; (line = reader.readLine()) != null;) {
-                // System.out.println(line);
                 line = filter.process(line);
                 if (line != null) {
-                    // output.println("line:");
+                    hasLogged = true;
+                    if (!hasProcessedPayara) {
+                        hasProcessedPayara = filter.hasProcessedPayara();
+                    }
                     output.println(line);
                 }
             }
@@ -59,14 +64,20 @@ public class LogReader implements Runnable {
             // this happens when input stream is closed, no need to print
             // e.printStackTrace();
         } finally {
-            // System.out.println("end, closing streams...");
             logFetcher.close();
             latch.countDown();
         }
     }
+    
+    public synchronized boolean hasLogged() {
+        return hasLogged;
+    }
+    
+    public synchronized boolean hasProcessedPayara() {
+        return hasProcessedPayara;
+    }
 
-    public void stop() {
-        // System.out.println("stop called...");
+    public synchronized void stop() {
         logFetcher.close();
     }
 

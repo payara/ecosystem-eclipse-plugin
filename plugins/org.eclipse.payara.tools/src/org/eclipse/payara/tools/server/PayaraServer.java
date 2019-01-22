@@ -40,6 +40,8 @@ import static org.eclipse.payara.tools.PayaraToolsPlugin.createErrorStatus;
 import static org.eclipse.payara.tools.PayaraToolsPlugin.logError;
 import static org.eclipse.payara.tools.PayaraToolsPlugin.logMessage;
 import static org.eclipse.payara.tools.facets.internal.GlassfishDeploymentDescriptorFactory.getWebDeploymentDescriptor;
+import static org.eclipse.payara.tools.sapphire.IPayaraServerModel.PROP_ATTACH_DEBUGGER_DEFAULT;
+import static org.eclipse.payara.tools.sapphire.IPayaraServerModel.PROP_ATTACH_DEBUGGER_EARLY;
 import static org.eclipse.payara.tools.sdk.server.parser.TreeParser.readXml;
 import static org.eclipse.payara.tools.utils.ModuleUtil.isEARModule;
 import static org.eclipse.payara.tools.utils.ModuleUtil.isEJBModule;
@@ -586,6 +588,10 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
 
     public boolean getKeepSessions() {
         return getAttribute(ATTR_KEEPSESSIONS, true);
+    }
+    
+    public boolean getAttachDebuggerEarly() {
+        return getAttribute(PROP_ATTACH_DEBUGGER_EARLY.name(), PROP_ATTACH_DEBUGGER_DEFAULT);
     }
 
     public String getAdminPassword() {

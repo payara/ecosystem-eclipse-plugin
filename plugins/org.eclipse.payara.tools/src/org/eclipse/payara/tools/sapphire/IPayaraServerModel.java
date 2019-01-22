@@ -203,4 +203,14 @@ public interface IPayaraServerModel extends Element {
     ValueProperty PROP_RESTART_PATTERN = new ValueProperty(TYPE, "RestartPattern");
     Value<String> getRestartPattern();
     void setRestartPattern(String value);
+    
+    // <property-editor>AttachDebuggerEarly</property-editor>
+    
+    
+    boolean PROP_ATTACH_DEBUGGER_DEFAULT = false;
+    @Type(base = Boolean.class)
+    @DefaultValue(text = PROP_ATTACH_DEBUGGER_DEFAULT + "")
+    ValueProperty PROP_ATTACH_DEBUGGER_EARLY = new ValueProperty(TYPE, "AttachDebuggerEarly");
+    Value<Boolean> getAttachDebuggerEarly();
+    void setAttachDebuggerEarly(Boolean value);
 }

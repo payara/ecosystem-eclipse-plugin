@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 /******************************************************************************
- * Copyright (c) 2018 Payara Foundation
+ * Copyright (c) 2018-2019 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -85,7 +85,7 @@ public class UnregisterResourceAction extends Action {
                     IRunnableWithProgress op = new IRunnableWithProgress() {
                         @Override
                         public void run(IProgressMonitor monitor) {
-                            PayaraServer server = be.getGlassfishServerDelegate();
+                            PayaraServer server = be.getPayaraServerDelegate();
 
                             String propName = "";
                             boolean cascadeDelete = false;

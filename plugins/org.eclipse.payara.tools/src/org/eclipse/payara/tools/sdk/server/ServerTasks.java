@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 /******************************************************************************
- * Copyright (c) 2018 Payara Foundation
+ * Copyright (c) 2018-2019 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,7 +34,6 @@ import static org.eclipse.payara.tools.sdk.utils.ServerUtils.GF_JAVA_ROOT_PROPER
 import static org.eclipse.payara.tools.sdk.utils.ServerUtils.getDerbyRoot;
 import static org.eclipse.payara.tools.sdk.utils.ServerUtils.getDomainPath;
 import static org.eclipse.payara.tools.sdk.utils.ServerUtils.getJarName;
-import static org.eclipse.payara.tools.sdk.utils.JavaUtils.JavaVersion;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -45,7 +44,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
-import java.util.stream.Collectors;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.payara.tools.sdk.PayaraIdeException;
 import org.eclipse.payara.tools.sdk.admin.CommandStartDAS;
@@ -56,6 +56,7 @@ import org.eclipse.payara.tools.sdk.logging.Logger;
 import org.eclipse.payara.tools.sdk.server.parser.JvmConfigReader;
 import org.eclipse.payara.tools.sdk.server.parser.JvmConfigReader.JvmOption;
 import org.eclipse.payara.tools.sdk.utils.JavaUtils;
+import org.eclipse.payara.tools.sdk.utils.JavaUtils.JavaVersion;
 import org.eclipse.payara.tools.sdk.utils.OsUtils;
 import org.eclipse.payara.tools.sdk.utils.Utils;
 import org.eclipse.payara.tools.server.PayaraServer;
@@ -90,23 +91,40 @@ public class ServerTasks {
 
     /** Default name of the DAS server. */
     private static final String DAS_NAME = "server";
+    
+    private static Pattern debugPortPattern = Pattern.compile("-\\S+jdwp[:=]\\S*address=([0-9]+)");
+    private static Pattern debugSuspendPattern = Pattern.compile("-\\S+jdwp[:=]\\S*suspend=([n]+)");
 
     /**
-     * Starts local GF server.
+     * Convenient method to start Payara in START mode.
+     * <p/>
+     *
+     * @param server Payara server entity.
+     * @param args Startup arguments provided by caller.
+     * @return ResultProcess returned by CommandStartDAS to give caller opportunity to monitor the start
+     * process.
+     * @throws PayaraIdeException
+     */
+    public static ResultProcess startServer(PayaraServer server, StartupArgs args) throws PayaraIdeException {
+        return startServer(server, args, StartMode.START, false);
+    }
+    
+    /**
+     * Starts local Payara server.
      * <p/>
      * The own start is done by calling CommandStartDAS. This method prepares command-line arguments
      * that need to be provided for the command. The parameters come from domain.xml and from parameter
-     * <code>args</code> provided by caller.
+     * <code>args</code> provided by the caller.
      * <p/>
      *
-     * @param server GlassFish server entity.
+     * @param server Payara server entity.
      * @param args Startup arguments provided by caller.
      * @param mode Mode which we are starting GF in.
      * @return ResultProcess returned by CommandStartDAS to give caller opportunity to monitor the start
      * process.
      * @throws PayaraIdeException
      */
-    public static ResultProcess startServer(PayaraServer server, StartupArgs args, StartMode mode) throws PayaraIdeException {
+    public static ResultProcess startServer(PayaraServer server, StartupArgs args, StartMode mode, boolean suspendOnStart) throws PayaraIdeException {
         String METHOD = "startServer";
 
         // Reading jvm config section from domain.xml
@@ -147,8 +165,7 @@ public class ServerTasks {
             throw new PayaraIdeException(LOGGER.excMsg(METHOD, "noBootstrapJar"));
         }
 
-        // Compute classpath using properties from jvm-config element of
-        // domain.xml
+        // Compute classpath using properties from jvm-config element of domain.xml
         String classPath = computeClassPath(propMap, new File(domainAbsolutePath), bootstrapJar);
 
         StringBuilder javaOpts = new StringBuilder(1024);
@@ -161,7 +178,23 @@ public class ServerTasks {
         // It's important to add them before java options specified by user
         // in case users specified it themselves
         if (mode.equals(DEBUG)) {
-            optList.addAll(asList(propMap.get("debug-options").split("\\s+(?=-)")));
+            String debugOptions = propMap.get("debug-options");
+            
+            // Set suspend to "y" if it's "n"
+            if (suspendOnStart) {
+                Matcher debugSuspendMatcher = debugSuspendPattern.matcher(debugOptions);
+                StringBuffer buf = new StringBuffer();
+                while (debugSuspendMatcher.find()) {
+                    debugSuspendMatcher.appendReplacement(buf, 
+                        debugOptions.substring(debugSuspendMatcher.start(), debugSuspendMatcher.start(1)) + 
+                        "y" + 
+                        debugOptions.substring(debugSuspendMatcher.end(1), debugSuspendMatcher.end()));
+                }
+                
+                debugOptions = debugSuspendMatcher.appendTail(buf).toString();
+            }
+            
+            optList.addAll(asList(debugOptions.split("\\s+(?=-)")));
         }
 
         // Appending IDE specified options after the ones got from domain.xml
@@ -189,6 +222,15 @@ public class ServerTasks {
         } catch (InterruptedException | ExecutionException e) {
             throw new PayaraIdeException(LOGGER.excMsg(METHOD, "failed"), e);
         }
+    }
+    
+    public static Integer getDebugPort(ResultProcess process) {
+        Matcher debugPortMatcher = debugPortPattern.matcher(process.getValue().getArguments());
+        if (debugPortMatcher.find()) {
+            return Integer.parseInt(debugPortMatcher.group(1));
+        }
+
+        throw new IllegalArgumentException("Debug port not found in process args!");
     }
 
     /**
@@ -242,20 +284,6 @@ public class ServerTasks {
             javaOpts.append(' ');
             JavaUtils.systemProperty(javaOpts, entry.getKey(), entry.getValue());
         }
-    }
-
-    /**
-     * Convenient method to start glassfish in START mode.
-     * <p/>
-     *
-     * @param server GlassFish server entity.
-     * @param args Startup arguments provided by caller.
-     * @return ResultProcess returned by CommandStartDAS to give caller opportunity to monitor the start
-     * process.
-     * @throws PayaraIdeException
-     */
-    public static ResultProcess startServer(PayaraServer server, StartupArgs args) throws PayaraIdeException {
-        return startServer(server, args, StartMode.START);
     }
     
     private static JavaVersion getJavaVersion(String javaHome) {
@@ -377,14 +405,15 @@ public class ServerTasks {
             keyValueArgs.put(name, value);
         }
 
-        // override the values that are found in the domain.xml file.
+        // Override the values that are found in the domain.xml file.
         // this is totally a copy/paste from StartTomcat...
-        final String[] PROXY_PROPS = { "http.proxyHost", // NOI18N
-                "http.proxyPort", // NOI18N
-                "http.nonProxyHosts", // NOI18N
-                "https.proxyHost", // NOI18N
-                "https.proxyPort", // NOI18N
+        String[] PROXY_PROPS = { "http.proxyHost",
+                "http.proxyPort",
+                "http.nonProxyHosts",
+                "https.proxyHost",
+                "https.proxyPort",
         };
+        
         boolean isWindows = OsUtils.isWin();
         for (String prop : PROXY_PROPS) {
             value = System.getProperty(prop);
@@ -392,19 +421,19 @@ public class ServerTasks {
                 if (isWindows && "http.nonProxyHosts".equals(prop)) {
                     // enclose in double quotes to escape the pipes separating
                     // the hosts on windows
-                    value = "\"" + value + "\""; // NOI18N
+                    value = "\"" + value + "\"";
                 }
                 keyValueArgs.put(JavaUtils.systemPropertyName(prop), value);
             }
         }
 
-        // appending key=value options to the command line argument
+        // Appending key=value options to the command line argument
         // using the same order as they came in argument - important!
         for (String key : keyOrder) {
             argumentBuf.append(' ');
             argumentBuf.append(key);
             if (keyValueArgs.get(key) != null) {
-                argumentBuf.append("="); // NOI18N
+                argumentBuf.append("=");
                 argumentBuf.append(keyValueArgs.get(key));
             }
         }
@@ -422,7 +451,8 @@ public class ServerTasks {
             glassfishArgs.append(' ');
             glassfishArgs.append(arg);
         }
-        // remove the first space
+        
+        // Remove the first space
         if (glassfishArgs.length() > 0) {
             glassfishArgs.deleteCharAt(0);
         }

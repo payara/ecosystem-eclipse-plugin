@@ -71,6 +71,13 @@
 				</hint>
 				<property>RestartPattern</property>
 			</property-editor>
+			<property-editor>
+				<hint>
+					<name>aux.text</name>
+					<value>When checked starts Payara in suspended mode and then attaches debugger, otherwise starts normally and attaches debugger when Payara fully started.</value>
+				</hint>
+				<property>AttachDebuggerEarly</property>
+			</property-editor>
 		</content>
 	</composite>
 

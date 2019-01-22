@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 /******************************************************************************
- * Copyright (c) 2018 Payara Foundation
+ * Copyright (c) 2018-2019 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -37,6 +37,13 @@ public class PatternLogFilterV4 extends AbstractLogFilter {
 
     private static final Pattern endOfMessagePattern = Pattern.compile("^//s*[^//]]{2}\\s$"); // log message
 
+    private boolean hasProcessedPayara;
+    
+    @Override
+    public boolean hasProcessedPayara() {
+        return hasProcessedPayara;
+    }
+
     PatternLogFilterV4() {
         super();
     }
@@ -55,6 +62,7 @@ public class PatternLogFilterV4 extends AbstractLogFilter {
                 record.setMessage(m.group(9));
                 result = formatter.formatLogRecord(record);
                 reset();
+                hasProcessedPayara = true;
             } else if (!isReadingUserMessage()) {
                 PayaraToolsPlugin.logMessage("Log record that does not match expected format detected!");
                 PayaraToolsPlugin.logMessage(buffer.toString());

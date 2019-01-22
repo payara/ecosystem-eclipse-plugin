@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 /******************************************************************************
- * Copyright (c) 2018 Payara Foundation
+ * Copyright (c) 2018-2019 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,16 +23,24 @@ import org.eclipse.ui.console.IConsole;
 
 public interface IPayaraConsole extends IConsole {
 
-    public void startLogging();
+    void startLogging();
 
-    public void startLogging(FetchLog... logFetchers);
+    void startLogging(FetchLog... logFetchers);
+    
+    void setLogFilter(ILogFilter filter);
+    
+    boolean isLogging();
+    
+    boolean hasLogged();
+    
+    boolean hasLoggedPayara();
 
-    public void stopLogging();
+    void stopLogging();
 
-    public void stopLogging(int afterSeconds);
+    void stopLogging(int afterSeconds);
 
-    public boolean isLogging();
+    
 
-    public void setLogFilter(ILogFilter filter);
+    
 
 }

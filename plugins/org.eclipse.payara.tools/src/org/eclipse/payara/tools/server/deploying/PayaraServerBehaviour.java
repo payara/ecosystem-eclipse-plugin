@@ -25,7 +25,6 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.eclipse.core.runtime.IStatus.ERROR;
 import static org.eclipse.core.runtime.IStatus.OK;
 import static org.eclipse.core.runtime.IStatus.WARNING;
-import static org.eclipse.core.runtime.Status.OK_STATUS;
 import static org.eclipse.debug.core.DebugEvent.TERMINATE;
 import static org.eclipse.debug.core.ILaunchManager.DEBUG_MODE;
 import static org.eclipse.debug.core.ILaunchManager.RUN_MODE;
@@ -41,12 +40,9 @@ import static org.eclipse.payara.tools.PayaraToolsPlugin.createErrorStatus;
 import static org.eclipse.payara.tools.PayaraToolsPlugin.logError;
 import static org.eclipse.payara.tools.PayaraToolsPlugin.logMessage;
 import static org.eclipse.payara.tools.log.PayaraConsoleManager.getStandardConsole;
-import static org.eclipse.payara.tools.log.PayaraConsoleManager.getStartupProcessConsole;
-import static org.eclipse.payara.tools.log.PayaraConsoleManager.showConsole;
 import static org.eclipse.payara.tools.sdk.TaskState.COMPLETED;
 import static org.eclipse.payara.tools.sdk.admin.CommandStopDAS.stopDAS;
 import static org.eclipse.payara.tools.sdk.admin.ServerAdmin.exec;
-import static org.eclipse.payara.tools.sdk.server.ServerTasks.startServer;
 import static org.eclipse.payara.tools.server.PayaraServer.DEFAULT_DEBUG_PORT;
 import static org.eclipse.payara.tools.server.ServerStatus.RUNNING_DOMAIN_MATCHING;
 import static org.eclipse.payara.tools.server.ServerStatus.STOPPED_NOT_LISTENING;
@@ -83,6 +79,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeoutException;
+import java.util.function.Consumer;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -99,17 +96,13 @@ import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jdt.internal.debug.core.model.JDIDebugTarget;
 import org.eclipse.jdt.internal.launching.JavaRemoteApplicationLaunchConfigurationDelegate;
 import org.eclipse.jst.server.core.IEnterpriseApplication;
-import org.eclipse.payara.tools.PayaraToolsPlugin;
 import org.eclipse.payara.tools.exceptions.HttpPortUpdateException;
-import org.eclipse.payara.tools.exceptions.PayaraLaunchException;
 import org.eclipse.payara.tools.internal.PayaraStateResolver;
 import org.eclipse.payara.tools.internal.ServerStateListener;
 import org.eclipse.payara.tools.internal.ServerStatusMonitor;
-import org.eclipse.payara.tools.log.IPayaraConsole;
 import org.eclipse.payara.tools.sdk.PayaraIdeException;
 import org.eclipse.payara.tools.sdk.admin.CommandAddResources;
 import org.eclipse.payara.tools.sdk.admin.CommandDeploy;
@@ -122,13 +115,13 @@ import org.eclipse.payara.tools.sdk.admin.ResultMap;
 import org.eclipse.payara.tools.sdk.admin.ResultProcess;
 import org.eclipse.payara.tools.sdk.admin.ResultString;
 import org.eclipse.payara.tools.sdk.admin.ServerAdmin;
-import org.eclipse.payara.tools.sdk.server.FetchLogSimple;
 import org.eclipse.payara.tools.sdk.server.ServerTasks.StartMode;
 import org.eclipse.payara.tools.server.PayaraRuntime;
 import org.eclipse.payara.tools.server.PayaraServer;
 import org.eclipse.payara.tools.server.ServerStatus;
 import org.eclipse.payara.tools.server.archives.AssembleModules;
 import org.eclipse.payara.tools.server.starting.PayaraServerLaunchDelegate;
+import org.eclipse.payara.tools.server.starting.PayaraStartJob;
 import org.eclipse.payara.tools.server.starting.StartupArgsImpl;
 import org.eclipse.payara.tools.utils.ResourceUtils;
 import org.eclipse.wst.server.core.IModule;
@@ -150,6 +143,8 @@ import org.eclipse.wst.server.core.util.PublishHelper;
  */
 @SuppressWarnings("restriction")
 public final class PayaraServerBehaviour extends ServerBehaviourDelegate implements ServerStateListener {
+    
+    private static final IStatus OK_STATUS = new Status(OK, SYMBOLIC_NAME, "");
 
     // initialized
     protected boolean needARedeploy = true; // by default, will be calculated..
@@ -169,9 +164,9 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
     @Override
     protected void initialize(IProgressMonitor monitor) {
         super.initialize(monitor);
-        logMessage("in Behaviour initialize for " + getGlassfishServerDelegate().getName());
+        logMessage("in Behaviour initialize for " + getPayaraServerDelegate().getName());
 
-        statusMonitor = ServerStatusMonitor.getInstance(getGlassfishServerDelegate(), this);
+        statusMonitor = ServerStatusMonitor.getInstance(getPayaraServerDelegate(), this);
         statusMonitor.start();
     }
 
@@ -179,7 +174,7 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
 
     @Override
     public IStatus canStart(String launchMode) {
-        if (getGlassfishServerDelegate().isRemote()) {
+        if (getPayaraServerDelegate().isRemote()) {
             return new Status(ERROR, SYMBOLIC_NAME, "Start remote Glassfish server is not supported");
         }
 
@@ -208,7 +203,7 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
     
     @Override
     public IStatus canRestart(String mode) {
-        if (getGlassfishServerDelegate().isRemote() && !mode.equals(DEBUG_MODE)) {
+        if (getPayaraServerDelegate().isRemote() && !mode.equals(DEBUG_MODE)) {
             return new Status(ERROR, SYMBOLIC_NAME, "Restart remote Glassfish server is not supported");
         }
 
@@ -217,7 +212,7 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
 
     @Override
     public void restart(final String launchMode) throws CoreException {
-        if (getGlassfishServerDelegate().isRemote() && launchMode.equals(DEBUG_MODE)) {
+        if (getPayaraServerDelegate().isRemote() && launchMode.equals(DEBUG_MODE)) {
             ((Server) getServer()).setServerStatus(
                     new Status(OK, SYMBOLIC_NAME, "Attaching to remote server..."));
         }
@@ -246,7 +241,7 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
     public void publishModule(int kind, int deltaKind, IModule[] module, IProgressMonitor monitor) throws CoreException {
 
         // First, test if the server still exists
-        File serverloc = new File(getGlassfishServerDelegate().getServerInstallationDirectory());
+        File serverloc = new File(getPayaraServerDelegate().getServerInstallationDirectory());
         if (!serverloc.exists()) {
             logError(bind(serverDirectoryGone, serverloc.getAbsolutePath()), null);
             return;
@@ -292,7 +287,7 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
 
     @Override
     public IStatus canStop() {
-        if (!getGlassfishServerDelegate().isRemote()) {
+        if (!getPayaraServerDelegate().isRemote()) {
             return OK_STATUS;
         }
 
@@ -309,16 +304,16 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
     public void dispose() {
         super.dispose();
         statusMonitor.stop();
-        logMessage("in Behaviour dispose for " + getGlassfishServerDelegate().getName());
+        logMessage("in Behaviour dispose for " + getPayaraServerDelegate().getName());
     }
     
 
     // #### API for external callers
 
     /*
-     * get the correct adapter for the GlassFish server
+     * get the correct adapter for the Payara server
      */
-    public PayaraServer getGlassfishServerDelegate() {
+    public PayaraServer getPayaraServerDelegate() {
         PayaraServer payaraServer = getServer().getAdapter(PayaraServer.class);
         if (payaraServer == null) {
             payaraServer = (PayaraServer) getServer().loadAdapter(PayaraServer.class, new NullProgressMonitor());
@@ -354,57 +349,24 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
     public void undeploy(String moduleName, IProgressMonitor monitor) throws CoreException {
         undeploy(moduleName);
 
-        // Retrieve the IModule for the module name
-        IModule[] module = null;
-        for (IModule[] m : getAllModules()) {
-            if (m.length == 1 && m[0].getName().equals(moduleName)) {
-                module = m;
+        // Retrieve the Module for the module name we want to undeploy
+        IModule[] undeployModule = null;
+        for (IModule[] module : getAllModules()) {
+            if (module.length == 1 && module[0].getName().equals(moduleName)) {
+                undeployModule = module;
                 break;
             }
         }
 
         // If we were able to map module name to IModule, set publish state
         // to Full to tell a full deploy would be needed
-        if (module != null) {
-            setModulePublishState(module, PUBLISH_STATE_FULL);
+        if (undeployModule != null) {
+            setModulePublishState(undeployModule, PUBLISH_STATE_FULL);
         }
     }
 
     public PayaraRuntime getRuntimeDelegate() {
         return (PayaraRuntime) getServer().getRuntime().loadAdapter(PayaraRuntime.class, null);
-    }
-
-    public ResultProcess launchServer(StartupArgsImpl payaraStartArguments, StartMode launchMode, IProgressMonitor monitor) throws TimeoutException, InterruptedException, ExecutionException, HttpPortUpdateException {
-        setPayaraServerState(STATE_STARTING);
-        
-        ResultProcess process = waitForPayaraStarted(
-            asyncJobsService.submit(new StartJob(payaraStartArguments, launchMode)), 
-            monitor);
-        
-        updateHttpPort();
-        
-        return process;
-    }
-    
-    private ResultProcess waitForPayaraStarted(Future<ResultProcess> futureProcess, IProgressMonitor monitor) throws TimeoutException, InterruptedException, ExecutionException {
-        long endTime = System.currentTimeMillis() + (getServer().getStartTimeout() * 1000);
-        
-        while (System.currentTimeMillis() < endTime) {
-            
-            try {
-                return futureProcess.get(500, MILLISECONDS);
-            } catch (TimeoutException e) {
-                if (monitor.isCanceled()) {
-                    futureProcess.cancel(true);
-                    // TODO: check if Payara indeed stopped and if not explicitly give stop command
-                    serverStateChanged(STATE_STOPPED);
-                    setPayaraServerState(STATE_STOPPED);
-                    throw new OperationCanceledException();
-                }
-            }
-        }
-        
-        throw new TimeoutException("Timeout while waiting for Payara to start");
     }
 
     /**
@@ -444,7 +406,7 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
     }
 
     /**
-     * Called to attempt to attach debugger to running glassfish.
+     * Called to attempt to attach debugger to running Payara.
      *
      * @param launch
      * @param config
@@ -452,13 +414,12 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
      * @throws CoreException
      */
     public void attach(ILaunch launch, ILaunchConfigurationWorkingCopy config, IProgressMonitor monitor) throws CoreException {
-        PayaraServer serverDelegate = getGlassfishServerDelegate();
-        int debugPort = serverDelegate.getDebugPort();
-        debugPort = debugPort == -1 ? DEFAULT_DEBUG_PORT : debugPort;
-        attach(launch, config, monitor, debugPort);
+        int debugPort = getPayaraServerDelegate().getDebugPort();
+        
+        attach(launch, config, monitor, debugPort == -1 ? DEFAULT_DEBUG_PORT : debugPort);
     }
 
-    public void attach(final ILaunch launch, ILaunchConfigurationWorkingCopy config, IProgressMonitor monitor, int debugPort) throws CoreException {
+    public void attach(ILaunch launch, ILaunchConfigurationWorkingCopy config, IProgressMonitor monitor, int debugPort) throws CoreException {
         setDebugArgument(config, "hostname", getServer().getHost());
         setDebugArgument(config, "port", String.valueOf(debugPort));
 
@@ -471,11 +432,17 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
                 for (DebugEvent event : events) {
                     if (event.getKind() == TERMINATE && event.getSource() instanceof JDIDebugTarget) {
                         JDIDebugTarget debugTarget = (JDIDebugTarget) event.getSource();
-                        if (debugTarget != null && debugTarget.getLaunch().getLaunchConfiguration() == launch
-                                .getLaunchConfiguration()) {
+                        
+                        if (debugTarget == null) {
+                            continue;
+                        }
+                        
+                        if (debugTarget.getLaunch().getLaunchConfiguration() == launch.getLaunchConfiguration()) {
+                            
                             DebugPlugin.getDefault().removeDebugEventListener(this);
-                            ((Server) getServer()).setMode(RUN_MODE);
-                            ((Server) getServer()).setServerStatus(new Status(OK, SYMBOLIC_NAME, ""));
+                            
+                            setPayaraServerMode(RUN_MODE);
+                            setPayaraServerStatus(OK_STATUS);
 
                             return;
                         }
@@ -487,67 +454,38 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
 
     // #### Implementation of life-cycle methods defined above
 
-    private void serverStateChanged(int serverState) {
+    public void serverStateChanged(int serverState) {
         switch (serverState) {
-        case STATE_STARTED:
-            try {
-                updateHttpPort();
-                tryAttachDebug();
-            } catch (HttpPortUpdateException e) {
-                logError("Unable to update HTTP port for server started outside of IDE!", e);
-            }
-            break;
-        case STATE_STOPPED:
-            setLaunch(null);
-            break;
-        default:
-            break;
-        }
-    }
-
-    private void tryAttachDebug() {
-        // Try to launch configuration - if it fails, it means we are in run mode
-        // if success - debug mode
-        Thread t = new Thread("attach debugger to Payara") {
-
-            @Override
-            public void run() {
+            case STATE_STARTED:
                 try {
-                    // This will not really run Payara because it is already running
-                    // just tries to attach debugger
-                    ILaunchConfiguration config = getServer().getLaunchConfiguration(true, null);
-                    ILaunch launch = getServer().getLaunch();
-                    if (launch != null) {
-                        String mode = launch.getLaunchMode();
-                        if (mode.equals(ILaunchManager.DEBUG_MODE)) {
-                            // config.launch(ILaunchManager.DEBUG_MODE, null);
-                        }
-                    }
-                } catch (CoreException e) {
-                    logMessage("Unable to attach debugger, running in normal mode");
+                    updateHttpPort();
+                } catch (HttpPortUpdateException e) {
+                    logError("Unable to update HTTP port for server started outside of IDE!", e);
                 }
+                break;
+            case STATE_STOPPED:
+                setLaunch(null);
+                break;
+            default:
+                break;
             }
-
-        };
-
-        t.start();
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     private void setDebugArgument(ILaunchConfigurationWorkingCopy config, String key, String arg) {
         try {
-            Map args = config.getAttribute(ATTR_CONNECT_MAP, (Map) null);
+            Map<String, String> args = config.getAttribute(ATTR_CONNECT_MAP, (Map) null);
 
             if (args != null) {
-                args = new HashMap(args);
+                args = new HashMap<>(args);
             } else {
-                args = new HashMap();
+                args = new HashMap<>();
             }
             args.put(key, String.valueOf(arg));
 
             config.setAttribute(ATTR_CONNECT_MAP, args);
         } catch (CoreException ce) {
-            PayaraToolsPlugin.logError("Error when setting debug argument for remote GF", ce);
+            logError("Error when setting debug argument for remote Payara", ce);
         }
     }
 
@@ -580,11 +518,11 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
             
             for (IModule m : earModule.getModules()) {
                 IModule[] modules = { module[0], m };
-                if (PUBLISH_STATE_NONE != getGlassfishServerDelegate().getServer().getModulePublishState(modules)) {
+                if (PUBLISH_STATE_NONE != getPayaraServerDelegate().getServer().getModulePublishState(modules)) {
                     return true;
                 }
             }
-        } else if (PUBLISH_STATE_NONE != getGlassfishServerDelegate().getServer().getModulePublishState(module)) {
+        } else if (PUBLISH_STATE_NONE != getPayaraServerDelegate().getServer().getModulePublishState(module)) {
             return true;
         }
         
@@ -603,8 +541,8 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
 
         Properties publishProperties = loadPublishProperties();
 
-        boolean isRemote = getGlassfishServerDelegate().isRemote();
-        boolean isJarDeploy = getGlassfishServerDelegate().getJarDeploy();
+        boolean isRemote = getPayaraServerDelegate().isRemote();
+        boolean isJarDeploy = getPayaraServerDelegate().getJarDeploy();
         
         if ((!isRemote && !isJarDeploy)) {
             publishDeployedDirectory(kind, deltaKind, publishProperties, module, monitor);
@@ -678,15 +616,15 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
                 return;
             }
         	
-            IPath path = new Path(getGlassfishServerDelegate().getDomainPath() + "/eclipseApps/" + module[0].getName());
+            IPath path = new Path(getPayaraServerDelegate().getDomainPath() + "/eclipseApps/" + module[0].getName());
             
             // Using PublishHelper to control the temp area to be in the same file system of the deployed apps 
             // so that the move operation Eclipse is doing sometimes can work.
             PublishHelper helper = new PublishHelper(
-                new Path(getGlassfishServerDelegate().getDomainPath() + "/eclipseAppsTmp").toFile());
+                new Path(getPayaraServerDelegate().getDomainPath() + "/eclipseAppsTmp").toFile());
 
             
-            AssembleModules assembler = new AssembleModules(module, path, getGlassfishServerDelegate(), helper);
+            AssembleModules assembler = new AssembleModules(module, path, getPayaraServerDelegate(), helper);
             logMessage("Deploy direcotry " + path.toFile().getAbsolutePath());
             
             String contextRoot = null;
@@ -721,7 +659,7 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
 
                 String name = simplifyModuleID(module[0].getName());
                 Map<String, String> properties = getDeploymentProperties();
-                boolean keepSession = getGlassfishServerDelegate().getKeepSessions();
+                boolean keepSession = getPayaraServerDelegate().getKeepSessions();
 
                 CommandTarget command = null;
                 if (deltaKind == ADDED) {
@@ -731,7 +669,7 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
                 }
 
                 try {
-                    ServerAdmin.executeOn(getGlassfishServerDelegate())
+                    ServerAdmin.executeOn(getPayaraServerDelegate())
                             .command(command)
                             .onNotCompleted(result -> {
                                 logMessage("deploy is failing=" + result.getValue());
@@ -776,7 +714,7 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
                 // keepSession state is NOT supported in redeploy as JAR
 
                 try {
-                    ServerAdmin.executeOn(getGlassfishServerDelegate())
+                    ServerAdmin.executeOn(getPayaraServerDelegate())
                             .command(new CommandDeploy(name, null, archivePath, contextRoot, getDeploymentProperties(), new File[0]))
                             .timeout(520)
                             .onNotCompleted(result -> {
@@ -809,9 +747,9 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
 
         File sunResource = new File("" + path, location);
         if (sunResource.exists()) {
-            checkUpdateServerResources(sunResource, getGlassfishServerDelegate());
+            checkUpdateServerResources(sunResource, getPayaraServerDelegate());
             try {
-                Future<ResultString> future = ServerAdmin.<ResultString>exec(getGlassfishServerDelegate(),
+                Future<ResultString> future = ServerAdmin.<ResultString>exec(getPayaraServerDelegate(),
                         new CommandAddResources(sunResource, null));
                 ResultString result = future.get(120, SECONDS);
 
@@ -835,7 +773,7 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
     
     private void undeploy(String moduleName) throws CoreException {
         try {
-            ServerAdmin.executeOn(getGlassfishServerDelegate())
+            ServerAdmin.executeOn(getPayaraServerDelegate())
                        .command(new CommandUndeploy(moduleName))
                        .timeout(520)
                        .onNotCompleted(result -> {
@@ -847,10 +785,10 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
         }
     }
 
-    private void updateHttpPort() throws HttpPortUpdateException {
+    public void updateHttpPort() throws HttpPortUpdateException {
         PayaraServer server = (PayaraServer) getServer().createWorkingCopy().loadAdapter(PayaraServer.class, null);
         
-        Future<ResultMap<String, String>> future = exec(getGlassfishServerDelegate(), new CommandGetProperty("*.server-config.*.http-listener-1.port"));
+        Future<ResultMap<String, String>> future = exec(getPayaraServerDelegate(), new CommandGetProperty("*.server-config.*.http-listener-1.port"));
         
         ResultMap<String, String> result = null;
 
@@ -889,9 +827,9 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
     private Map<String, String> getDeploymentProperties() {
         Map<String, String> properties = new HashMap<>();
 
-        String preserveSessionKey = getGlassfishServerDelegate().computePreserveSessions();
+        String preserveSessionKey = getPayaraServerDelegate().computePreserveSessions();
         if (preserveSessionKey != null) {
-            properties.put(preserveSessionKey, Boolean.toString(getGlassfishServerDelegate().getKeepSessions()));
+            properties.put(preserveSessionKey, Boolean.toString(getPayaraServerDelegate().getKeepSessions()));
         }
 
         return properties;
@@ -921,7 +859,7 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
                 statusMsg = invalidCredentials;
                 break;
             case STOPPED_DOMAIN_NOT_MATCHING:
-                if (!getGlassfishServerDelegate().isRemote()) {
+                if (!getPayaraServerDelegate().isRemote()) {
                     statusMsg = serverNotMatchingLocal;
                 } else {
                     statusMsg = serverNotMatchingRemote;
@@ -950,7 +888,7 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
      * @stop GlassFish v3 or v3 prelude via http command
      */
     private void stopServer(boolean stopLogging) {
-        PayaraServer server = getGlassfishServerDelegate();
+        PayaraServer server = getPayaraServerDelegate();
 
         // Shouldn't allow stop remote server
         if (server.isRemote()) {
@@ -989,97 +927,12 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
 
     // ### Jobs
 
-    private class StartJob implements Callable<ResultProcess> {
-
-        private StartupArgsImpl args;
-        private StartMode mode;
-
-        StartJob(StartupArgsImpl args, StartMode mode) {
-            super();
-            this.args = args;
-            this.mode = mode;
-        }
-
-        @Override
-        public ResultProcess call() throws Exception {
-            ResultProcess process = null;
-
-            try {
-                process = startServer(getGlassfishServerDelegate(), args, mode);
-            } catch (PayaraIdeException e) {
-                throw new PayaraLaunchException("Exception in startup library.", e);
-            }
-
-            Process payaraProcess = process.getValue().getProcess();
-            
-            // Read process output to prevent process'es blocking
-            IPayaraConsole startupConsole = getStartupProcessConsole(getGlassfishServerDelegate(), payaraProcess);
-            
-            startupConsole.startLogging(
-                    new FetchLogSimple(payaraProcess.getInputStream()),
-                    new FetchLogSimple(payaraProcess.getErrorStream()));
-
-            synchronized (PayaraServerBehaviour.this) {
-                check_server_status: while (true) {
-                    ServerStatus status = getServerStatus(false);
-                    
-                    switch (status) {
-                        case STOPPED_NOT_LISTENING:
-                            try {
-                                int exitCode = payaraProcess.exitValue();
-                                
-                                if (exitCode != 0) {
-                                    // Something bad happened, show user startup console
-                                    
-                                    logMessage("launch failed with exit code " + exitCode);
-                                    showConsole(startupConsole);
-                                    
-                                    throw new PayaraLaunchException("Launch process failed with exit code " + exitCode);
-                                }
-                            } catch (IllegalThreadStateException e) {// still running, keep waiting
-                            }
-                            break;
-                        case RUNNING_PROXY_ERROR:
-                            startupConsole.stopLogging();
-                            payaraProcess.destroy();
-                            
-                            throw new PayaraLaunchException("BAD GATEWAY response code returned. Check your proxy settings. Killing startup process.",
-                                    payaraProcess);
-                        case RUNNING_CREDENTIAL_PROBLEM:
-                            startupConsole.stopLogging();
-                            payaraProcess.destroy();
-                            
-                            throw new PayaraLaunchException("Wrong user name or password. Killing startup process.", payaraProcess);
-                        case RUNNING_DOMAIN_MATCHING:
-                            startupConsole.stopLogging();
-                            break check_server_status;
-                        default:
-                            break;
-                    }
-                    
-                    // Wait for notification when server state changes
-                    try {
-                        // Limit waiting so we can check process exit code again
-                        PayaraServerBehaviour.this.wait(5000);
-                    } catch (InterruptedException e) {
-                        startupConsole.stopLogging();
-                        payaraProcess.destroy();
-                        
-                        throw e;
-                    }
-                }
-            }
-
-            return process;
-        }
-
-    }
-
+    
     private class StopJob implements Callable<ResultString> {
 
         @Override
         public ResultString call() throws Exception {
-            ResultString result = stopDAS(getGlassfishServerDelegate());
+            ResultString result = stopDAS(getPayaraServerDelegate());
 
             // Check if server is stopped
             if (!COMPLETED.equals(result.getState())) {

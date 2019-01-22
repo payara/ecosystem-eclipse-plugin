@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 /******************************************************************************
- * Copyright (c) 2018 Payara Foundation
+ * Copyright (c) 2018-2019 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -130,8 +130,37 @@ public class PayaraConsole extends AbstractPayaraConsole implements IPayaraConso
 
     @Override
     public synchronized boolean isLogging() {
-        boolean isLogging = (readers != null) && (readers.size() > 0) && (stopJobResult == null);
-        return isLogging;
+        return (readers != null) && (readers.size() > 0) && (stopJobResult == null);
+    }
+    
+    @Override
+    public synchronized boolean hasLogged() {
+        if (readers == null) {
+            return false;
+        }
+        
+        for (LogReader logReader : readers) {
+            if (logReader.hasLogged()) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    @Override
+    public synchronized boolean hasLoggedPayara() {
+        if (readers == null) {
+            return false;
+        }
+        
+        for (LogReader logReader : readers) {
+            if (logReader.hasProcessedPayara()) {
+                return true;
+            }
+        }
+        
+        return false;
     }
 
     @Override

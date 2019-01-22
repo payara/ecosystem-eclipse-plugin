@@ -21,6 +21,7 @@ package org.eclipse.payara.tools.sapphire;
 import static org.eclipse.payara.tools.sapphire.IPayaraServerModel.PROP_ADMIN_NAME;
 import static org.eclipse.payara.tools.sapphire.IPayaraServerModel.PROP_ADMIN_PASSWORD;
 import static org.eclipse.payara.tools.sapphire.IPayaraServerModel.PROP_ADMIN_PORT;
+import static org.eclipse.payara.tools.sapphire.IPayaraServerModel.PROP_ATTACH_DEBUGGER_EARLY;
 import static org.eclipse.payara.tools.sapphire.IPayaraServerModel.PROP_DEBUG_PORT;
 import static org.eclipse.payara.tools.sapphire.IPayaraServerModel.PROP_DOMAIN_PATH;
 import static org.eclipse.payara.tools.sapphire.IPayaraServerModel.PROP_HOST_NAME;
@@ -171,6 +172,10 @@ public class PayaraServerModelWorkingCopyAdapter extends Resource {
 
         if (propertyDef == PROP_RESTART_PATTERN) {
             return new AttributeValueBinding(workingCopy, PROP_RESTART_PATTERN.name());
+        }
+        
+        if (propertyDef == PROP_ATTACH_DEBUGGER_EARLY) {
+            return new AttributeValueBinding(workingCopy, PROP_ATTACH_DEBUGGER_EARLY.name());
         }
 
         throw new IllegalStateException();

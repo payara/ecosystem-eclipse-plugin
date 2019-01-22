@@ -18,9 +18,9 @@
 
 package org.eclipse.payara.tools.server.starting;
 
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.eclipse.core.runtime.IStatus.ERROR;
 import static org.eclipse.core.runtime.IStatus.OK;
-import static org.eclipse.debug.core.DebugEvent.TERMINATE;
 import static org.eclipse.debug.core.DebugPlugin.ATTR_CAPTURE_OUTPUT;
 import static org.eclipse.debug.core.ILaunchManager.DEBUG_MODE;
 import static org.eclipse.debug.core.ILaunchManager.RUN_MODE;
@@ -37,6 +37,7 @@ import static org.eclipse.payara.tools.PayaraToolsPlugin.logError;
 import static org.eclipse.payara.tools.PayaraToolsPlugin.logMessage;
 import static org.eclipse.payara.tools.log.PayaraConsoleManager.getStandardConsole;
 import static org.eclipse.payara.tools.log.PayaraConsoleManager.showConsole;
+import static org.eclipse.payara.tools.sdk.server.ServerTasks.getDebugPort;
 import static org.eclipse.payara.tools.sdk.server.ServerTasks.StartMode.DEBUG;
 import static org.eclipse.payara.tools.sdk.server.ServerTasks.StartMode.START;
 import static org.eclipse.payara.tools.sdk.utils.ServerUtils.GFV3_JAR_MATCHER;
@@ -44,27 +45,25 @@ import static org.eclipse.payara.tools.sdk.utils.ServerUtils.getJarName;
 import static org.eclipse.payara.tools.sdk.utils.Utils.quote;
 import static org.eclipse.payara.tools.utils.WtpUtil.load;
 import static org.eclipse.wst.server.core.IServer.STATE_STARTED;
+import static org.eclipse.wst.server.core.IServer.STATE_STARTING;
 import static org.eclipse.wst.server.core.IServer.STATE_STOPPED;
 import static org.eclipse.wst.server.core.ServerUtil.getServer;
 
 import java.io.File;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeoutException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.debug.core.DebugEvent;
-import org.eclipse.debug.core.DebugException;
-import org.eclipse.debug.core.DebugPlugin;
-import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.RuntimeProcess;
-import org.eclipse.jdt.internal.debug.core.model.JDIDebugTarget;
 import org.eclipse.jdt.launching.AbstractJavaLaunchConfigurationDelegate;
 import org.eclipse.jdt.launching.AbstractVMInstall;
 import org.eclipse.payara.tools.exceptions.HttpPortUpdateException;
@@ -78,7 +77,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
-import org.eclipse.wst.server.core.internal.Server;
 import org.eclipse.wst.server.core.model.ServerDelegate;
 
 /**
@@ -90,13 +88,13 @@ import org.eclipse.wst.server.core.model.ServerDelegate;
  * </p>
  *
  */
-@SuppressWarnings("restriction")
 public class PayaraServerLaunchDelegate extends AbstractJavaLaunchConfigurationDelegate {
 
     private static final int MONITOR_TOTAL_WORK = 1000;
-    private static final int WORK_STEP = 200;
+    public static final int WORK_STEP = 200;
     private static final IStatus DEBUG_STATUS = new Status(OK, SYMBOLIC_NAME, "Debugging");
-    private static Pattern debugPortPattern = Pattern.compile("-\\S+jdwp[:=]\\S*address=([0-9]+)");
+    
+    private static final ExecutorService asyncJobsService = Executors.newCachedThreadPool();
 
     @Override
     public void launch(ILaunchConfiguration configuration, String mode, ILaunch launch, IProgressMonitor monitor) throws CoreException {
@@ -176,6 +174,44 @@ public class PayaraServerLaunchDelegate extends AbstractJavaLaunchConfigurationD
 
         serverBehavior.setPayaraServerMode(mode);
     }
+    
+    public ResultProcess launchServer(PayaraServerBehaviour serverBehavior, StartupArgsImpl payaraStartArguments, StartMode launchMode, IProgressMonitor monitor, ILaunchConfiguration configuration, ILaunch launch) throws TimeoutException, InterruptedException, ExecutionException, HttpPortUpdateException {
+        serverBehavior.setPayaraServerState(STATE_STARTING);
+        
+        ResultProcess process = waitForPayaraStarted(
+            serverBehavior,
+            asyncJobsService.submit(new PayaraStartJob(
+                serverBehavior, 
+                payaraStartArguments, launchMode,
+                configuration, launch, monitor
+                )),
+            monitor);
+        
+        serverBehavior.updateHttpPort();
+        
+        return process;
+    }
+    
+    private ResultProcess waitForPayaraStarted(PayaraServerBehaviour serverBehavior, Future<ResultProcess> futureProcess, IProgressMonitor monitor) throws TimeoutException, InterruptedException, ExecutionException {
+        long endTime = System.currentTimeMillis() + (serverBehavior.getServer().getStartTimeout() * 1000);
+        
+        while (System.currentTimeMillis() < endTime) {
+            
+            try {
+                return futureProcess.get(500, MILLISECONDS);
+            } catch (TimeoutException e) {
+                if (monitor.isCanceled()) {
+                    futureProcess.cancel(true);
+                    // TODO: check if Payara indeed stopped and if not explicitly give stop command
+                    serverBehavior.serverStateChanged(STATE_STOPPED);
+                    serverBehavior.setPayaraServerState(STATE_STOPPED);
+                    throw new OperationCanceledException();
+                }
+            }
+        }
+        
+        throw new TimeoutException("Timeout while waiting for Payara to start");
+    }
 
     @Override
     protected void abort(String message, Throwable exception, int code) throws CoreException {
@@ -188,11 +224,7 @@ public class PayaraServerLaunchDelegate extends AbstractJavaLaunchConfigurationD
             ILaunchConfiguration configuration, ILaunch launch, String mode, IProgressMonitor monitor)
             throws CoreException, InterruptedException {
 
-        String domain = serverAdapter.getDomainName();
-        String domainAbsolutePath = serverAdapter.getDomainPath();
-
         File bootstrapJar = getJarName(serverAdapter.getServerInstallationDirectory(), GFV3_JAR_MATCHER);
-
         if (bootstrapJar == null) {
             abort("bootstrap jar not found");
         }
@@ -214,21 +246,20 @@ public class PayaraServerLaunchDelegate extends AbstractJavaLaunchConfigurationD
         StartMode startMode = DEBUG_MODE.equals(mode) ? DEBUG : START;
         addJavaOptions(serverAdapter, mode, startArgs, vmArgs);
         startArgs.addGlassfishArgs(programArgs);
-        startArgs.addGlassfishArgs("--domain " + domain);
-        startArgs.addGlassfishArgs("--domaindir " + quote(domainAbsolutePath));
+        startArgs.addGlassfishArgs("--domain " + serverAdapter.getDomainName());
+        startArgs.addGlassfishArgs("--domaindir " + quote(serverAdapter.getDomainPath()));
 
         setDefaultSourceLocator(launch, configuration);
 
-        checkMonitorAndProgress(monitor, WORK_STEP);
-
+        checkMonitorAndProgress(monitor, WORK_STEP / 2);
+        
+        startLogging(serverAdapter, serverBehavior);
+        
+        ResultProcess process = null;
         Process payaraProcess = null;
 
-        checkMonitorAndProgress(monitor, WORK_STEP);
-        startLogging(serverAdapter, serverBehavior);
-        ResultProcess process = null;
-
         try {
-            process = serverBehavior.launchServer(startArgs, startMode, monitor);
+            process = launchServer(serverBehavior, startArgs, startMode, monitor, configuration, launch);
             payaraProcess = process.getValue().getProcess();
             launch.setAttribute(ATTR_CAPTURE_OUTPUT, "false");
 
@@ -245,31 +276,27 @@ public class PayaraServerLaunchDelegate extends AbstractJavaLaunchConfigurationD
             checkMonitorAndProgress(monitor, WORK_STEP);
         } catch (InterruptedException e) {
             killProcesses(payaraProcess);
-            throw e;
         }
 
         setDefaultSourceLocator(launch, configuration);
 
-        if (DEBUG_MODE.equals(mode)) {
-            Integer debugPort = null;
+        if (DEBUG_MODE.equals(mode) && !serverBehavior.getPayaraServerDelegate().getAttachDebuggerEarly()) {
             try {
-                debugPort = getDebugPort(process.getValue().getArguments());
+                serverBehavior.attach(launch, configuration.getWorkingCopy(), monitor, getDebugPort(process));
+                checkMonitorAndProgress(monitor, WORK_STEP);
             } catch (IllegalArgumentException e) {
                 killProcesses(payaraProcess);
                 abort("Server run in debug mode but the debug port couldn't be determined!", e);
             }
-
-            serverBehavior.attach(launch, configuration.getWorkingCopy(), monitor, debugPort);
         }
     }
 
     private void addJavaOptions(PayaraServer serverAdapter, String mode, StartupArgsImpl args, String vmArgs) {
-
-        // Debug port was specified by user, use it
         if (DEBUG_MODE.equals(mode)) {
             args.addJavaArgs(vmArgs);
             int debugPort = serverAdapter.getDebugPort();
             if (debugPort != -1) {
+                // Debug port was specified by user, use it
                 args.addJavaArgs(serverAdapter.getDebugOptions(debugPort));
             }
         } else {
@@ -319,30 +346,29 @@ public class PayaraServerLaunchDelegate extends AbstractJavaLaunchConfigurationD
                         abort(canntCommunicate, new RuntimeException(domainNotMatch));
                         return false;
                     }
-
                 }
             }
         }
 
         switch (serverBehavior.getServerStatus(true)) {
-        case RUNNING_CONNECTION_ERROR:
-            abort(canntCommunicate, new RuntimeException(abortLaunchMsg + domainNotMatch + checkVpnOrProxy));
-            break;
-        case RUNNING_CREDENTIAL_PROBLEM:
-            abort(canntCommunicate, new RuntimeException(abortLaunchMsg + wrongUsernamePassword));
-            break;
-        case RUNNING_DOMAIN_MATCHING:
-            return true;
-        case RUNNING_PROXY_ERROR:
-            abort(canntCommunicate, new RuntimeException(abortLaunchMsg + badGateway));
-            break;
-        case STOPPED_DOMAIN_NOT_MATCHING:
-            abort(canntCommunicate, new RuntimeException(domainNotMatch));
-            break;
-        case STOPPED_NOT_LISTENING:
-            return false;
-        default:
-            break;
+            case RUNNING_CONNECTION_ERROR:
+                abort(canntCommunicate, new RuntimeException(abortLaunchMsg + domainNotMatch + checkVpnOrProxy));
+                break;
+            case RUNNING_CREDENTIAL_PROBLEM:
+                abort(canntCommunicate, new RuntimeException(abortLaunchMsg + wrongUsernamePassword));
+                break;
+            case RUNNING_DOMAIN_MATCHING:
+                return true;
+            case RUNNING_PROXY_ERROR:
+                abort(canntCommunicate, new RuntimeException(abortLaunchMsg + badGateway));
+                break;
+            case STOPPED_DOMAIN_NOT_MATCHING:
+                abort(canntCommunicate, new RuntimeException(domainNotMatch));
+                break;
+            case STOPPED_NOT_LISTENING:
+                return false;
+            default:
+                break;
         }
 
         return false;
@@ -355,7 +381,7 @@ public class PayaraServerLaunchDelegate extends AbstractJavaLaunchConfigurationD
                 try {
                     logFile.createNewFile();
                 } catch (Exception e) {
-                    // file probably exists
+                    // File probably exists
                     e.printStackTrace();
                 }
 
@@ -370,14 +396,7 @@ public class PayaraServerLaunchDelegate extends AbstractJavaLaunchConfigurationD
         }
     }
 
-    private static Integer getDebugPort(String startArgs) {
-        Matcher debugPortMatcher = debugPortPattern.matcher(startArgs);
-        if (debugPortMatcher.find()) {
-            return Integer.parseInt(debugPortMatcher.group(1));
-        }
-
-        throw new IllegalArgumentException("Debug port not found in process args!");
-    }
+   
 
     private void killProcesses(Process... processes) {
         for (Process process : processes) {
@@ -393,46 +412,6 @@ public class PayaraServerLaunchDelegate extends AbstractJavaLaunchConfigurationD
     
     private void abort(String message, Throwable exception) throws CoreException {
         throw new CoreException(new Status(ERROR, SYMBOLIC_NAME, ERR_INTERNAL_ERROR, message, exception));
-    }
-
-    static class GlassfishServerDebugListener implements IDebugEventSetListener {
-
-        private PayaraServerBehaviour serverBehavior;
-        private String debugTargetIdentifier;
-
-        public GlassfishServerDebugListener(PayaraServerBehaviour serverBehavior, String debugTargetIdentifier) {
-            this.serverBehavior = serverBehavior;
-            this.debugTargetIdentifier = debugTargetIdentifier;
-        }
-
-        @Override
-        public void handleDebugEvents(DebugEvent[] events) {
-            if (events != null) {
-                for (DebugEvent debugEvent : events) {
-                    if (debugEvent.getSource() instanceof JDIDebugTarget) {
-                        
-                        JDIDebugTarget debugTarget = (JDIDebugTarget) debugEvent.getSource();
-                        try {
-
-                            logMessage("JDIDebugTarget=" + debugTarget.getName());
-                            if (debugTarget.getName().indexOf(debugTargetIdentifier) != -1 && debugEvent.getKind() == TERMINATE) {
-                                DebugPlugin.getDefault().removeDebugEventListener(this);
-
-                                if (!debugTarget.isTerminated()) {
-                                    serverBehavior.stop(true);
-                                }
-
-                                // reset server status
-                                Server server = (Server) serverBehavior.getServer();
-                                server.setServerStatus(null);
-                            }
-                        } catch (DebugException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
-        }
     }
 
 }

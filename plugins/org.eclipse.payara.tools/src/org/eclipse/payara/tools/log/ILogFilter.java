@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 /******************************************************************************
- * Copyright (c) 2018 Payara Foundation
+ * Copyright (c) 2018-2019 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,7 +23,7 @@ public interface ILogFilter {
     /**
      * Resets log filter after reading complete log record.
      */
-    public void reset();
+    void reset();
 
     /**
      * Processes read line.
@@ -31,5 +31,9 @@ public interface ILogFilter {
      * @param line - mustn't contain new line character
      * @return Complete log record or null if the read line haven't completed the log record.
      */
-    public String process(String line);
+    String process(String line);
+    
+    default boolean hasProcessedPayara() {
+        return false;
+    }
 }
