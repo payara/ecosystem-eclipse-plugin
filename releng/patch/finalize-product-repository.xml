@@ -1,0 +1,46 @@
+<!-- 
+ ******************************************************************************
+ * Copyright (c) 2016 Oracle
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Konstantin Komissarchik - initial implementation and ongoing maintenance
+ ******************************************************************************
+ 
+ 
+ ******************************************************************************
+ * Copyright (c) 2019 Payara Foundation
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ ******************************************************************************
+ 
+-->
+
+<project name="corundum.macro.finalize-product-repository">
+
+  <macrodef name="finalize-product-repository">
+    <sequential>
+
+      <copy file="${releng.dir}/site.xml" tofile="${build.dir}/repository/site.xml"/>
+      <copy file="${releng.dir}/associate-sites.xml" tofile="${build.dir}/repository/associate-sites.xml"/>
+
+      <replace file="${build.dir}/repository/site.xml">
+        <replacefilter token="##version##" value="${version}"/>
+      </replace>
+
+      <p2-publish location="${build.dir}/repository" name="${product.name} ${version.no.qualifier.trimmed}"/>
+
+      <delete file="${build.dir}/repository/site.xml"/>
+    	<delete file="${build.dir}/repository/associate-sites.xml"/>
+
+      <gen-repository-landing repository="${build.dir}/repository" name="${product.name} ${version.no.qualifier.trimmed}"/>
+
+    </sequential>
+  </macrodef>
+  
+</project>
