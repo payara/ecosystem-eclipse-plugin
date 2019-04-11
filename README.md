@@ -3,7 +3,15 @@ This is a fork of the Eclipse GlassFish Tools, tailored and improved to work wit
 
 ## Building
 
-To build type `ant` in the root of this project. This will cause Corundum to be downloaded and the feature to be build targeting Eclipse oxygen.2. 
+To build set the `JDK_8_HOME` environment variable to point to a valid JDK 8 installation, for instance:
+
+```
+export JDK_8_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_191.jdk/Contents/Home/
+```
+
+Then type `ant` in the root of this project. 
+
+This will cause Corundum to be downloaded and the feature to be build targeting Eclipse oxygen.2. 
 Archived update sites will be found in `[project root]/build/packages`
 
 To use the project source code in Eclipse, install Sapphire from http://download.eclipse.org/sapphire/latest
