@@ -68,25 +68,23 @@ public class PayaraConsole extends AbstractPayaraConsole implements IPayaraConso
         if (stopJobResult != null) {
             try {
                 stopJobResult.get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
+            } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
             stopJobResult = null;
         } else {
-            System.out.println("stopJobResult is null in console " + getName());
             stopLoggingImpl();
         }
+        
         readers = new ArrayList<>(logFetchers.length);
         latch = new CountDownLatch(logFetchers.length);
         filter.reset();
+        
         int i = 0;
         for (FetchLog logFetcher : logFetchers) {
             LogReader reader = new LogReader(logFetcher, out, latch, filter);
             readers.add(reader);
-            Thread t = new Thread(reader, "LogReader Thread" + i++);
-            t.start();
+            new Thread(reader, "LogReader Thread" + i++).start();
         }
     }
 
@@ -101,9 +99,11 @@ public class PayaraConsole extends AbstractPayaraConsole implements IPayaraConso
         if (readers == null) {
             return;
         }
-        for (LogReader r : readers) {
-            r.stop();
+        
+        for (LogReader logReader : readers) {
+            logReader.stop();
         }
+        
         readers = null;
     }
 

@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 /******************************************************************************
- * Copyright (c) 2018 Payara Foundation
+ * Copyright (c) 2018-2019 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,15 @@
  ******************************************************************************/
 
 package org.eclipse.payara.tools.log;
+
+import static java.util.logging.Level.ALL;
+import static java.util.logging.Level.CONFIG;
+import static java.util.logging.Level.FINE;
+import static java.util.logging.Level.FINER;
+import static java.util.logging.Level.FINEST;
+import static java.util.logging.Level.INFO;
+import static java.util.logging.Level.SEVERE;
+import static java.util.logging.Level.WARNING;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -31,8 +40,6 @@ public class V3LogFilter {
 
     private final Locale logLocale = getLogLocale();
     private final String logBundleName = getLogBundle();
-    // private final String localizedWarning = getLocalized(Level.WARNING.getName());
-    // private final String localizedSevere = getLocalized(Level.SEVERE.getName());
     private final Map<String, String> localizedLevels = getLevelMap();
 
     private Locale getLogLocale() {
@@ -41,6 +48,7 @@ public class V3LogFilter {
         if (language != null) {
             return new Locale(language, System.getProperty("user.country", ""), System.getProperty("user.variant", ""));
         }
+
         return Locale.getDefault();
     }
 
@@ -56,8 +64,7 @@ public class V3LogFilter {
 
     public Map<String, String> getLevelMap() {
         Map<String, String> levelMap = new HashMap<>();
-        for (Level l : new Level[] { Level.ALL, Level.CONFIG, Level.FINE,
-                Level.FINER, Level.FINEST, Level.INFO, Level.SEVERE, Level.WARNING }) {
+        for (Level l : new Level[] { ALL, CONFIG, FINE, FINER, FINEST, INFO, SEVERE, WARNING }) {
             String name = l.getName();
             levelMap.put(name, getLocalized(name));
         }
