@@ -37,17 +37,17 @@ public final class ContainsRuntimeComponentType extends PropertyTester {
     private static final String PROP_CONTAINS_RUNTIME_COMPONENT_TYPE = "containsRuntimeComponentType"; //$NON-NLS-1$
 
     @Override
-    public boolean test(final Object receiver, final String property, final Object[] args, final Object value) {
+    public boolean test(Object receiver, String property, Object[] args, Object value) {
         try {
             if (!property.equals(PROP_CONTAINS_RUNTIME_COMPONENT_TYPE)) {
                 throw new IllegalStateException();
             }
 
-            final String val = (String) value;
-            final int colon = val.indexOf(':');
+            String val = (String) value;
+            int colon = val.indexOf(':');
 
-            final String typeid;
-            final String vexpr;
+            String typeid;
+            String vexpr;
 
             if (colon == -1 || colon == val.length() - 1) {
                 typeid = val;
@@ -61,7 +61,7 @@ public final class ContainsRuntimeComponentType extends PropertyTester {
                 return false;
             }
 
-            final IRuntimeComponentType type = RuntimeManager.getRuntimeComponentType(typeid);
+            IRuntimeComponentType type = RuntimeManager.getRuntimeComponentType(typeid);
 
             if (receiver instanceof IRuntime) {
                 for (Object component : ((IRuntime) receiver).getRuntimeComponents()) {
@@ -71,8 +71,10 @@ public final class ContainsRuntimeComponentType extends PropertyTester {
                 }
 
                 return false;
-            } else if (receiver instanceof Collection) {
-                for (Object obj : ((Collection) receiver)) {
+            }
+            
+            if (receiver instanceof Collection) {
+                for (Object obj : ((Collection<?>) receiver)) {
                     if (obj instanceof IRuntimeComponent) {
                         if (match((IRuntimeComponent) obj, type, vexpr)) {
                             return true;
@@ -87,23 +89,24 @@ public final class ContainsRuntimeComponentType extends PropertyTester {
                 }
 
                 return false;
-            } else {
-                throw new IllegalStateException();
             }
+            
+            throw new IllegalStateException();
+            
         } catch (CoreException e) {
             PayaraToolsPlugin.log(e);
             return false;
         }
     }
 
-    private static final boolean match(final IRuntimeComponent component, final IRuntimeComponentType type, final String vexpr)
-            throws CoreException {
+    private static final boolean match(IRuntimeComponent component, IRuntimeComponentType type, String vexpr) throws CoreException {
         if (component.getRuntimeComponentType() == type) {
-            if (vexpr != null) {
-                return type.getVersions(vexpr).contains(component.getRuntimeComponentVersion());
-            } else {
+            if (vexpr == null) {
                 return true;
             }
+            
+            return type.getVersions(vexpr)
+                       .contains(component.getRuntimeComponentVersion());
         }
 
         return false;

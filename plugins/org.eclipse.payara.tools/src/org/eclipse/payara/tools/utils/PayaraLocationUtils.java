@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 /******************************************************************************
- * Copyright (c) 2018 Payara Foundation
+ * Copyright (c) 2018-2019 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,16 +18,13 @@
 
 package org.eclipse.payara.tools.utils;
 
-import static org.eclipse.jdt.core.IClasspathAttribute.JAVADOC_LOCATION_ATTRIBUTE_NAME;
-import static org.eclipse.jdt.core.JavaCore.newClasspathAttribute;
-import static org.eclipse.jdt.core.JavaCore.newLibraryEntry;
+import static java.util.Collections.emptyList;
 import static org.eclipse.payara.tools.internal.ManifestUtil.readManifestEntry;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.ref.SoftReference;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -38,15 +35,9 @@ import java.util.regex.Pattern;
 import org.apache.tools.ant.DirectoryScanner;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.jdt.core.IAccessRule;
-import org.eclipse.jdt.core.IClasspathAttribute;
-import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.payara.tools.internal.SystemLibrariesSetting;
+import org.eclipse.payara.tools.internal.SystemLibraries;
 import org.eclipse.sapphire.Version;
-import org.eclipse.sapphire.util.ListFactory;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.eclipse.wst.common.project.facet.core.runtime.IRuntime;
@@ -54,6 +45,9 @@ import org.eclipse.wst.common.project.facet.core.runtime.IRuntimeComponent;
 
 /**
  * Series of utils related to the location where Payara / GlassFish is installed.
+ * 
+ * <p>
+ * Primarily supplies the version and the libraries associated with the Payara location.
  *
  * @author <a href="mailto:konstantin.komissarchik@oracle.com">Konstantin Komissarchik</a>
  */
@@ -61,64 +55,10 @@ public final class PayaraLocationUtils {
 
     private static final Pattern VERSION_PATTERN = Pattern.compile("([0-9]\\.[0-9]+(\\.[0-9])?(\\.[0-9])?)(\\..*)?.*");
 
-    private static final String[] LIBRARIES_3_1 = {
-            "glassfish/modules/javax.*.jar",
-            "glassfish/modules/weld-osgi-bundle.jar",
-            "glassfish/modules/bean-validator.jar",
-            "glassfish/modules/jersey-*.jar",
-            "glassfish/modules/grizzly-comet.jar",
-            "glassfish/modules/grizzly-websockets.jar",
-            "glassfish/modules/glassfish-api.jar",
-            "glassfish/modules/ha-api.jar",
-            "glassfish/modules/endorsed/*.jar",
-            "glassfish/modules/jsf-api.jar",
-            "glassfish/modules/jsf-impl.jar",
-            "glassfish/modules/jstl-impl.jar",
-            "glassfish/modules/org.eclipse.persistence*.jar",
-            "glassfish/modules/jaxb*.jar",
-            "glassfish/modules/webservices*.jar",
-            "glassfish/modules/woodstox-osgi*.jar",
-            "mq/lib/jaxm-api*.jar"
-    };
-
-    private static final String[] LIBRARIES_3_1_2 = {
-            "glassfish/modules/javax.*.jar",
-            "glassfish/modules/weld-osgi-bundle.jar",
-            "glassfish/modules/bean-validator.jar",
-            "glassfish/modules/jersey-*.jar",
-            "glassfish/modules/grizzly-comet.jar", //
-            "glassfish/modules/grizzly-websockets.jar", //
-            "glassfish/modules/glassfish-api.jar",
-            "glassfish/modules/ha-api.jar",
-            "glassfish/modules/endorsed/*.jar",
-            "glassfish/modules/org.eclipse.persistence*.jar",
-            "glassfish/modules/jaxb*.jar",
-            "glassfish/modules/webservices*.jar",
-            "glassfish/modules/woodstox-osgi*.jar", //
-            "mq/lib/jaxm-api*.jar"
-    };
-
-    private static final String[] LIBRARIES_4 = {
-            "glassfish/modules/javax.*.jar",
-            "glassfish/modules/weld-osgi-bundle.jar",
-            "glassfish/modules/bean-validator.jar",
-            "glassfish/modules/jersey-*.jar",
-            "glassfish/modules/glassfish-api.jar",
-            "glassfish/modules/ha-api.jar",
-            "glassfish/modules/endorsed/*.jar",
-            "glassfish/modules/org.eclipse.persistence*.jar",
-            "glassfish/modules/jaxb*.jar",
-            "glassfish/modules/webservices*.jar",
-            "glassfish/modules/cdi-api.jar", // +
-            "mq/lib/jaxm-api.jar"
-    };
-
-    private static final String[] LIBRARIES_5 = LIBRARIES_4;
-
     // Defined as:
     // <extension point="org.eclipse.wst.common.project.facet.core.runtimes">
     // <runtime-component-type id="payara.runtime"/>
-    private static final String RUNTIME_COMPONENT_ID = "payara.runtime"; //$NON-NLS-1$
+    private static final String RUNTIME_COMPONENT_ID = "payara.runtime";
 
     private static final Map<File, SoftReference<PayaraLocationUtils>> CACHE = new HashMap<>();
 
@@ -128,6 +68,7 @@ public final class PayaraLocationUtils {
     
     // #### static factory / finder methods
     
+
     public static synchronized PayaraLocationUtils find(IJavaProject project) {
         if (project != null) {
             return find(project.getProject());
@@ -243,10 +184,7 @@ public final class PayaraLocationUtils {
     // #### PayaraLocation instance methods
     
     private PayaraLocationUtils(File location) {
-
-        if (location == null || !location.exists() || !location.isDirectory()) {
-            throw new IllegalArgumentException();
-        }
+        checkLocationIsValid(location);
 
         File payaraLocation = location;
 
@@ -267,70 +205,21 @@ public final class PayaraLocationUtils {
         }
 
         version = readPayaraVerionFromAPIJar(gfApiJar);
-
-        ListFactory<File> librariesListFactory = ListFactory.start();
-        String[] libraryIncludes = getLibraryIncludes(version);
-
-        if (libraryIncludes != null) {
-            File parentFolderToLocation = payaraLocation.getParentFile();
-            DirectoryScanner scanner = new DirectoryScanner();
-
-            scanner.setBasedir(parentFolderToLocation);
-            scanner.setIncludes(libraryIncludes);
-            scanner.scan();
-
-            for (String libraryRelativePath : scanner.getIncludedFiles()) {
-                librariesListFactory.add(new File(parentFolderToLocation, libraryRelativePath));
-            }
-        }
-
-        libraries = librariesListFactory.result();
+        libraries = readLibraryFilesFromPayaraLocation(payaraLocation, version);
     }
 
     public Version version() {
         return version;
     }
-
-    public List<IClasspathEntry> classpath(IProject project) {
-        ListFactory<IClasspathEntry> classpathListFactory = ListFactory.start();
-
-        URL doc;
-        String javaEEVersion = (version.matches("[5") ? "8" : (version.matches("[4") ? "7" : "6"));
-
-        try {
-            doc = new URL("http://docs.oracle.com/javaee/" + javaEEVersion + "/api/");
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-
-        SystemLibrariesSetting libSettings = SystemLibrariesSetting.load(project);
-
-        for (File library : libraries) {
-            File srcPath = libSettings != null ? libSettings.getSourcePath(library) : null;
-            classpathListFactory.add(createLibraryEntry(new Path(library.toString()), srcPath, doc));
-        }
-
-        return classpathListFactory.result();
+    
+    public List<File> getLibraries() {
+        return libraries;
     }
     
     
     
     // #### Private methods
 
-    private IClasspathEntry createLibraryEntry(final IPath library, final File src, final URL javadoc) {
-        IPath srcpath = src == null ? null : new Path(src.getAbsolutePath());
-        IAccessRule[] access = {};
-        IClasspathAttribute[] attrs;
-
-        if (javadoc == null) {
-            attrs = new IClasspathAttribute[0];
-        } else {
-            attrs = new IClasspathAttribute[] { newClasspathAttribute(JAVADOC_LOCATION_ATTRIBUTE_NAME, javadoc.toExternalForm()) };
-        }
-
-        return newLibraryEntry(library, srcpath, null, access, attrs, false);
-    }
-    
     private Version readPayaraVerionFromAPIJar(File gfApiJar) {
         String versionString;
         try {
@@ -348,25 +237,47 @@ public final class PayaraLocationUtils {
         return new Version(versionMatcher.group(1));
     }
     
-    private String[] getLibraryIncludes(Version version) {
-
-        if (version.matches("[5")) {
-            return LIBRARIES_5;
+    /**
+     * Gets the relative file name patterns for the system libraries corresponding to the given Payara
+     * version, and turns these into a list of actual files for the given Payara location on disk.
+     * 
+     * @param payaraLocation location where Payara is installed
+     * @param payaraVersion version of Payara for which libraries are to be retrieved
+     * 
+     * @return list of system libraries as actual files
+     */
+    private List<File> readLibraryFilesFromPayaraLocation(File payaraLocation, Version payaraVersion) {
+        
+        // Gets the collection of library strings for the given Payara version. These
+        // may contain wildcard patterns. E.g. "glassfish/modules/javax.*.jar"
+        String[] libraryIncludes = SystemLibraries.getLibraryIncludesByVersion(payaraVersion);
+        
+        if (libraryIncludes == null) {
+            return emptyList();
         }
+        
+        File parentFolderToLocation = payaraLocation.getParentFile();
+        
+        // Use a directory scanner to resolve the wildcards and obtain an expanded
+        // list of relative files.
+        DirectoryScanner scanner = new DirectoryScanner();
+        scanner.setBasedir(parentFolderToLocation);
+        scanner.setIncludes(libraryIncludes);
+        scanner.scan();
 
-        if (version.matches("[4-5)")) {
-            return LIBRARIES_4;
+        // Turn the expanded, but still relative, string based paths into absolute files.
+        List<File> libraries = new ArrayList<>();
+        for (String libraryRelativePath : scanner.getIncludedFiles()) {
+            libraries.add(new File(parentFolderToLocation, libraryRelativePath));
         }
-
-        if (version.matches("[3.1.2-4)")) {
-            return LIBRARIES_3_1_2;
+        
+        return libraries;
+    }
+    
+    private void checkLocationIsValid(File location) {
+        if (location == null || !location.exists() || !location.isDirectory()) {
+            throw new IllegalArgumentException();
         }
-
-        if (version.matches("[3.1-3.1.2)")) {
-            return LIBRARIES_3_1;
-        }
-
-        return null;
     }
 
 }

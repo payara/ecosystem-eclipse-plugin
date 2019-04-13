@@ -87,8 +87,8 @@ public abstract class JavaLocationDefaultValueService extends DefaultValueServic
         try {
             IVMInstall jvm = null;
 
-            for (final IVMInstallType vmInstallType : JavaRuntime.getVMInstallTypes()) {
-                for (final IVMInstall vmInstall : vmInstallType.getVMInstalls()) {
+            for (IVMInstallType vmInstallType : JavaRuntime.getVMInstallTypes()) {
+                for (IVMInstall vmInstall : vmInstallType.getVMInstalls()) {
                     if (!internal(vmInstall) && acceptable(vmInstall)) {
                         jvm = newer(jvm, vmInstall);
                     }
@@ -113,7 +113,6 @@ public abstract class JavaLocationDefaultValueService extends DefaultValueServic
     protected abstract boolean acceptable(IVMInstall vminstall);
 
     @Override
-
     public void dispose() {
         super.dispose();
 

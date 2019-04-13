@@ -20,9 +20,15 @@ package org.eclipse.payara.tools.internal;
 
 import static java.util.Collections.emptyList;
 import static org.eclipse.core.resources.IResourceChangeEvent.POST_CHANGE;
+import static org.eclipse.jdt.core.IClasspathAttribute.JAVADOC_LOCATION_ATTRIBUTE_NAME;
 import static org.eclipse.jdt.core.JavaCore.getClasspathContainer;
+import static org.eclipse.jdt.core.JavaCore.newClasspathAttribute;
+import static org.eclipse.jdt.core.JavaCore.newLibraryEntry;
 import static org.eclipse.jdt.core.JavaCore.setClasspathContainer;
 
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -36,6 +42,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.ClasspathContainerInitializer;
+import org.eclipse.jdt.core.IAccessRule;
+import org.eclipse.jdt.core.IClasspathAttribute;
 import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
@@ -43,19 +51,24 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.payara.tools.PayaraToolsPlugin;
 import org.eclipse.payara.tools.utils.PayaraLocationUtils;
+import org.eclipse.sapphire.Version;
+import org.eclipse.sapphire.util.ListFactory;
 
 /**
+ * This container manages the Payara "system" libraries, which is a selection from the
+ * jar files in mostly glassfish/modules
+ * 
  * @author <a href="mailto:konstantin.komissarchik@oracle.com">Konstantin Komissarchik</a>
  */
-
 public final class SystemLibrariesContainer implements IClasspathContainer {
+    
     public static final String ID = "org.eclipse.payara.tools.lib.system";
     private static final IPath PATH = new Path(ID);
 
     private static final String FPROJ_METADATA_FILE = ".settings/org.eclipse.wst.common.project.facet.core.xml";
 
     private static boolean initialized;
-    static ContainersRefresherThread containersRefresherThread;
+    private static ContainersRefresherThread containersRefresherThread;
 
     private final List<IClasspathEntry> classpathEntries;
 
@@ -66,13 +79,19 @@ public final class SystemLibrariesContainer implements IClasspathContainer {
             ResourceChangeListener.register();
 
             containersRefresherThread = new ContainersRefresherThread();
+            containersRefresherThread.setName("PayaraLibraryContainersRefresher");
             containersRefresherThread.start();
         }
     }
 
     private SystemLibrariesContainer(IJavaProject project) {
         PayaraLocationUtils locationUtils = PayaraLocationUtils.find(project);
-        classpathEntries = locationUtils == null ? emptyList() : locationUtils.classpath(project.getProject());
+        
+        // Sets
+        classpathEntries = locationUtils == null ? 
+            emptyList() : 
+            createClasspathEntriesForLibraries(
+                project.getProject(), locationUtils.version(), locationUtils.getLibraries());
     }
 
     @Override
@@ -121,7 +140,7 @@ public final class SystemLibrariesContainer implements IClasspathContainer {
         return classpathEntry.getPath().equals(PATH);
     }
 
-    static void refresh(final IProject project) throws CoreException {
+    static void refresh(IProject project) throws CoreException {
         if (isJavaProject(project)) {
             refresh(JavaCore.create(project));
         }
@@ -168,7 +187,7 @@ public final class SystemLibrariesContainer implements IClasspathContainer {
 
     public static final class Initializer extends ClasspathContainerInitializer {
         @Override
-        public void initialize(final IPath containerPath, final IJavaProject project) throws CoreException {
+        public void initialize(IPath containerPath, IJavaProject project) throws CoreException {
             SystemLibrariesContainer.initialize();
 
             setClasspathContainer(
@@ -194,36 +213,36 @@ public final class SystemLibrariesContainer implements IClasspathContainer {
                 settings = new SystemLibrariesSetting();
             }
             
-            List<Library> libsList = settings.getLibraryList();
+            List<Library> libraries = settings.getLibraryList();
 
             boolean needUpdate = false;
             for (IClasspathEntry classpathEntry : containerSuggestion.getClasspathEntries()) {
-                // IClasspathEntry cpe = findClasspathEntry(containerPath.toString(),
-                // containerSuggestion );
                 IPath srcPath = classpathEntry.getSourceAttachmentPath();
 
                 if (srcPath != null) {
                     needUpdate = true;
 
                     boolean foudEntry = false;
-                    for (Library lib : libsList) {
+                    for (Library library : libraries) {
                         String cpePath = classpathEntry.getPath().toString();
-                        if (lib.getPath().equals(cpePath)) {
-                            // update source path
-                            lib.setSource(srcPath.toPortableString());
+                        if (library.getPath().equals(cpePath)) {
+                            // Update source path
+                            library.setSource(srcPath.toPortableString());
                             foudEntry = true;
                             break;
                         }
                     }
+                    
                     if (!foudEntry) {
-                        Library newLib = new Library();
-                        newLib.setPath(classpathEntry.getPath().toString());
-                        newLib.setSource(srcPath.toString());
-                        libsList.add(newLib);
+                        Library newLibrary = new Library();
+                        newLibrary.setPath(classpathEntry.getPath().toString());
+                        newLibrary.setSource(srcPath.toString());
+                        libraries.add(newLibrary);
                     }
                 } else {
-                    // remove enty from settings file,
-                    Iterator<Library> it = libsList.iterator();
+                    // Remove entry from settings file
+                    
+                    Iterator<Library> it = libraries.iterator();
                     while (it.hasNext()) {
                         Library lib = it.next();
                         String cpePath = classpathEntry.getPath().toString();
@@ -239,10 +258,71 @@ public final class SystemLibrariesContainer implements IClasspathContainer {
             
             if (needUpdate) {
                 SystemLibrariesSetting.save(proj, settings);
-                // update the classpath container to reflect the changes
+                // Update the classpath container to reflect the changes
                 initialize(containerPath, project);
             }
         }
+    }
+    
+    public static List<IClasspathEntry> createClasspathEntriesForLibraries(IProject project, Version version, List<File> libraries) {
+        ListFactory<IClasspathEntry> classpathListFactory = ListFactory.start();
+
+        URL doc;
+        String javaEEVersion = (version.matches("[5") ? "8" : (version.matches("[4") ? "7" : "6"));
+
+        try {
+            if ("8".equals(javaEEVersion)) {
+                doc = new URL("https://javaee.github.io/javaee-spec/javadocs/");
+            } else {
+                doc = new URL("http://docs.oracle.com/javaee/" + javaEEVersion + "/api/");
+            }
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+
+        SystemLibrariesSetting libSettings = SystemLibrariesSetting.load(project);
+        
+        if (libSettings != null) {
+            
+            // We have settings for our system library, check it for each entry
+            // if we have a source attachment
+            
+            for (File library : libraries) {
+                classpathListFactory.add(
+                    createLibraryEntry(
+                        new Path(library.toString()), 
+                        libSettings.getSourcePath(library), 
+                        doc));
+            }
+        } else {
+            
+            // No settings for our system library, source is always null
+            
+            for (File library : libraries) {
+                classpathListFactory.add(
+                    createLibraryEntry(
+                        new Path(library.toString()), 
+                        null, 
+                        doc));
+            }
+        }
+       
+
+        return classpathListFactory.result();
+    }
+    
+    private static IClasspathEntry createLibraryEntry(IPath library, File src, URL javadoc) {
+        IPath librarySourcePath = src == null ? null : new Path(src.getAbsolutePath());
+        IAccessRule[] access = {};
+        IClasspathAttribute[] libraryJavadocAttributes;
+
+        if (javadoc == null) {
+            libraryJavadocAttributes = new IClasspathAttribute[0];
+        } else {
+            libraryJavadocAttributes = new IClasspathAttribute[] { newClasspathAttribute(JAVADOC_LOCATION_ATTRIBUTE_NAME, javadoc.toExternalForm()) };
+        }
+
+        return newLibraryEntry(library, librarySourcePath, null, access, libraryJavadocAttributes, false);
     }
 
     private static final class ResourceChangeListener implements IResourceChangeListener {

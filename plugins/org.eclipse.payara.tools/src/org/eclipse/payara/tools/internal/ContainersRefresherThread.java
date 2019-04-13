@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 /******************************************************************************
- * Copyright (c) 2018 Payara Foundation
+ * Copyright (c) 2018-2019 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,17 +22,21 @@ import java.util.LinkedList;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.payara.tools.PayaraToolsPlugin;
 
+/**
+ * This thread refreshes the Payara libraries container, effectively
+ * whenever ".settings/org.eclipse.wst.common.project.facet.core.xml" in
+ * a project changes.
+ * 
+ * TODO: Can't this just use the Eclipse job framework?
+ */
 public class ContainersRefresherThread extends Thread {
-    private final LinkedList<IProject> projects;
+    
+    private final LinkedList<IProject> projects = new LinkedList<>();
 
-    public ContainersRefresherThread() {
-        this.projects = new LinkedList<>();
-    }
 
     public IProject getProjectFromQueue() {
         synchronized (projects) {
@@ -65,10 +69,11 @@ public class ContainersRefresherThread extends Thread {
             }
 
             try {
-                IWorkspaceRunnable workspaceRunnable = monitor -> SystemLibrariesContainer.refresh(project);
-
                 IWorkspace workspace = ResourcesPlugin.getWorkspace();
-                workspace.run(workspaceRunnable, workspace.getRoot(), 0, null);
+                
+                workspace.run(
+                    monitor -> SystemLibrariesContainer.refresh(project),
+                    workspace.getRoot(), 0, null);
             } catch (CoreException e) {
                 PayaraToolsPlugin.log(e);
             }
