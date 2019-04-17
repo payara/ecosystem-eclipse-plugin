@@ -52,6 +52,9 @@ import org.eclipse.wst.common.project.facet.core.runtime.IRuntimeComponent;
  * @author <a href="mailto:konstantin.komissarchik@oracle.com">Konstantin Komissarchik</a>
  */
 public final class PayaraLocationUtils {
+    
+    public static final String DEFAULT_LIBRARIES = "default";
+    public static final String ALL_LIBRARIES = "all";
 
     private static final Pattern VERSION_PATTERN = Pattern.compile("([0-9]\\.[0-9]+(\\.[0-9])?(\\.[0-9])?)(\\..*)?.*");
 
@@ -63,7 +66,7 @@ public final class PayaraLocationUtils {
     private static final Map<File, SoftReference<PayaraLocationUtils>> CACHE = new HashMap<>();
 
     private final Version version;
-    private final List<File> libraries;
+    private final Map<String, List<File>> libraries;
     
     
     // #### static factory / finder methods
@@ -212,8 +215,8 @@ public final class PayaraLocationUtils {
         return version;
     }
     
-    public List<File> getLibraries() {
-        return libraries;
+    public List<File> getLibraries(String libraryGroup) {
+        return libraries.get(libraryGroup);
     }
     
     
@@ -246,13 +249,26 @@ public final class PayaraLocationUtils {
      * 
      * @return list of system libraries as actual files
      */
-    private List<File> readLibraryFilesFromPayaraLocation(File payaraLocation, Version payaraVersion) {
+    private Map<String, List<File>> readLibraryFilesFromPayaraLocation(File payaraLocation, Version payaraVersion) {
+        Map<String, List<File>> librariesPerVariant = new HashMap<>();
         
-        // Gets the collection of library strings for the given Payara version. These
-        // may contain wildcard patterns. E.g. "glassfish/modules/javax.*.jar"
-        String[] libraryIncludes = SystemLibraries.getLibraryIncludesByVersion(payaraVersion);
+        librariesPerVariant.put(
+            DEFAULT_LIBRARIES, 
+            readLibrariesByPattern(payaraLocation, SystemLibraries.getLibraryIncludesByVersion(payaraVersion)));
         
-        if (libraryIncludes == null) {
+        librariesPerVariant.put(
+            ALL_LIBRARIES, 
+            readLibrariesByPattern(payaraLocation, new String[] {"**/*.jar"}, new String[] {"**/osgi-cache/**"}));
+        
+        return librariesPerVariant;
+    }
+    
+    private List<File> readLibrariesByPattern(File payaraLocation, String[] inclusionPattern) {
+        return readLibrariesByPattern(payaraLocation, inclusionPattern, null);
+    }
+    
+    private List<File> readLibrariesByPattern(File payaraLocation, String[] inclusionPattern, String[] exclusionPattern) {
+        if (inclusionPattern == null) {
             return emptyList();
         }
         
@@ -262,7 +278,10 @@ public final class PayaraLocationUtils {
         // list of relative files.
         DirectoryScanner scanner = new DirectoryScanner();
         scanner.setBasedir(parentFolderToLocation);
-        scanner.setIncludes(libraryIncludes);
+        scanner.setIncludes(inclusionPattern);
+        if (exclusionPattern != null) {
+            scanner.setExcludes(exclusionPattern);
+        }
         scanner.scan();
 
         // Turn the expanded, but still relative, string based paths into absolute files.
@@ -272,6 +291,7 @@ public final class PayaraLocationUtils {
         }
         
         return libraries;
+        
     }
     
     private void checkLocationIsValid(File location) {

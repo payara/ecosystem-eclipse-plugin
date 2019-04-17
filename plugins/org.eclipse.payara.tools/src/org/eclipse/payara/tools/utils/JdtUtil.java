@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 /******************************************************************************
- * Copyright (c) 2018 Payara Foundation
+ * Copyright (c) 2018-2019 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -406,17 +406,17 @@ public final class JdtUtil {
         return null;
     }
 
-    public static void addToClasspath(final IJavaProject project, final IClasspathEntry entry) throws CoreException {
+    public static void addToClasspath(IJavaProject project, IClasspathEntry entry) throws CoreException {
         final IClasspathEntry[] oldEntries = project.getRawClasspath();
 
-        for (final IClasspathEntry x : oldEntries) {
+        for (IClasspathEntry x : oldEntries) {
             if (x.equals(entry)) {
                 return;
             }
         }
 
-        final int oldEntriesLength = oldEntries.length;
-        final IClasspathEntry[] newEntries = new IClasspathEntry[oldEntriesLength + 1];
+        int oldEntriesLength = oldEntries.length;
+        IClasspathEntry[] newEntries = new IClasspathEntry[oldEntriesLength + 1];
         System.arraycopy(oldEntries, 0, newEntries, 0, oldEntriesLength);
 
         newEntries[oldEntriesLength] = entry;

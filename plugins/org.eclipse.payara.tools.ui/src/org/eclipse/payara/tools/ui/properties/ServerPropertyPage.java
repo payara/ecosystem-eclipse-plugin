@@ -173,8 +173,6 @@ public class ServerPropertyPage extends PropertyPage {
         serverWorkingCopy.setAttribute(ATTR_DEBUG_PORT, "");
         serverWorkingCopy.setAttribute(PROP_RESTART_PATTERN.name(), "");
         
-        
-        
         model.refresh();
     }
 
