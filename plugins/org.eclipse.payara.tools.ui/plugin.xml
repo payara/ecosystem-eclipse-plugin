@@ -270,7 +270,16 @@
     </extension>
     
     
-   <!--
+    <extension point="org.eclipse.jdt.ui.classpathContainerPage">
+        <classpathContainerPage
+            id="org.eclipse.payara.tools.lib.system"
+            name="Payara properties"
+            class="org.eclipse.payara.tools.ui.properties.ClasspathContainerPage">
+        </classpathContainerPage>
+    </extension>
+    
+    
+    <!--
         This provides the dynamic nodes; the tree nodes that are inserted underneath 
         a running Payara / GlassFish server node in the Servers view. 
     -->

@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 /******************************************************************************
- * Copyright (c) 2018 Payara Foundation
+ * Copyright (c) 2018-2019 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,7 @@ import static org.eclipse.jdt.core.JavaCore.getClasspathContainer;
 import static org.eclipse.jdt.core.JavaCore.newClasspathAttribute;
 import static org.eclipse.jdt.core.JavaCore.newLibraryEntry;
 import static org.eclipse.jdt.core.JavaCore.setClasspathContainer;
+import static org.eclipse.payara.tools.utils.PayaraLocationUtils.DEFAULT_LIBRARIES;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -84,14 +85,19 @@ public final class SystemLibrariesContainer implements IClasspathContainer {
         }
     }
 
-    private SystemLibrariesContainer(IJavaProject project) {
+    private SystemLibrariesContainer(IPath containerPath, IJavaProject project) {
         PayaraLocationUtils locationUtils = PayaraLocationUtils.find(project);
+        
+        String libraryGroup = DEFAULT_LIBRARIES; 
+        if (containerPath.segmentCount() > 1) {
+            libraryGroup = containerPath.segment(1);
+        }
         
         // Sets
         classpathEntries = locationUtils == null ? 
             emptyList() : 
             createClasspathEntriesForLibraries(
-                project.getProject(), locationUtils.version(), locationUtils.getLibraries());
+                project.getProject(), locationUtils.version(), locationUtils.getLibraries(libraryGroup));
     }
 
     @Override
@@ -158,7 +164,7 @@ public final class SystemLibrariesContainer implements IClasspathContainer {
 
         if (containerPath != null) {
             SystemLibrariesContainer existingContainer = (SystemLibrariesContainer) getClasspathContainer(containerPath, project);
-            SystemLibrariesContainer newContainer = new SystemLibrariesContainer(project);
+            SystemLibrariesContainer newContainer = new SystemLibrariesContainer(containerPath, project);
 
             if (!existingContainer.equals(newContainer)) {
                 IJavaProject[] projectsArray = { project };
@@ -193,7 +199,7 @@ public final class SystemLibrariesContainer implements IClasspathContainer {
             setClasspathContainer(
                 containerPath, 
                 new IJavaProject[] { project },
-                new IClasspathContainer[] { new SystemLibrariesContainer(project) }, 
+                new IClasspathContainer[] { new SystemLibrariesContainer(containerPath, project) },
                 null);
         }
 
