@@ -1,0 +1,149 @@
+<!-- 
+ ******************************************************************************
+ * Copyright (c) 2016 Oracle
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Konstantin Komissarchik - initial implementation and ongoing maintenance
+ ******************************************************************************
+-->
+
+<project name="corundum.target.init-corundum">
+
+  <target name="init-corundum" unless="init.corundum.completed">
+
+    <!-- Load ant-contrib tasks -->
+    
+    <taskdef resource="net/sf/antcontrib/antlib.xml">
+      <classpath>
+        <pathelement location="${corundum.dir}/ant-contrib-1.0b3.jar"/>
+      </classpath>
+    </taskdef>
+    
+    <!-- Build and load custom tasks -->
+
+    <echo message="Building and loading Corundum Ant tasks..."/>
+    
+    <var name=".corundum.tasks.bin" value="${corundum.dir}/tasks/bin"/>    
+    <delete dir="${.corundum.tasks.bin}" quiet="true"/>
+    <mkdir dir="${.corundum.tasks.bin}"/>
+    
+    <javac debug="true" destdir="${.corundum.tasks.bin}" classpath="${ant.home}/lib/ant.jar" includeAntRuntime="false" source="1.8" target="1.8">
+      <src path="${corundum.dir}/tasks/src"/>
+    </javac>
+
+    <taskdef resource="org/eclipse/corundum/library.xml">
+      <classpath>
+        <pathelement location="${.corundum.tasks.bin}"/>
+        <pathelement location="${corundum.dir}/tasks/src"/>
+      </classpath>
+    </taskdef>
+
+    <var name=".corundum.tasks.bin" unset="true"/>    
+    
+    <!-- Define global properties -->
+    
+    <property environment="env"/>
+  
+    <var name="DSTAMP" unset="true"/>
+
+    <tstamp>
+      <format property="DSTAMP" pattern="yyyyMMddHHmm"/>
+    </tstamp>
+    
+    <if>
+      <os family="windows"/>
+      <then>
+        <var name="p2.os" value="win32"/>
+        <var name="p2.ws" value="win32"/>
+        <if>
+          <os arch="x86"/>
+          <then>
+            <var name="p2.arch" value="x86"/>
+          </then>
+          <else>
+            <var name="p2.arch" value="x86_64"/>
+          </else>
+        </if>
+      </then>
+      <elseif>
+        <os family="mac"/>
+        <then>
+          <var name="p2.os" value="macosx"/>
+          <var name="p2.ws" value="cocoa"/>
+          <if>
+            <os arch="x86"/>
+            <then>
+              <var name="p2.arch" value="x86"/>
+            </then>
+            <else>
+              <var name="p2.arch" value="x86_64"/>
+            </else>
+          </if>
+        </then>
+      </elseif>
+      <elseif>
+        <os family="unix"/>
+        <then>
+          <var name="p2.os" value="linux"/>
+          <var name="p2.ws" value="gtk"/>
+          <if>
+            <os arch="i386"/>
+            <then>
+              <var name="p2.arch" value="x86"/>
+            </then>
+            <else>
+              <var name="p2.arch" value="x86_64"/>
+            </else>
+          </if>
+        </then>
+      </elseif>
+      <else>
+        <fail message="Unable to identify the operating system."/>
+      </else>
+    </if>
+
+    <property file="${corundum.dir}/corundum.properties"/>
+    <var file="${root.dir}/build.properties"/>
+      
+    <property file="${corundum.dir}/resources/datatools.properties"/>
+    <property file="${corundum.dir}/resources/eclipse.properties"/>
+    <property file="${corundum.dir}/resources/egit.properties"/>
+    <property file="${corundum.dir}/resources/emf.properties"/>
+    <property file="${corundum.dir}/resources/gef.properties"/>
+  	<property file="${corundum.dir}/resources/jetty.properties"/>
+    <property file="${corundum.dir}/resources/mpc.properties"/>
+    <property file="${corundum.dir}/resources/mylyn.properties"/>
+    <property file="${corundum.dir}/resources/orbit.properties"/>
+    <property file="${corundum.dir}/resources/sapphire.properties"/>
+    <property file="${corundum.dir}/resources/wtp.properties"/>
+    
+    <!-- Determine the location of the bundle pool -->
+    
+    <if>
+      <not><isset property="bundle.pool"/></not>
+      <then>
+        <if>
+          <isset property="env.CORUNDUM_BUNDLE_POOL"/>
+          <then>
+            <var name="bundle.pool" value="${env.CORUNDUM_BUNDLE_POOL}"/>
+          </then>
+          <else>
+            <locate-default-bundle-pool property="bundle.pool"/>
+          </else>
+        </if>
+      </then>
+    </if>
+      
+    <echo message="Using bundle pool at ${bundle.pool}"/>
+    
+    <echoproperties/>
+    
+    <property name="init.corundum.completed" value="true"/>
+    
+  </target>
+
+</project>

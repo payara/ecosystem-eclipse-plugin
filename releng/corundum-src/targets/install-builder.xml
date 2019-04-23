@@ -1,0 +1,35 @@
+<!-- 
+ ******************************************************************************
+ * Copyright (c) 2016 Oracle
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Konstantin Komissarchik - initial implementation and ongoing maintenance
+ ******************************************************************************
+-->
+
+<project name="corundum.target.install-builder">
+
+  <!--
+    The builder is an eclipse installation that includes the PDE Builder that's used by the build
+    system to actually build the plugins and features. The builder is installed from the recommended
+    configuration, regardless of the configuration that's being built.
+  -->
+
+  <target name="install-builder" depends="install-p2">
+
+    <property name="builder" value="${build.dir}/builder"/>
+
+    <if>
+      <not><available file="${builder}"/></not>
+      <then>
+        <install-eclipse dest="${builder}" extensions="${iu.eclipse.pde}"/>
+      </then>
+    </if>
+
+  </target>
+
+</project>

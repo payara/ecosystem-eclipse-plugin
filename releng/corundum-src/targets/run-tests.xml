@@ -1,0 +1,74 @@
+<!-- 
+ ******************************************************************************
+ * Copyright (c) 2016 Oracle
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Konstantin Komissarchik - initial implementation and ongoing maintenance
+ ******************************************************************************
+-->
+
+<project name="corundum.target.run-tests">
+
+  <target name="run-tests" depends="build-repository">
+    <if>
+      <istrue value="${run.tests}"/>
+      <then>
+
+        <!-- Get ready to run tests. -->
+
+        <property name="tests.working.dir" value="${build.dir}/tests"/>
+        <delete dir="${tests.working.dir}" quiet="true"/>
+        <mkdir dir="${tests.working.dir}"/>
+
+        <install-eclipse dest="${tests.working.dir}/install" extensions="${iu.tests.install}"/>
+
+        <!-- Run tests. -->
+
+        <eclipse location="${tests.working.dir}/install" application="org.eclipse.test.uitestapplication" failonerror="false" resultproperty="org.eclipse.test.result">
+          <arg line="-dev bin"/>
+          <arg line="-data ${tests.working.dir}/workspace"/>
+          <arg line="formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,${tests.working.dir}/test-results.xml"/>
+          <arg line="-testPluginName ${test.plugin}"/>
+          <arg line="-className ${test.class}"/>
+          <arg line="-consolelog -debug"/>
+        </eclipse>
+
+        <!-- Collect various test artifacts and copy them to the results directory. -->
+
+        <fail message="JUnit results file not created!">
+          <condition>
+            <not>
+              <available file="${tests.working.dir}/test-results.xml"/>
+            </not>
+          </condition>
+        </fail>
+
+        <junitreport todir="${tests.working.dir}">
+          <fileset dir="${tests.working.dir}" includes="test-results.xml"/>
+          <report todir="${tests.working.dir}" format="noframes"/>
+        </junitreport>
+
+        <delete file="${tests.working.dir}/TESTS-TestSuites.xml"/>
+        <move file="${tests.working.dir}/junit-noframes.html" tofile="${tests.working.dir}/test-results.html"/>
+    
+        <!-- Check if the tests have passed or failed. -->
+
+        <if>
+          <equals arg1="${org.eclipse.test.result}" arg2="0"/>
+          <then>
+            <echo message="All tests have passed."/>
+          </then>
+          <else>
+            <fail message="One or more tests have failed."/>
+          </else>
+        </if>
+        
+      </then>
+    </if>
+  </target>
+
+</project>

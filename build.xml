@@ -6,10 +6,11 @@
 
 
 	<delete dir="releng/corundum" quiet="true" />
-	<property name="corundum-url" value="https://hudson.eclipse.org/sapphire/job/Corundum/lastSuccessfulBuild/artifact/corundum.zip" />
-	<get src="${corundum-url}" dest="releng/corundum.zip" usetimestamp="true" />
 	
-	<unzip src="releng/corundum.zip" dest="releng/corundum" />
+	
+	<ant antfile="releng/corundum-src/build.xml" target="build" inheritall="false" useNativeBasedir="true" />
+	
+	<unzip src="releng/corundum-src/corundum.zip" dest="releng/corundum" />
 	<copy file="releng/patch/finalize-product-repository.xml" todir="releng/corundum/macros" overwrite="true" />
 	
 

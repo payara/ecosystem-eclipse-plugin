@@ -1,0 +1,32 @@
+<!-- 
+ ******************************************************************************
+ * Copyright (c) 2016 Oracle
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Konstantin Komissarchik - initial implementation and ongoing maintenance
+ ******************************************************************************
+-->
+
+<project name="corundum.macro.p2-mirror">
+
+  <macrodef name="p2-mirror">
+    <attribute name="source"/>
+    <attribute name="destination"/>
+    <sequential>
+      <echo message="Mirroring repository @{source} to @{destination}..."/>
+      <eclipse location="${builder}" application="org.eclipse.equinox.p2.artifact.repository.mirrorApplication">
+        <arg line="-source @{source}"/>
+        <arg line="-destination @{destination}"/>
+      </eclipse>
+      <eclipse location="${builder}" application="org.eclipse.equinox.p2.metadata.repository.mirrorApplication">
+        <arg line="-source @{source}"/>
+        <arg line="-destination @{destination}"/>
+      </eclipse>
+    </sequential>
+  </macrodef>
+
+</project>

@@ -1,0 +1,39 @@
+<!-- 
+ ******************************************************************************
+ * Copyright (c) 2016 Oracle
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Konstantin Komissarchik - initial implementation and ongoing maintenance
+ ******************************************************************************
+-->
+
+<project name="corundum.target.build-alt-configurations">
+
+  <!--
+    build-alt-configurations
+
+    Builds against alternative supported configurations. The list of alternative
+    configurations is defined to exclude the recommended configuration, which is covered by the
+    build target. The purpose of this target is only to verify clean compilation. As
+    such, unlike build target, this target does not perform any of the post-build
+    processing or produce consumable binaries.
+  -->
+
+  <target name="build-alt-configurations" depends="install-builder">
+
+    <for-each-configuration>
+      <if>
+        <not><equals arg1="${.configuration}" arg2="${configuration.recommended}"/></not>
+        <then>
+          <build-configuration name="${.configuration}"/>
+        </then>
+      </if>
+    </for-each-configuration>
+
+  </target>
+
+</project>

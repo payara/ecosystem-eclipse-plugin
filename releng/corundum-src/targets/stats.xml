@@ -1,0 +1,78 @@
+<!-- 
+ ******************************************************************************
+ * Copyright (c) 2016 Oracle
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Konstantin Komissarchik - initial implementation and ongoing maintenance
+ ******************************************************************************
+-->
+
+<project name="corundum.target.stats">
+
+  <target name="stats" depends="init-corundum">
+
+    <locate-source/>
+    
+    <property name="line.count" value="0"/>
+
+    <for param="project.folder">
+      <path>
+        <dirset dir="${source.location}/plugins">
+          <include name="*"/> <!-- not recursive -->
+          <exclude name=".metadata"/>
+        </dirset>
+      </path>
+      <sequential>
+
+        <var name="line.count.project" value="0"/>
+
+        <for param="file">
+          <path>
+            <fileset dir="@{project.folder}">
+              <exclude name="bin/**"/>
+              <exclude name="build/**"/>
+              <exclude name=".javacc/**"/>
+              <exclude name=".resources/**"/>
+              <exclude name=".apt_generated/**"/>
+              <exclude name="**/*.zip"/>
+              <exclude name="**/*.jar"/>
+              <exclude name="**/*.png"/>
+              <exclude name="**/*.gif"/>
+              <exclude name="**/*.jpeg"/>
+              <exclude name="**/*.jpg"/>
+              <exclude name="zipcodes/**"/>
+            </fileset>
+          </path>
+          <sequential>
+            <var name="line.count.file" unset="true"/>
+            <resourcecount property="line.count.file">
+              <tokens>
+                <file file="@{file}"/>
+              </tokens>
+            </resourcecount>
+            <!-- <echo message="@{file} : ${line.count.file}"/> -->
+            <increment property="line.count.project" amount="${line.count.file}"/>
+            <var name="line.count.file" unset="true"/>
+          </sequential>
+        </for>
+
+        <basename property="project.name" file="@{project.folder}"/>
+
+        <echo message="${project.name}: ${line.count.project}"/>
+
+        <increment property="line.count" amount="${line.count.project}"/>
+        <var name="line.count.project" unset="true"/>
+        <var name="project.name" unset="true"/>
+
+      </sequential>
+    </for>
+
+    <echo message="Overall: ${line.count}"/>
+
+  </target>
+
+</project>

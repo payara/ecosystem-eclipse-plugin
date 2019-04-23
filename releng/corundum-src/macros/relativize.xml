@@ -1,0 +1,34 @@
+<!-- 
+ ******************************************************************************
+ * Copyright (c) 2016 Oracle
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Konstantin Komissarchik - initial implementation and ongoing maintenance
+ ******************************************************************************
+-->
+
+<project name="corundum.macro.relativize">
+
+  <!-- Turns an absolute path into a relative one using the specified base path. -->
+
+  <macrodef name="relativize">
+    <attribute name="path"/>       <!-- absolute path to relativize -->
+    <attribute name="base"/>       <!-- base path that the relative path should be in relation to -->
+    <attribute name="dirsep"/>     <!-- directory separator to use for the relative path -->
+    <attribute name="property"/>   <!-- property to assign relative path to -->
+    <sequential>
+      <var name="@{property}" unset="true"/>
+      <pathconvert property="@{property}" dirsep="@{dirsep}">
+        <path>
+          <pathelement location="@{path}"/>
+        </path>
+        <map from="@{base}\" to=""/>
+      </pathconvert>
+    </sequential>
+  </macrodef>
+
+</project>
