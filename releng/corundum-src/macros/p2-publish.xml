@@ -1,0 +1,50 @@
+<!-- 
+ ******************************************************************************
+ * Copyright (c) 2016 Oracle
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Konstantin Komissarchik - initial implementation and ongoing maintenance
+ ******************************************************************************
+-->
+
+<project name="corundum.macro.p2-publish">
+
+  <macrodef name="p2-publish">
+    <attribute name="location"/>
+    <attribute name="name" default="repository"/>
+    <sequential>
+      <if>
+        <available file="@{location}/site.xml"/>
+        <then>
+          <eclipse location="${builder}" application="org.eclipse.equinox.p2.publisher.UpdateSitePublisher">
+            <arg line="-metadataRepository file:@{location}"/>
+            <arg line="-artifactRepository file:@{location}"/>
+            <arg line="-metadataRepositoryName &quot;@{name}&quot;"/>
+            <arg line="-artifactRepositoryName &quot;@{name}&quot;"/>
+            <arg line="-source @{location}"/>
+            <arg line="-compress"/>
+            <arg line="-publishArtifacts"/>
+            <arg line="-reusePack200Files"/>
+          </eclipse>
+        </then>
+        <else>
+          <eclipse location="${builder}" application="org.eclipse.equinox.p2.publisher.FeaturesAndBundlesPublisher">
+            <arg line="-metadataRepository file:@{location}"/>
+            <arg line="-artifactRepository file:@{location}"/>
+            <arg line="-metadataRepositoryName &quot;@{name}&quot;"/>
+            <arg line="-artifactRepositoryName &quot;@{name}&quot;"/>
+            <arg line="-source @{location}"/>
+            <arg line="-compress"/>
+            <arg line="-publishArtifacts"/>
+            <arg line="-reusePack200Files"/>
+          </eclipse>
+        </else>
+      </if>
+    </sequential>
+  </macrodef>
+
+</project>

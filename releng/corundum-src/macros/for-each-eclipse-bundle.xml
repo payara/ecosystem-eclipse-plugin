@@ -1,0 +1,74 @@
+<!-- 
+ ******************************************************************************
+ * Copyright (c) 2016 Oracle
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Konstantin Komissarchik - initial implementation and ongoing maintenance
+ ******************************************************************************
+-->
+
+<project name="corundum.macro.for-each-eclipse-bundle">
+
+  <macrodef name="for-each-eclipse-bundle">
+    <attribute name="eclipse"/>
+    <element name="body" implicit="yes"/>
+    <sequential>
+
+      <if>
+        <available file="@{eclipse}/Eclipse.app/Contents/Eclipse" type="dir"/>
+        <then>
+          <var name=".eclipse.root" value="@{eclipse}/Eclipse.app/Contents/Eclipse"/>
+        </then>
+        <else>
+          <var name=".eclipse.root" value="@{eclipse}"/>
+        </else>
+      </if>
+      
+      <var name=".bundles.info.file" value="${.eclipse.root}/configuration/org.eclipse.equinox.simpleconfigurator/bundles.info"/>
+      <var name=".bundles.info.content" unset="true"/>
+      <loadfile property=".bundles.info.content" srcFile="${.bundles.info.file}"/>
+      
+      <for list="${.bundles.info.content}" param="line" delimiter="&#13;&#10;">
+        <sequential>
+        
+          <if>
+            <not><matches string="@{line}" pattern="#.*"/></not>
+            <then>
+            
+              <propertyregex property=".bundle.symbolic.name" input="@{line}" regexp="([^,]+),[^,]+,[^,]+" select="\1"/>
+              <propertyregex property=".bundle.version" input="@{line}" regexp="[^,]+,([^,]+),[^,]+" select="\1"/>
+              <propertyregex property=".bundle.location" input="@{line}" regexp="[^,]+,[^,]+,([^,]+)" select="\1"/>
+              
+              <if>
+                <matches pattern="file:/(.+)" string="${.bundle.location}"/>
+                <then>
+                  <propertyregex property=".bundle.location" input="${.bundle.location}" regexp="file:/(.+)" select="\1" override="true"/>
+                </then>
+                <else>
+                  <normalize-path property=".bundle.location" path="${.eclipse.root}/${.bundle.location}"/>
+                </else>
+              </if>
+              
+              <basename property=".bundle.file.name" file="${.bundle.location}"/>
+          
+              <body/>
+
+              <var name=".bundle.symbolic.name" unset="true"/>
+              <var name=".bundle.version" unset="true"/>
+              <var name=".bundle.location" unset="true"/>
+              <var name=".bundle.file.name" unset="true"/>
+              
+            </then>
+          </if>
+          
+        </sequential>
+      </for>
+
+    </sequential>
+  </macrodef>
+  
+</project>

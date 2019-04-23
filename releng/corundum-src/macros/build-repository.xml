@@ -1,0 +1,168 @@
+<!-- 
+ ******************************************************************************
+ * Copyright (c) 2016 Oracle
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Konstantin Komissarchik - initial implementation and ongoing maintenance
+ ******************************************************************************
+-->
+
+<project name="corundum.macro.build-repository">
+
+  <macrodef name="build-repository">
+    <sequential>
+
+      <if>
+        <not><isset property="build.repository.completed"/></not>
+        <then>
+          <if>
+            <available file="${build.dir}/repository"/>
+            <then>
+              <echo message="Found existing repository build..."/>
+              <var name="build.repository.completed" value="true"/>
+              <load-repository location="file:${build.dir}/repository" property="build.repositories"/>
+            </then>
+          </if>
+        </then>
+      </if>
+
+      <if>
+        <not><isset property="build.repository.completed"/></not>
+        <then>
+
+          <!-- Stage 1 -->
+
+          <delete dir="${build.dir}/repository" quiet="true"/>
+          <mkdir dir="${build.dir}/repository"/>
+          
+          <locate-source/>
+          
+          <!-- Stage 2 -->
+
+          <verify-copyright source="${source.location}"/>
+          <verify-author source="${source.location}"/>
+          <verify-bundle-required-env source="${source.location}"/>
+
+          <!-- Stage 3 -->
+
+          <pde-build source="${source.location}" target="${configuration.recommended}" feature="${root.feature}" build.id="${DSTAMP}" warnings="true"/>
+
+          <unzip src="${source.location}/build/${root.feature}-${DSTAMP}.zip" dest="${build.dir}/repository">
+            <mapper type="regexp" from="^eclipse/(.*)$$" to="\1"/>
+          </unzip>
+
+          <delete file="${source.location}/build/${root.feature}-${DSTAMP}.zip"/>
+
+          <zip-dirs source.dir="${build.dir}/repository/features" suffix="jar"/>
+
+          <delete>
+            <fileset dir="${build.dir}/repository/features" includes="${root.feature}_*.jar"/>
+          </delete>
+
+          <!-- Stage 4 -->
+
+          <echo message="Setting Require-Bundle version constraints..."/>
+
+          <mkdir dir="${build.dir}/repository/temp"/>
+
+          <expand-all source.dir="${build.dir}/repository/plugins" dest.dir="${build.dir}/repository/temp" suffix="jar">
+            <delete file="@{archive.file}"/>
+          </expand-all>
+          
+          <move todir="${build.dir}/repository/temp">
+            <fileset dir="${build.dir}/repository/plugins"/>
+          </move>
+
+          <with-target name="${configuration.min}">
+            <create-inventory eclipse="${.target}" dest="${build.dir}/repository/temp/min-platform-inventory.txt"/>
+          </with-target>
+
+          <with-target name="${configuration.max}">
+            <create-inventory eclipse="${.target}" dest="${build.dir}/repository/temp/max-platform-inventory.txt"/>
+          </with-target>
+
+          <set-bundle-version-constraints
+            minPlatformInventory="${build.dir}/repository/temp/min-platform-inventory.txt"
+            targetPlatformInventory="${build.dir}/repository/temp/max-platform-inventory.txt"
+            pluginsDirectory="${build.dir}/repository/temp"
+            excludes="${require.bundle.version.constraint.excludes}"
+            rules="${require.bundle.version.constraint.rules}"/>
+
+          <!-- Stage 5 -->
+
+          <if>
+            <istrue value="${set.export.package.versions}"/>
+            <then>
+              <echo message="Setting versions of Export-Package entries..."/>
+              <set-export-package-version
+                bundles="${build.dir}/repository/temp"
+                excludes="${set.export.package.versions.excludes}"/>
+            </then>
+          </if>
+          
+          <process-built-plugins location="${build.dir}/repository/temp"/>
+            
+          <zip-dirs source.dir="${build.dir}/repository/temp" dest.dir="${build.dir}/repository/plugins" suffix="jar"/>
+
+          <delete dir="${build.dir}/repository/temp"/>
+            
+          <!-- Stage 6 -->
+            
+          <verify-about-html repository="${build.dir}/repository"/>
+
+          <!-- Stage 7 -->
+          
+          <for param="jar">
+            <path>
+              <fileset dir="${build.dir}/repository" includes="**/*.jar"/>
+            </path>
+            <sequential>
+              <condition-jar location="@{jar}"/>
+              <sign-jar location="@{jar}"/>
+              <pack-jar location="@{jar}"/>
+            </sequential>
+          </for>
+
+          <!-- Stage 8 -->
+
+          <echo message="Finalizing the repository..."/>
+
+          <pre-finalize-repository/>
+          
+          <property-from-set property=".version.master.feature">
+            <fileset dir="${build.dir}/repository/features" includes="${version.master.feature}_*.jar"/>
+          </property-from-set>
+
+          <propertyregex property="version" input="${.version.master.feature}" regexp=".*_([0-9]*.[0-9]*.[0-9]*.[0-9]*).jar" select="\1" override="true"/>
+          <propertyregex property="version.no.qualifier" input="${version}" regexp="([0-9]*.[0-9]*.[0-9]*).[0-9]*" select="\1" override="true"/>
+          <trim-version property="version.no.qualifier.trimmed" version="${version.no.qualifier}"/>
+          
+          <finalize-product-repository/>
+          
+          <load-repository location="file:${build.dir}/repository" property="build.repositories"/>
+          
+          <property name="build.repository.completed" value="true"/>
+
+        </then>
+        <else>
+
+          <!-- Determine the version of the product in the repository -->
+
+          <property-from-set property=".version.master.feature">
+            <fileset dir="${build.dir}/repository" includes="**/features/${version.master.feature}_*.jar"/>
+          </property-from-set>
+
+          <var name="version" unset="true"/>
+          <propertyregex property="version" input="${.version.master.feature}" regexp=".*_([0-9]*.[0-9]*.[0-9]*.[0-9]*).jar" select="\1"/>
+
+        </else>
+      </if>
+
+    </sequential>
+  </macrodef>
+
+</project>

@@ -1,0 +1,4 @@
+            <tr> 
+              <td class="name-${type}"><a href="${href}">${name}</a></td>
+              <td class="size">${size}</td>
+            </tr>

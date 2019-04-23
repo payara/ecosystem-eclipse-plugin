@@ -1,0 +1,33 @@
+<!-- 
+ ******************************************************************************
+ * Copyright (c) 2016 Oracle
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Konstantin Komissarchik - initial implementation and ongoing maintenance
+ ******************************************************************************
+-->
+
+<project name="corundum.target.install-p2">
+
+  <!--
+    The p2 system handles installing Eclipse at various phases of the build.
+  -->
+  
+  <target name="install-p2" depends="init-corundum">
+
+    <property name="p2" value="${build.dir}/p2"/>
+
+    <if>
+      <not><available file="${p2}"/></not>
+      <then>
+        <unzip src="${corundum.dir}/p2.zip" dest="${p2}"/>
+      </then>
+    </if>
+
+  </target>
+
+</project>

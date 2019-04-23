@@ -1,0 +1,57 @@
+<!-- 
+ ******************************************************************************
+ * Copyright (c) 2016 Oracle
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Konstantin Komissarchik - initial implementation and ongoing maintenance
+ ******************************************************************************
+-->
+
+<project name="corundum.macro.find-eclipse-bundle">
+
+  <macrodef name="find-eclipse-bundle">
+    <attribute name="property"/>
+    <attribute name="eclipse"/>
+    <attribute name="bundle"/>
+    <sequential>
+      
+      <if>
+        <available file="@{eclipse}/Eclipse.app/Contents/Eclipse" type="dir"/>
+        <then>
+          <var name=".eclipse.root" value="@{eclipse}/Eclipse.app/Contents/Eclipse"/>
+        </then>
+        <else>
+          <var name=".eclipse.root" value="@{eclipse}"/>
+        </else>
+      </if>
+      
+      <var name=".bundles.info.file" value="${.eclipse.root}/configuration/org.eclipse.equinox.simpleconfigurator/bundles.info"/>
+      <var name=".bundles.info.content" unset="true"/>
+      <loadfile property=".bundles.info.content" srcFile="${.bundles.info.file}"/>
+      
+      <propertyregex property=".location" input="${.bundles.info.content}" regexp="@{bundle},[^,]+,([^,]+)" select="\1"/>
+      
+      <if>
+        <matches pattern="file:/(.+)" string="${.location}"/>
+        <then>
+          <propertyregex property=".location.path" input="${.location}" regexp="file:/(.+)" select="\1" override="true"/>
+          <var name="@{property}" value="${.location.path}"/>
+          <var name=".location.path" unset="true"/>
+        </then>
+        <else>
+          <normalize-path property="@{property}" path="${.eclipse.root}/${.location}"/>
+        </else>
+      </if>
+      
+      <var name=".bundles.info.file" unset="true"/>
+      <var name=".bundles.info.content" unset="true"/>
+      <var name=".location" unset="true"/>
+      
+    </sequential>
+  </macrodef>
+
+</project>

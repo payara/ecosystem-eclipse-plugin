@@ -1,0 +1,53 @@
+<html>
+
+  <head>
+    <title>${repository-name}</title>
+    <style>
+      body
+      {
+        font-family: Tahoma,Arial,sans-serif;
+        font-size: 0.9em;
+        color: black;
+        background-color: white;
+        padding-bottom: 30px;
+      }
+      li
+      {
+        padding-top: 10px;
+        padding-bottom: 10px;
+      }
+    </style>
+  </head>
+  
+  <body>
+  
+    <h1>${repository-name}</h1>
+    
+    <p>This location contains a repository of Eclipse plugins. Follow these installation instructions or <a href="content.html">browse</a> the repository content.</p>
+    
+    <ol>
+      <li>Open Eclipse and select the <b>Install New Software</b> menu item under the <b>Help</b> menu.</li>
+      <li>Copy and paste this URL into the <b>Work with</b> text box, then press <b>ENTER</b>.<br/><br/><img src="images/InstallDialog.png"/></li>
+      <li>Once the repository is loaded, the available features should show up in the table.</li>
+      <li>Select the desired features and follow the wizard to install them.</li>
+    </ol>
+    
+    <h2>Troubleshooting</h2>
+    
+    <ol>
+      <li>
+        If unable to connect dialog is displayed and you access Internet through a proxy, ensure that Eclipse is properly
+        configured to use this proxy.<br/><br/>
+        <ol type="A">
+          <li>Select the <b>Preferences</b> menu item under the <b>Window</b> menu.</li>
+          <li>Expand the <b>General</b> node in the preferences tree and select <b>Network Connections</b>.</li>
+        </ol>
+      </li>
+      <li>If after the repository is loaded, the features table displays <b>There are no categorized items</b> message, uncheck
+        the <b>Group items by category</b> check box.</li>
+      </li>
+    </ol>
+    
+  </body>
+  
+</html>
