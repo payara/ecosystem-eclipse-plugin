@@ -76,7 +76,6 @@ public final class JdtUtil {
     private static final Map<File, String> jvmLocationToVersionMap = new HashMap<>();
 
     public static final class JvmValidator {
-        private static final boolean IS_MACOSX = Platform.OS_MACOSX.equals(Platform.getOS());
 
         private File location;
         private Status status;
@@ -88,12 +87,6 @@ public final class JdtUtil {
         }
 
         public JvmValidator jdk() {
-            if (this.status.ok()) {
-                if (!IS_MACOSX && !new File(this.location, "lib/tools.jar").exists()) {
-                    this.status = Status.createErrorStatus(jdkIsRequiredMessage.text());
-                }
-            }
-
             return this;
         }
 
