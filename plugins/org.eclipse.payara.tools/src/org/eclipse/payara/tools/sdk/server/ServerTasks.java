@@ -354,9 +354,10 @@ public class ServerTasks {
      * @param varMap Map to be used for replacing place holders, Contains <i>place holder</i> - <i>place
      * holder</i> value pairs.
      */
-    private static void appendOptions(StringBuilder argumentBuf, List<String> optList, Map<String, String> varMap) {
+    private static void appendOptions(StringBuilder argumentBuf,
+            List<String> optList, Map<String, String> varMap) {
         final String METHOD = "appendOptions";
-        
+        List<String> moduleOptions = new ArrayList<>();
         Map<String, String> keyValueArgs = new HashMap<>();
         List<String> keyOrder = new LinkedList<>();
         String name, value;
@@ -377,7 +378,8 @@ public class ServerTasks {
                 
                 name = opt.substring(0, splitIndex);
                 value = Utils.quote(opt.substring(splitIndex + 1));
-                LOGGER.log(Level.FINER, METHOD, "jvmOptVal", new Object[] { name, value });
+                LOGGER.log(Level.FINER, METHOD,
+                        "jvmOptVal", new Object[] { name, value });
 
             } else if (opt.startsWith("-Xbootclasspath")) {
 
@@ -399,21 +401,26 @@ public class ServerTasks {
                 LOGGER.log(Level.FINER, METHOD, "jvmOpt", name);
             }
             
-            if (!keyValueArgs.containsKey(name)) {
-                keyOrder.add(name);
+            // seperate modules options
+            if (name.startsWith("--add-")) {
+                moduleOptions.add(opt);
+            } else {
+                if (!keyValueArgs.containsKey(name)) {
+                    keyOrder.add(name);
+                }
+                keyValueArgs.put(name, value);
             }
-            keyValueArgs.put(name, value);
         }
 
         // Override the values that are found in the domain.xml file.
         // this is totally a copy/paste from StartTomcat...
-        String[] PROXY_PROPS = { "http.proxyHost",
-                "http.proxyPort",
-                "http.nonProxyHosts",
-                "https.proxyHost",
-                "https.proxyPort",
+       final String[] PROXY_PROPS = {
+            "http.proxyHost",
+            "http.proxyPort",
+            "http.nonProxyHosts",
+            "https.proxyHost",
+            "https.proxyPort",
         };
-        
         boolean isWindows = OsUtils.isWin();
         for (String prop : PROXY_PROPS) {
             value = System.getProperty(prop);
@@ -426,6 +433,8 @@ public class ServerTasks {
                 keyValueArgs.put(JavaUtils.systemPropertyName(prop), value);
             }
         }
+        // appending module options --add-modules --add-opens --add-exports
+        argumentBuf.append(String.join(" ", moduleOptions));
 
         // Appending key=value options to the command line argument
         // using the same order as they came in argument - important!
