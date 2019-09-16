@@ -37,7 +37,10 @@ import static org.eclipse.payara.tools.sdk.utils.ServerUtils.getJarName;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -94,6 +97,15 @@ public class ServerTasks {
     
     private static Pattern debugPortPattern = Pattern.compile("-\\S+jdwp[:=]\\S*address=([0-9]+)");
     private static Pattern debugSuspendPattern = Pattern.compile("-\\S+jdwp[:=]\\S*suspend=([n]+)");
+
+    private static final Set<String> MULTI_VALUE_OPTIONS = new HashSet<>(Arrays.asList(
+            "--add-exports",
+            "--add-modules",
+            "--add-opens",
+            "--add-reads",
+            "--limit-modules",
+            "--patch-module"
+    ));
 
     /**
      * Convenient method to start Payara in START mode.
@@ -402,7 +414,7 @@ public class ServerTasks {
             }
             
             // seperate modules options
-            if (name.startsWith("--add-")) {
+            if (MULTI_VALUE_OPTIONS.contains(name)) {
                 moduleOptions.add(opt);
             } else {
                 if (!keyValueArgs.containsKey(name)) {
