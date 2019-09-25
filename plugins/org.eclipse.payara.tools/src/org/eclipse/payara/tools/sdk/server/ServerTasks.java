@@ -37,7 +37,10 @@ import static org.eclipse.payara.tools.sdk.utils.ServerUtils.getJarName;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -94,6 +97,15 @@ public class ServerTasks {
     
     private static Pattern debugPortPattern = Pattern.compile("-\\S+jdwp[:=]\\S*address=([0-9]+)");
     private static Pattern debugSuspendPattern = Pattern.compile("-\\S+jdwp[:=]\\S*suspend=([n]+)");
+
+    private static final Set<String> MULTI_VALUE_OPTIONS = new HashSet<>(Arrays.asList(
+            "--add-exports",
+            "--add-modules",
+            "--add-opens",
+            "--add-reads",
+            "--limit-modules",
+            "--patch-module"
+    ));
 
     /**
      * Convenient method to start Payara in START mode.
@@ -354,9 +366,10 @@ public class ServerTasks {
      * @param varMap Map to be used for replacing place holders, Contains <i>place holder</i> - <i>place
      * holder</i> value pairs.
      */
-    private static void appendOptions(StringBuilder argumentBuf, List<String> optList, Map<String, String> varMap) {
+    private static void appendOptions(StringBuilder argumentBuf,
+            List<String> optList, Map<String, String> varMap) {
         final String METHOD = "appendOptions";
-        
+        List<String> moduleOptions = new ArrayList<>();
         Map<String, String> keyValueArgs = new HashMap<>();
         List<String> keyOrder = new LinkedList<>();
         String name, value;
@@ -377,7 +390,8 @@ public class ServerTasks {
                 
                 name = opt.substring(0, splitIndex);
                 value = Utils.quote(opt.substring(splitIndex + 1));
-                LOGGER.log(Level.FINER, METHOD, "jvmOptVal", new Object[] { name, value });
+                LOGGER.log(Level.FINER, METHOD,
+                        "jvmOptVal", new Object[] { name, value });
 
             } else if (opt.startsWith("-Xbootclasspath")) {
 
@@ -399,21 +413,26 @@ public class ServerTasks {
                 LOGGER.log(Level.FINER, METHOD, "jvmOpt", name);
             }
             
-            if (!keyValueArgs.containsKey(name)) {
-                keyOrder.add(name);
+            // seperate modules options
+            if (MULTI_VALUE_OPTIONS.contains(name)) {
+                moduleOptions.add(opt);
+            } else {
+                if (!keyValueArgs.containsKey(name)) {
+                    keyOrder.add(name);
+                }
+                keyValueArgs.put(name, value);
             }
-            keyValueArgs.put(name, value);
         }
 
         // Override the values that are found in the domain.xml file.
         // this is totally a copy/paste from StartTomcat...
-        String[] PROXY_PROPS = { "http.proxyHost",
-                "http.proxyPort",
-                "http.nonProxyHosts",
-                "https.proxyHost",
-                "https.proxyPort",
+       final String[] PROXY_PROPS = {
+            "http.proxyHost",
+            "http.proxyPort",
+            "http.nonProxyHosts",
+            "https.proxyHost",
+            "https.proxyPort",
         };
-        
         boolean isWindows = OsUtils.isWin();
         for (String prop : PROXY_PROPS) {
             value = System.getProperty(prop);
@@ -426,6 +445,8 @@ public class ServerTasks {
                 keyValueArgs.put(JavaUtils.systemPropertyName(prop), value);
             }
         }
+        // appending module options --add-modules --add-opens --add-exports
+        argumentBuf.append(String.join(" ", moduleOptions));
 
         // Appending key=value options to the command line argument
         // using the same order as they came in argument - important!
