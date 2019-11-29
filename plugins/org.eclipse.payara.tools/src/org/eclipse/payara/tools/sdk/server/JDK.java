@@ -62,32 +62,45 @@ public final class JDK {
     public static int getUpdate() {
         return update;
     }
+    
+    public static String getVendor() {
+        return vendor;
+    }
 
     public static class Version {
         
+    	private final Optional<String> vendor;
     	private final int major;
         private final Optional<Integer> minor;
         private final Optional<Integer> subminor;
         private final Optional<Integer> update;
 
-        private Version(String string) {
+        private Version(String version) {
             // Split java version into its constituent parts, i.e.
             // 1.2.3.4 -> [ 1, 2, 3, 4]
             // 1.2.3u4 -> [ 1, 2, 3, 4]
             // 1.2.3_4 -> [ 1, 2, 3, 4]
-            String[] split = string.split("[\\._u\\-]+");
+            if (version.contains("-")) {
+                String[] versionSplit = version.split("-");
+                this.vendor = versionSplit.length > 0 ? Optional.of(versionSplit[0]) : Optional.empty();
+                version = versionSplit.length > 1 ? versionSplit[1] : "";
+            } else {
+                this.vendor = Optional.empty();
+            }
+            String[] split = version.split("[\\._u\\-]+");
 
             major = split.length > 0 ? Integer.parseInt(split[0]) : 0;
             minor = split.length > 1 ? Optional.of(Integer.parseInt(split[1])) : Optional.empty();
             subminor = split.length > 2 ? Optional.of(Integer.parseInt(split[2])) : Optional.empty();
             update = split.length > 3 ? Optional.of(Integer.parseInt(split[3])) : Optional.empty();
         }
-        
-        private Version(int major, int minor, int subminor, int update) {
-        	this.major = major;
-        	this.minor = Optional.of(minor);
-        	this.subminor = Optional.of(subminor);
+   
+        private Version(int major, int minor, int subminor, int update, String vendor) {
+            this.major = major;
+            this.minor = Optional.of(minor);
+            this.subminor = Optional.of(subminor);
             this.update = Optional.of(update);
+            this.vendor = Optional.of(vendor);
         }
 
         public boolean newerThan(Version version) {
@@ -221,6 +234,10 @@ public final class JDK {
     }
 
     public static Version getVersion(String string) {
+        return getVersion(string, null);
+    }
+    
+    public static Version getVersion(String string, String vendor) {
         if (string != null && string.matches("([0-9]+[\\._u\\-]+)*[0-9]+")) {
             // Make sure the string is a valid JDK version, i.e.
             // 1.8.0_162 or something that is returned by "java -version"
@@ -230,24 +247,27 @@ public final class JDK {
         return null;
     }
     
-    public static Version getVersion(String jv, String javaSpecificationVersion) {
+    public static Version getVersion(String jv, String javaSpecificationVersion, String vendor) {
         int[] versions = parseVersions(jv, javaSpecificationVersion);
-        
-		return new Version(versions[MAJOR], versions[MINOR], versions[SUBMINOR], versions[UPDATE]);
+
+        return new Version(versions[MAJOR], versions[MINOR], versions[SUBMINOR], versions[UPDATE], vendor);
     }
 
     public static Version getVersion() {
-        return new Version(major, minor, subminor, update);
+        return new Version(major, minor, subminor, update, vendor);
     }
 
     public static boolean isCorrectJDK(Optional<Version> minVersion, Optional<Version> maxVersion) {
-       return isCorrectJDK(JDK_VERSION, minVersion, maxVersion);
+       return isCorrectJDK(JDK_VERSION, Optional.empty(), minVersion, maxVersion);
     }
     
-    public static boolean isCorrectJDK(Version JDKversion, Optional<Version> minVersion, Optional<Version> maxVersion) {
+    public static boolean isCorrectJDK(Version JDKversion, Optional<String> vendor, Optional<Version> minVersion, Optional<Version> maxVersion) {
         boolean correctJDK = true;
         
-        if (minVersion.isPresent()) {
+        if (vendor.isPresent()) {
+            correctJDK = JDKversion.vendor.get().contains(vendor.get());
+        }
+        if (correctJDK  && minVersion.isPresent()) {
             correctJDK = JDKversion.newerOrEquals(minVersion.get());
         }
         if (correctJDK && maxVersion.isPresent()) {
@@ -279,6 +299,7 @@ public final class JDK {
     private static int minor;
     private static int subminor;
     private static int update;
+    private static String vendor;
     
     // DO initialize these variables.  You'll be sorry if you don't!
     private final static int MAJOR = 0;
@@ -287,7 +308,7 @@ public final class JDK {
     private final static int UPDATE = 3;
     
     // DO NOT initialize this variable.  You'll again be sorry if you do!
-    private static Version JDK_VERSION;
+    public static Version JDK_VERSION;
 
     private static void initialize() {
     	
@@ -296,7 +317,8 @@ public final class JDK {
         minor = subminor = update = 0;
         
         try {
-            String jv = System.getProperty("java.version");
+            String javaVersion = System.getProperty("java.version");
+            vendor = System.getProperty("java.vendor");
             /*In JEP 223 java.specification.version will be a single number versioning , not a dotted versioning . So if we get a single
             integer as versioning we know that the JDK is post JEP 223
             For JDK 8:
@@ -308,7 +330,7 @@ public final class JDK {
             */
             String javaSpecificationVersion = System.getProperty("java.specification.version");
             
-            int[] versions = parseVersions(jv, javaSpecificationVersion);
+            int[] versions = parseVersions(javaVersion, javaSpecificationVersion);
             
             major = versions[MAJOR];
             minor = versions[MINOR];
@@ -319,7 +341,7 @@ public final class JDK {
             // ignore -- use defaults
         }
 
-        JDK_VERSION = new Version(major, minor, subminor, update);
+        JDK_VERSION = new Version(major, minor, subminor, update, vendor);
     }
     
     static int[] parseVersions(String jv, String javaSpecificationVersion) {
