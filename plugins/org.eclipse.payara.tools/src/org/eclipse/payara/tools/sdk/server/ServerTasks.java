@@ -22,6 +22,7 @@ import static java.io.File.separator;
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 import static org.eclipse.payara.tools.sdk.server.JDK.isCorrectJDK;
+import static org.eclipse.payara.tools.sdk.server.JDK.JDK_VERSION;
 import static org.eclipse.payara.tools.sdk.server.ServerTasks.StartMode.DEBUG;
 import static org.eclipse.payara.tools.sdk.server.parser.TreeParser.readXml;
 import static org.eclipse.payara.tools.sdk.utils.JavaUtils.javaVmExecutableFullPath;
@@ -146,24 +147,14 @@ public class ServerTasks {
         if (!readXml(new File(domainXmlPath), jvmConfigReader)) {
             throw new PayaraIdeException(LOGGER.excMsg(METHOD, "readXMLerror"), domainXmlPath);
         }
-        
-        String[] versions = JavaUtils.getJavaVersionString(args.getJavaHome()).split(":");
-        
-        JDK.Version targetJDKVersion;
-        
-        if (versions.length == 1) {
-        	// Simple way, just using version string
-        	targetJDKVersion = JDK.getVersion(versions[0]);
-        } else {
-        	// More eleborate way using both version string and spec version
-        	targetJDKVersion = JDK.getVersion(versions[0], versions[1]);
-        }
-        
+               
+        JDK.Version targetJDKVersion = JDK_VERSION != null ? JDK_VERSION : getJavaVersion(args);
+               
         // Filter out all options that are not applicable 
         List<String> optList
 	        = jvmConfigReader.getJvmOptions()
 	                .stream()
-	                .filter(fullOption -> isCorrectJDK(targetJDKVersion, fullOption.minVersion, fullOption.maxVersion))
+	                .filter(fullOption -> isCorrectJDK(targetJDKVersion, fullOption.vendor, fullOption.minVersion, fullOption.maxVersion))
 	                .map(fullOption -> fullOption.option)
 	                .collect(toList());
         
@@ -234,6 +225,21 @@ public class ServerTasks {
         } catch (InterruptedException | ExecutionException e) {
             throw new PayaraIdeException(LOGGER.excMsg(METHOD, "failed"), e);
         }
+    }
+    
+    private static JDK.Version getJavaVersion(StartupArgs args) {
+        String[] versions = JavaUtils.getJavaVersionString(args.getJavaHome()).split(":");
+        JDK.Version targetJDKVersion;
+        
+        if (versions.length == 1) {
+            // Simple way, just using version string
+            targetJDKVersion = JDK.getVersion(versions[0]);
+        } else {
+            // More eleborate way using both version string and spec version
+            targetJDKVersion = JDK.getVersion(versions[0], versions[1], System.getProperty("java.vendor"));
+        }
+        
+        return targetJDKVersion;
     }
     
     public static Integer getDebugPort(ResultProcess process) {

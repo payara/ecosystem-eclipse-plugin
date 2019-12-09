@@ -27,7 +27,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.eclipse.payara.tools.sdk.server.JDK;
 import org.eclipse.payara.tools.sdk.server.parser.TreeParser.NodeListener;
 import org.eclipse.payara.tools.sdk.server.parser.TreeParser.Path;
@@ -205,6 +204,7 @@ public class JvmConfigReader extends NodeListener implements XMLReader {
     public static class JvmOption {
 
         public final String option;
+        public final Optional<String> vendor;
         public final Optional<JDK.Version> minVersion;
         public final Optional<JDK.Version> maxVersion;
 
@@ -221,11 +221,19 @@ public class JvmConfigReader extends NodeListener implements XMLReader {
         public JvmOption(String option) {
             Matcher matcher = PATTERN.matcher(option);
             if (matcher.matches()) {
-                this.minVersion = Optional.ofNullable(JDK.getVersion(matcher.group(1)));
+                if (matcher.group(1).contains("-")) {
+                    String[] parts = matcher.group(1).split("-");
+                    this.vendor = Optional.ofNullable(parts[0]);
+                    this.minVersion = Optional.ofNullable(JDK.getVersion(parts[1]));
+                } else {
+                    this.vendor = Optional.empty();
+                    this.minVersion = Optional.ofNullable(JDK.getVersion(matcher.group(1)));
+                }
                 this.maxVersion = Optional.ofNullable(JDK.getVersion(matcher.group(2)));
                 this.option = matcher.group(3);
             } else {
                 this.option = option;
+                this.vendor = Optional.empty();
                 this.minVersion = Optional.empty();
                 this.maxVersion = Optional.empty();
             }
@@ -233,6 +241,7 @@ public class JvmConfigReader extends NodeListener implements XMLReader {
 
         public JvmOption(String option, String minVersion, String maxVersion) {
             this.option = option;
+            this.vendor = Optional.empty();
             this.minVersion = Optional.ofNullable(JDK.getVersion(minVersion));
             this.maxVersion = Optional.ofNullable(JDK.getVersion(maxVersion));
         }
