@@ -37,6 +37,8 @@ import static org.eclipse.payara.tools.sdk.utils.ServerUtils.getDomainPath;
 import static org.eclipse.payara.tools.sdk.utils.ServerUtils.getJarName;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -147,9 +149,10 @@ public class ServerTasks {
         if (!readXml(new File(domainXmlPath), jvmConfigReader)) {
             throw new PayaraIdeException(LOGGER.excMsg(METHOD, "readXMLerror"), domainXmlPath);
         }
-               
-        JDK.Version targetJDKVersion = JDK_VERSION != null ? JDK_VERSION : getJavaVersion(args);
-               
+
+        JDK.Version jdkVersion = getJavaVersion(args);
+        JDK.Version targetJDKVersion = jdkVersion != null ? jdkVersion : JDK_VERSION;
+
         // Filter out all options that are not applicable 
         List<String> optList
 	        = jvmConfigReader.getJvmOptions()
@@ -157,8 +160,7 @@ public class ServerTasks {
 	                .filter(fullOption -> isCorrectJDK(targetJDKVersion, fullOption.vendor, fullOption.minVersion, fullOption.maxVersion))
 	                .map(fullOption -> fullOption.option)
 	                .collect(toList());
-        
-        
+
         Map<String, String> propMap = jvmConfigReader.getPropMap();
         addJavaAgent(server, jvmConfigReader);
 
@@ -228,17 +230,23 @@ public class ServerTasks {
     }
     
     private static JDK.Version getJavaVersion(StartupArgs args) {
-        String[] versions = JavaUtils.getJavaVersionString(args.getJavaHome()).split(":");
-        JDK.Version targetJDKVersion;
-        
-        if (versions.length == 1) {
-            // Simple way, just using version string
-            targetJDKVersion = JDK.getVersion(versions[0]);
-        } else {
-            // More eleborate way using both version string and spec version
-            targetJDKVersion = JDK.getVersion(versions[0], versions[1], System.getProperty("java.vendor"));
+        String javaHome = System.getProperty("java.home");
+        Path defaultPath = Paths.get(javaHome);
+        Path selectedPath = Paths.get(args.getJavaHome());
+
+        if (selectedPath.equals(defaultPath)
+                || (javaHome.endsWith("jre") && selectedPath.equals(defaultPath.getParent()))) {
+            System.out.println("same same " + defaultPath + selectedPath);
+            return JDK_VERSION;
         }
-        
+
+        String[] versions = JavaUtils.getJavaVersionString(args.getJavaHome()).split(":");
+        JDK.Version targetJDKVersion = null;
+
+        if (versions.length > 0) {
+            targetJDKVersion = JDK.getVersion(versions[0], System.getProperty("java.vendor"));
+        }
+
         return targetJDKVersion;
     }
     
