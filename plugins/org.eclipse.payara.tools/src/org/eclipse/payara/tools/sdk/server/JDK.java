@@ -87,12 +87,12 @@ public final class JDK {
             this.vendor = Optional.ofNullable(vendor);
         }
 
-        private Version(int major, int minor, int subminor, int update, String vendor) {
+        Version(int major, int minor, int subminor, int update, String vendor) {
             this.major = major;
-            this.minor = Optional.of(minor);
-            this.subminor = Optional.of(subminor);
-            this.update = Optional.of(update);
-            this.vendor = Optional.of(vendor);
+            this.minor = Optional.ofNullable(minor);
+            this.subminor = Optional.ofNullable(subminor);
+            this.update = Optional.ofNullable(update);
+            this.vendor = Optional.ofNullable(vendor);
         }
 
         public boolean newerThan(Version version) {
