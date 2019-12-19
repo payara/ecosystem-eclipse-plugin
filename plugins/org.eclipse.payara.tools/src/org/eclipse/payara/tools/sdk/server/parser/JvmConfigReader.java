@@ -221,7 +221,8 @@ public class JvmConfigReader extends NodeListener implements XMLReader {
         public JvmOption(String option) {
             Matcher matcher = PATTERN.matcher(option);
             if (matcher.matches()) {
-                if (matcher.group(1).contains("-")) {
+                if (matcher.group(1).contains("-")
+                        && Character.isLetter(matcher.group(1).charAt(0))) {
                     String[] parts = matcher.group(1).split("-");
                     this.vendor = Optional.ofNullable(parts[0]);
                     this.minVersion = Optional.ofNullable(JDK.getVersion(parts[1]));
