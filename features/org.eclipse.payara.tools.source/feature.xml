@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<feature id="org.eclipse.payara.tools.source" label="%featureName" provider-name="%providerName" version="1.0.0.qualifier">
+<feature id="org.eclipse.payara.tools.source" label="%featureName" provider-name="%providerName" version="1.0.1.qualifier">
 
    <description>
       %featureDescription
