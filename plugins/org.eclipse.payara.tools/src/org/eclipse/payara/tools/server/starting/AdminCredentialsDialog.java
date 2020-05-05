@@ -1,9 +1,7 @@
 /******************************************************************************
- * Copyright (c) 2018-2019 Payara Foundation
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v20.html
+ * Copyright (c) 2020 Payara Foundation All rights reserved. This program and the accompanying
+ * materials are made available under the terms of the Eclipse Public License v2.0 which accompanies
+ * this distribution, and is available at http://www.eclipse.org/legal/epl-v20.html
  * SPDX-License-Identifier: EPL-2.0
  ******************************************************************************/
 
@@ -29,96 +27,104 @@ import org.eclipse.wst.server.core.IServerWorkingCopy;
 
 public class AdminCredentialsDialog extends TitleAreaDialog {
 
-	private Text adminNameText;
-	private Text passwordText;
+    private Text adminNameText;
+    private Text passwordText;
 
-	private static final String SAVE_LABEL = "Save";
+    private static final String SAVE_LABEL = "Save";
 
-	private IServerWorkingCopy serverWorkingCopy;
+    private IServerWorkingCopy serverWorkingCopy;
 
-	private AdminCredentialsDialog(IServerWorkingCopy serverWorkingCopy, Shell parentShell) {
-		super(parentShell);
-		this.serverWorkingCopy = serverWorkingCopy;
-	}
 
-	public static void open(IServer server) {
-		Display display = PlatformUI.getWorkbench().getDisplay();
-		display.asyncExec(() -> {
-			IServerWorkingCopy serverWorkingCopy;
-			if (server instanceof IServerWorkingCopy) {
-				serverWorkingCopy = (IServerWorkingCopy) server;
-			} else {
-				serverWorkingCopy = server.createWorkingCopy();
-			}
-			AdminCredentialsDialog dialog = new AdminCredentialsDialog(serverWorkingCopy, display.getActiveShell());
-			dialog.create();
-			dialog.open();
-		});
-	}
+    private AdminCredentialsDialog(IServerWorkingCopy serverWorkingCopy, Shell parentShell) {
+        super(parentShell);
+        this.serverWorkingCopy = serverWorkingCopy;
+    }
 
-	@Override
-	public void create() {
-		super.create();
-		super.getShell().setText("Payara Administrator Credentials");
-		setTitle("Wrong user name or password");
-		setMessage("Authorization failed while checking " + serverWorkingCopy.getName()
-				+ " status. Please provide valid administrator credentials.", IMessageProvider.WARNING);
-	}
 
-	protected void createButtonsForButtonBar(Composite parent) {
-		createButton(parent, IDialogConstants.OK_ID, SAVE_LABEL, true);
-		createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
-	}
+    public static void open(IServer server) {
+        Display display = PlatformUI.getWorkbench().getDisplay();
+        display.asyncExec(() -> {
+            IServerWorkingCopy serverWorkingCopy;
+            if (server instanceof IServerWorkingCopy) {
+                serverWorkingCopy = (IServerWorkingCopy) server;
+            } else {
+                serverWorkingCopy = server.createWorkingCopy();
+            }
+            AdminCredentialsDialog dialog = new AdminCredentialsDialog(serverWorkingCopy, display.getActiveShell());
+            dialog.create();
+            dialog.open();
+        });
+    }
 
-	@Override
-	protected Control createDialogArea(Composite parent) {
-		Composite area = (Composite) super.createDialogArea(parent);
-		Composite container = new Composite(area, SWT.NONE);
-		container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		GridLayout layout = new GridLayout(2, false);
-		container.setLayout(layout);
 
-		createAdminNameComponent(container);
-		createPasswordComponent(container);
+    @Override
+    public void create() {
+        super.create();
+        super.getShell().setText("Payara Administrator Credentials");
+        setTitle("Wrong user name or password");
+        setMessage("Authorization failed while checking " + serverWorkingCopy.getName()
+            + " status. Please provide valid administrator credentials.", IMessageProvider.WARNING);
+    }
 
-		return area;
-	}
 
-	private void createAdminNameComponent(Composite container) {
-		Label adminNameLabel = new Label(container, SWT.NONE);
-		adminNameLabel.setText("Username");
+    protected void createButtonsForButtonBar(Composite parent) {
+        createButton(parent, IDialogConstants.OK_ID, SAVE_LABEL, true);
+        createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
+    }
 
-		GridData grid = new GridData();
-		grid.grabExcessHorizontalSpace = true;
-		grid.horizontalAlignment = GridData.FILL;
 
-		adminNameText = new Text(container, SWT.BORDER);
-		adminNameText.setText(serverWorkingCopy.getAttribute(PayaraServer.ATTR_ADMIN, "admin"));
-		adminNameText.setLayoutData(grid);
-	}
+    @Override
+    protected Control createDialogArea(Composite parent) {
+        Composite area = (Composite) super.createDialogArea(parent);
+        Composite container = new Composite(area, SWT.NONE);
+        container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        GridLayout layout = new GridLayout(2, false);
+        container.setLayout(layout);
 
-	private void createPasswordComponent(Composite container) {
-		Label passwordLabel = new Label(container, SWT.NONE);
-		passwordLabel.setText("Password");
+        createAdminNameComponent(container);
+        createPasswordComponent(container);
 
-		GridData grid = new GridData();
-		grid.grabExcessHorizontalSpace = true;
-		grid.horizontalAlignment = GridData.FILL;
-		passwordText = new Text(container, SWT.PASSWORD | SWT.BORDER);
-		passwordText.setText(serverWorkingCopy.getAttribute(PayaraServer.ATTR_ADMINPASS, ""));
-		passwordText.setLayoutData(grid);
-	}
+        return area;
+    }
 
-	@Override
-	protected void okPressed() {
-		try {
-			serverWorkingCopy.setAttribute(PayaraServer.ATTR_ADMIN, adminNameText.getText());
-			serverWorkingCopy.setAttribute(PayaraServer.ATTR_ADMINPASS, passwordText.getText());
-			serverWorkingCopy.save(true, null);
-		} catch (CoreException e) {
-			throw new RuntimeException(e);
-		}
-		super.okPressed();
-	}
+
+    private void createAdminNameComponent(Composite container) {
+        Label adminNameLabel = new Label(container, SWT.NONE);
+        adminNameLabel.setText("Username");
+
+        GridData grid = new GridData();
+        grid.grabExcessHorizontalSpace = true;
+        grid.horizontalAlignment = GridData.FILL;
+
+        adminNameText = new Text(container, SWT.BORDER);
+        adminNameText.setText(serverWorkingCopy.getAttribute(PayaraServer.ATTR_ADMIN, "admin"));
+        adminNameText.setLayoutData(grid);
+    }
+
+
+    private void createPasswordComponent(Composite container) {
+        Label passwordLabel = new Label(container, SWT.NONE);
+        passwordLabel.setText("Password");
+
+        GridData grid = new GridData();
+        grid.grabExcessHorizontalSpace = true;
+        grid.horizontalAlignment = GridData.FILL;
+        passwordText = new Text(container, SWT.PASSWORD | SWT.BORDER);
+        passwordText.setText(serverWorkingCopy.getAttribute(PayaraServer.ATTR_ADMINPASS, ""));
+        passwordText.setLayoutData(grid);
+    }
+
+
+    @Override
+    protected void okPressed() {
+        try {
+            serverWorkingCopy.setAttribute(PayaraServer.ATTR_ADMIN, adminNameText.getText());
+            serverWorkingCopy.setAttribute(PayaraServer.ATTR_ADMINPASS, passwordText.getText());
+            serverWorkingCopy.save(true, null);
+        } catch (CoreException e) {
+            throw new RuntimeException(e);
+        }
+        super.okPressed();
+    }
 
 }

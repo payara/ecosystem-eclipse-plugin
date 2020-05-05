@@ -355,7 +355,7 @@ public class PayaraServerLaunchDelegate extends AbstractJavaLaunchConfigurationD
                 abort(canntCommunicate, new RuntimeException(abortLaunchMsg + domainNotMatch + checkVpnOrProxy));
                 break;
             case RUNNING_CREDENTIAL_PROBLEM:
-            	AdminCredentialsDialog.open(thisServer);
+                AdminCredentialsDialog.open(thisServer);
                 abort(canntCommunicate, new RuntimeException(abortLaunchMsg + wrongUsernamePassword));
                 break;
             case RUNNING_DOMAIN_MATCHING:

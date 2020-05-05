@@ -124,13 +124,16 @@ public class PayaraStartJob implements Callable<ResultProcess> {
                         startupConsole.stopLogging();
                         payaraProcess.destroy();
 
-                        throw new PayaraLaunchException("BAD GATEWAY response code returned. Check your proxy settings. Killing startup process.", payaraProcess);
+                        throw new PayaraLaunchException(
+                            "BAD GATEWAY response code returned. Check your proxy settings. Killing startup process.",
+                            payaraProcess);
                     case RUNNING_CREDENTIAL_PROBLEM:
                         startupConsole.stopLogging();
                         payaraProcess.destroy();
                         AdminCredentialsDialog.open(payaraServerBehaviour.getServer());
 
-                        throw new PayaraLaunchException("Wrong user name or password. Killing startup process.", payaraProcess);
+                        throw new PayaraLaunchException("Wrong user name or password. Killing startup process.",
+                            payaraProcess);
                     case RUNNING_DOMAIN_MATCHING:
                         startupConsole.stopLogging();
                         break check_server_status;
