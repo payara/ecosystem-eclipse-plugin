@@ -539,7 +539,7 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
     }
     
     public String getDomainPath() {
-        return getAttribute(ATTR_DOMAINPATH, "");
+        return getAttribute(ATTR_DOMAINPATH, getDefaultDomainDir(getServer().getRuntime().getLocation()).toString());
     }
 
     public String getHost() {
