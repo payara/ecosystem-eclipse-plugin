@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 /******************************************************************************
- * Copyright (c) 2019 Payara Foundation
+ * Copyright (c) 2019-2020 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -123,13 +123,17 @@ public class PayaraStartJob implements Callable<ResultProcess> {
                     case RUNNING_PROXY_ERROR:
                         startupConsole.stopLogging();
                         payaraProcess.destroy();
-                        
-                        throw new PayaraLaunchException("BAD GATEWAY response code returned. Check your proxy settings. Killing startup process.", payaraProcess);
+
+                        throw new PayaraLaunchException(
+                            "BAD GATEWAY response code returned. Check your proxy settings. Killing startup process.",
+                            payaraProcess);
                     case RUNNING_CREDENTIAL_PROBLEM:
                         startupConsole.stopLogging();
                         payaraProcess.destroy();
-                        
-                        throw new PayaraLaunchException("Wrong user name or password. Killing startup process.", payaraProcess);
+                        AdminCredentialsDialog.open(payaraServerBehaviour.getServer());
+
+                        throw new PayaraLaunchException("Wrong user name or password. Killing startup process.",
+                            payaraProcess);
                     case RUNNING_DOMAIN_MATCHING:
                         startupConsole.stopLogging();
                         break check_server_status;
