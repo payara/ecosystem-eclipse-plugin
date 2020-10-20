@@ -18,17 +18,12 @@
 
 package org.eclipse.payara.tools.internal;
 
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement(name = "library")
 public class Library {
 
     private String path;
     private String javadoc;
     private String source;
 
-    @XmlAttribute(name = "path")
     public String getPath() {
         return path;
     }
@@ -37,7 +32,6 @@ public class Library {
         this.path = name;
     }
 
-    @XmlAttribute(name = "javadoc")
     public String getJavadoc() {
         return javadoc;
     }
@@ -46,7 +40,6 @@ public class Library {
         this.javadoc = doc;
     }
 
-    @XmlAttribute(name = "source")
     public String getSource() {
         return source;
     }
