@@ -67,6 +67,8 @@ public class SystemLibrariesSetting {
     }
 
     public static SystemLibrariesSetting load(IProject project) {
+        SystemLibrariesSetting settings = null;
+
         try {
             IFile settingsXmlFile = project.getFile(SETTING_XML);
 
@@ -74,33 +76,34 @@ public class SystemLibrariesSetting {
                 return null;
             }
 
-            SystemLibrariesSetting settings = null;
             try (InputStream stream = settingsXmlFile.getContents()) {
                 SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
                 SAXParser saxParser = saxParserFactory.newSAXParser();
                 SysLibHandler handler = new SysLibHandler();
                 saxParser.parse(stream, handler);
-                settings = handler.getSystemLibrariesSetting();//(SystemLibrariesSetting) JAXBContext.newInstance(SystemLibrariesSetting.class).createUnmarshaller().unmarshal(stream);
+                settings = handler.getSystemLibrariesSetting();
             }
 
             if (settings.getLibraryList() == null) {
                 settings.setLibraryList(new ArrayList<>());
             }
 
-            return settings;
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return null;
+        return settings;
     }
 
     public static void save(IProject project, SystemLibrariesSetting settings) {
+        IFile settingsXmlFile = project.getFile(SETTING_XML);
+        XMLOutputFactory factory = XMLOutputFactory.newInstance();
+        XMLStreamWriter writer = null;
         try {
-            IFile settingsXmlFile = project.getFile(SETTING_XML);
-            XMLOutputFactory factory = XMLOutputFactory.newInstance();
-            XMLStreamWriter writer = factory.createXMLStreamWriter(
-                    new FileOutputStream(settingsXmlFile.getLocation().toFile()), StandardCharsets.UTF_8.name());
+            writer = factory.createXMLStreamWriter(
+                    new FileOutputStream(settingsXmlFile.getLocation().toFile()),
+                    StandardCharsets.UTF_8.name()
+            );
             writer.writeStartDocument(StandardCharsets.UTF_8.name(), "1.0");
             writer.writeCharacters(NEW_LINE);
             writer.writeStartElement(SYSTEM_LIBRARIES_TAG);
@@ -122,12 +125,17 @@ public class SystemLibrariesSetting {
             writer.writeEndElement();
             writer.writeCharacters(NEW_LINE);
             writer.writeEndDocument();
-
-            writer.flush();
-            writer.close();
-            settingsXmlFile.refreshLocal(0, new NullProgressMonitor());
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            if (writer != null) {
+                try {
+                    writer.flush();
+                    writer.close();
+                    settingsXmlFile.refreshLocal(0, new NullProgressMonitor());
+                } catch (Exception ex) {
+                }
+            }
         }
     }
 
