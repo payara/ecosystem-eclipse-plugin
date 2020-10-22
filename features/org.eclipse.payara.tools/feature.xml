@@ -22,7 +22,7 @@
       <import feature="org.eclipse.sapphire.modeling.xml" version="9.1" match="compatible"/>
       <import feature="org.eclipse.sapphire.platform" version="9.1" match="compatible"/>
       <import feature="org.eclipse.sapphire.ui" version="9.1" match="compatible"/>
-      <import feature="org.eclipse.platform" version="4.7.2" match="compatible"/>
+      <import feature="org.eclipse.platform" version="4.16" match="compatible"/>
       <import feature="org.eclipse.sapphire" version="9.1" match="compatible"/>
       <import feature="org.eclipse.sapphire.java" version="9.1" match="compatible"/>
       <import feature="org.eclipse.sapphire.java.jdt" version="9.1" match="compatible"/>
