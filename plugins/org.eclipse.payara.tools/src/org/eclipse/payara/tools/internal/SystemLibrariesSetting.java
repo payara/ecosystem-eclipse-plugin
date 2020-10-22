@@ -19,14 +19,17 @@
 package org.eclipse.payara.tools.internal;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -34,6 +37,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 
@@ -97,13 +101,24 @@ public class SystemLibrariesSetting {
 
     public static void save(IProject project, SystemLibrariesSetting settings) {
         IFile settingsXmlFile = project.getFile(SETTING_XML);
-        XMLOutputFactory factory = XMLOutputFactory.newInstance();
-        XMLStreamWriter writer = null;
+        try (FileOutputStream output = new FileOutputStream(settingsXmlFile.getLocation().toFile())) {
+            save(output, settings);
+        } catch (Exception e) {
+            throw new IllegalStateException("Could not write the system libraries settings to the file " + settingsXmlFile, e);
+        }
+        // refresh the file after it is closed.
         try {
-            writer = factory.createXMLStreamWriter(
-                    new FileOutputStream(settingsXmlFile.getLocation().toFile()),
-                    StandardCharsets.UTF_8.name()
-            );
+            settingsXmlFile.refreshLocal(0, new NullProgressMonitor());
+        } catch (CoreException e) {
+            throw new IllegalStateException("Could not refresh the system libraries settings from the file " + settingsXmlFile, e);
+        }
+    }
+
+
+    public static void save(OutputStream output, SystemLibrariesSetting settings) throws XMLStreamException {
+        XMLOutputFactory factory = XMLOutputFactory.newInstance();
+        XMLStreamWriter writer = factory.createXMLStreamWriter(output, StandardCharsets.UTF_8.name());
+        try {
             writer.writeStartDocument(StandardCharsets.UTF_8.name(), "1.0");
             writer.writeCharacters(NEW_LINE);
             writer.writeStartElement(SYSTEM_LIBRARIES_TAG);
@@ -125,17 +140,9 @@ public class SystemLibrariesSetting {
             writer.writeEndElement();
             writer.writeCharacters(NEW_LINE);
             writer.writeEndDocument();
-        } catch (Exception e) {
-            e.printStackTrace();
         } finally {
-            if (writer != null) {
-                try {
-                    writer.flush();
-                    writer.close();
-                    settingsXmlFile.refreshLocal(0, new NullProgressMonitor());
-                } catch (Exception ex) {
-                }
-            }
+            // does not close the output stream variable
+            writer.close();
         }
     }
 
