@@ -452,5 +452,20 @@
              provider="org.eclipse.payara.tools.jaxrsLibraryproviderID">
        </panel>
     </extension>
+    
+    <extension
+        point="org.eclipse.ui.newWizards">
+        <wizard
+            category="org.eclipse.payara.tools"
+            class="org.eclipse.payara.tools.ui.wizards.MicroProjectWizard"
+            icon="icons/payara-blue.png"
+            id="org.eclipse.payara.tools.ui.wizards.createProject"
+            name="%payara.micro.project.wizard.title"
+            project="true">
+            <description>
+                %payara.micro.project.wizard.description
+            </description>
+        </wizard>
+    </extension>
 
 </plugin>

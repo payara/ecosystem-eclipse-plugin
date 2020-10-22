@@ -31,12 +31,16 @@
       <import feature="org.eclipse.sapphire.platform" version="9.1" match="compatible"/>
       <import feature="org.eclipse.sapphire.ui" version="9.1" match="compatible"/>
       <import feature="org.eclipse.sapphire.ui.swt.xml.editor" version="9.1" match="compatible"/>
+      <import feature="org.eclipse.m2e.feature" version="1.15" match="compatible"/>
       <import plugin="org.apache.xerces"/>
       <import plugin="org.apache.ant"/>
       <import plugin="org.eclipse.jdt.core"/>
       <import plugin="org.eclipse.jst.server.core"/>
       <import plugin="org.eclipse.jst.j2ee"/>
       <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.m2e.core"/>
+      <import plugin="org.eclipse.m2e.core.ui"/>
+      <import plugin="org.eclipse.m2e.archetype.common"/>
       <import plugin="org.eclipse.wst.server.core"/>
       <import plugin="org.eclipse.wst.server.ui"/>
       <import plugin="org.eclipse.wst.common.project.facet.core"/>

@@ -114,11 +114,12 @@
     <property file="${corundum.dir}/resources/egit.properties"/>
     <property file="${corundum.dir}/resources/emf.properties"/>
     <property file="${corundum.dir}/resources/gef.properties"/>
-  	<property file="${corundum.dir}/resources/jetty.properties"/>
+    <property file="${corundum.dir}/resources/jetty.properties"/>
     <property file="${corundum.dir}/resources/mpc.properties"/>
     <property file="${corundum.dir}/resources/mylyn.properties"/>
     <property file="${corundum.dir}/resources/orbit.properties"/>
     <property file="${corundum.dir}/resources/sapphire.properties"/>
+    <property file="${corundum.dir}/resources/m2e.properties"/>
     <property file="${corundum.dir}/resources/wtp.properties"/>
     
     <!-- Determine the location of the bundle pool -->
