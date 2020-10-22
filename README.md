@@ -11,7 +11,7 @@ export JDK_8_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_191.jdk/Contents/Ho
 
 Then type `ant` in the root of this project. 
 
-This will cause build helper tools (Corundum) to be build first and then the main feature to be build targeting **Eclipse oxygen.2**. 
+This will cause build helper tools (Corundum) to be build first and then the main feature to be build targeting **Eclipse 2020-03**. 
 Archived update sites will be found in `[project root]/build/packages`
 
 To use the project source code in Eclipse, install Sapphire from http://download.eclipse.org/sapphire/latest and
