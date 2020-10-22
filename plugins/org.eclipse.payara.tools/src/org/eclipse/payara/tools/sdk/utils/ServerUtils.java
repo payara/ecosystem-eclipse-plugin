@@ -27,6 +27,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.jar.JarFile;
@@ -34,9 +35,6 @@ import java.util.jar.Manifest;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.xml.bind.DatatypeConverter;
-
 import org.eclipse.payara.tools.sdk.admin.CommandException;
 import org.eclipse.payara.tools.sdk.data.GlassFishContainer;
 import org.eclipse.payara.tools.sdk.logging.Logger;
@@ -614,7 +612,7 @@ public class ServerUtils {
         sb.append(user);
         sb.append(AUTH_BASIC_FIELD_SEPARATPR);
         sb.append(password);
-        return DatatypeConverter.printBase64Binary(sb.toString().getBytes());
+        return Base64.getEncoder().encodeToString(sb.toString().getBytes());
     }
 
     /**

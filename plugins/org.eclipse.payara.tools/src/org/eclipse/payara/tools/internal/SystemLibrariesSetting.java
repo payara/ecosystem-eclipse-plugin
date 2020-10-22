@@ -18,40 +18,50 @@
 
 package org.eclipse.payara.tools.internal;
 
-import static java.lang.Boolean.TRUE;
-import static javax.xml.bind.Marshaller.JAXB_FORMATTED_OUTPUT;
-
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 
 /**
- * This class represents the settings that users manually did to the system library container added
- * by this plug-in.
- * 
+ * This class represents the settings that users manually did to the system
+ * library container added by this plug-in.
+ *
  * <p>
- * This is done for instance to attach sources, which in fact is the only user applied setting
- * we actually make use of.
+ * This is done for instance to attach sources, which in fact is the only user
+ * applied setting we actually make use of.
  *
  */
-@XmlRootElement(name = "system-libraries")
 public class SystemLibrariesSetting {
 
-    static final String SETTING_XML = "/.settings/org.eclipse.payara.tools.syslib.xml"; //$NON-NLS-1$
+    private static final String SYSTEM_LIBRARIES_TAG = "system-libraries"; //$NON-NLS-1$
+    private static final String LIBRARY_TAG = "library"; //$NON-NLS-1$
+    private static final String PATH_TAG = "path"; //$NON-NLS-1$
+    private static final String SOURCE_TAG = "source"; //$NON-NLS-1$
+    private static final String JAVADOC_TAG = "javadoc"; //$NON-NLS-1$
+    private static final String NEW_LINE = "\n"; //$NON-NLS-1$
+    private static final String SETTING_XML = "/.settings/org.eclipse.payara.tools.syslib.xml"; //$NON-NLS-1$
+
     private ArrayList<Library> libraries = new ArrayList<>();
 
-    @XmlElement(name = "library")
     public void setLibraryList(ArrayList<Library> libraries) {
         this.libraries = libraries;
     }
@@ -61,45 +71,78 @@ public class SystemLibrariesSetting {
     }
 
     public static SystemLibrariesSetting load(IProject project) {
+        SystemLibrariesSetting settings = null;
+
         try {
             IFile settingsXmlFile = project.getFile(SETTING_XML);
-            
+
             if (!settingsXmlFile.exists()) {
                 return null;
-            } 
+            }
 
-            SystemLibrariesSetting settings = null;
             try (InputStream stream = settingsXmlFile.getContents()) {
-                settings = (SystemLibrariesSetting) JAXBContext.newInstance(SystemLibrariesSetting.class).createUnmarshaller().unmarshal(stream);
+                SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
+                SAXParser saxParser = saxParserFactory.newSAXParser();
+                SysLibHandler handler = new SysLibHandler();
+                saxParser.parse(stream, handler);
+                settings = handler.getSystemLibrariesSetting();
             }
 
             if (settings.getLibraryList() == null) {
                 settings.setLibraryList(new ArrayList<>());
             }
 
-            return settings;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
-        return null;
+
+        return settings;
     }
 
     public static void save(IProject project, SystemLibrariesSetting settings) {
-        try {
-            IFile settingsXmlFile = project.getFile(SETTING_XML);
-            Marshaller settingsMarshaller = JAXBContext.newInstance(SystemLibrariesSetting.class).createMarshaller();
-            settingsMarshaller.setProperty(JAXB_FORMATTED_OUTPUT, TRUE);
-
-            // Write to System.out
-            settingsMarshaller.marshal(settings, System.out);
-
-            // Write to File
-            settingsMarshaller.marshal(settings, settingsXmlFile.getLocation().toFile());
-
-            settingsXmlFile.refreshLocal(0, new NullProgressMonitor());
+        IFile settingsXmlFile = project.getFile(SETTING_XML);
+        try (FileOutputStream output = new FileOutputStream(settingsXmlFile.getLocation().toFile())) {
+            save(output, settings);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new IllegalStateException("Could not write the system libraries settings to the file " + settingsXmlFile, e);
+        }
+        // refresh the file after it is closed.
+        try {
+            settingsXmlFile.refreshLocal(0, new NullProgressMonitor());
+        } catch (CoreException e) {
+            throw new IllegalStateException("Could not refresh the system libraries settings from the file " + settingsXmlFile, e);
+        }
+    }
+
+
+    public static void save(OutputStream output, SystemLibrariesSetting settings) throws XMLStreamException {
+        XMLOutputFactory factory = XMLOutputFactory.newInstance();
+        XMLStreamWriter writer = factory.createXMLStreamWriter(output, StandardCharsets.UTF_8.name());
+        try {
+            writer.writeStartDocument(StandardCharsets.UTF_8.name(), "1.0");
+            writer.writeCharacters(NEW_LINE);
+            writer.writeStartElement(SYSTEM_LIBRARIES_TAG);
+            writer.writeCharacters(NEW_LINE);
+            for (Library library : settings.getLibraryList()) {
+                writer.writeStartElement(LIBRARY_TAG);
+                if (library.getPath() != null) {
+                    writer.writeAttribute(PATH_TAG, library.getPath());
+                }
+                if (library.getSource() != null) {
+                    writer.writeAttribute(SOURCE_TAG, library.getSource());
+                }
+                if (library.getJavadoc() != null) {
+                    writer.writeAttribute(JAVADOC_TAG, library.getJavadoc());
+                }
+                writer.writeEndElement();
+                writer.writeCharacters(NEW_LINE);
+            }
+            writer.writeEndElement();
+            writer.writeCharacters(NEW_LINE);
+            writer.writeEndDocument();
+        } finally {
+            // does not close the output stream variable
+            writer.close();
         }
     }
 
@@ -110,15 +153,52 @@ public class SystemLibrariesSetting {
                 if (librarySource.exists()) {
                     return librarySource;
                 }
-                
+
                 // Workspace location
-                return ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(library.getSource()))
-                                      .getLocation()
-                                      .toFile();
+                return ResourcesPlugin.getWorkspace()
+                        .getRoot()
+                        .getFile(new Path(library.getSource()))
+                        .getLocation()
+                        .toFile();
             }
         }
-        
+
         return null;
+    }
+
+    static class SysLibHandler extends DefaultHandler {
+
+        private ArrayList<Library> libs = new ArrayList<>();
+
+        @Override
+        public void startElement(String uri, String localName, String tag, Attributes attributes) throws SAXException {
+            if (tag.equals(LIBRARY_TAG)) {
+                Library library = new Library();
+                for (int i = 0; i < attributes.getLength(); i++) {
+                    switch (attributes.getQName(i)) {
+                        case PATH_TAG:
+                            library.setPath(attributes.getValue(i));
+                            break;
+                        case SOURCE_TAG:
+                            library.setSource(attributes.getValue(i));
+                            break;
+                        case JAVADOC_TAG:
+                            library.setJavadoc(attributes.getValue(i));
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                libs.add(library);
+            }
+        }
+
+        public SystemLibrariesSetting getSystemLibrariesSetting() {
+            SystemLibrariesSetting systemLibrariesSetting = new SystemLibrariesSetting();
+            systemLibrariesSetting.setLibraryList(libs);
+            return systemLibrariesSetting;
+        }
+
     }
 
 }
