@@ -213,6 +213,9 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
     }
 
     public IPayaraServerModel getModel() {
+    	if(this.model == null) {
+    		initialize();
+    	}
         return this.model;
     }
 
