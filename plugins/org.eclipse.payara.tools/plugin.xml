@@ -714,66 +714,65 @@
 
 
   <extension point="org.eclipse.core.expressions.definitions">
-     <definition
-           id="org.eclipse.payara.tools.oneGlassfishSelected">
-        <and>
-           <count value="1"/>
-           <iterate ifEmpty="false">
-                 <or>
-           			<reference definitionId="org.eclipse.payara.tools.isGlassfish"/>
-           		</or>
-           	</iterate>
-        </and>
-     </definition>
+      <definition
+          id="org.eclipse.payara.tools.oneGlassfishSelected">
+          <and>
+              <count value="1"/>
+              <iterate ifEmpty="false">
+                  <or>
+                      <reference definitionId="org.eclipse.payara.tools.isGlassfish"/>
+                  </or>
+              </iterate>
+          </and>
+      </definition>
      
-     <definition id="org.eclipse.payara.tools.isGlassfish">
-              <adapt type="org.eclipse.wst.server.core.IServer">
-                 <and>
-                       <test
-                             property="org.eclipse.wst.server.ui.serverType"
-                             value="payara.server">
-                       </test>
-                 </and>
-              </adapt>
-     </definition>
+      <definition id="org.eclipse.payara.tools.isGlassfish">
+          <adapt type="org.eclipse.wst.server.core.IServer">
+              <and>
+                  <test
+                      property="org.eclipse.wst.server.ui.serverType"
+                      value="payara.server">
+                  </test>
+              </and>
+          </adapt>
+      </definition>
      
      <definition id="org.eclipse.payara.tools.moreGlassfishSelected">
-           <iterate ifEmpty="false">
-             	<or>
-           			<reference definitionId="org.eclipse.payara.tools.isGlassfish"/>
-           		</or>
-           </iterate>
+         <iterate ifEmpty="false">
+             <or>
+                 <reference definitionId="org.eclipse.payara.tools.isGlassfish"/>
+             </or>
+         </iterate>
      </definition>
      
      <definition id="org.eclipse.payara.tools.oneRunningGlassfishSelected">
-           <and>
-           <count value="1"/>
-           <iterate ifEmpty="false">
-                <and>
-             	<or>
-           			<reference definitionId="org.eclipse.payara.tools.isGlassfish"/>
-           		</or>
-           		<test property="org.eclipse.payara.tools.isRunning"/>
-                  </and>
-           </iterate>     
+         <and>
+             <count value="1"/>
+             <iterate ifEmpty="false">
+                 <and>
+                     <or>
+                         <reference definitionId="org.eclipse.payara.tools.isGlassfish"/>
+                     </or>
+                     <test property="org.eclipse.payara.tools.isRunning"/>
+                 </and>
+             </iterate>     
          </and>
      </definition>
      
      <definition id="org.eclipse.payara.tools.isRemoteGlassfish">
-           <and>
-           <count value="1"/>
-           <iterate ifEmpty="false">
+         <and>
+             <count value="1"/>
+             <iterate ifEmpty="false">
                  <and>
-	             	<or>
-	           			<reference definitionId="org.eclipse.payara.tools.isGlassfish"/>
-	           		</or>
-	           		<test property="org.eclipse.payara.tools.isRemote"/>
-                </and>
-           </iterate>     
+                     <or>
+                         <reference definitionId="org.eclipse.payara.tools.isGlassfish"/>
+                     </or>
+                     <test property="org.eclipse.payara.tools.isRemote"/>
+                 </and>
+             </iterate>     
          </and>
      </definition>
   </extension>
-  
- 
+
 
 </plugin>
