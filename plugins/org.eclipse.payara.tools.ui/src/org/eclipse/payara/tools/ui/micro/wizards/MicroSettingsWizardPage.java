@@ -7,9 +7,12 @@
  * http://www.eclipse.org/legal/epl-v20.html
  * SPDX-License-Identifier: EPL-2.0
  */
-package org.eclipse.payara.tools.ui.wizards;
+package org.eclipse.payara.tools.ui.micro.wizards;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.eclipse.payara.tools.ui.micro.wizards.MicroProjectWizard.ARCHETYPE_AUTOBIND_HTTP;
+import static org.eclipse.payara.tools.ui.micro.wizards.MicroProjectWizard.ARCHETYPE_CONTEXT_ROOT;
+import static org.eclipse.payara.tools.ui.micro.wizards.MicroProjectWizard.ARCHETYPE_MICRO_VERSION;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -18,6 +21,7 @@ import java.util.Properties;
 import org.apache.maven.archetype.catalog.Archetype;
 import org.eclipse.m2e.core.project.ProjectImportConfiguration;
 import org.eclipse.m2e.core.ui.internal.wizards.AbstractMavenWizardPage;
+import org.eclipse.payara.tools.ui.wizards.Messages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -25,9 +29,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import static org.eclipse.payara.tools.ui.wizards.MicroProjectWizard.ARCHETYPE_CONTEXT_ROOT;
-import static org.eclipse.payara.tools.ui.wizards.MicroProjectWizard.ARCHETYPE_MICRO_VERSION;
-import static org.eclipse.payara.tools.ui.wizards.MicroProjectWizard.ARCHETYPE_AUTOBIND_HTTP;
 
 public class MicroSettingsWizardPage extends AbstractMavenWizardPage {
 

@@ -24,6 +24,7 @@ Require-Bundle: org.eclipse.debug.ui,
  org.eclipse.emf.codegen,
  org.eclipse.jst.servlet.ui,
  org.eclipse.jst.j2ee.ui,
+ org.eclipse.jdt.launching,
  org.eclipse.jdt.core,
  org.eclipse.jdt.ui,
  org.eclipse.jst.jee.ui,
@@ -37,6 +38,7 @@ Require-Bundle: org.eclipse.debug.ui,
  org.eclipse.m2e.core,
  org.eclipse.m2e.core.ui,
  org.eclipse.m2e.archetype.common,
+ org.eclipse.core.externaltools,
  org.eclipse.payara.tools
 Bundle-Activator: org.eclipse.payara.tools.ui.PayaraToolsUIPlugin
 Import-Package: org.eclipse.ui.navigator.resources

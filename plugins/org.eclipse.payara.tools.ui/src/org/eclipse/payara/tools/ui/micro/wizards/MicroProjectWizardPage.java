@@ -7,12 +7,13 @@
  * http://www.eclipse.org/legal/epl-v20.html
  * SPDX-License-Identifier: EPL-2.0
  */
-package org.eclipse.payara.tools.ui.wizards;
+package org.eclipse.payara.tools.ui.micro.wizards;
 
 import java.util.regex.Pattern;
 import org.eclipse.m2e.core.project.ProjectImportConfiguration;
 import org.eclipse.m2e.core.ui.internal.wizards.AbstractMavenWizardPage;
 import org.eclipse.m2e.core.ui.internal.wizards.MavenProjectWizardArchetypeParametersPage;
+import org.eclipse.payara.tools.ui.wizards.Messages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;

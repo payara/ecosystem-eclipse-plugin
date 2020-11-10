@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v20.html
  * SPDX-License-Identifier: EPL-2.0
  */
-package org.eclipse.payara.tools.ui.wizards;
+package org.eclipse.payara.tools.ui.micro.wizards;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
@@ -33,6 +33,7 @@ import org.eclipse.m2e.core.project.ProjectImportConfiguration;
 import org.eclipse.m2e.core.ui.internal.wizards.MavenProjectWizardLocationPage;
 import org.eclipse.m2e.core.ui.internal.wizards.MavenProjectWorkspaceAssigner;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.payara.tools.ui.wizards.Messages;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.apache.maven.archetype.catalog.Archetype;

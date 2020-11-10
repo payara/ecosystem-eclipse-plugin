@@ -468,4 +468,22 @@
         </wizard>
     </extension>
 
+    <extension
+        point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+        <launchConfigurationTabGroup
+            class="org.eclipse.payara.tools.ui.micro.MicroLaunchConfigurationTabGroup"
+            id="org.eclipse.payara.tools.ui.micro.launchConfigurationTabGroup"
+            type="org.eclipse.payara.tools.micro.launchConfigurationType">
+        </launchConfigurationTabGroup>
+    </extension>
+    
+    <extension
+        point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+        <launchConfigurationTypeImage
+            configTypeID="org.eclipse.payara.tools.micro.launchConfigurationType"
+            icon="icons/payara-micro.png"
+            id="org.eclipse.payara.tools.ui.micro.launchConfigurationTypeImage">
+        </launchConfigurationTypeImage>
+    </extension>
+
 </plugin>

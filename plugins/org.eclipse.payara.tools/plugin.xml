@@ -57,7 +57,7 @@
     <extension point="org.eclipse.debug.core.launchConfigurationTypes">
         <launchConfigurationType
             id="org.payara.jst.server.GlassfishServerLaunchConfigurationType"
-            name="%glassfish.runConfigurationName"
+            name="%payara.server.runConfigurationName"
             delegate="org.eclipse.payara.tools.server.starting.PayaraServerLaunchDelegate"
             modes="run, debug"
             sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector"
@@ -774,5 +774,22 @@
      </definition>
   </extension>
 
+  <extension
+      point="org.eclipse.debug.core.processFactories">
+      <processFactory
+          class="org.eclipse.payara.tools.micro.MicroRuntimeProcessFactory"
+          id="org.eclipse.payara.tools.micro.processFactory">
+      </processFactory>
+  </extension>
+  <extension
+      point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+          id="org.eclipse.payara.tools.micro.launchConfigurationType"
+          name="%payara.micro.runConfigurationName"
+          delegate="org.eclipse.payara.tools.micro.MicroLaunchDelegate"
+          modes="run, debug"
+          sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector"
+          sourcePathComputerId="org.eclipse.jst.server.generic.core.sourcePathComputer"/>
+  </extension>
 
 </plugin>
