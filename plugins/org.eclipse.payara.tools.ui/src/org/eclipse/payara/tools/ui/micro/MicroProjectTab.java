@@ -43,11 +43,17 @@ import static org.eclipse.payara.tools.micro.MicroConstants.JAVA_HOME_ENV_VAR;
 import static org.eclipse.payara.tools.micro.MicroConstants.DEFAULT_DEBUG_PORT;
 import static org.eclipse.payara.tools.micro.MicroConstants.ATTR_CONTEXT_PATH;
 import static org.eclipse.payara.tools.micro.MicroConstants.ATTR_MICRO_VERSION;
+import static org.eclipse.payara.tools.micro.MicroConstants.ATTR_BUILD_ARTIFACT;
 import static org.eclipse.payara.tools.micro.MicroConstants.ATTR_DEBUG_PORT;
+import static org.eclipse.payara.tools.micro.MicroConstants.WAR_BUILD_ARTIFACT;
+import static org.eclipse.payara.tools.micro.MicroConstants.EXPLODED_WAR_BUILD_ARTIFACT;
+import static org.eclipse.payara.tools.micro.MicroConstants.UBER_JAR_BUILD_ARTIFACT;
 import org.eclipse.payara.tools.micro.BuildTool;
 import org.eclipse.payara.tools.ui.micro.wizards.Messages;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
@@ -55,6 +61,7 @@ import org.eclipse.swt.widgets.Text;
 public class MicroProjectTab extends AbstractJavaMainTab {
 
     private Text contextPathText, microVersionText, debugPortText;
+    private Combo buildArtifactCombo;
 
     @Override
     public void createControl(Composite parent) {
@@ -64,12 +71,22 @@ public class MicroProjectTab extends AbstractJavaMainTab {
         Group group = SWTFactory.createGroup(mainComposite, Messages.contextPathComponentLabel, 1, 1, GridData.FILL_HORIZONTAL);
         contextPathText = SWTFactory.createSingleText(group, 1);
         contextPathText.addModifyListener(getDefaultListener());
+
         group = SWTFactory.createGroup(mainComposite, Messages.microVersionComponentLabel, 1, 1, GridData.FILL_HORIZONTAL);
         microVersionText = SWTFactory.createSingleText(group, 1);
         microVersionText.addModifyListener(getDefaultListener());
+
+        group = SWTFactory.createGroup(mainComposite, Messages.buildArtifactComponentLabel, 1, 1, GridData.FILL_HORIZONTAL);
+        buildArtifactCombo = SWTFactory.createCombo(
+                group, SWT.READ_ONLY, 1,
+                new String[]{EMPTY_STRING, WAR_BUILD_ARTIFACT, EXPLODED_WAR_BUILD_ARTIFACT, UBER_JAR_BUILD_ARTIFACT}
+        );
+        buildArtifactCombo.addModifyListener(getDefaultListener());
+
         group = SWTFactory.createGroup(mainComposite, Messages.debugPortComponentLabel, 1, 1, GridData.FILL_HORIZONTAL);
         debugPortText = SWTFactory.createSingleText(group, 1);
         debugPortText.addModifyListener(getDefaultListener());
+
         setControl(mainComposite);
     }
 
@@ -96,9 +113,17 @@ public class MicroProjectTab extends AbstractJavaMainTab {
         }
         microVersionText.setText(microVersion);
 
+        String buildType = EMPTY_STRING;
+        try {
+            buildType = config.getAttribute(ATTR_BUILD_ARTIFACT, microVersion);
+        } catch (CoreException ce) {
+            setErrorMessage(ce.getStatus().getMessage());
+        }
+        buildArtifactCombo.setText(buildType);
+
         String debugPort = String.valueOf(DEFAULT_DEBUG_PORT);
         try {
-        	debugPort = config.getAttribute(ATTR_DEBUG_PORT, debugPort);
+            debugPort = config.getAttribute(ATTR_DEBUG_PORT, debugPort);
         } catch (CoreException ce) {
             setErrorMessage(ce.getStatus().getMessage());
         }
@@ -162,13 +187,14 @@ public class MicroProjectTab extends AbstractJavaMainTab {
                     setErrorMessage(Messages.projectBuildNotFound);
                     throw new IllegalStateException(Messages.projectBuildNotFound);
                 }
-                
+
                 String debugPort = debugPortText.getText();
-                if(debugPort.isEmpty()) {
-                	debugPort =	String.valueOf(DEFAULT_DEBUG_PORT);
+                if (debugPort.isEmpty()) {
+                    debugPort = String.valueOf(DEFAULT_DEBUG_PORT);
                 }
                 config.setAttribute(ATTR_CONTEXT_PATH, contextPathText.getText());
                 config.setAttribute(ATTR_MICRO_VERSION, microVersionText.getText());
+                config.setAttribute(ATTR_BUILD_ARTIFACT, buildArtifactCombo.getText());
                 config.setAttribute(ATTR_DEBUG_PORT, debugPort);
                 config.setAttribute(ATTR_PROJECT_NAME, projectName);
                 config.setAttribute(ATTR_WORKING_DIRECTORY, project.getLocation().toOSString());
@@ -186,7 +212,8 @@ public class MicroProjectTab extends AbstractJavaMainTab {
                         buildTool.getStartCommand(
                                 contextPathText.getText(),
                                 microVersionText.getText(),
-                                debugPortText.getText().isEmpty()?String.valueOf(DEFAULT_DEBUG_PORT):debugPortText.getText()
+                                buildArtifactCombo.getText(),
+                                debugPortText.getText().isEmpty() ? String.valueOf(DEFAULT_DEBUG_PORT) : debugPortText.getText()
                         )
                 );
 

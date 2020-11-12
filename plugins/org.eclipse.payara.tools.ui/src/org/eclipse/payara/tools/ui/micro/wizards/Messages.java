@@ -46,6 +46,7 @@ public class Messages extends org.eclipse.osgi.util.NLS {
     
     public static String microProjectTabTitle;
     public static String projectBuildNotFound;
+    public static String buildArtifactComponentLabel;
     public static String debugPortComponentLabel;
 
 }

@@ -25,7 +25,7 @@ public abstract class BuildTool {
 
     public abstract String getExecutableHome() throws FileNotFoundException;
     
-    public abstract String getStartCommand(String contextPath, String microVersion, String debugPort);
+    public abstract String getStartCommand(String contextPath, String microVersion, String buildType, String debugPort);
 
     public static boolean isMavenProject(IProject project) {
         try {

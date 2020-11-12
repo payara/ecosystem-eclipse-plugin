@@ -15,6 +15,9 @@ import java.nio.file.Paths;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Platform;
 import static org.eclipse.payara.tools.micro.MicroConstants.DEFAULT_DEBUG_PORT;
+import static org.eclipse.payara.tools.micro.MicroConstants.WAR_BUILD_ARTIFACT;
+import static org.eclipse.payara.tools.micro.MicroConstants.EXPLODED_WAR_BUILD_ARTIFACT;
+import static org.eclipse.payara.tools.micro.MicroConstants.UBER_JAR_BUILD_ARTIFACT;
 
 public class GradleBuildTool extends BuildTool {
 
@@ -55,9 +58,18 @@ public class GradleBuildTool extends BuildTool {
     }
 
     @Override
-    public String getStartCommand(String contextPath, String microVersion, String debugPort) {
+    public String getStartCommand(String contextPath, String microVersion, String buildType, String debugPort) {
         StringBuilder sb = new StringBuilder();
-        sb.append("build microStart");
+        if (WAR_BUILD_ARTIFACT.equals(buildType)) {
+            sb.append("war -DpayaraMicro.deployWar=true");
+        } else if (EXPLODED_WAR_BUILD_ARTIFACT.equals(buildType)) {
+            sb.append("warExplode -DpayaraMicro.deployWar=true -DpayaraMicro.exploded=true");
+        } else if (UBER_JAR_BUILD_ARTIFACT.equals(buildType)) {
+            sb.append("microBundle -DpayaraMicro.useUberJar=true");
+        } else {
+            sb.append("build");
+        }
+        sb.append(" microStart");
         if (contextPath != null && !contextPath.trim().isEmpty()) {
             sb.append(" -DpayaraMicro.contextRoot=").append(contextPath);
         }
@@ -65,7 +77,8 @@ public class GradleBuildTool extends BuildTool {
             sb.append(" -DpayaraMicro.payaraVersion=").append(microVersion);
         }
         sb.append(" -Ddebug=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=")
-        .append(debugPort);
+                .append(debugPort);
         return sb.toString();
     }
+
 }

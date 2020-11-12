@@ -15,6 +15,9 @@ import java.nio.file.Paths;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Platform;
 import static org.eclipse.payara.tools.micro.MicroConstants.DEFAULT_DEBUG_PORT;
+import static org.eclipse.payara.tools.micro.MicroConstants.EXPLODED_WAR_BUILD_ARTIFACT;
+import static org.eclipse.payara.tools.micro.MicroConstants.UBER_JAR_BUILD_ARTIFACT;
+import static org.eclipse.payara.tools.micro.MicroConstants.WAR_BUILD_ARTIFACT;
 
 public class MavenBuildTool extends BuildTool {
 
@@ -58,9 +61,23 @@ public class MavenBuildTool extends BuildTool {
     }
 
     @Override
-    public String getStartCommand(String contextPath, String microVersion, String debugPort) {
+    public String getStartCommand(
+            String contextPath,
+            String microVersion,
+            String buildType,
+            String debugPort) {
+        String plugin = " fish.payara.maven.plugins:payara-micro-maven-plugin:";
         StringBuilder sb = new StringBuilder();
-        sb.append("package payara-micro:start");
+        if (WAR_BUILD_ARTIFACT.equals(buildType)) {
+            sb.append("resources:resources compiler:compile war:war -DdeployWar=true");
+        } else if (EXPLODED_WAR_BUILD_ARTIFACT.equals(buildType)) {
+            sb.append("resources:resources compiler:compile war:exploded -DdeployWar=true -Dexploded=true");
+        } else if (UBER_JAR_BUILD_ARTIFACT.equals(buildType)) {
+            sb.append("package").append(plugin).append("bundle").append(" -DuseUberJar=true");
+        } else {
+            sb.append("package");
+        }
+        sb.append(plugin).append("start");
         if (contextPath != null && !contextPath.trim().isEmpty()) {
             sb.append(" -DcontextRoot=").append(contextPath);
         }
@@ -68,7 +85,7 @@ public class MavenBuildTool extends BuildTool {
             sb.append(" -DpayaraVersion=").append(microVersion);
         }
         sb.append(" -Ddebug=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=")
-        .append(debugPort);
+                .append(debugPort);
         return sb.toString();
     }
 }

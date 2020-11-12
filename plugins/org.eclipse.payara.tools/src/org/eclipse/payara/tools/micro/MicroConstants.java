@@ -23,6 +23,11 @@ public interface MicroConstants {
 
     String ATTR_CONTEXT_PATH = "contextPath";
     String ATTR_MICRO_VERSION = "microVersion";
+    String ATTR_BUILD_ARTIFACT = "buildArtifact";
     String ATTR_DEBUG_PORT = "debugPort";
+
+    String WAR_BUILD_ARTIFACT = "War";
+    String EXPLODED_WAR_BUILD_ARTIFACT = "Exploded War";
+    String UBER_JAR_BUILD_ARTIFACT = "Uber Jar";
 
 }
