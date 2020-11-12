@@ -39,7 +39,7 @@ public abstract class BuildTool {
         if (isMavenProject(project)) {
             return new MavenBuildTool(project);
         } else {
-            return null;//TODO Gradle
+            return new GradleBuildTool(project);
         }
     }
 }
