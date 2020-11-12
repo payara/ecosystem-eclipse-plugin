@@ -94,8 +94,16 @@ public final class PayaraRuntimeBridge implements IRuntimeBridge {
                 final Version payaraVersion = payaraRuntime.getVersion();
 
                 if (payaraVersion != null) {
-
-                    String payaraMainVersion = payaraVersion.matches("[5") ? "5" : (payaraVersion.matches("[4") ? "4" : "3.1");
+                    String payaraMainVersion;
+                    if(payaraVersion.matches("[6")) {
+                        payaraMainVersion = "6";
+                    } else if(payaraVersion.matches("[5")) {
+                        payaraMainVersion = "5";
+                    } else if(payaraVersion.matches("[4")) {
+                        payaraMainVersion = "4";
+                    } else {
+                        payaraMainVersion = "3.1";
+                    }
                     IRuntimeComponentVersion payaraComponentVersion = getRuntimeComponentType("payara.runtime").getVersion(payaraMainVersion);
 
                     Map<String, String> properties = new HashMap<>(5);
