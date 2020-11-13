@@ -33,7 +33,7 @@ import org.eclipse.m2e.core.project.ProjectImportConfiguration;
 import org.eclipse.m2e.core.ui.internal.wizards.MavenProjectWizardLocationPage;
 import org.eclipse.m2e.core.ui.internal.wizards.MavenProjectWorkspaceAssigner;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.payara.tools.ui.wizards.Messages;
+import org.eclipse.payara.tools.ui.micro.wizards.Messages;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.apache.maven.archetype.catalog.Archetype;
