@@ -236,7 +236,6 @@ public class ServerTasks {
 
         if (selectedPath.equals(defaultPath)
                 || (javaHome.endsWith("jre") && selectedPath.equals(defaultPath.getParent()))) {
-            System.out.println("same same " + defaultPath + selectedPath);
             return JDK_VERSION;
         }
 

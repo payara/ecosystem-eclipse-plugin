@@ -274,11 +274,19 @@ public final class SystemLibrariesContainer implements IClasspathContainer {
         ListFactory<IClasspathEntry> classpathListFactory = ListFactory.start();
 
         URL doc;
-        String javaEEVersion = (version.matches("[5") ? "8" : (version.matches("[4") ? "7" : "6"));
-
+        String javaEEVersion;
+        if(version.matches("[6")) {
+            javaEEVersion = "9";
+        } else if(version.matches("[5")) {
+            javaEEVersion = "8";
+        } else if(version.matches("[4")) {
+            javaEEVersion = "7";
+        } else {
+            javaEEVersion = "6";
+        }
         try {
-            if ("8".equals(javaEEVersion)) {
-                doc = new URL("https://javaee.github.io/javaee-spec/javadocs/");
+            if(Integer.valueOf(javaEEVersion) >= 8) {
+                doc = new URL("https://jakarta.ee/specifications/platform/"+javaEEVersion+"/apidocs");
             } else {
                 doc = new URL("http://docs.oracle.com/javaee/" + javaEEVersion + "/api/");
             }

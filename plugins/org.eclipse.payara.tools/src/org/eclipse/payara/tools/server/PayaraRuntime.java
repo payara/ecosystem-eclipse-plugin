@@ -84,6 +84,7 @@ public final class PayaraRuntime extends RuntimeDelegate implements IJavaRuntime
     private static final VersionConstraint VERSION_CONSTRAINT_3_1 = new VersionConstraint("[1.6-1.7]");
     private static final VersionConstraint VERSION_CONSTRAINT_4 = new VersionConstraint("[1.7");
     private static final VersionConstraint VERSION_CONSTRAINT_5 = new VersionConstraint("[1.8");
+    private static final VersionConstraint VERSION_CONSTRAINT_6 = new VersionConstraint("[1.8");
 
     private IPayaraRuntimeModel model;
 
@@ -132,7 +133,9 @@ public final class PayaraRuntime extends RuntimeDelegate implements IJavaRuntime
         String baseName = "Payara Server"; // TODO: - detect GF
 
         if (version != null) {
-            if (version.matches("[5-6)")) {
+        	if (version.matches("[6-7)")) {
+                baseName += " 6";
+            } else if (version.matches("[5-6)")) {
                 baseName += " 5";
             } else if (version.matches("[4-5)")) {
                 baseName += " 4";
@@ -195,7 +198,7 @@ public final class PayaraRuntime extends RuntimeDelegate implements IJavaRuntime
             return new Status(ERROR, SYMBOLIC_NAME, runtimeNotValid);
         }
         
-        if (!version.matches("[3.1-6)")) {
+        if (!version.matches("[3.1-7)")) {
             return new Status(ERROR, SYMBOLIC_NAME, unsupportedVersion);
         }
         
@@ -206,6 +209,10 @@ public final class PayaraRuntime extends RuntimeDelegate implements IJavaRuntime
         Version version = getVersion();
 
         if (version != null) {
+            if (version.matches("[6")) {
+                return VERSION_CONSTRAINT_6;
+            }
+
             if (version.matches("[5")) {
                 return VERSION_CONSTRAINT_5;
             }
