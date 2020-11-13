@@ -39,6 +39,7 @@ Require-Bundle:
  org.eclipse.jst.server.generic.core,
  org.eclipse.sapphire.platform,
  org.eclipse.jem.util,
+ org.eclipse.m2e.core,
  org.junit,
  org.junit.platform.commons,
  org.junit.platform.engine,

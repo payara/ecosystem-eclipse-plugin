@@ -14,7 +14,6 @@ import java.io.FileNotFoundException;
 import java.nio.file.Paths;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Platform;
-import static org.eclipse.payara.tools.micro.MicroConstants.DEFAULT_DEBUG_PORT;
 import static org.eclipse.payara.tools.micro.MicroConstants.EXPLODED_WAR_BUILD_ARTIFACT;
 import static org.eclipse.payara.tools.micro.MicroConstants.UBER_JAR_BUILD_ARTIFACT;
 import static org.eclipse.payara.tools.micro.MicroConstants.WAR_BUILD_ARTIFACT;
@@ -31,8 +30,9 @@ public class MavenBuildTool extends BuildTool {
         if (mavenHome == null) {
             mavenHome = System.getenv("MAVEN_HOME");
         }
+
         if (mavenHome == null) {
-            throw new FileNotFoundException("Maven home path not found.");
+            throw new FileNotFoundException("MAVEN_HOME path not found.");
         }
 
         boolean mavenHomeEndsWithPathSep = mavenHome.charAt(mavenHome.length() - 1) == File.separatorChar;
