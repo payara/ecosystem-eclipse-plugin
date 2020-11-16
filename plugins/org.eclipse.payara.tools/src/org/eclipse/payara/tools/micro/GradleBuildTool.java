@@ -28,7 +28,7 @@ public class GradleBuildTool extends BuildTool {
     public String getExecutableHome() throws FileNotFoundException {
         String gradleHome = System.getenv("GRADLE_HOME");
         if (gradleHome == null) {
-            throw new FileNotFoundException("GRADLE_HOME path not found.");
+        	throw new FileNotFoundException("set GRADLE_HOME the environment variable to gradle installation folder");
         }
 
         boolean gradleHomeEndsWithPathSep = gradleHome.charAt(gradleHome.length() - 1) == File.separatorChar;

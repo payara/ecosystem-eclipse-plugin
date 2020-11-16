@@ -16,6 +16,7 @@ import static org.eclipse.core.externaltools.internal.IExternalToolConstants.ATT
 import static org.eclipse.debug.core.ILaunchManager.ATTR_ENVIRONMENT_VARIABLES;
 import static org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME;
 
+import java.io.FileNotFoundException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,6 +34,7 @@ import org.eclipse.debug.internal.ui.SWTFactory;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.debug.ui.launcher.AbstractJavaMainTab;
 import org.eclipse.jdt.internal.debug.ui.launcher.LauncherMessages;
 import org.eclipse.jdt.launching.IVMInstall;
@@ -158,6 +160,12 @@ public class MicroProjectTab extends AbstractJavaMainTab {
             setErrorMessage(NLS.bind(LauncherMessages.JavaMainTab_21, new String[]{name}));
             return false;
         }
+        try {
+			BuildTool.getToolSupport(project).getExecutableHome();
+		} catch (FileNotFoundException e) {
+			setErrorMessage(e.getMessage());
+            return false;
+		}
         return true;
     }
 
@@ -218,6 +226,8 @@ public class MicroProjectTab extends AbstractJavaMainTab {
                 );
 
             }
+        } catch (FileNotFoundException ex) {
+        	setErrorMessage(ex.getMessage());
         } catch (Exception ex) {
             throw new IllegalStateException(ex);
         }

@@ -32,7 +32,7 @@ public class MavenBuildTool extends BuildTool {
         }
 
         if (mavenHome == null) {
-            throw new FileNotFoundException("MAVEN_HOME path not found.");
+            throw new FileNotFoundException("set MAVEN_HOME the environment variable to maven installation folder");
         }
 
         boolean mavenHomeEndsWithPathSep = mavenHome.charAt(mavenHome.length() - 1) == File.separatorChar;
