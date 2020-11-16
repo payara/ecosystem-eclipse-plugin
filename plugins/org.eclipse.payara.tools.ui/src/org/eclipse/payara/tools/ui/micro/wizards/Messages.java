@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v20.html
  * SPDX-License-Identifier: EPL-2.0
  */
-package org.eclipse.payara.tools.ui.wizards;
+package org.eclipse.payara.tools.ui.micro.wizards;
 
 public class Messages extends org.eclipse.osgi.util.NLS {
 
@@ -43,5 +43,10 @@ public class Messages extends org.eclipse.osgi.util.NLS {
     public static String autobindComponentLabel;
     public static String contextPathValidationMessage;
     public static String microVersionValidationMessage;
+    
+    public static String microProjectTabTitle;
+    public static String projectBuildNotFound;
+    public static String buildArtifactComponentLabel;
+    public static String debugPortComponentLabel;
 
 }

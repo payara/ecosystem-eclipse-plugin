@@ -457,15 +457,33 @@
         point="org.eclipse.ui.newWizards">
         <wizard
             category="org.eclipse.payara.tools"
-            class="org.eclipse.payara.tools.ui.wizards.MicroProjectWizard"
-            icon="icons/payara-blue.png"
-            id="org.eclipse.payara.tools.ui.wizards.createProject"
+            class="org.eclipse.payara.tools.ui.micro.wizards.MicroProjectWizard"
+            icon="icons/payara-micro.png"
+            id="org.eclipse.payara.tools.ui.micro.wizards.createProject"
             name="%payara.micro.project.wizard.title"
             project="true">
             <description>
                 %payara.micro.project.wizard.description
             </description>
         </wizard>
+    </extension>
+
+    <extension
+        point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+        <launchConfigurationTabGroup
+            class="org.eclipse.payara.tools.ui.micro.MicroLaunchConfigurationTabGroup"
+            id="org.eclipse.payara.tools.ui.micro.launchConfigurationTabGroup"
+            type="org.eclipse.payara.tools.micro.launchConfigurationType">
+        </launchConfigurationTabGroup>
+    </extension>
+    
+    <extension
+        point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+        <launchConfigurationTypeImage
+            configTypeID="org.eclipse.payara.tools.micro.launchConfigurationType"
+            icon="icons/payara-micro.png"
+            id="org.eclipse.payara.tools.ui.micro.launchConfigurationTypeImage">
+        </launchConfigurationTypeImage>
     </extension>
 
 </plugin>

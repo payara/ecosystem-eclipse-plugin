@@ -34,8 +34,12 @@
       <import feature="org.eclipse.m2e.feature" version="1.15" match="compatible"/>
       <import plugin="org.apache.xerces"/>
       <import plugin="org.apache.ant"/>
+      <import plugin="org.eclipse.core.externaltools"/>
       <import plugin="org.eclipse.jdt.core"/>
+      <import plugin="org.eclipse.jdt.launching"/>
       <import plugin="org.eclipse.jst.server.core"/>
+      <import plugin="com.sun.jna"/>
+      <import plugin="com.sun.jna.platform"/>
       <import plugin="org.eclipse.jst.j2ee"/>
       <import plugin="org.eclipse.core.runtime"/>
       <import plugin="org.eclipse.m2e.core"/>
