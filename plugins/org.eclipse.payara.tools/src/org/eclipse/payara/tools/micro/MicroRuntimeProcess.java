@@ -11,6 +11,7 @@ package org.eclipse.payara.tools.micro;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Map;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.DebugException;
@@ -62,16 +63,23 @@ public class MicroRuntimeProcess extends RuntimeProcess {
     private void terminateInstance() {
         try {
             Process process = (Process) getSystemProcess();
-            Field field = process.getClass().getDeclaredField("handle");
-            field.setAccessible(true);
-            long handleValue = field.getLong(process);
-            Kernel32 kernel = Kernel32.INSTANCE;
-            WinNT.HANDLE handle = new WinNT.HANDLE();
-            handle.setPointer(Pointer.createConstant(handleValue));
-            int pid = kernel.GetProcessId(handle);
+            long pid;
+            try {
+                Method method = process.getClass().getDeclaredMethod("pid");
+                method.setAccessible(true);
+                pid = (long) method.invoke(process);
+            } catch (NoSuchMethodException ex) {
+                Field field = process.getClass().getDeclaredField("handle");
+                field.setAccessible(true);
+                long handleValue = field.getLong(process);
+                Kernel32 kernel = Kernel32.INSTANCE;
+                WinNT.HANDLE handle = new WinNT.HANDLE();
+                handle.setPointer(Pointer.createConstant(handleValue));
+                pid = kernel.GetProcessId(handle);
+            }
             killProcess(String.valueOf(pid));
         } catch (Exception ex) {
-        	LOG.log(Level.SEVERE, ERROR_MESSAGE, ex);
+            LOG.log(Level.SEVERE, ERROR_MESSAGE, ex);
         }
     }
 
