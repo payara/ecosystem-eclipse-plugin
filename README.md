@@ -1,6 +1,8 @@
 # Eclipse Payara tools
 This is a fork of the Eclipse GlassFish Tools, tailored and improved to work with Payara.
 
+**ATTENTION**: Support for this repository is handled in the [Ecosystem Support repository](https://github.com/payara/ecosystem-support)
+
 ## Building
 
 To build set the `JDK_8_HOME` environment variable to point to a valid JDK 8 installation, for instance:
