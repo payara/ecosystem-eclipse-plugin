@@ -198,7 +198,7 @@ public interface IPayaraServerModel extends Element {
     Value<Boolean> getUseJarDeployment();
     void setUseJarDeployment(Boolean value);
     
-    String PROP_RESTART_PATTERN_DEFAULT = "//.jar$";
+    String PROP_RESTART_PATTERN_DEFAULT = "\\.(jar|class|xml)$";
     @DefaultValue(text = PROP_RESTART_PATTERN_DEFAULT)
     ValueProperty PROP_RESTART_PATTERN = new ValueProperty(TYPE, "RestartPattern");
     Value<String> getRestartPattern();
