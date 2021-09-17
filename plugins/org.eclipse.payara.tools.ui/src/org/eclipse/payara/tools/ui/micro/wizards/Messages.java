@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020 Payara Foundation
+ * Copyright (c) 2020-2021 Payara Foundation
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -48,5 +48,6 @@ public class Messages extends org.eclipse.osgi.util.NLS {
     public static String projectBuildNotFound;
     public static String buildArtifactComponentLabel;
     public static String debugPortComponentLabel;
+    public static String reloadArtifactComponentLabel;
 
 }

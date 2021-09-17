@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020 Payara Foundation
+ * Copyright (c) 2020-2021 Payara Foundation
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -25,9 +25,12 @@ public interface MicroConstants {
     String ATTR_MICRO_VERSION = "microVersion";
     String ATTR_BUILD_ARTIFACT = "buildArtifact";
     String ATTR_DEBUG_PORT = "debugPort";
+    String ATTR_RELOAD_ARTIFACT = "reloadArtifact";
 
     String WAR_BUILD_ARTIFACT = "War";
     String EXPLODED_WAR_BUILD_ARTIFACT = "Exploded War";
     String UBER_JAR_BUILD_ARTIFACT = "Uber Jar";
+
+    String AUTO_DEPLOY_ARTIFACT = "Auto Deploy";    
 
 }

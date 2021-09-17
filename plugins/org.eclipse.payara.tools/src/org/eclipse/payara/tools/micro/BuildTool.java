@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020 Payara Foundation
+ * Copyright (c) 2020-2021 Payara Foundation
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -10,6 +10,8 @@
 package org.eclipse.payara.tools.micro;
 
 import java.io.FileNotFoundException;
+import java.util.List;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 
@@ -25,7 +27,9 @@ public abstract class BuildTool {
 
     public abstract String getExecutableHome() throws FileNotFoundException;
     
-    public abstract String getStartCommand(String contextPath, String microVersion, String buildType, String debugPort);
+    public abstract List<String> getStartCommand(String contextPath, String microVersion, String buildType, String debugPort);
+
+    public abstract List<String> getReloadCommand();
 
     public static boolean isMavenProject(IProject project) {
         try {

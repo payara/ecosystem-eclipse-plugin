@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020 Payara Foundation
+ * Copyright (c) 2020-2021 Payara Foundation
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -12,6 +12,9 @@ package org.eclipse.payara.tools.micro;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Platform;
 import static org.eclipse.payara.tools.micro.MicroConstants.WAR_BUILD_ARTIFACT;
@@ -57,27 +60,37 @@ public class GradleBuildTool extends BuildTool {
     }
 
     @Override
-    public String getStartCommand(String contextPath, String microVersion, String buildType, String debugPort) {
-        StringBuilder sb = new StringBuilder();
+    public List<String> getStartCommand(String contextPath, String microVersion, String buildType, String debugPort) {
+    	List<String> commands = new ArrayList<>();
         if (WAR_BUILD_ARTIFACT.equals(buildType)) {
-            sb.append("war -DpayaraMicro.deployWar=true");
+        	commands.add("war");
+        	commands.add("-DpayaraMicro.deployWar=true");
         } else if (EXPLODED_WAR_BUILD_ARTIFACT.equals(buildType)) {
-            sb.append("warExplode -DpayaraMicro.deployWar=true -DpayaraMicro.exploded=true");
+        	commands.add("warExplode");
+        	commands.add("-DpayaraMicro.deployWar=true");
+        	commands.add("-DpayaraMicro.exploded=true");
         } else if (UBER_JAR_BUILD_ARTIFACT.equals(buildType)) {
-            sb.append("microBundle -DpayaraMicro.useUberJar=true");
+        	commands.add("microBundle");
+        	commands.add("-DpayaraMicro.useUberJar=true");
         } else {
-            sb.append("build");
+        	commands.add("build");
         }
-        sb.append(" microStart");
+        commands.add("microStart");
         if (contextPath != null && !contextPath.trim().isEmpty()) {
-            sb.append(" -DpayaraMicro.contextRoot=").append(contextPath);
+        	commands.add("-DpayaraMicro.contextRoot=" + contextPath);
         }
         if (microVersion != null && !microVersion.trim().isEmpty()) {
-            sb.append(" -DpayaraMicro.payaraVersion=").append(microVersion);
+        	commands.add("-DpayaraMicro.payaraVersion=" + microVersion);
         }
-        sb.append(" -Ddebug=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=")
-                .append(debugPort);
-        return sb.toString();
+        commands.add("-Ddebug=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=" + debugPort);
+        return commands;
+    }
+
+    public List<String> getReloadCommand() {
+    	List<String> commands = new ArrayList<>();
+    	commands.add("warExplode");
+    	commands.add("microReload");
+        return commands;
     }
 
 }

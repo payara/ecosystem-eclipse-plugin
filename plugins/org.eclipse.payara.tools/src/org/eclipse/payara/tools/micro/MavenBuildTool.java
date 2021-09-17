@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020 Payara Foundation
+ * Copyright (c) 2020-2021 Payara Foundation
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -12,6 +12,9 @@ package org.eclipse.payara.tools.micro;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Platform;
 import static org.eclipse.payara.tools.micro.MicroConstants.EXPLODED_WAR_BUILD_ARTIFACT;
@@ -19,6 +22,8 @@ import static org.eclipse.payara.tools.micro.MicroConstants.UBER_JAR_BUILD_ARTIF
 import static org.eclipse.payara.tools.micro.MicroConstants.WAR_BUILD_ARTIFACT;
 
 public class MavenBuildTool extends BuildTool {
+	
+    private static final String PLUGIN = " fish.payara.maven.plugins:payara-micro-maven-plugin:";
 
     public MavenBuildTool(IProject project) {
         super(project);
@@ -61,31 +66,48 @@ public class MavenBuildTool extends BuildTool {
     }
 
     @Override
-    public String getStartCommand(
+    public List<String> getStartCommand(
             String contextPath,
             String microVersion,
             String buildType,
             String debugPort) {
-        String plugin = " fish.payara.maven.plugins:payara-micro-maven-plugin:";
-        StringBuilder sb = new StringBuilder();
+
+    	List<String> commands = new ArrayList<>();
         if (WAR_BUILD_ARTIFACT.equals(buildType)) {
-            sb.append("resources:resources compiler:compile war:war -DdeployWar=true");
+        	commands.add("resources:resources");
+        	commands.add("compiler:compile");
+        	commands.add("war:war");
+        	commands.add("-DdeployWar=true");
         } else if (EXPLODED_WAR_BUILD_ARTIFACT.equals(buildType)) {
-            sb.append("resources:resources compiler:compile war:exploded -DdeployWar=true -Dexploded=true");
+        	commands.add("resources:resources");
+        	commands.add("compiler:compile");
+        	commands.add("war:exploded");
+        	commands.add("-DdeployWar=true");
+        	commands.add("-Dexploded=true");
         } else if (UBER_JAR_BUILD_ARTIFACT.equals(buildType)) {
-            sb.append("package").append(plugin).append("bundle").append(" -DuseUberJar=true");
+        	commands.add("package");
+        	commands.add(PLUGIN + "bundle");
+        	commands.add("-DuseUberJar=true");
         } else {
-            sb.append("package");
+        	commands.add("package");
         }
-        sb.append(plugin).append("start");
+    	commands.add(PLUGIN + "start");
         if (contextPath != null && !contextPath.trim().isEmpty()) {
-            sb.append(" -DcontextRoot=").append(contextPath);
+        	commands.add("-DcontextRoot=" + contextPath);
         }
         if (microVersion != null && !microVersion.trim().isEmpty()) {
-            sb.append(" -DpayaraVersion=").append(microVersion);
+        	commands.add("-DpayaraVersion=" + microVersion);
         }
-        sb.append(" -Ddebug=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=")
-                .append(debugPort);
-        return sb.toString();
+        commands.add("-Ddebug=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=" + debugPort);
+        return commands;
+    }
+    
+    public List<String> getReloadCommand() {
+    	List<String> commands = new ArrayList<>();
+    	commands.add("resources:resources");
+    	commands.add("compiler:compile");
+    	commands.add("war:exploded");
+    	commands.add("payara-micro:reload");
+        return commands;
     }
 }
