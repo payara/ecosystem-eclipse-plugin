@@ -49,5 +49,6 @@ public class Messages extends org.eclipse.osgi.util.NLS {
     public static String buildArtifactComponentLabel;
     public static String debugPortComponentLabel;
     public static String reloadArtifactComponentLabel;
+    public static String reloadArtifactComponentTooltip;
 
 }

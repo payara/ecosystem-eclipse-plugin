@@ -97,6 +97,7 @@ public class MicroProjectTab extends AbstractJavaMainTab {
 		reloadArtifactCombo = SWTFactory.createCombo(group, SWT.READ_ONLY, 1,
 				new String[] { EMPTY_STRING, AUTO_DEPLOY_ARTIFACT });
 		reloadArtifactCombo.addModifyListener(getDefaultListener());
+		reloadArtifactCombo.setToolTipText(Messages.reloadArtifactComponentTooltip);
 
 		setControl(mainComposite);
 	}
