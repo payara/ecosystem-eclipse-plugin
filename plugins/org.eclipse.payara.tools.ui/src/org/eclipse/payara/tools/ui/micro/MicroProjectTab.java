@@ -19,6 +19,7 @@ import static org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants.ATTR_P
 import java.io.FileNotFoundException;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
@@ -52,6 +53,7 @@ import static org.eclipse.payara.tools.micro.MicroConstants.WAR_BUILD_ARTIFACT;
 import static org.eclipse.payara.tools.micro.MicroConstants.EXPLODED_WAR_BUILD_ARTIFACT;
 import static org.eclipse.payara.tools.micro.MicroConstants.UBER_JAR_BUILD_ARTIFACT;
 import static org.eclipse.payara.tools.micro.MicroConstants.AUTO_DEPLOY_ARTIFACT;
+import static org.eclipse.payara.tools.micro.MicroConstants.HOT_DEPLOY_ARTIFACT;
 import org.eclipse.payara.tools.micro.BuildTool;
 import org.eclipse.payara.tools.ui.micro.wizards.Messages;
 import org.eclipse.swt.SWT;
@@ -95,7 +97,7 @@ public class MicroProjectTab extends AbstractJavaMainTab {
 		group = SWTFactory.createGroup(mainComposite, Messages.reloadArtifactComponentLabel, 1, 1,
 				GridData.FILL_HORIZONTAL);
 		reloadArtifactCombo = SWTFactory.createCombo(group, SWT.READ_ONLY, 1,
-				new String[] { EMPTY_STRING, AUTO_DEPLOY_ARTIFACT });
+				new String[] { EMPTY_STRING, AUTO_DEPLOY_ARTIFACT, HOT_DEPLOY_ARTIFACT });
 		reloadArtifactCombo.addModifyListener(getDefaultListener());
 		reloadArtifactCombo.setToolTipText(Messages.reloadArtifactComponentTooltip);
 
@@ -127,7 +129,7 @@ public class MicroProjectTab extends AbstractJavaMainTab {
 
 		String buildType = EMPTY_STRING;
 		try {
-			buildType = config.getAttribute(ATTR_BUILD_ARTIFACT, microVersion);
+			buildType = config.getAttribute(ATTR_BUILD_ARTIFACT, buildType);
 		} catch (CoreException ce) {
 			setErrorMessage(ce.getStatus().getMessage());
 		}
@@ -143,7 +145,7 @@ public class MicroProjectTab extends AbstractJavaMainTab {
 
 		String reloadType = EMPTY_STRING;
 		try {
-			reloadType = config.getAttribute(ATTR_RELOAD_ARTIFACT, microVersion);
+			reloadType = config.getAttribute(ATTR_RELOAD_ARTIFACT, reloadType);
 		} catch (CoreException ce) {
 			setErrorMessage(ce.getStatus().getMessage());
 		}
@@ -234,13 +236,10 @@ public class MicroProjectTab extends AbstractJavaMainTab {
 					env.put(JAVA_HOME_ENV_VAR, getJavaHome(project));
 				}
 				config.setAttribute(ATTR_LOCATION, buildTool.getExecutableHome());
-				config.setAttribute(ATTR_TOOL_ARGUMENTS,
-						String.join(" ",
-								buildTool.getStartCommand(contextPathText.getText(), microVersionText.getText(),
-										buildArtifactCombo.getText(),
-										debugPortText.getText().isEmpty() ? String.valueOf(DEFAULT_DEBUG_PORT)
-												: debugPortText.getText())));
-
+				boolean hotDeploy = HOT_DEPLOY_ARTIFACT.equals(reloadArtifactCombo.getText());
+				List<String> startCmd = buildTool.getStartCommand(contextPathText.getText(), microVersionText.getText(),
+						buildArtifactCombo.getText(), debugPort, hotDeploy);
+				config.setAttribute(ATTR_TOOL_ARGUMENTS, String.join(" ", startCmd));
 			}
 		} catch (FileNotFoundException ex) {
 			setErrorMessage(ex.getMessage());

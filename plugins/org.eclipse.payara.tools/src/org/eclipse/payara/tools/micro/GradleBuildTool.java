@@ -23,74 +23,91 @@ import static org.eclipse.payara.tools.micro.MicroConstants.UBER_JAR_BUILD_ARTIF
 
 public class GradleBuildTool extends BuildTool {
 
-    public GradleBuildTool(IProject project) {
-        super(project);
-    }
+	public GradleBuildTool(IProject project) {
+		super(project);
+	}
 
-    @Override
-    public String getExecutableHome() throws FileNotFoundException {
-        String gradleHome = System.getenv("GRADLE_HOME");
-        if (gradleHome == null) {
-        	throw new FileNotFoundException("set GRADLE_HOME the environment variable to gradle installation folder");
-        }
+	@Override
+	public String getExecutableHome() throws FileNotFoundException {
+		String gradleHome = System.getenv("GRADLE_HOME");
+		if (gradleHome == null) {
+			throw new FileNotFoundException("set GRADLE_HOME the environment variable to gradle installation folder");
+		}
 
-        boolean gradleHomeEndsWithPathSep = gradleHome.charAt(gradleHome.length() - 1) == File.separatorChar;
-        String gradleExecStr = null;
-        String executor = gradleHome;
-        if (!gradleHomeEndsWithPathSep) {
-            executor += File.separatorChar;
-        }
-        executor += "bin" + File.separatorChar + "gradle";
-        if (Platform.OS_WIN32.contentEquals(Platform.getOS())) {
-            if (Paths.get(executor + ".bat").toFile().exists()) {
-                gradleExecStr = executor + ".bat";
-            } else if (Paths.get(executor + ".cmd").toFile().exists()) {
-                gradleExecStr = executor + ".cmd";
-            } else {
-                throw new FileNotFoundException(String.format("Gradle executable %s.cmd not found.", executor));
-            }
-        } else if (Paths.get(executor).toFile().exists()) {
-            gradleExecStr = executor;
-        }
-        // Gradle executable should exist.
-        if (gradleExecStr == null || !Paths.get(gradleExecStr).toFile().exists()) {
-            throw new FileNotFoundException(String.format("Gradle executable [%s] not found", gradleExecStr));
-        }
-        return gradleExecStr;
-    }
+		boolean gradleHomeEndsWithPathSep = gradleHome.charAt(gradleHome.length() - 1) == File.separatorChar;
+		String gradleExecStr = null;
+		String executor = gradleHome;
+		if (!gradleHomeEndsWithPathSep) {
+			executor += File.separatorChar;
+		}
+		executor += "bin" + File.separatorChar + "gradle";
+		if (Platform.OS_WIN32.contentEquals(Platform.getOS())) {
+			if (Paths.get(executor + ".bat").toFile().exists()) {
+				gradleExecStr = executor + ".bat";
+			} else if (Paths.get(executor + ".cmd").toFile().exists()) {
+				gradleExecStr = executor + ".cmd";
+			} else {
+				throw new FileNotFoundException(String.format("Gradle executable %s.cmd not found.", executor));
+			}
+		} else if (Paths.get(executor).toFile().exists()) {
+			gradleExecStr = executor;
+		}
+		// Gradle executable should exist.
+		if (gradleExecStr == null || !Paths.get(gradleExecStr).toFile().exists()) {
+			throw new FileNotFoundException(String.format("Gradle executable [%s] not found", gradleExecStr));
+		}
+		return gradleExecStr;
+	}
 
-    @Override
-    public List<String> getStartCommand(String contextPath, String microVersion, String buildType, String debugPort) {
-    	List<String> commands = new ArrayList<>();
-        if (WAR_BUILD_ARTIFACT.equals(buildType)) {
-        	commands.add("war");
-        	commands.add("-DpayaraMicro.deployWar=true");
-        } else if (EXPLODED_WAR_BUILD_ARTIFACT.equals(buildType)) {
-        	commands.add("warExplode");
-        	commands.add("-DpayaraMicro.deployWar=true");
-        	commands.add("-DpayaraMicro.exploded=true");
-        } else if (UBER_JAR_BUILD_ARTIFACT.equals(buildType)) {
-        	commands.add("microBundle");
-        	commands.add("-DpayaraMicro.useUberJar=true");
-        } else {
-        	commands.add("build");
-        }
-        commands.add("microStart");
-        if (contextPath != null && !contextPath.trim().isEmpty()) {
-        	commands.add("-DpayaraMicro.contextRoot=" + contextPath);
-        }
-        if (microVersion != null && !microVersion.trim().isEmpty()) {
-        	commands.add("-DpayaraMicro.payaraVersion=" + microVersion);
-        }
-        commands.add("-Ddebug=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=" + debugPort);
-        return commands;
-    }
+	@Override
+	public List<String> getStartCommand(String contextPath, String microVersion, String buildType, String debugPort,
+			boolean hotDeploy) {
 
-    public List<String> getReloadCommand() {
-    	List<String> commands = new ArrayList<>();
-    	commands.add("warExplode");
-    	commands.add("microReload");
-        return commands;
-    }
+		List<String> commands = new ArrayList<>();
+		if (WAR_BUILD_ARTIFACT.equals(buildType)) {
+			commands.add("war");
+			commands.add("-DpayaraMicro.deployWar=true");
+		} else if (EXPLODED_WAR_BUILD_ARTIFACT.equals(buildType)) {
+			commands.add("warExplode");
+			commands.add("-DpayaraMicro.deployWar=true");
+			commands.add("-DpayaraMicro.exploded=true");
+		} else if (UBER_JAR_BUILD_ARTIFACT.equals(buildType)) {
+			commands.add("microBundle");
+			commands.add("-DpayaraMicro.useUberJar=true");
+		} else {
+			commands.add("build");
+		}
+		commands.add("microStart");
+		if (contextPath != null && !contextPath.trim().isEmpty()) {
+			commands.add("-DpayaraMicro.contextRoot=" + contextPath);
+		}
+		if (microVersion != null && !microVersion.trim().isEmpty()) {
+			commands.add("-DpayaraMicro.payaraVersion=" + microVersion);
+		}
+		if (hotDeploy) {
+			commands.add("-DhotDeploy=true");
+		}
+		commands.add("-Ddebug=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=" + debugPort);
+		return commands;
+	}
+
+	public List<String> getReloadCommand(boolean hotDeploy, List<String> sourcesChanged, boolean metadataChanged) {
+
+		List<String> commands = new ArrayList<>();
+		commands.add("warExplode");
+		commands.add("microReload");
+		commands.add("-Dorg.gradle.debug=true");
+
+		if (hotDeploy) {
+			commands.add("-DhotDeploy=true");
+			if (metadataChanged) {
+				commands.add("-DmetadataChanged=true");
+			}
+			if (!sourcesChanged.isEmpty()) {
+				commands.add("-DsourcesChanged=" + String.join(",", sourcesChanged));
+			}
+		}
+		return commands;
+	}
 
 }

@@ -17,33 +17,35 @@ import org.eclipse.core.runtime.CoreException;
 
 public abstract class BuildTool {
 
-    protected final IProject project;
-    
-    public static final String MAVEN_NATURE = "org.eclipse.m2e.core.maven2Nature";
+	protected final IProject project;
 
-    protected BuildTool(IProject project) {
-        this.project = project;
-    }
+	public static final String MAVEN_NATURE = "org.eclipse.m2e.core.maven2Nature";
 
-    public abstract String getExecutableHome() throws FileNotFoundException;
-    
-    public abstract List<String> getStartCommand(String contextPath, String microVersion, String buildType, String debugPort);
+	protected BuildTool(IProject project) {
+		this.project = project;
+	}
 
-    public abstract List<String> getReloadCommand();
+	public abstract String getExecutableHome() throws FileNotFoundException;
 
-    public static boolean isMavenProject(IProject project) {
-        try {
-            return project.hasNature(MAVEN_NATURE);
-        } catch (CoreException e) {
-            return false;
-        }
-    }
+	public abstract List<String> getStartCommand(String contextPath, String microVersion, String buildType,
+			String debugPort, boolean hotDeploy);
 
-    public static BuildTool getToolSupport(IProject project) {
-        if (isMavenProject(project)) {
-            return new MavenBuildTool(project);
-        } else {
-            return new GradleBuildTool(project);
-        }
-    }
+	public abstract List<String> getReloadCommand(boolean hotDeploy, List<String> sourcesChanged,
+			boolean metadataChanged);
+
+	public static boolean isMavenProject(IProject project) {
+		try {
+			return project.hasNature(MAVEN_NATURE);
+		} catch (CoreException e) {
+			return false;
+		}
+	}
+
+	public static BuildTool getToolSupport(IProject project) {
+		if (isMavenProject(project)) {
+			return new MavenBuildTool(project);
+		} else {
+			return new GradleBuildTool(project);
+		}
+	}
 }

@@ -13,6 +13,8 @@ import static org.eclipse.payara.tools.Messages.errorInInitializingMicroWatcher;
 import static org.eclipse.payara.tools.Messages.errorInReloadingMicro;
 import static org.eclipse.payara.tools.Messages.errorInTerminatingMicro;
 import static org.eclipse.payara.tools.micro.MicroConstants.ATTR_RELOAD_ARTIFACT;
+import static org.eclipse.payara.tools.micro.MicroConstants.HOT_DEPLOY_ARTIFACT;
+import static org.eclipse.payara.tools.micro.MicroConstants.PROJECT_NAME_ATTR;
 
 import java.io.File;
 import java.io.IOException;
@@ -67,22 +69,35 @@ public class MicroRuntimeProcess extends RuntimeProcess {
 
 	private void watchResources(ILaunchConfiguration config, Process process) {
 		try {
-			final String projectName = config.getAttribute("org.eclipse.jdt.launching.PROJECT_ATTR", "");
-			if (!config.getAttribute(ATTR_RELOAD_ARTIFACT, "").equals("")) {
+			final String projectName = config.getAttribute(PROJECT_NAME_ATTR, "");
+			String reloadArtifact = config.getAttribute(ATTR_RELOAD_ARTIFACT, "");
+			if (!reloadArtifact.isEmpty()) {
 				this.sourceChangeListener = new IResourceChangeListener() {
 					public void resourceChanged(IResourceChangeEvent event) {
-						IResourceDelta affected[] = event.getDelta().getAffectedChildren();
-						List<IFile> changedSources = getAllAffectedResources(event.getDelta(), IFile.class, IResourceDelta.CHANGED)
-								.stream()
-								.filter(f -> f.getProject().getName().equals(projectName))
-								.collect(Collectors.toList());
-						if (!changedSources.isEmpty()) {
+						List<IFile> filesChanged = getAllAffectedResources(event.getDelta(), IFile.class,
+								IResourceDelta.CHANGED, projectName);
+						boolean hotDeploy = reloadArtifact.equals(HOT_DEPLOY_ARTIFACT);
+						List<String> sourcesChanged = new ArrayList<>();
+						boolean metadataChanged = false;
+						if (hotDeploy) {
+							for (IFile fileChanged : filesChanged) {
+								String path = fileChanged.getFullPath().toString();
+								String ext = fileChanged.getFileExtension();
+								if (!path.endsWith("class")) {
+									sourcesChanged.add(path);
+								}
+								if (ext.equals("xml") || ext.equals("properties")) {
+									metadataChanged = true;
+								}
+							}
+						}
+						if (!filesChanged.isEmpty()) {
 							try {
-								IProject project = changedSources.get(0).getProject();
+								IProject project = filesChanged.get(0).getProject();
 								BuildTool tool = BuildTool.getToolSupport(project);
 								List<String> commands = new ArrayList<>();
 								commands.add(tool.getExecutableHome());
-								commands.addAll(tool.getReloadCommand());
+								commands.addAll(tool.getReloadCommand(hotDeploy, sourcesChanged, metadataChanged));
 								ProcessBuilder pb = new ProcessBuilder(commands);
 								pb.directory(new File(project.getLocationURI()));
 								pb.redirectErrorStream(true);
@@ -94,28 +109,30 @@ public class MicroRuntimeProcess extends RuntimeProcess {
 						}
 					}
 				};
-				ResourcesPlugin.getWorkspace().addResourceChangeListener(
-						this.sourceChangeListener,
-						IResourceChangeEvent.POST_BUILD
-				);
+				ResourcesPlugin.getWorkspace().addResourceChangeListener(this.sourceChangeListener,
+						IResourceChangeEvent.POST_BUILD);
 			}
 		} catch (CoreException ex) {
 			LOG.log(Level.SEVERE, errorInInitializingMicroWatcher, ex);
 		}
 	}
 
-	private <T> List<T> getAllAffectedResources(IResourceDelta delta, Class<T> clazz, int deltaKind) {
+	private <T> List<T> getAllAffectedResources(IResourceDelta delta, Class<T> clazz, int deltaKind,
+			String projectName) {
 		List<T> files = new ArrayList<T>();
 
 		for (IResourceDelta child : delta.getAffectedChildren()) {
 			IResource resource = child.getResource();
 
-			if (resource != null && clazz.isAssignableFrom(resource.getClass())) {
-				if ((child.getKind() & deltaKind) != 0) {
-					files.add((T) resource);
+			if (resource.getProject().getName().equals(projectName)) {
+
+				if (resource != null && clazz.isAssignableFrom(resource.getClass())) {
+					if ((child.getKind() & deltaKind) != 0) {
+						files.add((T) resource);
+					}
+				} else {
+					files.addAll(getAllAffectedResources(child, clazz, deltaKind, projectName));
 				}
-			} else {
-				files.addAll(getAllAffectedResources(child, clazz, deltaKind));
 			}
 		}
 		return files;
