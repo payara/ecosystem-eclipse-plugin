@@ -85,7 +85,7 @@ public class GradleBuildTool extends BuildTool {
 			commands.add("-DpayaraMicro.payaraVersion=" + microVersion);
 		}
 		if (hotDeploy) {
-			commands.add("-DhotDeploy=true");
+			commands.add("-DpayaraMicro.hotDeploy=true");
 		}
 		commands.add("-Ddebug=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=" + debugPort);
 		return commands;
@@ -96,15 +96,14 @@ public class GradleBuildTool extends BuildTool {
 		List<String> commands = new ArrayList<>();
 		commands.add("warExplode");
 		commands.add("microReload");
-		commands.add("-Dorg.gradle.debug=true");
 
 		if (hotDeploy) {
-			commands.add("-DhotDeploy=true");
+			commands.add("-DpayaraMicro.hotDeploy=true");
 			if (metadataChanged) {
-				commands.add("-DmetadataChanged=true");
+				commands.add("-DpayaraMicro.metadataChanged=true");
 			}
 			if (!sourcesChanged.isEmpty()) {
-				commands.add("-DsourcesChanged=" + String.join(",", sourcesChanged));
+				commands.add("-DpayaraMicro.sourcesChanged=" + String.join(",", sourcesChanged));
 			}
 		}
 		return commands;
