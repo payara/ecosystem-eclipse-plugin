@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 /******************************************************************************
- * Copyright (c) 2018 Payara Foundation
+ * Copyright (c) 2018-2021 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -95,4 +95,10 @@ public class Messages extends NLS {
     public static String wrongUsernamePassword;
     public static String badGateway;
     public static String domainNotMatch;
+
+    public static String errorInTerminatingMicro;
+    public static String errorInInitializingMicroWatcher;
+    public static String errorInReloadingMicro;
+    
+    
 }

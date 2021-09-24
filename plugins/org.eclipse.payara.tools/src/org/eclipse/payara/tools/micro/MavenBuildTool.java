@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020 Payara Foundation
+ * Copyright (c) 2020-2021 Payara Foundation
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -12,6 +12,9 @@ package org.eclipse.payara.tools.micro;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Platform;
 import static org.eclipse.payara.tools.micro.MicroConstants.EXPLODED_WAR_BUILD_ARTIFACT;
@@ -20,72 +23,102 @@ import static org.eclipse.payara.tools.micro.MicroConstants.WAR_BUILD_ARTIFACT;
 
 public class MavenBuildTool extends BuildTool {
 
-    public MavenBuildTool(IProject project) {
-        super(project);
-    }
+	private static final String PLUGIN = " fish.payara.maven.plugins:payara-micro-maven-plugin:";
 
-    @Override
-    public String getExecutableHome() throws FileNotFoundException {
-        String mavenHome = System.getenv("M2_HOME");
-        if (mavenHome == null) {
-            mavenHome = System.getenv("MAVEN_HOME");
-        }
+	public MavenBuildTool(IProject project) {
+		super(project);
+	}
 
-        if (mavenHome == null) {
-            throw new FileNotFoundException("set MAVEN_HOME the environment variable to maven installation folder");
-        }
+	@Override
+	public String getExecutableHome() throws FileNotFoundException {
+		String mavenHome = System.getenv("M2_HOME");
+		if (mavenHome == null) {
+			mavenHome = System.getenv("MAVEN_HOME");
+		}
 
-        boolean mavenHomeEndsWithPathSep = mavenHome.charAt(mavenHome.length() - 1) == File.separatorChar;
-        String mavenExecStr = null;
-        String executor = mavenHome;
-        if (!mavenHomeEndsWithPathSep) {
-            executor += File.separatorChar;
-        }
-        executor += "bin" + File.separatorChar + "mvn";
-        if (Platform.OS_WIN32.contentEquals(Platform.getOS())) {
-            if (Paths.get(executor + ".bat").toFile().exists()) {
-                mavenExecStr = executor + ".bat";
-            } else if (Paths.get(executor + ".cmd").toFile().exists()) {
-                mavenExecStr = executor + ".cmd";
-            } else {
-                throw new FileNotFoundException(String.format("Maven executable %s.cmd not found.", executor));
-            }
-        } else if (Paths.get(executor).toFile().exists()) {
-            mavenExecStr = executor;
-        }
-        // Maven executable should exist.
-        if (mavenExecStr == null || !Paths.get(mavenExecStr).toFile().exists()) {
-            throw new FileNotFoundException(String.format("Maven executable [%s] not found", mavenExecStr));
-        }
-        return mavenExecStr;
-    }
+		if (mavenHome == null) {
+			throw new FileNotFoundException("set MAVEN_HOME the environment variable to maven installation folder");
+		}
 
-    @Override
-    public String getStartCommand(
-            String contextPath,
-            String microVersion,
-            String buildType,
-            String debugPort) {
-        String plugin = " fish.payara.maven.plugins:payara-micro-maven-plugin:";
-        StringBuilder sb = new StringBuilder();
-        if (WAR_BUILD_ARTIFACT.equals(buildType)) {
-            sb.append("resources:resources compiler:compile war:war -DdeployWar=true");
-        } else if (EXPLODED_WAR_BUILD_ARTIFACT.equals(buildType)) {
-            sb.append("resources:resources compiler:compile war:exploded -DdeployWar=true -Dexploded=true");
-        } else if (UBER_JAR_BUILD_ARTIFACT.equals(buildType)) {
-            sb.append("package").append(plugin).append("bundle").append(" -DuseUberJar=true");
-        } else {
-            sb.append("package");
-        }
-        sb.append(plugin).append("start");
-        if (contextPath != null && !contextPath.trim().isEmpty()) {
-            sb.append(" -DcontextRoot=").append(contextPath);
-        }
-        if (microVersion != null && !microVersion.trim().isEmpty()) {
-            sb.append(" -DpayaraVersion=").append(microVersion);
-        }
-        sb.append(" -Ddebug=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=")
-                .append(debugPort);
-        return sb.toString();
-    }
+		boolean mavenHomeEndsWithPathSep = mavenHome.charAt(mavenHome.length() - 1) == File.separatorChar;
+		String mavenExecStr = null;
+		String executor = mavenHome;
+		if (!mavenHomeEndsWithPathSep) {
+			executor += File.separatorChar;
+		}
+		executor += "bin" + File.separatorChar + "mvn";
+		if (Platform.OS_WIN32.contentEquals(Platform.getOS())) {
+			if (Paths.get(executor + ".bat").toFile().exists()) {
+				mavenExecStr = executor + ".bat";
+			} else if (Paths.get(executor + ".cmd").toFile().exists()) {
+				mavenExecStr = executor + ".cmd";
+			} else {
+				throw new FileNotFoundException(String.format("Maven executable %s.cmd not found.", executor));
+			}
+		} else if (Paths.get(executor).toFile().exists()) {
+			mavenExecStr = executor;
+		}
+		// Maven executable should exist.
+		if (mavenExecStr == null || !Paths.get(mavenExecStr).toFile().exists()) {
+			throw new FileNotFoundException(String.format("Maven executable [%s] not found", mavenExecStr));
+		}
+		return mavenExecStr;
+	}
+
+	@Override
+	public List<String> getStartCommand(String contextPath, String microVersion, String buildType, String debugPort,
+			boolean hotDeploy) {
+
+		List<String> commands = new ArrayList<>();
+		if (WAR_BUILD_ARTIFACT.equals(buildType)) {
+			commands.add("resources:resources");
+			commands.add("compiler:compile");
+			commands.add("war:war");
+			commands.add("-DdeployWar=true");
+		} else if (EXPLODED_WAR_BUILD_ARTIFACT.equals(buildType)) {
+			commands.add("resources:resources");
+			commands.add("compiler:compile");
+			commands.add("war:exploded");
+			commands.add("-DdeployWar=true");
+			commands.add("-Dexploded=true");
+		} else if (UBER_JAR_BUILD_ARTIFACT.equals(buildType)) {
+			commands.add("package");
+			commands.add(PLUGIN + "bundle");
+			commands.add("-DuseUberJar=true");
+		} else {
+			commands.add("package");
+		}
+		commands.add(PLUGIN + "start");
+		if (contextPath != null && !contextPath.trim().isEmpty()) {
+			commands.add("-DcontextRoot=" + contextPath);
+		}
+		if (microVersion != null && !microVersion.trim().isEmpty()) {
+			commands.add("-DpayaraVersion=" + microVersion);
+		}
+		if (hotDeploy) {
+			commands.add("-DhotDeploy=true");
+		}
+		commands.add("-Ddebug=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=" + debugPort);
+		return commands;
+	}
+
+	public List<String> getReloadCommand(boolean hotDeploy, List<String> sourcesChanged, boolean metadataChanged) {
+
+		List<String> commands = new ArrayList<>();
+		commands.add("resources:resources");
+		commands.add("compiler:compile");
+		commands.add("war:exploded");
+		commands.add("payara-micro:reload");
+
+		if (hotDeploy) {
+			commands.add("-DhotDeploy=true");
+			if (metadataChanged) {
+				commands.add("-DmetadataChanged=true");
+			}
+			if (!sourcesChanged.isEmpty()) {
+				commands.add("-DsourcesChanged=" + String.join(",", sourcesChanged));
+			}
+		}
+		return commands;
+	}
 }
