@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 /******************************************************************************
- * Copyright (c) 2018 Payara Foundation
+ * Copyright (c) 2018-2021 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -73,6 +73,9 @@ public class RunnerHttpDeploy extends RunnerHttp {
     /** Deploy command <code>force</code> parameter value. */
     private static final boolean FORCE_VALUE = true;
 
+    /** Deploy command <code>hotDeploy</code> parameter name. */
+    private static final String HOT_DEPLOY_PARAM = "hotDeploy";
+
     ////////////////////////////////////////////////////////////////////////////
     // Static methods //
     ////////////////////////////////////////////////////////////////////////////
@@ -101,14 +104,18 @@ public class RunnerHttpDeploy extends RunnerHttp {
         String target;
         String ctxRoot;
         String force = Boolean.toString(FORCE_VALUE);
+        String hotDeploy;
+        CommandDeploy deploy;
         if (command instanceof CommandDeploy) {
-            if (((CommandDeploy) command).path == null) {
+            deploy = (CommandDeploy) command;
+            if (deploy.path == null) {
                 throw new CommandException(CommandException.ILLEGAL_NULL_VALUE);
             }
-            name = Utils.sanitizeName(((CommandDeploy) command).name);
-            path = ((CommandDeploy) command).path.getAbsolutePath();
-            target = ((CommandDeploy) command).target;
-            ctxRoot = ((CommandDeploy) command).contextRoot;
+            name = Utils.sanitizeName(deploy.name);
+            path = deploy.path.getAbsolutePath();
+            target = deploy.target;
+            ctxRoot = deploy.contextRoot;
+            hotDeploy = Boolean.toString(deploy.hotDeploy);
         } else {
             throw new CommandException(
                     CommandException.ILLEGAL_COMAND_INSTANCE);
@@ -118,9 +125,9 @@ public class RunnerHttpDeploy extends RunnerHttp {
                 DEFAULT_PARAM.length() + 1 + path.length() +
                         1 + FORCE_PARAM.length() + 1 + force.length()
                         + queryPropertiesLength(
-                                ((CommandDeploy) command).properties, PROPERTIES_PARAM)
+                                deploy.properties, PROPERTIES_PARAM)
                         + queryLibrariesLength(
-                                ((CommandDeploy) command).libraries, LIBRARIES_PARAM)
+                        		deploy.libraries, LIBRARIES_PARAM)
                         + (name != null && name.length() > 0
                                 ? 1 + NAME_PARAM.length() + 1 + name.length()
                                 : 0)
@@ -129,7 +136,10 @@ public class RunnerHttpDeploy extends RunnerHttp {
                                 : 0)
                         + (ctxRoot != null && ctxRoot.length() > 0
                                 ? 1 + CTXROOT_PARAM.length() + 1 + ctxRoot.length()
-                                : 0));
+                                : 0)
+        				+ (deploy.hotDeploy
+				                ? HOT_DEPLOY_PARAM.length() + 1 + hotDeploy.length()
+				                : 0));
         // Build query string
         sb.append(DEFAULT_PARAM).append(PARAM_ASSIGN_VALUE).append(path);
         sb.append(PARAM_SEPARATOR);
@@ -146,10 +156,15 @@ public class RunnerHttpDeploy extends RunnerHttp {
             sb.append(PARAM_SEPARATOR);
             sb.append(CTXROOT_PARAM).append(PARAM_ASSIGN_VALUE).append(ctxRoot);
         }
+        if (deploy.hotDeploy) {
+            sb.append(PARAM_SEPARATOR);
+            sb.append(HOT_DEPLOY_PARAM);
+            sb.append(PARAM_ASSIGN_VALUE).append(hotDeploy);
+        }
         // Add properties into query string.
-        queryPropertiesAppend(sb, ((CommandDeploy) command).properties,
+        queryPropertiesAppend(sb, deploy.properties,
                 PROPERTIES_PARAM, true);
-        queryLibrariesAppend(sb, ((CommandDeploy) command).libraries,
+        queryLibrariesAppend(sb, deploy.libraries,
                 LIBRARIES_PARAM, true);
 
         return sb.toString();

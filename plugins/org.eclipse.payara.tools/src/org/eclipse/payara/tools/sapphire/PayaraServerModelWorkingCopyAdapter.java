@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 /******************************************************************************
- * Copyright (c) 2019 Payara Foundation
+ * Copyright (c) 2019-2021 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,6 +31,7 @@ import static org.eclipse.payara.tools.sapphire.IPayaraServerModel.PROP_RESTART_
 import static org.eclipse.payara.tools.sapphire.IPayaraServerModel.PROP_SERVER_PORT;
 import static org.eclipse.payara.tools.sapphire.IPayaraServerModel.PROP_USE_ANONYMOUS_CONNECTIONS;
 import static org.eclipse.payara.tools.sapphire.IPayaraServerModel.PROP_USE_JAR_DEPLOYMENT;
+import static org.eclipse.payara.tools.sapphire.IPayaraServerModel.PROP_ENABLE_HOT_DEPLOY;
 import static org.eclipse.payara.tools.server.PayaraServer.ATTR_ADMIN;
 import static org.eclipse.payara.tools.server.PayaraServer.ATTR_ADMINPASS;
 import static org.eclipse.payara.tools.server.PayaraServer.ATTR_ADMINPORT;
@@ -168,6 +169,10 @@ public class PayaraServerModelWorkingCopyAdapter extends Resource {
 
         if (propertyDef == PROP_USE_JAR_DEPLOYMENT) {
             return new AttributeValueBinding(workingCopy, ATTR_JARDEPLOY);
+        }
+        
+        if (propertyDef == PROP_ENABLE_HOT_DEPLOY) {
+            return new AttributeValueBinding(workingCopy, PROP_ENABLE_HOT_DEPLOY.name());
         }
 
         if (propertyDef == PROP_RESTART_PATTERN) {
