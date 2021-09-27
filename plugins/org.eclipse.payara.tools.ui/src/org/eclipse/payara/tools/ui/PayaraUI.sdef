@@ -67,7 +67,7 @@
 			<property-editor>
 				<hint>
 					<name>aux.text</name>
-					<value>In debug mode changes can be hot deployed to a local Payara without requiring reloading the application. This pattern indicates resources that when changed do trigger a reload.</value>
+					<value>In debug mode changes can be hot swapped to a local Payara Server without requiring reloading the application. This pattern indicates resources that when changed do trigger a reload.</value>
 				</hint>
 				<property>RestartPattern</property>
 			</property-editor>
