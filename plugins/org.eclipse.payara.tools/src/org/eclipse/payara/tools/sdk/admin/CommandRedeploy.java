@@ -71,7 +71,7 @@ public class CommandRedeploy extends CommandTargetName {
 	////////////////////////////////////////////////////////////////////////////
 
 	/**
-	 * Constructs an instance of GlassFish server deploy command entity.
+	 * Constructs an instance of Payara server deploy command entity.
 	 * <p/>
 	 *
 	 * @param name            Name of module/cluster/instance to modify.
