@@ -75,7 +75,7 @@ public class CommandRedeploy extends CommandTargetName {
 	 * <p/>
 	 *
 	 * @param name            Name of module/cluster/instance to modify.
-	 * @param target          Target GlassFish instance or cluster where
+	 * @param target          Target Payara instance or cluster where
 	 *                        <code>name</code> is stored.
 	 * @param contextRoot     Deployed application context root.
 	 * @param properties      Deployment properties.
