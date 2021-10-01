@@ -376,7 +376,7 @@ public class AssembleModules {
 
 	/*
 	 * return true is a module resource change requires a redeploy command for
-	 * example, web.xml or a .class file change needs a redepploy. a jsp or html
+	 * example, web.xml or a .class file change needs a redeploy. a jsp or html
 	 * change just needs a file copy not a redeploy command.
 	 */
 	private boolean criticalResourceChangeThatNeedsARedeploy(IModuleResourceDelta[] deltas, Pattern restartPattern) {
