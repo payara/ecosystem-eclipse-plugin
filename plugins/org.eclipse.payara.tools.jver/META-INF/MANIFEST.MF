@@ -3,6 +3,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %BundleName
 Bundle-Vendor: %BundleVendor
 Bundle-SymbolicName: org.eclipse.payara.tools.jver
-Bundle-Version: 1.3.0.qualifier
+Bundle-Version: 1.4.0.qualifier
 Bundle-Localization: bundle
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
