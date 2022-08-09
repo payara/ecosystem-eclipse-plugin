@@ -1,25 +1,7 @@
-# Eclipse Payara tools
-This is a fork of the Eclipse GlassFish Tools, tailored and improved to work with Payara.
+# Payara Tools for Eclipse
 
-**ATTENTION**: Support for this repository is handled in the [Ecosystem Support repository](https://github.com/payara/ecosystem-support)
+### Ecosystem Plugin Support
+Support for the Eclipse IDE Payara Tools plugin is handled in the [Ecosystem Support Repository](https://github.com/payara/ecosystem-support)
 
-## Building
-
-To build set the `JDK_8_HOME` environment variable to point to a valid JDK 8 installation, for instance:
-
-```
-export JDK_8_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_191.jdk/Contents/Home/
-```
-
-Then type `ant` in the root of this project. 
-
-This will cause build helper tools (Corundum) to be build first and then the main feature to be build targeting **Eclipse 2020-03**. 
-Archived update sites will be found in `[project root]/build/packages`
-
-To use the project source code in Eclipse, install Sapphire from http://download.eclipse.org/sapphire/latest and
-optionally define ANT_HOME for the build helper tools (Corundum).
-
-
-GlassFish is a trademark of Eclipse Foundation.
-Payara is a trademark of Payara Foundation.
-
+### Eclipse Payara Tools Documentation
+Full documentation for the configuration and usage of the Eclipse Payara Tools plugin can be found in the [technical documentation](https://docs.payara.fish/community/docs/Technical%20Documentation/Ecosystem/IDE%20Integration/Eclipse%20Plugin/Overview.html)
