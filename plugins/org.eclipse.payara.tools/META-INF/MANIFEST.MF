@@ -41,14 +41,8 @@ Require-Bundle:
  org.eclipse.jem.util,
  org.eclipse.m2e.core,
  org.junit,
- org.junit.platform.commons,
- org.junit.platform.engine,
- org.junit.platform.launcher,
- org.junit.platform.runner,
- org.junit.platform.suite.api,
  org.hamcrest.core,
- org.opentest4j,
- org.apiguardian
+ org.opentest4j
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.payara.tools;
   uses:="org.eclipse.debug.core,

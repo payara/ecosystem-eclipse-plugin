@@ -31,7 +31,7 @@
       <import feature="org.eclipse.sapphire.platform" version="9.1" match="compatible"/>
       <import feature="org.eclipse.sapphire.ui" version="9.1" match="compatible"/>
       <import feature="org.eclipse.sapphire.ui.swt.xml.editor" version="9.1" match="compatible"/>
-      <import feature="org.eclipse.m2e.feature" version="1.15" match="compatible"/>
+      <import feature="org.eclipse.m2e.feature" version="1.15" match="greaterOrEqual"/>
       <import plugin="org.apache.xerces"/>
       <import plugin="org.apache.ant"/>
       <import plugin="org.eclipse.core.externaltools"/>
