@@ -85,12 +85,12 @@
             <create-inventory eclipse="${.target}" dest="${build.dir}/repository/temp/max-platform-inventory.txt"/>
           </with-target>
 
-          <set-bundle-version-constraints
+<!--          <set-bundle-version-constraints
             minPlatformInventory="${build.dir}/repository/temp/min-platform-inventory.txt"
             targetPlatformInventory="${build.dir}/repository/temp/max-platform-inventory.txt"
             pluginsDirectory="${build.dir}/repository/temp"
             excludes="${require.bundle.version.constraint.excludes}"
-            rules="${require.bundle.version.constraint.rules}"/>
+            rules="${require.bundle.version.constraint.rules}"/>-->
 
           <!-- Stage 5 -->
 
