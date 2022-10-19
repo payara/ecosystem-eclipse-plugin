@@ -1,9 +1,0 @@
-<project name="corundum.macros.sign-jar">
-
-  <macrodef name="sign-jar">
-    <attribute name="location"/>
-    <sequential>
-    </sequential>
-  </macrodef>
-
-</project>
