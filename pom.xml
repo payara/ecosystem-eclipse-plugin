@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>fish.payara.eclipse</groupId>
+    <artifactId>fish.payara.eclipse.root</artifactId>
+    <version>2.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <prerequisites>
+        <maven>3.0</maven>
+    </prerequisites>
+
+    <properties>
+        <tycho.version>3.0.0</tycho.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <eclipse.target>20229</eclipse.target>
+        <eclipse-repo.url>https://download.eclipse.org/releases/2022-09</eclipse-repo.url>
+    </properties>
+
+    <modules>
+        <module>bundles</module>
+        <module>features</module>
+        <module>releng/fish.payara.eclipse.${eclipse.target}</module>
+        <module>releng/fish.payara.eclipse.update</module>
+    </modules>
+
+    <repositories>
+        <repository>
+            <id>sonatype-nexus-snapshots</id>
+            <name>Sonatype Nexus Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>eclipse-release</id>
+            <url>${eclipse-repo.url}</url>
+            <layout>p2</layout>
+        </repository>
+    </repositories>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>tycho-maven-plugin</artifactId>
+                <version>${tycho.version}</version>
+                <extensions>true</extensions>
+            </plugin>
+            <plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>tycho-compiler-plugin</artifactId>
+                <version>${tycho.version}</version>
+                <configuration>
+                    <useProjectSettings>false</useProjectSettings>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>tycho-p2-repository-plugin</artifactId>
+                <version>${tycho.version}</version>
+                <configuration>
+                <includeAllDependencies>false</includeAllDependencies>
+            </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>tycho-packaging-plugin</artifactId>
+                <version>${tycho.version}</version>
+                <configuration>
+                    <finalName>${project.artifactId}_${unqualifiedVersion}.${buildQualifier}</finalName>
+                    <format>'v'yyyyMMddHHmm</format>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>target-platform-configuration</artifactId>
+                <version>${tycho.version}</version>
+                <configuration>
+                    <pomDependencies>consider</pomDependencies>
+                    <environments>
+                        <environment>
+                            <os>linux</os> 
+                            <ws>gtk</ws> 
+                            <arch>x86_64</arch>
+                        </environment>
+                        <environment>
+                            <os>win32</os> 
+                            <ws>win32</ws> 
+                            <arch>x86_64</arch>
+                        </environment>
+                        <environment>
+                            <os>macosx</os> 
+                            <ws>cocoa</ws> 
+                            <arch>x86_64</arch>
+                        </environment>
+                    </environments>
+                    <target>
+                        <artifact>
+                            <groupId>fish.payara.eclipse</groupId>
+                            <artifactId>fish.payara.eclipse.${eclipse.target}</artifactId>
+                            <version>${project.version}</version>
+                        </artifact>
+                    </target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

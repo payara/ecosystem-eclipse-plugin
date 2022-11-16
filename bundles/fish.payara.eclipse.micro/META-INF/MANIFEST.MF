@@ -1,0 +1,25 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Payara Micro Tools
+Bundle-SymbolicName: fish.payara.eclipse.micro;singleton:=true
+Bundle-Version: 2.0.0.qualifier
+Bundle-ClassPath: .
+Bundle-Localization: plugin
+Bundle-Activator: fish.payara.eclipse.micro.PayaraMicroPlugin
+Bundle-Vendor: Payara
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.swt,
+ com.sun.jna,
+ com.sun.jna.platform,
+ org.eclipse.m2e.core,
+ org.eclipse.m2e.core.ui,
+ org.eclipse.m2e.archetype.common,
+ org.eclipse.debug.core,
+ org.eclipse.debug.ui,
+ org.eclipse.jdt.core,
+ org.eclipse.jdt.debug.ui,
+ org.eclipse.core.externaltools,
+ org.eclipse.core.runtime,
+ org.eclipse.jdt.launching
+Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-ActivationPolicy: lazy

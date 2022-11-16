@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/fish.payara.eclipse.micro.feature_2.0.0.qualifier.jar" id="fish.payara.eclipse.micro.feature" version="2.0.0.qualifier">
+      <category name="fish.payara.category"/>
+   </feature>
+   <category-def name="fish.payara.category" label="Payara Tools"/>
+</site>

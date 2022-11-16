@@ -1,1 +1,0 @@
-            <tr><td class="key">${key}:</td><td class="value">${value}</td></tr>
