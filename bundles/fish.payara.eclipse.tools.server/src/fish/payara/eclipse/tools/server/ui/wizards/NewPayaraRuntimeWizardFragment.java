@@ -357,17 +357,20 @@ public class NewPayaraRuntimeWizardFragment extends WizardFragment {
 	public void performFinish(IProgressMonitor monitor) throws CoreException {
 		super.performFinish(monitor);
 
-		RuntimeWorkingCopy runtime = (RuntimeWorkingCopy) getTaskModel().getObject(TASK_RUNTIME);
-		runtime.save(true, monitor);
-		runtime.dispose();
+		if (getTaskModel().getObject(TASK_RUNTIME) instanceof RuntimeWorkingCopy) {
+			RuntimeWorkingCopy runtime = (RuntimeWorkingCopy) getTaskModel().getObject(TASK_RUNTIME);
+			runtime.save(true, monitor);
+			runtime.dispose();
+		}
 	}
 
 	@Override
 	public void performCancel(final IProgressMonitor monitor) throws CoreException {
 		super.performCancel(monitor);
-
-		RuntimeWorkingCopy runtime = (RuntimeWorkingCopy) getTaskModel().getObject(TASK_RUNTIME);
-		runtime.dispose();
+		if (getTaskModel().getObject(TASK_RUNTIME) instanceof RuntimeWorkingCopy) {
+			RuntimeWorkingCopy runtime = (RuntimeWorkingCopy) getTaskModel().getObject(TASK_RUNTIME);
+			runtime.dispose();
+		}
 	}
 
 	protected boolean validate(IWizardHandle wizard) {
