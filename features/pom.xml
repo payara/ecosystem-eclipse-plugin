@@ -12,6 +12,7 @@
     </parent>
 
     <modules>
-        <module>fish.payara.eclipse.micro.feature</module>
+        <module>fish.payara.eclipse.tools.micro.feature</module>
+        <module>fish.payara.eclipse.tools.server.feature</module>
     </modules>
 </project>

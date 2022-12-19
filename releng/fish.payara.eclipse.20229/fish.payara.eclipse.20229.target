@@ -33,5 +33,17 @@
             <unit id="org.eclipse.wst.server_adapters.sdk.feature.feature.group"/>
             <repository location="https://download.eclipse.org/webtools/repository/2022-09/"/>
         </location>
+        <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+            <unit id="org.eclipse.sapphire.modeling.feature.group"/>
+            <unit id="org.eclipse.sapphire.modeling.xml.feature.group"/>
+            <unit id="org.eclipse.sapphire.java.feature.group"/>
+            <unit id="org.eclipse.sapphire.java.jdt.feature.group"/>
+            <unit id="org.eclipse.sapphire.osgi.feature.group"/>
+            <unit id="org.eclipse.sapphire.platform.feature.group"/>
+            <unit id="org.eclipse.sapphire.ui.feature.group"/>
+            <unit id="org.eclipse.sapphire.ui.swt.xml.editor.feature.group"/>
+            <unit id="org.eclipse.sapphire.ui.swt.gef.feature.group"/>
+            <repository location="https://raw.githubusercontent.com/payara/ecosystem-eclipse-plugin/release-artifacts/repository/libs/sapphire/9.1.1/"/>
+        </location>
     </locations>
 </target>
