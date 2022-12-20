@@ -79,7 +79,7 @@ public class MicroProjectWizard extends Wizard implements INewWizard {
 	private static final String ARCHETYPE_JDK_VERSION = "jdkVersion"; //$NON-NLS-1$
 	private static final String ARCHETYPE_JDK_VERSION_DEFAULT_VALUE = "1.8"; //$NON-NLS-1$
 	public static final String ARCHETYPE_MICRO_VERSION = "payaraMicroVersion"; //$NON-NLS-1$
-	private static final String ARCHETYPE_MICRO_VERSION_DEFAULT_VALUE = "5.2020.5"; //$NON-NLS-1$
+	private static final String ARCHETYPE_MICRO_VERSION_DEFAULT_VALUE = "6.2022.2"; //$NON-NLS-1$
 	public static final String ARCHETYPE_AUTOBIND_HTTP = "autoBindHttp"; //$NON-NLS-1$
 	private static final String ARCHETYPE_CONCURRENT_API = "addConcurrentApi"; //$NON-NLS-1$
 	private static final String ARCHETYPE_RESOURCE_API = "addResourceApi"; //$NON-NLS-1$
