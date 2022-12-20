@@ -4,39 +4,39 @@
 
     <extension point="org.eclipse.wst.server.core.serverTypes">
         <serverType
-             id="payara.server"
-             class="fish.payara.eclipse.tools.server.PayaraServer"
-             behaviourClass="fish.payara.eclipse.tools.server.deploying.PayaraServerBehaviour"
-             name="%serverTypeNameglassfish"
-             description="%serverTypeDescriptionPayara"
-             hasConfiguration="false"
-             launchConfigId="org.payara.jst.server.GlassfishServerLaunchConfigurationType"
-             launchModes="run,debug"
-             runtime="true"
-             runtimeTypeId="payara.runtime"
-             startBeforePublish="true"
-             supportsRemoteHosts="true">
-       </serverType>
+            id="payara.server"
+            class="fish.payara.eclipse.tools.server.PayaraServer"
+            behaviourClass="fish.payara.eclipse.tools.server.deploying.PayaraServerBehaviour"
+            name="%serverTypeNameglassfish"
+            description="%serverTypeDescriptionPayara"
+            hasConfiguration="false"
+            launchConfigId="org.payara.jst.server.GlassfishServerLaunchConfigurationType"
+            launchModes="run,debug"
+            runtime="true"
+            runtimeTypeId="payara.runtime"
+            startBeforePublish="true"
+            supportsRemoteHosts="true">
+        </serverType>
     </extension>
     
     <extension point="org.eclipse.wst.server.core.runtimeTypes">
         <runtimeType
-             id="payara.runtime"
-             class="fish.payara.eclipse.tools.server.PayaraRuntime"
-             name="%runtimeTypeNameglassfish"
-             description="%runtimeTypeDescriptionglassfish"
-             vendor="%runtimeTypeGlassFishVendor">
+            id="payara.runtime"
+            class="fish.payara.eclipse.tools.server.PayaraRuntime"
+            name="%runtimeTypeNameglassfish"
+            description="%runtimeTypeDescriptionglassfish"
+            vendor="%runtimeTypeGlassFishVendor">
             <moduleType types="jst.web" versions="2.2, 2.3, 2.4, 2.5, 3.0, 3.1, 4.0"/>
             <moduleType types="jst.ejb" versions="1.1, 2.0, 2.1, 3.0, 3.1, 3.2"/>
             <moduleType types="jst.connector" versions="1.0, 1.5, 1.6, 1.7"/>
             <moduleType types="jst.ear" versions="1.2, 1.3, 1.4, 5.0, 6.0, 7.0, 8.0"/>
             <moduleType types="jst.utility"  versions="1.0"/>
             <moduleType types="jst.appclient" versions="1.2, 1.3, 1.4, 5.0, 6.0, 7.0, 8.0"/>
-       </runtimeType>
+        </runtimeType>
     </extension>
     
     <extension point="org.eclipse.wst.server.core.launchableAdapters">
-      <launchableAdapter
+        <launchableAdapter
             id="org.payara.launchableAdapter"
             class="fish.payara.eclipse.tools.server.archives.EclipseToPayaraArchiveConverter"
             priority="999"
@@ -54,20 +54,20 @@
     </extension> 
     
     <extension-point id="runtimeComponentProviders" 
-        name="%runtimeComponentProvidersExtensionPoint" 
-        schema="schema/runtimeComponentProviders.exsd"
+                     name="%runtimeComponentProvidersExtensionPoint" 
+                     schema="schema/runtimeComponentProviders.exsd"
     />
     
     
 
     <!--
-        System Libraries
-     -->
+       System Libraries
+    -->
 
     <extension point="org.eclipse.jdt.core.classpathContainerInitializer">
         <classpathContainerInitializer
-          id="fish.payara.eclipse.tools.server.lib.system"
-          class="fish.payara.eclipse.tools.server.internal.SystemLibrariesContainer$Initializer"/>
+            id="fish.payara.eclipse.tools.server.lib.system"
+            class="fish.payara.eclipse.tools.server.internal.SystemLibrariesContainer$Initializer"/>
     </extension>
   
     <extension point="org.eclipse.jst.j2ee.classpathdep">
@@ -144,9 +144,9 @@
     
     <extension point="org.eclipse.wst.common.project.facet.core.runtimes">
         <adapter>
-          <runtime-component id="payara.runtime"/>
-          <factory class="fish.payara.eclipse.tools.server.internal.PayaraClasspathProvider$Factory"/>
-          <type class="org.eclipse.jst.common.project.facet.core.IClasspathProvider"/>
+            <runtime-component id="payara.runtime"/>
+            <factory class="fish.payara.eclipse.tools.server.internal.PayaraClasspathProvider$Factory"/>
+            <type class="org.eclipse.jst.common.project.facet.core.IClasspathProvider"/>
         </adapter>
     </extension>
     
@@ -293,45 +293,45 @@
   
   
   
-     <!--
-        JST Facets
-     -->
+    <!--
+       JST Facets
+    -->
      
     <extension point="org.eclipse.jst.common.project.facet.core.libraryProviders">
         <provider id="GlassFish-4-SystemLibrary-JSF" extends="no-op-library-provider">
-          <label>%GF4.SystemLibrary.JSF.Label</label>
-          <priority>1000</priority>
-          <param name="message" value="%GF4.SystemLibrary.JSF.Message"/>
-          <enablement>
-            <with variable="requestingProjectFacet">
-              <test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jst.jsf" forcePluginActivation="true"/>
-            </with>
-            <with variable="targetedRuntimes">
-              <count value="+"/>
-              <iterate operator="and">
-                <test property="fish.payara.eclipse.tools.server.internal.containsRuntimeComponentType" value="payara.runtime:4,5" forcePluginActivation="true"/>
-              </iterate>
-            </with>     
-          </enablement>
+            <label>%GF4.SystemLibrary.JSF.Label</label>
+            <priority>1000</priority>
+            <param name="message" value="%GF4.SystemLibrary.JSF.Message"/>
+            <enablement>
+                <with variable="requestingProjectFacet">
+                    <test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jst.jsf" forcePluginActivation="true"/>
+                </with>
+                <with variable="targetedRuntimes">
+                    <count value="+"/>
+                    <iterate operator="and">
+                        <test property="fish.payara.eclipse.tools.server.internal.containsRuntimeComponentType" value="payara.runtime:4,5" forcePluginActivation="true"/>
+                    </iterate>
+                </with>     
+            </enablement>
         </provider>
     </extension>
     
     <extension point="org.eclipse.jst.common.project.facet.core.libraryProviders">
         <provider id="GlassFish-4-SystemLibrary-JPA" extends="no-op-library-provider">
-          <label>%GF4.SystemLibrary.JPA.Label</label>
-          <priority>1000</priority>
-          <param name="message" value="%GF4.SystemLibrary.JPA.Message"/>
-          <enablement>
-            <with variable="requestingProjectFacet">
-              <test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jpt.jpa" forcePluginActivation="true"/>
-            </with>
-            <with variable="targetedRuntimes">
-              <count value="+"/>
-              <iterate operator="and">
-                <test property="fish.payara.eclipse.tools.server.internal.containsRuntimeComponentType" value="payara.runtime:4,5" forcePluginActivation="true"/>
-              </iterate>
-            </with>     
-          </enablement>
+            <label>%GF4.SystemLibrary.JPA.Label</label>
+            <priority>1000</priority>
+            <param name="message" value="%GF4.SystemLibrary.JPA.Message"/>
+            <enablement>
+                <with variable="requestingProjectFacet">
+                    <test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jpt.jpa" forcePluginActivation="true"/>
+                </with>
+                <with variable="targetedRuntimes">
+                    <count value="+"/>
+                    <iterate operator="and">
+                        <test property="fish.payara.eclipse.tools.server.internal.containsRuntimeComponentType" value="payara.runtime:4,5" forcePluginActivation="true"/>
+                    </iterate>
+                </with>     
+            </enablement>
         </provider>
     </extension>
   
@@ -341,35 +341,35 @@
             <priority>1000</priority>
             <param name="message" value="%GF31.SystemLibrary.JSF.Message"/>
             <enablement>
-              <with variable="requestingProjectFacet">
-                  <test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jst.jsf" forcePluginActivation="true"/>
-              </with>
-    	          <with variable="targetedRuntimes">
-    	              <count value="+"/>
-    	              <iterate operator="and">
-                      <test property="fish.payara.eclipse.tools.server.internal.containsRuntimeComponentType" value="payara.runtime:3.1" forcePluginActivation="true"/>
-    	              </iterate>
-    	            </with>     
+                <with variable="requestingProjectFacet">
+                    <test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jst.jsf" forcePluginActivation="true"/>
+                </with>
+                <with variable="targetedRuntimes">
+                    <count value="+"/>
+                    <iterate operator="and">
+                        <test property="fish.payara.eclipse.tools.server.internal.containsRuntimeComponentType" value="payara.runtime:3.1" forcePluginActivation="true"/>
+                    </iterate>
+                </with>     
             </enablement>
         </provider>
     </extension>
 
     <extension point="org.eclipse.jst.common.project.facet.core.libraryProviders">
         <provider id="GlassFish-3.1-SystemLibrary-JPA" extends="no-op-library-provider">
-          <label>%GF31.SystemLibrary.JPA.Label</label>
-          <priority>1000</priority>
-          <param name="message" value="%GF31.SystemLibrary.JPA.Message"/>
-          <enablement>
-            <with variable="requestingProjectFacet">
-              <test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jpt.jpa" forcePluginActivation="true"/>
-            </with>
-    	    <with variable="targetedRuntimes">
-    	      <count value="+"/>
-    	      <iterate operator="and">
-                <test property="fish.payara.eclipse.tools.server.internal.containsRuntimeComponentType" value="payara.runtime:3.1" forcePluginActivation="true"/>
-    	      </iterate>
-    	    </with>     
-          </enablement>
+            <label>%GF31.SystemLibrary.JPA.Label</label>
+            <priority>1000</priority>
+            <param name="message" value="%GF31.SystemLibrary.JPA.Message"/>
+            <enablement>
+                <with variable="requestingProjectFacet">
+                    <test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jpt.jpa" forcePluginActivation="true"/>
+                </with>
+                <with variable="targetedRuntimes">
+                    <count value="+"/>
+                    <iterate operator="and">
+                        <test property="fish.payara.eclipse.tools.server.internal.containsRuntimeComponentType" value="payara.runtime:3.1" forcePluginActivation="true"/>
+                    </iterate>
+                </with>     
+            </enablement>
         </provider>
     </extension>
     
@@ -380,15 +380,15 @@
             <enablement>
                 <with variable="requestingProjectFacet">
                     <test
-                property="org.eclipse.wst.common.project.facet.core.projectFacet"
-                value="jst.jaxrs:1.1" forcePluginActivation="true"/>
+                        property="org.eclipse.wst.common.project.facet.core.projectFacet"
+                        value="jst.jaxrs:1.1" forcePluginActivation="true"/>
                 </with>
                 <with variable="projectFacets">
                     <count value="+"/>
                     <iterate operator="or">
                         <test
-                     property="org.eclipse.wst.common.project.facet.core.projectFacet"
-                     value="jst.web:[3.0" forcePluginActivation="true"/>
+                            property="org.eclipse.wst.common.project.facet.core.projectFacet"
+                            value="jst.web:[3.0" forcePluginActivation="true"/>
                     </iterate>
                 </with>        
                 <with variable="targetedRuntimes">
@@ -409,8 +409,8 @@
     
     <extension point="org.eclipse.jst.ws.jaxrs.core.jaxrsLibraryProvider" id="MyJAXRSLibraryProvider" >
         <jaxrsLibraryprovider
-                libraryProviderID="fish.payara.eclipse.tools.server.jaxrsLibraryproviderID" 
-                showUpdateDD="true"
+            libraryProviderID="fish.payara.eclipse.tools.server.jaxrsLibraryproviderID" 
+            showUpdateDD="true"
             updateDDSelected="true" 
             sevletClassName="com.sun.jersey.spi.container.servlet.ServletContainer"/>
     </extension>
@@ -418,9 +418,9 @@
     
     
     
-     <!--
-        DTDs
-     -->
+    <!--
+       DTDs
+    -->
 
     <extension point = "org.eclipse.wst.xml.core.catalogContributions">
         <catalogContribution id="default">
@@ -676,123 +676,123 @@
     
     <extension point="org.eclipse.core.runtime.preferences">
         <initializer
-             class="fish.payara.eclipse.tools.server.preferences.PreferenceInitializer">
+            class="fish.payara.eclipse.tools.server.preferences.PreferenceInitializer">
         </initializer>
     </extension>
 
     
     <extension point="org.eclipse.core.expressions.propertyTesters">
-     <propertyTester
-           class="fish.payara.eclipse.tools.server.handlers.PayaraStateTester"
-           id="fish.payara.eclipse.tools.server.PayaraStateTester"
-           namespace="fish.payara.eclipse.tools"
-           properties="isRunning,isRemote"
-           type="org.eclipse.wst.server.core.IServer">
-     </propertyTester>
-     <propertyTester
-           class="fish.payara.eclipse.tools.server.handlers.PayaraVersionTester"
-           id="fish.payara.eclipse.tools.server.PayaraVersionTester"
-           namespace="fish.payara.eclipse.tools"
-           properties="v3Test"
-           type="org.eclipse.wst.server.core.IServer">
-     </propertyTester>
-  </extension>
+        <propertyTester
+            class="fish.payara.eclipse.tools.server.handlers.PayaraStateTester"
+            id="fish.payara.eclipse.tools.server.PayaraStateTester"
+            namespace="fish.payara.eclipse.tools.server"
+            properties="isRunning,isRemote"
+            type="org.eclipse.wst.server.core.IServer">
+        </propertyTester>
+        <propertyTester
+            class="fish.payara.eclipse.tools.server.handlers.PayaraVersionTester"
+            id="fish.payara.eclipse.tools.server.PayaraVersionTester"
+            namespace="fish.payara.eclipse.tools"
+            properties="v3Test"
+            type="org.eclipse.wst.server.core.IServer">
+        </propertyTester>
+    </extension>
 
-  <extension point="org.eclipse.core.expressions.propertyTesters">
-    <propertyTester
-      id="fish.payara.eclipse.tools.server.internal.ContainsRuntimeComponentTypeForRuntime"
-      type="org.eclipse.wst.common.project.facet.core.runtime.IRuntime"
-      namespace="fish.payara.eclipse.tools"
-      properties="containsRuntimeComponentType"
-      class="fish.payara.eclipse.tools.server.internal.ContainsRuntimeComponentType">
-    </propertyTester>
-    <propertyTester
-      id="fish.payara.eclipse.tools.server.internal.ContainsRuntimeComponentTypeForCollection"
-      type="java.util.Collection"
-      namespace="fish.payara.eclipse.tools"
-      properties="containsRuntimeComponentType"
-      class="fish.payara.eclipse.tools.server.internal.ContainsRuntimeComponentType">
-    </propertyTester>
-  </extension>
+    <extension point="org.eclipse.core.expressions.propertyTesters">
+        <propertyTester
+            id="fish.payara.eclipse.tools.server.internal.ContainsRuntimeComponentTypeForRuntime"
+            type="org.eclipse.wst.common.project.facet.core.runtime.IRuntime"
+            namespace="fish.payara.eclipse.tools.server.internal"
+            properties="containsRuntimeComponentType"
+            class="fish.payara.eclipse.tools.server.internal.ContainsRuntimeComponentType">
+        </propertyTester>
+        <propertyTester
+            id="fish.payara.eclipse.tools.server.internal.ContainsRuntimeComponentTypeForCollection"
+            type="java.util.Collection"
+            namespace="fish.payara.eclipse.tools.server.internal"
+            properties="containsRuntimeComponentType"
+            class="fish.payara.eclipse.tools.server.internal.ContainsRuntimeComponentType">
+        </propertyTester>
+    </extension>
 
 
-  <extension point="org.eclipse.core.expressions.definitions">
-      <definition
-          id="fish.payara.eclipse.tools.server.oneGlassfishSelected">
-          <and>
-              <count value="1"/>
-              <iterate ifEmpty="false">
-                  <or>
-                      <reference definitionId="fish.payara.eclipse.tools.server.isGlassfish"/>
-                  </or>
-              </iterate>
-          </and>
-      </definition>
+    <extension point="org.eclipse.core.expressions.definitions">
+        <definition
+            id="fish.payara.eclipse.tools.server.oneGlassfishSelected">
+            <and>
+                <count value="1"/>
+                <iterate ifEmpty="false">
+                    <or>
+                        <reference definitionId="fish.payara.eclipse.tools.server.isGlassfish"/>
+                    </or>
+                </iterate>
+            </and>
+        </definition>
      
-      <definition id="fish.payara.eclipse.tools.server.isGlassfish">
-          <adapt type="org.eclipse.wst.server.core.IServer">
-              <and>
-                  <test
-                      property="org.eclipse.wst.server.ui.serverType"
-                      value="payara.server">
-                  </test>
-              </and>
-          </adapt>
-      </definition>
+        <definition id="fish.payara.eclipse.tools.server.isGlassfish">
+            <adapt type="org.eclipse.wst.server.core.IServer">
+                <and>
+                    <test
+                        property="org.eclipse.wst.server.ui.serverType"
+                        value="payara.server">
+                    </test>
+                </and>
+            </adapt>
+        </definition>
      
-     <definition id="fish.payara.eclipse.tools.server.moreGlassfishSelected">
-         <iterate ifEmpty="false">
-             <or>
-                 <reference definitionId="fish.payara.eclipse.tools.server.isGlassfish"/>
-             </or>
-         </iterate>
-     </definition>
+        <definition id="fish.payara.eclipse.tools.server.moreGlassfishSelected">
+            <iterate ifEmpty="false">
+                <or>
+                    <reference definitionId="fish.payara.eclipse.tools.server.isGlassfish"/>
+                </or>
+            </iterate>
+        </definition>
      
-     <definition id="fish.payara.eclipse.tools.server.oneRunningGlassfishSelected">
-         <and>
-             <count value="1"/>
-             <iterate ifEmpty="false">
-                 <and>
-                     <or>
-                         <reference definitionId="fish.payara.eclipse.tools.server.isGlassfish"/>
-                     </or>
-                     <test property="fish.payara.eclipse.tools.server.isRunning"/>
-                 </and>
-             </iterate>     
-         </and>
-     </definition>
+        <definition id="fish.payara.eclipse.tools.server.oneRunningGlassfishSelected">
+            <and>
+                <count value="1"/>
+                <iterate ifEmpty="false">
+                    <and>
+                        <or>
+                            <reference definitionId="fish.payara.eclipse.tools.server.isGlassfish"/>
+                        </or>
+                        <test property="fish.payara.eclipse.tools.server.isRunning"/>
+                    </and>
+                </iterate>     
+            </and>
+        </definition>
      
-     <definition id="fish.payara.eclipse.tools.server.isRemoteGlassfish">
-         <and>
-             <count value="1"/>
-             <iterate ifEmpty="false">
-                 <and>
-                     <or>
-                         <reference definitionId="fish.payara.eclipse.tools.server.isGlassfish"/>
-                     </or>
-                     <test property="fish.payara.eclipse.tools.server.isRemote"/>
-                 </and>
-             </iterate>     
-         </and>
-     </definition>
-  </extension>
+        <definition id="fish.payara.eclipse.tools.server.isRemoteGlassfish">
+            <and>
+                <count value="1"/>
+                <iterate ifEmpty="false">
+                    <and>
+                        <or>
+                            <reference definitionId="fish.payara.eclipse.tools.server.isGlassfish"/>
+                        </or>
+                        <test property="fish.payara.eclipse.tools.server.isRemote"/>
+                    </and>
+                </iterate>     
+            </and>
+        </definition>
+    </extension>
 
     <!--
-        This wizard fragment plugs-in the wizard flow when Servers - New Server - Payara -> Payara
-        is selected and subsequently the next button is pressed when no runtime exists yet,  
-        or the add button next to Server runtime environment is pressed.
-     -->
+       This wizard fragment plugs-in the wizard flow when Servers - New Server - Payara -> Payara
+       is selected and subsequently the next button is pressed when no runtime exists yet,  
+       or the add button next to Server runtime environment is pressed.
+    -->
     <extension point="org.eclipse.wst.server.ui.wizardFragments">
-       <fragment
-             id="fish.payara.NewPayaraRuntimeWizardFragment"
-             class="fish.payara.eclipse.tools.server.ui.wizards.NewPayaraRuntimeWizardFragment"
-             typeIds="payara.runtime">
-       </fragment>
-       <fragment
-             id="fish.payara.NewPayaraServerWizardFragment"
-             class="fish.payara.eclipse.tools.server.ui.wizards.NewPayaraServerWizardFragment"
-             typeIds="payara.server">
-       </fragment>
+        <fragment
+            id="fish.payara.NewPayaraRuntimeWizardFragment"
+            class="fish.payara.eclipse.tools.server.ui.wizards.NewPayaraRuntimeWizardFragment"
+            typeIds="payara.runtime">
+        </fragment>
+        <fragment
+            id="fish.payara.NewPayaraServerWizardFragment"
+            class="fish.payara.eclipse.tools.server.ui.wizards.NewPayaraServerWizardFragment"
+            typeIds="payara.server">
+        </fragment>
     </extension>
     
     
@@ -800,18 +800,18 @@
         The images associated with the Payara runtime and server
     -->
     <extension point="org.eclipse.wst.server.ui.serverImages">
-       <image
-             id="org.eclipse.jst.server.glassfish.image"
-       		 typeIds="payara.runtime,payara.server"
-             icon="icons/obj16/payara-blue.png">
-       </image>
+        <image
+            id="org.eclipse.jst.server.glassfish.image"
+            typeIds="payara.runtime,payara.server"
+            icon="icons/obj16/payara-blue.png">
+        </image>
     </extension>
     
     <extension point="org.eclipse.wst.common.project.facet.ui.images">
-       <image
-             path="icons/obj16/payara-blue.png"
-             runtime-component-type="payara.runtime">
-       </image>
+        <image
+            path="icons/obj16/payara-blue.png"
+            runtime-component-type="payara.runtime">
+        </image>
     </extension>
     
     
@@ -839,11 +839,11 @@
         The global preferenes for all Payara server instances in Eclipse menu - preferences - Payara Preferences 
     -->
     <extension point="org.eclipse.ui.preferencePages">
-       <page
-             id="fish.payara.eclipse.tools.server.preferences.GlassFishPreferencePage"
-             class="fish.payara.eclipse.tools.server.ui.preferences.GlassFishPreferencePage"
-             name="Payara Preferences">
-       </page>
+        <page
+            id="fish.payara.eclipse.tools.server.preferences.GlassFishPreferencePage"
+            class="fish.payara.eclipse.tools.server.ui.preferences.GlassFishPreferencePage"
+            name="Payara Preferences">
+        </page>
     </extension>
     
     
@@ -852,18 +852,18 @@
         which is the editor being opened when a server in the Servers view is double clicked. 
     -->
     <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
-       <launchConfigurationTabGroup
-             id="org.payara.jst.server.launchConfigurationTabGroup"
-             class="fish.payara.eclipse.tools.server.ui.editorsections.LaunchConfigurationTabGroup"
-             type="org.payara.jst.server.GlassfishServerLaunchConfigurationType">
-       </launchConfigurationTabGroup>
+        <launchConfigurationTabGroup
+            id="org.payara.jst.server.launchConfigurationTabGroup"
+            class="fish.payara.eclipse.tools.server.ui.editorsections.LaunchConfigurationTabGroup"
+            type="org.payara.jst.server.GlassfishServerLaunchConfigurationType">
+        </launchConfigurationTabGroup>
     </extension>
     <extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
-       <launchConfigurationTypeImage 
-             id="fish.payara.eclipse.tools.server.ui.launchConfigurationTypeImage"
-             configTypeID="org.payara.jst.server.GlassfishServerLaunchConfigurationType"
-             icon="icons/obj16/payara-blue.png">
-       </launchConfigurationTypeImage>
+        <launchConfigurationTypeImage 
+            id="fish.payara.eclipse.tools.server.ui.launchConfigurationTypeImage"
+            configTypeID="org.payara.jst.server.GlassfishServerLaunchConfigurationType"
+            icon="icons/obj16/payara-blue.png">
+        </launchConfigurationTypeImage>
     </extension>
 
    
@@ -872,13 +872,13 @@
         the Payara / GlassFish server in the Servers views. The content itself is a link to the properties page.
     -->
     <extension point="org.eclipse.wst.server.ui.editorPageSections">
-       <section
-       		 id="fish.payara.eclipse.tools.server.ServerSection"
-             class="fish.payara.eclipse.tools.server.ui.editorsections.ServerSection"
-             typeIds="payara.server"
-             insertionId="org.eclipse.wst.server.editor.overview.left"
-             order="10">
-       </section>
+        <section
+            id="fish.payara.eclipse.tools.server.ServerSection"
+            class="fish.payara.eclipse.tools.server.ui.editorsections.ServerSection"
+            typeIds="payara.server"
+            insertionId="org.eclipse.wst.server.editor.overview.left"
+            order="10">
+        </section>
     </extension>
     
     
@@ -891,134 +891,134 @@
     
     <extension point="org.eclipse.ui.commands">
         <category
-              id="fish.payara.eclipse.tools.server.commands.category"
-              name="glassfish-commands">
+            id="fish.payara.eclipse.tools.server.commands.category"
+            name="glassfish-commands">
         </category>
         
         <command
-              id="fish.payara.eclipse.tools.server.commands.ViewLogCommand"
-              name="%menu.viewlogfile"
-              description="%menu.viewlogfile">
+            id="fish.payara.eclipse.tools.server.commands.ViewLogCommand"
+            name="%menu.viewlogfile"
+            description="%menu.viewlogfile">
         </command>
         <command
-              id="fish.payara.eclipse.tools.server.commands.ViewAdminConsoleCommand"
-              name="%menu.viewadminconsole"
-              description="%menu.viewadminconsole">
+            id="fish.payara.eclipse.tools.server.commands.ViewAdminConsoleCommand"
+            name="%menu.viewadminconsole"
+            description="%menu.viewadminconsole">
         </command>
         <command
-              id="fish.payara.eclipse.tools.server.commands.OpenUrlCommand"
-              name="OpenUrlCommand">
-           <commandParameter
-                 id="fish.payara.eclipse.tools.server.commands.urlParam"
-                 name="url"
-                 optional="false">
-           </commandParameter>
+            id="fish.payara.eclipse.tools.server.commands.OpenUrlCommand"
+            name="OpenUrlCommand">
+            <commandParameter
+                id="fish.payara.eclipse.tools.server.commands.urlParam"
+                name="url"
+                optional="false">
+            </commandParameter>
         </command>
         <command
-              id="fish.payara.eclipse.tools.server.commands.OpenServerHomeCommand"
-              name="OpenServerHomeCommand">
+            id="fish.payara.eclipse.tools.server.commands.OpenServerHomeCommand"
+            name="OpenServerHomeCommand">
         </command>
         <command
-              id="fish.payara.eclipse.tools.server.commands.OpenDomainHomeCommand"
-              name="OpenDomainHomeCommand">
+            id="fish.payara.eclipse.tools.server.commands.OpenDomainHomeCommand"
+            name="OpenDomainHomeCommand">
         </command>
-     </extension>
+    </extension>
      
-     <!-- 2. Handlers corresponding to the commands defined above  -->
+    <!-- 2. Handlers corresponding to the commands defined above  -->
  
-	 <extension point="org.eclipse.ui.handlers">
-		<handler
-		      class="fish.payara.eclipse.tools.server.handlers.ViewLogHandler"
-	          commandId="fish.payara.eclipse.tools.server.commands.ViewLogCommand">
-	        <enabledWhen>
-				<or>
-					<not>
-						<reference definitionId="fish.payara.eclipse.tools.server.isRemoteGlassfish"/>
-					</not>
-					<reference definitionId="fish.payara.eclipse.tools.server.oneRunningGlassfishSelected"/>
-				</or>
-			</enabledWhen>
-		</handler>
+    <extension point="org.eclipse.ui.handlers">
+        <handler
+            class="fish.payara.eclipse.tools.server.handlers.ViewLogHandler"
+            commandId="fish.payara.eclipse.tools.server.commands.ViewLogCommand">
+            <enabledWhen>
+                <or>
+                    <not>
+                        <reference definitionId="fish.payara.eclipse.tools.server.isRemoteGlassfish"/>
+                    </not>
+                    <reference definitionId="fish.payara.eclipse.tools.server.oneRunningGlassfishSelected"/>
+                </or>
+            </enabledWhen>
+        </handler>
      
-		<handler 
-             commandId="fish.payara.eclipse.tools.server.commands.ViewAdminConsoleCommand"
-		     class="fish.payara.eclipse.tools.server.handlers.ViewAdminConsoleHandler"
-		      >
-			  <enabledWhen>
-		   		<reference definitionId="fish.payara.eclipse.tools.server.oneRunningGlassfishSelected"/>
-			  </enabledWhen>
-		 </handler>
-		   
-		<handler
-		   commandId="fish.payara.eclipse.tools.server.commands.OpenUrlCommand"
-           class="fish.payara.eclipse.tools.server.handlers.ShowURLHandler">
+        <handler 
+            commandId="fish.payara.eclipse.tools.server.commands.ViewAdminConsoleCommand"
+            class="fish.payara.eclipse.tools.server.handlers.ViewAdminConsoleHandler"
+        >
+            <enabledWhen>
+                <reference definitionId="fish.payara.eclipse.tools.server.oneRunningGlassfishSelected"/>
+            </enabledWhen>
         </handler>
 		   
-		<handler
+        <handler
+            commandId="fish.payara.eclipse.tools.server.commands.OpenUrlCommand"
+            class="fish.payara.eclipse.tools.server.handlers.ShowURLHandler">
+        </handler>
+		   
+        <handler
             commandId="fish.payara.eclipse.tools.server.commands.OpenServerHomeCommand"
-		    class="fish.payara.eclipse.tools.server.handlers.OpenServerHomeHandler"
-		   >
-			 <enabledWhen>
-			 	<reference definitionId="fish.payara.eclipse.tools.server.oneGlassfishSelected"/>
-			 </enabledWhen>  
-		 </handler>
+            class="fish.payara.eclipse.tools.server.handlers.OpenServerHomeHandler"
+        >
+            <enabledWhen>
+                <reference definitionId="fish.payara.eclipse.tools.server.oneGlassfishSelected"/>
+            </enabledWhen>  
+        </handler>
 		 
-		 <handler 
-		     commandId="fish.payara.eclipse.tools.server.commands.OpenDomainHomeCommand"
-		     class="fish.payara.eclipse.tools.server.handlers.OpenDomainHomeHandler"
-		   >
-			<enabledWhen>
-        			<and>
-	 				<not>    
-	           			<reference definitionId="fish.payara.eclipse.tools.server.isRemoteGlassfish"/>
-           			</not>
-           			<reference definitionId="fish.payara.eclipse.tools.server.oneGlassfishSelected"/>
-           		</and>
-        		</enabledWhen>
-     	</handler>
+        <handler 
+            commandId="fish.payara.eclipse.tools.server.commands.OpenDomainHomeCommand"
+            class="fish.payara.eclipse.tools.server.handlers.OpenDomainHomeHandler"
+        >
+            <enabledWhen>
+                <and>
+                    <not>    
+                        <reference definitionId="fish.payara.eclipse.tools.server.isRemoteGlassfish"/>
+                    </not>
+                    <reference definitionId="fish.payara.eclipse.tools.server.oneGlassfishSelected"/>
+                </and>
+            </enabledWhen>
+        </handler>
     </extension>
 
     <!-- 3. Definitions of the menu entries putting the above defined commands in -->
     
     <extension point="org.eclipse.ui.menus">
         <menuContribution
-           allPopups="false"
-           locationURI="popup:org.eclipse.wst.server.ui.ServersView?after=additions">
+            allPopups="false"
+            locationURI="popup:org.eclipse.wst.server.ui.ServersView?after=additions">
             <menu
-              id="fish.payara.eclipse.tools.server.actions.subMenu"
-              icon="icons/obj16/payara-blue.png"
-              label="%menu.payaratopmenu">
-           <separator name="group1"/>
-           <visibleWhen checkEnabled="false">
-              <reference definitionId="fish.payara.eclipse.tools.server.moreGlassfishSelected"/>
-           </visibleWhen>
+                id="fish.payara.eclipse.tools.server.actions.subMenu"
+                icon="icons/obj16/payara-blue.png"
+                label="%menu.payaratopmenu">
+                <separator name="group1"/>
+                <visibleWhen checkEnabled="false">
+                    <reference definitionId="fish.payara.eclipse.tools.server.moreGlassfishSelected"/>
+                </visibleWhen>
            
-           <command
-                 commandId="fish.payara.eclipse.tools.server.commands.ViewAdminConsoleCommand"
-                 icon="icons/obj16/payara-blue.png"
-                 style="push">
-           </command>
-           <command
-                 commandId="fish.payara.eclipse.tools.server.commands.ViewLogCommand"
-                 icon="icons/obj16/logfile.png"
-                 style="push">
-           </command>
-           <command
-                 commandId="fish.payara.eclipse.tools.server.commands.OpenServerHomeCommand"
-                 icon="icons/obj16/folder_open.png"
-                 label="%menu.openserverhome"
-                 style="push">
-              <visibleWhen checkEnabled="false">
-                 <reference definitionId="fish.payara.eclipse.tools.server.oneGlassfishSelected"/>
-              </visibleWhen>
-           </command>
-           <command
-                 commandId="fish.payara.eclipse.tools.server.commands.OpenDomainHomeCommand"
-                 icon="icons/obj16/folder_open.png"
-                 label="%menu.opendomainhome"
-                 style="push">
-           </command>
-        </menu>
+                <command
+                    commandId="fish.payara.eclipse.tools.server.commands.ViewAdminConsoleCommand"
+                    icon="icons/obj16/payara-blue.png"
+                    style="push">
+                </command>
+                <command
+                    commandId="fish.payara.eclipse.tools.server.commands.ViewLogCommand"
+                    icon="icons/obj16/logfile.png"
+                    style="push">
+                </command>
+                <command
+                    commandId="fish.payara.eclipse.tools.server.commands.OpenServerHomeCommand"
+                    icon="icons/obj16/folder_open.png"
+                    label="%menu.openserverhome"
+                    style="push">
+                    <visibleWhen checkEnabled="false">
+                        <reference definitionId="fish.payara.eclipse.tools.server.oneGlassfishSelected"/>
+                    </visibleWhen>
+                </command>
+                <command
+                    commandId="fish.payara.eclipse.tools.server.commands.OpenDomainHomeCommand"
+                    icon="icons/obj16/folder_open.png"
+                    label="%menu.opendomainhome"
+                    style="push">
+                </command>
+            </menu>
         </menuContribution>
     </extension>
  
@@ -1031,16 +1031,16 @@
     -->
     <extension point="org.eclipse.ui.propertyPages">
         <page
-           id="fish.payara.eclipse.tools.server.ui.server.properties.payara"
-           name="Payara"
-           class="fish.payara.eclipse.tools.server.ui.properties.ServerPropertyPage">
-           <enabledWhen>
-               <and>
+            id="fish.payara.eclipse.tools.server.ui.server.properties.payara"
+            name="Payara"
+            class="fish.payara.eclipse.tools.server.ui.properties.ServerPropertyPage">
+            <enabledWhen>
+                <and>
                     <adapt type="org.eclipse.wst.server.core.IServer" />
                     <reference definitionId="fish.payara.eclipse.tools.server.isGlassfish"/>
-               </and>
-           </enabledWhen>
-       </page>  
+                </and>
+            </enabledWhen>
+        </page>  
     </extension>
     
     
@@ -1058,79 +1058,79 @@
         a running Payara / GlassFish server node in the Servers view. 
     -->
     <extension point="org.eclipse.ui.navigator.viewer">
-       <viewerContentBinding viewerId="org.eclipse.wst.server.ui.ServersView">
-          <includes>
-          	<contentExtension pattern="payara.serverview.contentprovider"/>
-          </includes>
-       </viewerContentBinding>
+        <viewerContentBinding viewerId="org.eclipse.wst.server.ui.ServersView">
+            <includes>
+                <contentExtension pattern="payara.serverview.contentprovider"/>
+            </includes>
+        </viewerContentBinding>
        
-       <viewerActionBinding viewerId="org.eclipse.wst.server.ui.ServersView">
-			<includes>
-				<actionExtension pattern="fish.payara.eclipse.tools.server.ui.serverview.ServerModuleActionProvider" />
-			</includes>
-		</viewerActionBinding>
+        <viewerActionBinding viewerId="org.eclipse.wst.server.ui.ServersView">
+            <includes>
+                <actionExtension pattern="fish.payara.eclipse.tools.server.ui.serverview.ServerModuleActionProvider" />
+            </includes>
+        </viewerActionBinding>
     </extension>
     
     <extension point="org.eclipse.ui.navigator.navigatorContent">
-       <navigatorContent
-             id="payara.serverview.contentprovider"
-             contentProvider="fish.payara.eclipse.tools.server.ui.serverview.ServerViewDynamicNodeProvider"
-             labelProvider="fish.payara.eclipse.tools.server.ui.serverview.ServerViewLabelProvider"
-             name="Payara Management Nodes"
-             icon="icons/obj16/payara-blue.png"
-             activeByDefault="true"
-             priority="highest">
-          <triggerPoints>
+        <navigatorContent
+            id="payara.serverview.contentprovider"
+            contentProvider="fish.payara.eclipse.tools.server.ui.serverview.ServerViewDynamicNodeProvider"
+            labelProvider="fish.payara.eclipse.tools.server.ui.serverview.ServerViewLabelProvider"
+            name="Payara Management Nodes"
+            icon="icons/obj16/payara-blue.png"
+            activeByDefault="true"
+            priority="highest">
+            <triggerPoints>
                 <instanceof value="org.eclipse.wst.server.core.IServer"/>
-          </triggerPoints>
-          <possibleChildren>
+            </triggerPoints>
+            <possibleChildren>
                 <instanceof value="fish.payara.eclipse.tools.server.ui.serverview.dynamicnodes.TreeNode"/>
-          </possibleChildren>
+            </possibleChildren>
           
-          <!-- This adds for example the "unregister" action when you right click on a resource such as a JDBC data source -->
-          <actionProvider
+            <!-- This adds for example the "unregister" action when you right click on a resource such as a JDBC data source -->
+            <actionProvider
                 id="fish.payara.eclipse.tools.server.ui.serverview.ServerViewActionProvider"
                 class="fish.payara.eclipse.tools.server.ui.serverview.ServerViewActionProvider"
                 priority="highest">
-             <enablement>
+                <enablement>
+                    <or>
+                        <instanceof value="org.eclipse.wst.server.core.IServer"/>
+                        <instanceof value="fish.payara.eclipse.tools.server.ui.serverview.dynamicnodes.TreeNode"/>
+                        <adapt type="java.util.Collection"><count value="0"/></adapt>
+                    </or>
+                </enablement>
+            </actionProvider>
+        </navigatorContent>
+       
+        <actionProvider
+            id="fish.payara.eclipse.tools.server.ui.serverview.ServerModuleActionProvider"
+            class="fish.payara.eclipse.tools.server.ui.serverview.ServerModuleActionProvider"
+            dependsOn="org.eclipse.wst.server.ui.ServersView.ServerActionProvider"
+            priority="higher">
+            <enablement>
                 <or>
-                   <instanceof value="org.eclipse.wst.server.core.IServer"/>
-                   <instanceof value="fish.payara.eclipse.tools.server.ui.serverview.dynamicnodes.TreeNode"/>
-                   <adapt type="java.util.Collection"><count value="0"/></adapt>
+                    <instanceof value="org.eclipse.wst.server.core.IServer">
+                    </instanceof>
+                    <instanceof
+                        value="org.eclipse.wst.server.ui.internal.view.servers.ModuleServer">
+                    </instanceof>
                 </or>
-             </enablement>
-          </actionProvider>
-       </navigatorContent>
+            </enablement>
+        </actionProvider>
        
-       <actionProvider
-       		id="fish.payara.eclipse.tools.server.ui.serverview.ServerModuleActionProvider"
-			class="fish.payara.eclipse.tools.server.ui.serverview.ServerModuleActionProvider"
-			dependsOn="org.eclipse.wst.server.ui.ServersView.ServerActionProvider"
-			priority="higher">
-			<enablement>
-			    <or>
-					<instanceof value="org.eclipse.wst.server.core.IServer">
-					</instanceof>
-					<instanceof
-						value="org.eclipse.wst.server.ui.internal.view.servers.ModuleServer">
-					</instanceof>
-				</or>
-			</enablement>
-		</actionProvider>
-       
-       <commonWizard
-             menuGroupId="fish.payara.eclipse.tools.server.v3.wizards"
-             type="new"
-             wizardId="fish.payara.eclipse.tools.server.v3.wizards.AddGenericResourceWizard">
-          <enablement>
-             <adapt type="org.eclipse.core.resources.IResource">
-                <test
-                      property="org.eclipse.wst.common.project.facet.core.projectFacet"
-                      value="glassfish.web">
-                </test>
-             </adapt>
-          </enablement>
-       </commonWizard>
+        <commonWizard
+            menuGroupId="fish.payara.eclipse.tools.server.v3.wizards"
+            type="new"
+            wizardId="fish.payara.eclipse.tools.server.v3.wizards.AddGenericResourceWizard">
+            <enablement>
+                <adapt type="org.eclipse.core.resources.IResource">
+                    <test
+                        property="org.eclipse.wst.common.project.facet.core.projectFacet"
+                        value="glassfish.web">
+                    </test>
+                </adapt>
+            </enablement>
+        </commonWizard>
     </extension>
   
   
@@ -1138,22 +1138,22 @@
         This adds hyper links to the console that shows Payara's server logging 
     -->
     <extension point="org.eclipse.ui.console.consolePageParticipants">
-       <consolePageParticipant
-             id="fish.payara.eclipse.tools.server.log.PayaraLogPageParticipant"
-             class="fish.payara.eclipse.tools.server.ui.log.PayaraLogPageParticipant">
-          <enablement>
-             <instanceof value="fish.payara.eclipse.tools.server.log.PayaraConsole"/>
-          </enablement>
-       </consolePageParticipant>
+        <consolePageParticipant
+            id="fish.payara.eclipse.tools.server.log.PayaraLogPageParticipant"
+            class="fish.payara.eclipse.tools.server.ui.log.PayaraLogPageParticipant">
+            <enablement>
+                <instanceof value="fish.payara.eclipse.tools.server.log.PayaraConsole"/>
+            </enablement>
+        </consolePageParticipant>
     </extension>
     
     <extension point="org.eclipse.ui.console.consolePatternMatchListeners">
         <consolePatternMatchListener
-           id="fish.payara.eclipse.tools.server.ui.consolePatternMatchListener"
-           class="fish.payara.eclipse.tools.server.ui.log.PayaraConsoleTracker"
-           qualifier="${java_extensions_regex}"
-           regex="\(\S*${java_extensions_regex}\S*\)">
-        <enablement></enablement>
+            id="fish.payara.eclipse.tools.server.ui.consolePatternMatchListener"
+            class="fish.payara.eclipse.tools.server.ui.log.PayaraConsoleTracker"
+            qualifier="${java_extensions_regex}"
+            regex="\(\S*${java_extensions_regex}\S*\)">
+            <enablement></enablement>
         </consolePatternMatchListener>
     </extension> 
 
@@ -1164,67 +1164,67 @@
     </extension>
   
     <extension point="org.eclipse.ui.newWizards">
-       <category
-             id="fish.payara.eclipse.tools"
-             name="%payara.wizardcategory">
-       </category>
-       <wizard
-             id="fish.payara.eclipse.tools.server.ui.resources.wizards.JDBCWizard"
-             category="fish.payara.eclipse.tools"
-             class="fish.payara.eclipse.tools.server.ui.resources.wizards.JDBCWizard"
-             icon="icons/obj16/payara-blue.png"
-             name="%payara.sunresourceslabel">
-          <description>
-             %payara.sunresources.BeanWebRegionWizard.description
-          </description>
-          <selection
+        <category
+            id="fish.payara.eclipse.tools"
+            name="%payara.wizardcategory">
+        </category>
+        <wizard
+            id="fish.payara.eclipse.tools.server.ui.resources.wizards.JDBCWizard"
+            category="fish.payara.eclipse.tools"
+            class="fish.payara.eclipse.tools.server.ui.resources.wizards.JDBCWizard"
+            icon="icons/obj16/payara-blue.png"
+            name="%payara.sunresourceslabel">
+            <description>
+                %payara.sunresources.BeanWebRegionWizard.description
+            </description>
+            <selection
                 class="org.eclipse.core.resources.IResource">
-          </selection>
-       </wizard>
-       <wizard
-             id="fish.payara.eclipse.tools.server.ui.resources.wizards.MailWizard"
-             category="fish.payara.eclipse.tools"
-             class="fish.payara.eclipse.tools.server.ui.resources.wizards.MailWizard"
-             icon="icons/obj16/payara-blue.png"
-             name="%payara.mailresourceslabel">
-          <description>
-             %payara.mailresources.BeanWebRegionWizard.description
-          </description>
-          <selection
+            </selection>
+        </wizard>
+        <wizard
+            id="fish.payara.eclipse.tools.server.ui.resources.wizards.MailWizard"
+            category="fish.payara.eclipse.tools"
+            class="fish.payara.eclipse.tools.server.ui.resources.wizards.MailWizard"
+            icon="icons/obj16/payara-blue.png"
+            name="%payara.mailresourceslabel">
+            <description>
+                %payara.mailresources.BeanWebRegionWizard.description
+            </description>
+            <selection
                 class="org.eclipse.core.resources.IResource">
-          </selection>
-       </wizard>
-       <wizard
-             id="fish.payara.eclipse.tools.server.ui.resources.wizards.JMSWizard"
-             category="fish.payara.eclipse.tools"
-             class="fish.payara.eclipse.tools.server.ui.resources.wizards.JMSWizard"
-             icon="icons/obj16/payara-blue.png"
-             name="%payara.jmsresourceslabel">
-          <description>
-             %payara.jmsresources.BeanWebRegionWizard.description
-          </description>
-          <selection
+            </selection>
+        </wizard>
+        <wizard
+            id="fish.payara.eclipse.tools.server.ui.resources.wizards.JMSWizard"
+            category="fish.payara.eclipse.tools"
+            class="fish.payara.eclipse.tools.server.ui.resources.wizards.JMSWizard"
+            icon="icons/obj16/payara-blue.png"
+            name="%payara.jmsresourceslabel">
+            <description>
+                %payara.jmsresources.BeanWebRegionWizard.description
+            </description>
+            <selection
                 class="org.eclipse.core.resources.IResource">
-          </selection>
-       </wizard>
-       <wizard
-             id="fish.payara.eclipse.tools.server.v3.wizards.AddGenericResourceWizard"
-             category="fish.payara.eclipse.tools"
-             class="fish.payara.eclipse.tools.server.ui.rest.wizards.AddGenericResourceWizard"
-             icon="icons/obj16/payara-blue.png"
-             name="%payara.restfulfrompatternlabel">
-          <description>
-             %payara.restfulfrompattern.BeanWebRegionWizard.description
-          </description>
-       </wizard>
+            </selection>
+        </wizard>
+        <wizard
+            id="fish.payara.eclipse.tools.server.v3.wizards.AddGenericResourceWizard"
+            category="fish.payara.eclipse.tools"
+            class="fish.payara.eclipse.tools.server.ui.rest.wizards.AddGenericResourceWizard"
+            icon="icons/obj16/payara-blue.png"
+            name="%payara.restfulfrompatternlabel">
+            <description>
+                %payara.restfulfrompattern.BeanWebRegionWizard.description
+            </description>
+        </wizard>
     </extension>
  
   
     <extension point="org.eclipse.jst.common.project.facet.ui.libraryProviderActionPanels">
-       <panel
-             class="fish.payara.eclipse.tools.server.ui.internal.JAXRSActionPanels"
-             provider="fish.payara.eclipse.tools.server.jaxrsLibraryproviderID">
-       </panel>
+        <panel
+            class="fish.payara.eclipse.tools.server.ui.internal.JAXRSActionPanels"
+            provider="fish.payara.eclipse.tools.server.jaxrsLibraryproviderID">
+        </panel>
     </extension>
     
 </plugin>
