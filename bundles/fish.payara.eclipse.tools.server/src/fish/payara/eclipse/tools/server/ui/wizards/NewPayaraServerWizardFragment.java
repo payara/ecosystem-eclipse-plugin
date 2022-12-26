@@ -51,6 +51,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IRuntimeWorkingCopy;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.core.TaskModel;
@@ -63,6 +64,7 @@ import fish.payara.eclipse.tools.server.PayaraServer;
 import fish.payara.eclipse.tools.server.PayaraServerPlugin;
 import fish.payara.eclipse.tools.server.exceptions.UniqueNameNotFound;
 import fish.payara.eclipse.tools.server.utils.WtpUtil;
+import org.eclipse.wst.server.core.internal.Runtime;
 
 /**
  * This wizard fragment plugs-in the wizard flow when
@@ -411,8 +413,8 @@ public class NewPayaraServerWizardFragment extends WizardFragment {
 		return (IServerWorkingCopy) getTaskModel().getObject(TaskModel.TASK_SERVER);
 	}
 
-	private IRuntimeWorkingCopy getServerRuntime() {
-		return (IRuntimeWorkingCopy) getTaskModel().getObject(TASK_RUNTIME);
+	private IRuntime getServerRuntime() {
+		return (IRuntime) getTaskModel().getObject(TASK_RUNTIME);
 	}
 
 	private void updateServerName() {
@@ -460,14 +462,15 @@ public class NewPayaraServerWizardFragment extends WizardFragment {
 	@Override
 	public void setTaskModel(TaskModel taskModel) {
 		super.setTaskModel(taskModel);
-
-		IRuntimeWorkingCopy runtime = (IRuntimeWorkingCopy) getTaskModel().getObject(TASK_RUNTIME);
-		if (runtime.getOriginal() == null) {
-			try {
-				runtime.setName(createUniqueRuntimeName(runtime.getRuntimeType().getName()));
-			} catch (UniqueNameNotFound e) {
-				// Set the type name and let the user handle validation error
-				runtime.setName(runtime.getRuntimeType().getName());
+		if (getTaskModel().getObject(TASK_RUNTIME) instanceof RuntimeWorkingCopy) {
+			IRuntimeWorkingCopy runtime = (IRuntimeWorkingCopy) getTaskModel().getObject(TASK_RUNTIME);
+			if (runtime.getOriginal() == null) {
+				try {
+					runtime.setName(createUniqueRuntimeName(runtime.getRuntimeType().getName()));
+				} catch (UniqueNameNotFound e) {
+					// Set the type name and let the user handle validation error
+					runtime.setName(runtime.getRuntimeType().getName());
+				}
 			}
 		}
 	}

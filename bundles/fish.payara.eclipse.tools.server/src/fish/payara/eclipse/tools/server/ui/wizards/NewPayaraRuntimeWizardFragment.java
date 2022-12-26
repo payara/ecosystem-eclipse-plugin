@@ -252,7 +252,7 @@ public class NewPayaraRuntimeWizardFragment extends WizardFragment {
 			int size2 = vmInstalls.length;
 			for (int j = 0; j < size2; j++) {
 //				if (jdkFilter == null || jdkFilter.allows(vmInstalls[j])) {
-					installedJREs.add(vmInstalls[j]);
+				installedJREs.add(vmInstalls[j]);
 //				}
 			}
 		}
@@ -341,14 +341,15 @@ public class NewPayaraRuntimeWizardFragment extends WizardFragment {
 	@Override
 	public void setTaskModel(TaskModel taskModel) {
 		super.setTaskModel(taskModel);
-
-		IRuntimeWorkingCopy runtime = (IRuntimeWorkingCopy) getTaskModel().getObject(TASK_RUNTIME);
-		if (runtime.getOriginal() == null) {
-			try {
-				runtime.setName(createUniqueRuntimeName(runtime.getRuntimeType().getName()));
-			} catch (UniqueNameNotFound e) {
-				// Set the type name and let the user handle validation error
-				runtime.setName(runtime.getRuntimeType().getName());
+		if (getTaskModel().getObject(TASK_RUNTIME) instanceof RuntimeWorkingCopy) {
+			IRuntimeWorkingCopy runtime = (IRuntimeWorkingCopy) getTaskModel().getObject(TASK_RUNTIME);
+			if (runtime.getOriginal() == null) {
+				try {
+					runtime.setName(createUniqueRuntimeName(runtime.getRuntimeType().getName()));
+				} catch (UniqueNameNotFound e) {
+					// Set the type name and let the user handle validation error
+					runtime.setName(runtime.getRuntimeType().getName());
+				}
 			}
 		}
 	}
