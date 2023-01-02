@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/fish.payara.eclipse.tools.micro.feature_2.0.0.qualifier.jar" id="fish.payara.eclipse.tools.micro.feature" version="2.0.0.qualifier">
+   <feature url="features/fish.payara.eclipse.tools.micro.feature_2.0.0.Beta1.jar" id="fish.payara.eclipse.tools.micro.feature" version="2.0.0.Beta1">
       <category name="fish.payara.category"/>
    </feature>
-   <feature url="features/fish.payara.eclipse.tools.server.feature_2.0.0.qualifier.jar" id="fish.payara.eclipse.tools.server.feature" version="2.0.0.qualifier">
+   <feature url="features/fish.payara.eclipse.tools.server.feature_2.0.0.Beta1.jar" id="fish.payara.eclipse.tools.server.feature" version="2.0.0.Beta1">
       <category name="fish.payara.category"/>
    </feature>
    <category-def name="fish.payara.category" label="Payara Tools"/>
