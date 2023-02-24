@@ -12,6 +12,9 @@ package fish.payara.eclipse.tools.micro.ui.wizards;
 import static fish.payara.eclipse.tools.micro.ui.wizards.MicroProjectWizard.ARCHETYPE_AUTOBIND_HTTP;
 import static fish.payara.eclipse.tools.micro.ui.wizards.MicroProjectWizard.ARCHETYPE_CONTEXT_ROOT;
 import static fish.payara.eclipse.tools.micro.ui.wizards.MicroProjectWizard.ARCHETYPE_MICRO_VERSION;
+import static fish.payara.eclipse.tools.micro.ui.wizards.MicroProjectWizard.ARCHETYPE_MICRO_VERSIONS;
+import static fish.payara.eclipse.tools.micro.ui.wizards.MicroProjectWizard.ARCHETYPE_VERSION_5X;
+import static fish.payara.eclipse.tools.micro.ui.wizards.MicroProjectWizard.ARCHETYPE_VERSION_6X;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.io.UnsupportedEncodingException;
@@ -69,9 +72,9 @@ public class MicroSettingsWizardPage extends AbstractMavenWizardPage {
 
 		microVersionCombo = new Combo(parent, SWT.BORDER);
 		microVersionCombo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
-		addFieldWithHistory(ARCHETYPE_MICRO_VERSION, microVersionCombo);
 		microVersionCombo.setData("name", ARCHETYPE_MICRO_VERSION); //$NON-NLS-1$
 		microVersionCombo.addModifyListener(e -> validate());
+		microVersionCombo.setItems(ARCHETYPE_MICRO_VERSIONS);
 
 		Label autobindLabel = new Label(parent, SWT.NONE);
 		autobindLabel.setText(Messages.autobindComponentLabel);
@@ -124,6 +127,8 @@ public class MicroSettingsWizardPage extends AbstractMavenWizardPage {
 	}
 
 	public Archetype getArchetype() {
+		String versionValue = microVersionCombo.getText().trim();
+		archetype.setVersion(versionValue.startsWith("5") ? ARCHETYPE_VERSION_5X : ARCHETYPE_VERSION_6X);
 		return archetype;
 	}
 
