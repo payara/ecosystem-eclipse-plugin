@@ -10,6 +10,6 @@
     <version>2.1.0</version>
   </parent>
 
-  <artifactId>fish.payara.eclipse.20229</artifactId>
+  <artifactId>fish.payara.eclipse.202212</artifactId>
   <packaging>eclipse-target-definition</packaging>
 </project>

@@ -15,7 +15,9 @@ import static java.util.stream.Collectors.toList;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.maven.archetype.catalog.Archetype;
@@ -75,7 +77,7 @@ public class MicroProjectWizard extends Wizard implements INewWizard {
 
 	private static final String ARCHETYPE_GROUP_ID = "fish.payara.maven.archetypes"; //$NON-NLS-1$
 	private static final String ARCHETYPE_ARTIFACT_ID = "payara-micro-maven-archetype"; //$NON-NLS-1$
-	public static final String ARCHETYPE_VERSION_5X = "1.3.0"; //$NON-NLS-1$
+	public static final String ARCHETYPE_VERSION_5X = "1.4.0"; //$NON-NLS-1$
 	public static final String ARCHETYPE_VERSION_6X = "2.0"; //$NON-NLS-1$
 	private static final String ARCHETYPE_JDK_VERSION = "jdkVersion"; //$NON-NLS-1$
 	private static final String ARCHETYPE_JDK_VERSION_DEFAULT_VALUE = "1.8"; //$NON-NLS-1$
@@ -158,7 +160,8 @@ public class MicroProjectWizard extends Wizard implements INewWizard {
 		final String artifactId = projectSettingsPage.getArtifactId();
 		final String version = projectSettingsPage.getVersion();
 		final String javaPackage = projectSettingsPage.getJavaPackage();
-		final Properties properties = microSettingsPage.getProperties();
+		final Map<String, String> properties = microSettingsPage.getProperties();
+                
 		final IPath location = projectLocationPage.isInWorkspace() ? null : projectLocationPage.getLocationPath();
 		final String projectName = getProjectName(importConfiguration, groupId, artifactId, version);
 		final IWorkspace workspace = ResourcesPlugin.getWorkspace();
@@ -181,7 +184,7 @@ public class MicroProjectWizard extends Wizard implements INewWizard {
 				ArchetypePlugin archetypeManager = org.eclipse.m2e.core.ui.internal.M2EUIPluginActivator
 						.getDefault().getArchetypePlugin();
 				ArchetypeGenerator generator = archetypeManager.getGenerator();
-
+//createArchetypeProjects(IPath location, IArchetype archetype, String groupId, String artifactId, String version, String javaPackage, Map<String, String> properties, IProgressMonitor monitor) throws CoreException {
 				Collection<MavenProjectInfo> projects = generator.createArchetypeProjects(
 						location, new MavenArchetype(archetype), groupId, artifactId, version, javaPackage, properties,
 						monitor);

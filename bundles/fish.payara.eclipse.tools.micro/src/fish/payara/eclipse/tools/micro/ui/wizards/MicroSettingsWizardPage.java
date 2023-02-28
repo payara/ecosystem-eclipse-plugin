@@ -19,7 +19,9 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Map;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 import org.apache.maven.archetype.catalog.Archetype;
 import org.eclipse.m2e.core.project.ProjectImportConfiguration;
@@ -127,13 +129,19 @@ public class MicroSettingsWizardPage extends AbstractMavenWizardPage {
 	}
 
 	public Archetype getArchetype() {
-		String versionValue = microVersionCombo.getText().trim();
-		archetype.setVersion(versionValue.startsWith("5") ? ARCHETYPE_VERSION_5X : ARCHETYPE_VERSION_6X);
+                String[] versionToken = microVersionCombo.getText().trim().split("\\.");
+		archetype.setVersion(versionToken.length > 1 && Integer.parseInt(versionToken[0]) < 6 ? ARCHETYPE_VERSION_5X : ARCHETYPE_VERSION_6X);
 		return archetype;
 	}
 
-	public Properties getProperties() {
-		Properties properties = archetype.getProperties();
+	public Map<String, String> getProperties() {
+                Map<String, String> properties = archetype.getProperties()
+                .entrySet().stream().collect(
+                        Collectors.toMap(
+                                e -> e.getKey().toString(),
+                                e -> e.getValue().toString()
+                        )
+                );
 		String contextRoot = contextPathCombo.getText().trim();
 		try {
 			contextRoot = contextRoot.startsWith("/") ? '/' + URLEncoder.encode(contextRoot.substring(1), UTF_8.name())
