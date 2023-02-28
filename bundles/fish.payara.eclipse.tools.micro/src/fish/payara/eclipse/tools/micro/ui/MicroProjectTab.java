@@ -9,6 +9,7 @@
  */
 package fish.payara.eclipse.tools.micro.ui;
 
+import static fish.payara.eclipse.tools.micro.ui.wizards.MicroProjectWizard.ARCHETYPE_MICRO_VERSIONS;
 import static fish.payara.eclipse.tools.micro.MicroConstants.ATTR_BUILD_ARTIFACT;
 import static fish.payara.eclipse.tools.micro.MicroConstants.ATTR_CONTEXT_PATH;
 import static fish.payara.eclipse.tools.micro.MicroConstants.ATTR_DEBUG_PORT;
@@ -66,8 +67,8 @@ import fish.payara.eclipse.tools.micro.ui.wizards.Messages;
 
 public class MicroProjectTab extends AbstractJavaMainTab {
 
-	private Text contextPathText, microVersionText, debugPortText;
-	private Combo buildArtifactCombo, reloadArtifactCombo;
+	private Text contextPathText, debugPortText;
+	private Combo microVersionText, buildArtifactCombo, reloadArtifactCombo;
 
 	@Override
 	public void createControl(Composite parent) {
@@ -81,7 +82,7 @@ public class MicroProjectTab extends AbstractJavaMainTab {
 
 		group = SWTFactory.createGroup(mainComposite, Messages.microVersionComponentLabel, 1, 1,
 				GridData.FILL_HORIZONTAL);
-		microVersionText = SWTFactory.createSingleText(group, 1);
+                microVersionText = SWTFactory.createCombo(group, SWT.READ_ONLY, 1, ARCHETYPE_MICRO_VERSIONS);
 		microVersionText.addModifyListener(getDefaultListener());
 
 		group = SWTFactory.createGroup(mainComposite, Messages.buildArtifactComponentLabel, 1, 1,

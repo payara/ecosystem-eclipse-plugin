@@ -13,7 +13,7 @@
     </parent>
 
     <modules>
-        <module>fish.payara.eclipse.20229</module>
+        <module>fish.payara.eclipse.202212</module>
         <module>fish.payara.eclipse.update</module>
     </modules>
 </project>

@@ -15,7 +15,9 @@ import static java.util.stream.Collectors.toList;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.maven.archetype.catalog.Archetype;
@@ -75,11 +77,22 @@ public class MicroProjectWizard extends Wizard implements INewWizard {
 
 	private static final String ARCHETYPE_GROUP_ID = "fish.payara.maven.archetypes"; //$NON-NLS-1$
 	private static final String ARCHETYPE_ARTIFACT_ID = "payara-micro-maven-archetype"; //$NON-NLS-1$
-	private static final String ARCHETYPE_VERSION = "1.3.0"; //$NON-NLS-1$
+	public static final String ARCHETYPE_VERSION_5X = "1.4.0"; //$NON-NLS-1$
+	public static final String ARCHETYPE_VERSION_6X = "2.0"; //$NON-NLS-1$
 	private static final String ARCHETYPE_JDK_VERSION = "jdkVersion"; //$NON-NLS-1$
 	private static final String ARCHETYPE_JDK_VERSION_DEFAULT_VALUE = "1.8"; //$NON-NLS-1$
 	public static final String ARCHETYPE_MICRO_VERSION = "payaraMicroVersion"; //$NON-NLS-1$
-	private static final String ARCHETYPE_MICRO_VERSION_DEFAULT_VALUE = "6.2022.2"; //$NON-NLS-1$
+	private static final String ARCHETYPE_MICRO_VERSION_DEFAULT_VALUE = "6.2023.2"; //$NON-NLS-1$
+        public static final String[] ARCHETYPE_MICRO_VERSIONS = new String[]{"6.2023.2", "6.2023.1", "6.2022.2", "6.2022.1",
+            "5.2022.5", "5.2022.4", "5.2022.3",
+            "5.2022.2", "5.2022.1", "5.2021.10",
+            "5.2021.9", "5.2021.8", "5.2021.7",
+            "5.2021.6", "5.2021.5", "5.2021.4",
+            "5.2021.3", "5.2021.2", "5.2021.1",
+            "5.2020.7", "5.2020.6", "5.2020.5",
+            "5.2020.4", "5.2020.3", "5.2020.2",
+            "5.201", "5.194", "5.193.1", "5.192",
+            "5.191", "5.184", "5.183", "5.182", "5.181"}; //$NON-NLS-1$
 	public static final String ARCHETYPE_AUTOBIND_HTTP = "autoBindHttp"; //$NON-NLS-1$
 	private static final String ARCHETYPE_CONCURRENT_API = "addConcurrentApi"; //$NON-NLS-1$
 	private static final String ARCHETYPE_RESOURCE_API = "addResourceApi"; //$NON-NLS-1$
@@ -123,7 +136,7 @@ public class MicroProjectWizard extends Wizard implements INewWizard {
 		Archetype archetype = new Archetype();
 		archetype.setGroupId(ARCHETYPE_GROUP_ID);
 		archetype.setArtifactId(ARCHETYPE_ARTIFACT_ID);
-		archetype.setVersion(ARCHETYPE_VERSION);
+		archetype.setVersion(ARCHETYPE_VERSION_6X);
 		Properties properties = new Properties();
 		properties.put(ARCHETYPE_JDK_VERSION, ARCHETYPE_JDK_VERSION_DEFAULT_VALUE);
 		properties.put(ARCHETYPE_MICRO_VERSION, ARCHETYPE_MICRO_VERSION_DEFAULT_VALUE);
@@ -147,7 +160,8 @@ public class MicroProjectWizard extends Wizard implements INewWizard {
 		final String artifactId = projectSettingsPage.getArtifactId();
 		final String version = projectSettingsPage.getVersion();
 		final String javaPackage = projectSettingsPage.getJavaPackage();
-		final Properties properties = microSettingsPage.getProperties();
+		final Map<String, String> properties = microSettingsPage.getProperties();
+                
 		final IPath location = projectLocationPage.isInWorkspace() ? null : projectLocationPage.getLocationPath();
 		final String projectName = getProjectName(importConfiguration, groupId, artifactId, version);
 		final IWorkspace workspace = ResourcesPlugin.getWorkspace();
@@ -170,7 +184,7 @@ public class MicroProjectWizard extends Wizard implements INewWizard {
 				ArchetypePlugin archetypeManager = org.eclipse.m2e.core.ui.internal.M2EUIPluginActivator
 						.getDefault().getArchetypePlugin();
 				ArchetypeGenerator generator = archetypeManager.getGenerator();
-
+//createArchetypeProjects(IPath location, IArchetype archetype, String groupId, String artifactId, String version, String javaPackage, Map<String, String> properties, IProgressMonitor monitor) throws CoreException {
 				Collection<MavenProjectInfo> projects = generator.createArchetypeProjects(
 						location, new MavenArchetype(archetype), groupId, artifactId, version, javaPackage, properties,
 						monitor);

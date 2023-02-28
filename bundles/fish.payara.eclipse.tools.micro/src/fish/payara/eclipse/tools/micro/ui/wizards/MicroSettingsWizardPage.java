@@ -12,11 +12,16 @@ package fish.payara.eclipse.tools.micro.ui.wizards;
 import static fish.payara.eclipse.tools.micro.ui.wizards.MicroProjectWizard.ARCHETYPE_AUTOBIND_HTTP;
 import static fish.payara.eclipse.tools.micro.ui.wizards.MicroProjectWizard.ARCHETYPE_CONTEXT_ROOT;
 import static fish.payara.eclipse.tools.micro.ui.wizards.MicroProjectWizard.ARCHETYPE_MICRO_VERSION;
+import static fish.payara.eclipse.tools.micro.ui.wizards.MicroProjectWizard.ARCHETYPE_MICRO_VERSIONS;
+import static fish.payara.eclipse.tools.micro.ui.wizards.MicroProjectWizard.ARCHETYPE_VERSION_5X;
+import static fish.payara.eclipse.tools.micro.ui.wizards.MicroProjectWizard.ARCHETYPE_VERSION_6X;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Map;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 import org.apache.maven.archetype.catalog.Archetype;
 import org.eclipse.m2e.core.project.ProjectImportConfiguration;
@@ -69,9 +74,9 @@ public class MicroSettingsWizardPage extends AbstractMavenWizardPage {
 
 		microVersionCombo = new Combo(parent, SWT.BORDER);
 		microVersionCombo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
-		addFieldWithHistory(ARCHETYPE_MICRO_VERSION, microVersionCombo);
 		microVersionCombo.setData("name", ARCHETYPE_MICRO_VERSION); //$NON-NLS-1$
 		microVersionCombo.addModifyListener(e -> validate());
+		microVersionCombo.setItems(ARCHETYPE_MICRO_VERSIONS);
 
 		Label autobindLabel = new Label(parent, SWT.NONE);
 		autobindLabel.setText(Messages.autobindComponentLabel);
@@ -124,11 +129,19 @@ public class MicroSettingsWizardPage extends AbstractMavenWizardPage {
 	}
 
 	public Archetype getArchetype() {
+                String[] versionToken = microVersionCombo.getText().trim().split("\\.");
+		archetype.setVersion(versionToken.length > 1 && Integer.parseInt(versionToken[0]) < 6 ? ARCHETYPE_VERSION_5X : ARCHETYPE_VERSION_6X);
 		return archetype;
 	}
 
-	public Properties getProperties() {
-		Properties properties = archetype.getProperties();
+	public Map<String, String> getProperties() {
+                Map<String, String> properties = archetype.getProperties()
+                .entrySet().stream().collect(
+                        Collectors.toMap(
+                                e -> e.getKey().toString(),
+                                e -> e.getValue().toString()
+                        )
+                );
 		String contextRoot = contextPathCombo.getText().trim();
 		try {
 			contextRoot = contextRoot.startsWith("/") ? '/' + URLEncoder.encode(contextRoot.substring(1), UTF_8.name())
