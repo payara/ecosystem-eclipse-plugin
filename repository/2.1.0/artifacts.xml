@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?artifactRepository version='1.1.0'?>
+<repository name='fish.payara.eclipse.update' type='org.eclipse.equinox.p2.artifact.repository.simpleRepository' version='1'>
+  <properties size='3'>
+    <property name='publishPackFilesAsSiblings' value='true'/>
+    <property name='p2.compressed' value='true'/>
+    <property name='p2.timestamp' value='1675949944234'/>
+  </properties>
+  <mappings size='5'>
+    <rule filter='(&amp; (classifier=osgi.bundle) (format=packed))' output='${repoUrl}/plugins/${id}_${version}.jar.pack.gz'/>
+    <rule filter='(&amp; (classifier=osgi.bundle))' output='${repoUrl}/plugins/${id}_${version}.jar'/>
+    <rule filter='(&amp; (classifier=binary))' output='${repoUrl}/binary/${id}_${version}'/>
+    <rule filter='(&amp; (classifier=org.eclipse.update.feature) (format=packed))' output='${repoUrl}/features/${id}_${version}.jar.pack.gz'/>
+    <rule filter='(&amp; (classifier=org.eclipse.update.feature))' output='${repoUrl}/features/${id}_${version}.jar'/>
+  </mappings>
+  <artifacts size='4'>
+    <artifact classifier='org.eclipse.update.feature' id='fish.payara.eclipse.tools.micro.feature' version='2.1.0'>
+      <properties size='11'>
+        <property name='artifact.size' value='5785'/>
+        <property name='download.size' value='5785'/>
+        <property name='maven-groupId' value='fish.payara.eclipse'/>
+        <property name='maven-artifactId' value='fish.payara.eclipse.tools.micro.feature'/>
+        <property name='maven-version' value='2.1.0'/>
+        <property name='maven-type' value='eclipse-feature'/>
+        <property name='download.contentType' value='application/zip'/>
+        <property name='download.md5' value='83d536d38b926ccab24ed06be7d0dc98'/>
+        <property name='download.checksum.sha-512' value='620005c5c351ac282289179885c904b88284b5c01a07d58ac6450fc816cfadfa3067a80c3a2ec6d2594d88edf558a15da98b3a9fade01b2a4e33e3cdae0ebf49'/>
+        <property name='download.checksum.md5' value='83d536d38b926ccab24ed06be7d0dc98'/>
+        <property name='download.checksum.sha-256' value='5fb6f148b8325d427bd8a40b43fc3121626fc90747a7d4405bd3e99a7316b061'/>
+      </properties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='fish.payara.eclipse.tools.server' version='2.1.0'>
+      <properties size='10'>
+        <property name='artifact.size' value='1447927'/>
+        <property name='download.size' value='1447927'/>
+        <property name='maven-groupId' value='fish.payara.eclipse'/>
+        <property name='maven-artifactId' value='fish.payara.eclipse.tools.server'/>
+        <property name='maven-version' value='2.1.0'/>
+        <property name='maven-type' value='eclipse-plugin'/>
+        <property name='download.md5' value='aea1fd0add80a0dc9eeaa420c1c6db52'/>
+        <property name='download.checksum.sha-512' value='04309b4528ecbfcc3b7d8fe4d3e338a4a037d7295635fdad1479211aa693c65ca4f77fb2b79b0b46da1b0ee973be6ade9e97ca6d3a143d888969aa10cdc9a579'/>
+        <property name='download.checksum.md5' value='aea1fd0add80a0dc9eeaa420c1c6db52'/>
+        <property name='download.checksum.sha-256' value='15cf358c68eac94ff482788e18a72c9aac8da8dd2a1249af15d0543cea4807bc'/>
+      </properties>
+    </artifact>
+    <artifact classifier='org.eclipse.update.feature' id='fish.payara.eclipse.tools.server.feature' version='2.1.0'>
+      <properties size='11'>
+        <property name='artifact.size' value='5788'/>
+        <property name='download.size' value='5788'/>
+        <property name='maven-groupId' value='fish.payara.eclipse'/>
+        <property name='maven-artifactId' value='fish.payara.eclipse.tools.server.feature'/>
+        <property name='maven-version' value='2.1.0'/>
+        <property name='maven-type' value='eclipse-feature'/>
+        <property name='download.contentType' value='application/zip'/>
+        <property name='download.md5' value='a510202d452c0dc5440ca61d2cb97dea'/>
+        <property name='download.checksum.sha-512' value='2186837bbe2fadbd8503d2e0a9fe4209b30e8c3ac89728f0c062452c485af86a08eeef45a24c70b5478bd505fc6ecb9eb3938bcdf03142dd3fe692971900c382'/>
+        <property name='download.checksum.md5' value='a510202d452c0dc5440ca61d2cb97dea'/>
+        <property name='download.checksum.sha-256' value='48e7696175efb3c033c87cfcbdea3947d5f91c3264a1a9dc9b29cbb1585f57a5'/>
+      </properties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='fish.payara.eclipse.tools.micro' version='2.1.0'>
+      <properties size='10'>
+        <property name='artifact.size' value='47188'/>
+        <property name='download.size' value='47188'/>
+        <property name='maven-groupId' value='fish.payara.eclipse'/>
+        <property name='maven-artifactId' value='fish.payara.eclipse.tools.micro'/>
+        <property name='maven-version' value='2.1.0'/>
+        <property name='maven-type' value='eclipse-plugin'/>
+        <property name='download.md5' value='1cd50733b7639e32a4aef14f7e09c8c1'/>
+        <property name='download.checksum.sha-512' value='ed198ec100e6f741299fee9e9c8962b6fd80fb4f357e1efe982872ec6f8473698a01b220661f1014ab07dd07ac483f95168b66650be9d388562734feedc600e5'/>
+        <property name='download.checksum.md5' value='1cd50733b7639e32a4aef14f7e09c8c1'/>
+        <property name='download.checksum.sha-256' value='f3de45b20584a7ee2c7e07b81a562f724ed476171ab8b29c9b6b63f116364a41'/>
+      </properties>
+    </artifact>
+  </artifacts>
+</repository>
