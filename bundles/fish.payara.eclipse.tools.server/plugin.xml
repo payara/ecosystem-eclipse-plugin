@@ -922,6 +922,12 @@
             id="fish.payara.eclipse.tools.server.commands.OpenDomainHomeCommand"
             name="OpenDomainHomeCommand">
         </command>
+        <command
+			id="myplugin.newMenuItem"
+			name="New Menu Item"
+			description="This is a new menu item"
+			categoryId="org.eclipse.ui.category.file">
+		</command>
     </extension>
      
     <!-- 2. Handlers corresponding to the commands defined above  -->
@@ -976,6 +982,11 @@
                 </and>
             </enabledWhen>
         </handler>
+        
+        <handler
+			commandId="fish.payara.eclipse.tools.server.commands.MigrateHandler"
+			class="fish.payara.eclipse.tools.server.handlers.MigrateHandler">
+	   </handler>
     </extension>
 
     <!-- 3. Definitions of the menu entries putting the above defined commands in -->
@@ -1020,10 +1031,19 @@
                 </command>
             </menu>
         </menuContribution>
+        <menuContribution locationURI="popup:org.eclipse.ui.navigator.ProjectExplorer#PopupMenu?endof=group.build">
+			<menu id="fish.payara.eclipse.tools.project.actions.migrate" label="%menu.migrate">
+				<command commandId="fish.payara.eclipse.tools.server.commands.MigrateHandler" label="%menu.convert" style="push">
+				</command>
+			</menu>
+		</menuContribution>
+		<menuContribution locationURI="popup:org.eclipse.jdt.ui.PackageExplorer?endof=group.build">
+			<menu id="fish.payara.eclipse.tools.package.actions.migrate" label="%menu.migrate">
+				<command commandId="fish.payara.eclipse.tools.server.commands.MigrateHandler" label="%menu.convert" style="push">
+				</command>
+			</menu>
+		</menuContribution>
     </extension>
- 
-	
-  
   
     <!-- 
         Properties that are being shown for the Payara / GlassFish server when e.g. the server is right clicked
@@ -1226,5 +1246,5 @@
             provider="fish.payara.eclipse.tools.server.jaxrsLibraryproviderID">
         </panel>
     </extension>
-    
+	
 </plugin>
