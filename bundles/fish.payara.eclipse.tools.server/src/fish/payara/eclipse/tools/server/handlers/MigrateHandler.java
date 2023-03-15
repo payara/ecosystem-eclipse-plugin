@@ -43,6 +43,7 @@ public class MigrateHandler extends AbstractHandler {
                 if (path != null) {
                     String srcPath = path.toOSString();
                     String destinationPath = chooseDestinationPath(srcPath, resource.getName());
+                    if ("".equals(destinationPath)) return null;
 					int exitCode = runMvnCommand(srcPath, destinationPath);
 		            if (exitCode == 0) {
 		                MessageDialog.openInformation(shell, "Success", "Project " + destinationPath + " created successfully.");
@@ -65,7 +66,7 @@ public class MigrateHandler extends AbstractHandler {
     	if (selectedDirectory != null) {
     	    return selectedDirectory + "/" + projectName + "-jakartaee10";
     	}
-    	return srcPath + "-jakartaee10";
+    	return "";
     }
     
     private IStructuredSelection getSelection(ExecutionEvent event) {

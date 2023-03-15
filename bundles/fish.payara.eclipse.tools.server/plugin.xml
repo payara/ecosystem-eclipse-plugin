@@ -1035,12 +1035,40 @@
 			<menu id="fish.payara.eclipse.tools.project.actions.migrate" label="%menu.migrate">
 				<command commandId="fish.payara.eclipse.tools.server.commands.MigrateHandler" label="%menu.convert" style="push">
 				</command>
+				<visibleWhen>
+					<or>
+						<with variable="activeMenuSelection">
+							<iterate>
+								<adapt type="org.eclipse.core.resources.IProject"></adapt>
+							</iterate>
+						</with>
+						<with variable="activeMenuSelection">
+							<iterate>
+								<adapt type="org.eclipse.core.resources.IFile"></adapt>
+							</iterate>
+						</with>
+					</or>
+	            </visibleWhen>
 			</menu>
 		</menuContribution>
 		<menuContribution locationURI="popup:org.eclipse.jdt.ui.PackageExplorer?endof=group.build">
 			<menu id="fish.payara.eclipse.tools.package.actions.migrate" label="%menu.migrate">
 				<command commandId="fish.payara.eclipse.tools.server.commands.MigrateHandler" label="%menu.convert" style="push">
 				</command>
+				<visibleWhen>
+					<or>
+						<with variable="activeMenuSelection">
+							<iterate>
+								<adapt type="org.eclipse.core.resources.IProject"></adapt>
+							</iterate>
+						</with>
+						<with variable="activeMenuSelection">
+							<iterate>
+								<adapt type="org.eclipse.core.resources.IFile"></adapt>
+							</iterate>
+						</with>
+					</or>
+	            </visibleWhen>
 			</menu>
 		</menuContribution>
     </extension>
