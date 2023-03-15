@@ -10,8 +10,10 @@ import java.util.List;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -33,24 +35,31 @@ public class MigrateHandler extends AbstractHandler {
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
     	Shell shell = HandlerUtil.getActiveWorkbenchWindow(event).getShell();
-
     	IStructuredSelection selection = getSelection(event);
         if (selection != null && !selection.isEmpty()) {
             Object firstElement = selection.getFirstElement();
+            IPath path = null;
+            String name = "";
             if (firstElement instanceof IResource) {
-                IResource resource = (IResource) firstElement;
-                IPath path = resource.getLocation();
-                if (path != null) {
-                    String srcPath = path.toOSString();
-                    String destinationPath = chooseDestinationPath(srcPath, resource.getName());
-                    if ("".equals(destinationPath)) return null;
-					int exitCode = runMvnCommand(srcPath, destinationPath);
-		            if (exitCode == 0) {
-		                MessageDialog.openInformation(shell, "Success", "Project " + destinationPath + " created successfully.");
-		            } else {
-		                MessageDialog.openError(shell, "Error", "Maven command failed with exit code " + exitCode + ".");
-		            }
-                }
+            	IResource resource = (IResource) firstElement;
+                path = resource.getLocation();
+                name = resource.getName();
+            } else if (firstElement instanceof IJavaProject) {
+            	IJavaProject javaProject = (IJavaProject) firstElement;
+                IProject project = javaProject.getProject();
+				path = project.getLocation();
+                name = project.getName();
+            }
+            if (path != null && !"".equals(name)) {
+                String srcPath = path.toOSString();
+                String destinationPath = chooseDestinationPath(srcPath, name);
+                if ("".equals(destinationPath)) return null;
+				int exitCode = runMvnCommand(srcPath, destinationPath);
+	            if (exitCode == 0) {
+	                MessageDialog.openInformation(shell, "Success", "Project " + destinationPath + " created successfully.");
+	            } else {
+	                MessageDialog.openError(shell, "Error", "Maven command failed with exit code " + exitCode + ".");
+	            }
             }
         }
         return null;
