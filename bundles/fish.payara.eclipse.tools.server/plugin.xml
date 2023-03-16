@@ -1064,7 +1064,7 @@
 						</with>
 						<with variable="activeMenuSelection">
 							<iterate>
-								<adapt type="org.eclipse.core.resources.IFile"></adapt>
+								<adapt type="ICompilationUnit"></adapt>
 							</iterate>
 						</with>
 					</or>

@@ -13,6 +13,7 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
@@ -38,23 +39,34 @@ public class MigrateHandler extends AbstractHandler {
     	IStructuredSelection selection = getSelection(event);
         if (selection != null && !selection.isEmpty()) {
             Object firstElement = selection.getFirstElement();
-            IPath path = null;
+            IPath resourcePath = null;
+            IPath projectPath = null;
             String name = "";
+            boolean isFile = false;
             if (firstElement instanceof IResource) {
             	IResource resource = (IResource) firstElement;
-                path = resource.getLocation();
+                resourcePath = resource.getLocation();
+                projectPath = resourcePath;
                 name = resource.getName();
             } else if (firstElement instanceof IJavaProject) {
             	IJavaProject javaProject = (IJavaProject) firstElement;
                 IProject project = javaProject.getProject();
-				path = project.getLocation();
+				resourcePath = project.getLocation();
+				projectPath = resourcePath;
                 name = project.getName();
+            } else if (firstElement instanceof ICompilationUnit) {
+            	ICompilationUnit file = (ICompilationUnit) firstElement;
+            	resourcePath = file.getResource().getLocation();
+            	projectPath = file.getJavaProject().getProject().getLocation();
+            	name = file.getElementName();
+            	isFile = true;
             }
-            if (path != null && !"".equals(name)) {
-                String srcPath = path.toOSString();
-                String destinationPath = chooseDestinationPath(srcPath, name);
+            if (resourcePath != null && projectPath != null && !"".equals(name)) {
+                String srcPath = resourcePath.toOSString();
+                String srcProjectPath = projectPath.toOSString();
+                String destinationPath = chooseDestinationPath(srcProjectPath, name, isFile);
                 if ("".equals(destinationPath)) return null;
-				int exitCode = runMvnCommand(srcPath, destinationPath);
+				int exitCode = runMvnCommand(srcProjectPath, srcPath, destinationPath);
 	            if (exitCode == 0) {
 	                MessageDialog.openInformation(shell, "Success", "Project " + destinationPath + " created successfully.");
 	            } else {
@@ -65,7 +77,7 @@ public class MigrateHandler extends AbstractHandler {
         return null;
     }
     
-    private String chooseDestinationPath(String srcPath, String projectName) {
+    private String chooseDestinationPath(String srcPath, String name, boolean isFile) {
     	Shell shell = new Shell();
     	DirectoryDialog dialog = new DirectoryDialog(shell);
     	dialog.setText("Choose a destination Folder");
@@ -73,7 +85,10 @@ public class MigrateHandler extends AbstractHandler {
     	dialog.setFilterPath(srcPath);
     	String selectedDirectory = dialog.open();
     	if (selectedDirectory != null) {
-    	    return selectedDirectory + "/" + projectName + "-jakartaee10";
+    		if (isFile) {
+    			return selectedDirectory + "/" + name;
+    		}
+    	    return selectedDirectory + "/" + name + "-JakartaEE10";
     	}
     	return "";
     }
@@ -86,7 +101,7 @@ public class MigrateHandler extends AbstractHandler {
         return null;
     }
     
-    private int runMvnCommand(String srcPath, String targetPath) {
+    private int runMvnCommand(String srcProjectPath, String srcPath, String targetPath) {
     	Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
         
         MessageConsole console = new MessageConsole("Maven Command Console", null);
@@ -103,7 +118,7 @@ public class MigrateHandler extends AbstractHandler {
         	command.add("-DselectedTarget=" + targetPath);
         	ProcessBuilder builder = new ProcessBuilder(command);
         	builder.environment().put("PATH", System.getenv("PATH"));
-        	builder.directory(new File(srcPath));
+        	builder.directory(new File(srcProjectPath));
         	builder.redirectErrorStream(true);
         	Process process = builder.start();
             
