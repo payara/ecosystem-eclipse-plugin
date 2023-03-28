@@ -922,12 +922,6 @@
             id="fish.payara.eclipse.tools.server.commands.OpenDomainHomeCommand"
             name="OpenDomainHomeCommand">
         </command>
-        <command
-			id="myplugin.newMenuItem"
-			name="New Menu Item"
-			description="This is a new menu item"
-			categoryId="org.eclipse.ui.category.file">
-		</command>
     </extension>
      
     <!-- 2. Handlers corresponding to the commands defined above  -->
