@@ -13,6 +13,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,13 +91,19 @@ public class MigrateHandler extends AbstractHandler {
     private String chooseDestinationPath(String srcPath, String name, boolean isFile) {
     	Shell shell = new Shell();
     	DirectoryDialog dialog = new DirectoryDialog(shell);
-    	dialog.setText("Choose a destination Folder");
+    	dialog.setText("Choose a " + (isFile ? "New File" : "") + " destination Folder");
     	dialog.setMessage("Please select a Directory:");
     	dialog.setFilterPath(srcPath);
     	String selectedDirectory = dialog.open();
     	if (selectedDirectory != null) {
     		if (isFile) {
-    			return selectedDirectory + "/" + name;
+    			String targetDir = selectedDirectory + "/jakartaee10/";
+    			try {
+					Files.createDirectories(Paths.get(targetDir));
+					return targetDir + name;
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
     		}
     	    return selectedDirectory + "/" + name + "-JakartaEE10";
     	}
