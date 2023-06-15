@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 /******************************************************************************
- * Copyright (c) 2018-2022 Payara Foundation
+ * Copyright (c) 2018-2023 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,9 +42,11 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Label;
@@ -106,6 +108,20 @@ public class NewPayaraServerWizardFragment extends WizardFragment {
 	public static final String DEFAULT_DOMAINS_DIR = "domains";
 
 	public static final String DEFAULT_DOMAIN_NAME = "domain1";
+
+	private Combo instanceTypeCombo;
+
+	private String[] instanceTypes = { PayaraServer.DEFAULT_TYPE, PayaraServer.DOCKER_TYPE };
+
+	private Label hostLocationLabel;
+
+	private Text hostLocation;
+
+	private Button hostBrowse;
+
+	private Label containerLocationLabel;
+
+	private Text containerLocation;
 
 	/*
 	 * (non-Javadoc)
@@ -380,6 +396,98 @@ public class NewPayaraServerWizardFragment extends WizardFragment {
 				payaraServer.setAttachDebuggerEarly(attachDebuggerEarly.getSelection());
 			}
 		});
+
+		label = new Label(group, SWT.NONE);
+		label.setText(GlassfishWizardResources.instanceType);
+		data = new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_END);
+		data.horizontalSpan = 2;
+		label.setLayoutData(data);
+
+		instanceTypeCombo = new Combo(group, SWT.DROP_DOWN | SWT.READ_ONLY);
+		instanceTypeCombo.setItems(instanceTypes);
+		data = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+		instanceTypeCombo.setLayoutData(data);
+		instanceTypeCombo.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if (PayaraServer.DOCKER_TYPE.equals(instanceTypes[instanceTypeCombo.getSelectionIndex()])) {
+					hostLocationLabel.setVisible(true);
+					hostLocation.setVisible(true);
+					hostBrowse.setVisible(true);
+					containerLocationLabel.setVisible(true);
+					containerLocation.setVisible(true);
+				} else {
+					hostLocationLabel.setVisible(false);
+					hostLocation.setVisible(false);
+					hostBrowse.setVisible(false);
+					containerLocationLabel.setVisible(false);
+					containerLocation.setVisible(false);
+				}
+				payaraServer.setInstanceType(instanceTypes[instanceTypeCombo.getSelectionIndex()]);
+				validate(handle);
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				widgetSelected(e);
+			}
+		});
+
+		hostLocationLabel = new Label(group, SWT.NONE);
+		hostLocationLabel.setText(GlassfishWizardResources.hostLocation);
+		data = new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_END);
+		data.horizontalSpan = 2;
+		hostLocationLabel.setLayoutData(data);
+
+		hostLocation = new Text(group, SWT.BORDER);
+		data = new GridData(GridData.FILL_HORIZONTAL);
+		hostLocation.setLayoutData(data);
+		hostLocation.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				payaraServer.setHostPath(hostLocation.getText());
+				validate(handle);
+			}
+		});
+
+		hostBrowse = new Button(group, SWT.PUSH);
+		hostBrowse.setText(GlassfishWizardResources.browse);
+		hostBrowse.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent se) {
+				DirectoryDialog dialog = new DirectoryDialog(parent.getShell());
+				dialog.setMessage(GlassfishWizardResources.selectInstallDir);
+				String selectedDirectory = dialog.open();
+				if (selectedDirectory != null && !selectedDirectory.isEmpty()) {
+					hostLocation.setText(selectedDirectory);
+					payaraServer.setHostPath(hostLocation.getText());
+					validate(handle);
+				}
+			}
+		});
+		hostLocationLabel.setVisible(false);
+		hostLocation.setVisible(false);
+		hostBrowse.setVisible(false);
+
+		containerLocationLabel = new Label(group, SWT.NONE);
+		containerLocationLabel.setText(GlassfishWizardResources.containerLocation);
+		data = new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_END);
+		data.horizontalSpan = 2;
+		containerLocationLabel.setLayoutData(data);
+
+		containerLocation = new Text(group, SWT.BORDER);
+		data = new GridData(GridData.FILL_HORIZONTAL);
+		containerLocation.setLayoutData(data);
+		containerLocation.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				payaraServer.setContainerPath(containerLocation.getText());
+				validate(handle);
+			}
+		});
+
+		containerLocationLabel.setVisible(false);
+		containerLocation.setVisible(false);
 	}
 
 	protected boolean showPreferencePage(Composite parent) {
