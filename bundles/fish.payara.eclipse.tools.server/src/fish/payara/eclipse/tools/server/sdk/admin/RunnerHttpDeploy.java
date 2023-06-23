@@ -137,6 +137,12 @@ public class RunnerHttpDeploy extends RunnerHttp {
 				throw new CommandException(CommandException.DOCKER_HOST_APPLICATION_PATH);
 			}
 		}
+		if (deploy.wslInstance) {
+			// Replace backslashes with forward slashes
+			path = path.replace("\\", "/");
+			// Add "mnt" prefix and drive letter
+			path = "/mnt/" + path.substring(0, 1).toLowerCase() + path.substring(2);
+		}
 		// Calculate StringBuilder initial length to avoid resizing
 		StringBuilder sb = new StringBuilder(DEFAULT_PARAM.length() + 1 + path.length() + 1 + FORCE_PARAM.length() + 1
 				+ force.length() + queryPropertiesLength(deploy.properties, PROPERTIES_PARAM)

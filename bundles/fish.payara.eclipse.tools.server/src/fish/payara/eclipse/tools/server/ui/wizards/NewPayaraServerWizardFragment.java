@@ -111,7 +111,7 @@ public class NewPayaraServerWizardFragment extends WizardFragment {
 
 	private Combo instanceTypeCombo;
 
-	private String[] instanceTypes = { PayaraServer.DEFAULT_TYPE, PayaraServer.DOCKER_TYPE };
+	private String[] instanceTypes = { PayaraServer.DEFAULT_TYPE, PayaraServer.DOCKER_TYPE, PayaraServer.WSL_TYPE };
 
 	private Label hostLocationLabel;
 

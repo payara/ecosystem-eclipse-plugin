@@ -60,7 +60,7 @@ public class MicroProjectWizardPage extends AbstractMavenWizardPage {
 		createUI(composite);
 		validate();
 		createAdvancedSettings(composite, new GridData(SWT.FILL, SWT.TOP, false, false, 3, 1));
-		resolverConfigurationComponent.setModifyListener(e -> validate());
+//		resolverConfigurationComponent.setModifyListener(e -> validate());
 		setControl(composite);
 	}
 
