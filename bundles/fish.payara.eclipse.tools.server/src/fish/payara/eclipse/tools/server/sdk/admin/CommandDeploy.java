@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 /******************************************************************************
- * Copyright (c) 2018-2022 Payara Foundation
+ * Copyright (c) 2018-2023 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -68,8 +68,8 @@ public class CommandDeploy extends CommandTargetName {
 	public static ResultString deploy(PayaraServer server, File application, TaskStateListener listener)
 			throws PayaraIdeException {
 		try {
-			return ServerAdmin.<ResultString>exec(server,
-					new CommandDeploy(null, null, application, null, null, null, false), listener).get();
+			return ServerAdmin.<ResultString>exec(server, new CommandDeploy(null, null, application, null, null, null,
+					server.isDockerInstance(), server.getHostPath(), server.getContainerPath(), false), listener).get();
 		} catch (InterruptedException | ExecutionException | CancellationException ie) {
 			throw new PayaraIdeException(ERROR_MESSAGE, ie);
 		}
@@ -97,6 +97,15 @@ public class CommandDeploy extends CommandTargetName {
 	/** Hot Deploy. */
 	final boolean hotDeploy;
 
+	/** Docker Instance. */
+	final boolean dockerInstance;
+
+	/** Host Path. */
+	final String hostPath;
+
+	/** Container Path. */
+	final String containerPath;
+
 	////////////////////////////////////////////////////////////////////////////
 	// Constructors //
 	////////////////////////////////////////////////////////////////////////////
@@ -105,17 +114,19 @@ public class CommandDeploy extends CommandTargetName {
 	 * Constructs an instance of GlassFish server deploy command entity.
 	 * <p/>
 	 *
-	 * @param name        Name of module/cluster/instance to modify.
-	 * @param target      Target GlassFish instance or cluster where
-	 *                    <code>name</code> is stored.
-	 * @param path        File to deploy.
-	 * @param contextRoot Deployed application context root.
-	 * @param properties  Deployment properties.
-	 * @param libraries   Not used in actual deploy command.
-	 * @param hotDeploy   Hot Deploy.
+	 * @param name           Name of module/cluster/instance to modify.
+	 * @param target         Target GlassFish instance or cluster where
+	 *                       <code>name</code> is stored.
+	 * @param path           File to deploy.
+	 * @param contextRoot    Deployed application context root.
+	 * @param properties     Deployment properties.
+	 * @param libraries      Not used in actual deploy command.
+	 * @param dockerInstance Docker Instance.
+	 * @param hotDeploy      Hot Deploy.
 	 */
 	public CommandDeploy(String name, String target, File path, String contextRoot, Map<String, String> properties,
-			File[] libraries, final boolean hotDeploy) {
+			File[] libraries, final boolean dockerInstance, final String hostPath, final String containerPath,
+			final boolean hotDeploy) {
 		super(COMMAND, name, target);
 
 		this.path = path;
@@ -123,6 +134,9 @@ public class CommandDeploy extends CommandTargetName {
 		this.properties = properties;
 		this.libraries = libraries;
 		this.dirDeploy = path.isDirectory();
+		this.dockerInstance = dockerInstance;
+		this.hostPath = hostPath;
+		this.containerPath = containerPath;
 		this.hotDeploy = hotDeploy;
 	}
 

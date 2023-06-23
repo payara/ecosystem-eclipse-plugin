@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 /******************************************************************************
- * Copyright (c) 2018-2022 Payara Foundation
+ * Copyright (c) 2018-2023 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,6 +29,9 @@ public class GlassfishWizardResources extends org.eclipse.osgi.util.NLS {
     public static String wzdRuntimeDescription;
     public static String wzdServerDescription;
     public static String serverName;
+    public static String instanceType;
+    public static String hostLocation;
+    public static String containerLocation;
     public static String payaraLocation;
     public static String installedJRE;
     public static String installedJREs;

@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 /******************************************************************************
- * Copyright (c) 2018-2022 Payara Foundation
+ * Copyright (c) 2018-2023 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -492,7 +492,8 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
 	 * @return true if ant publisher needs to publish.
 	 */
 	private boolean publishNeeded(int kind, int deltaKind, IModule[] module) {
-		if ((getServer().getServerPublishState() == PUBLISH_CLEAN) || (kind != PUBLISH_INCREMENTAL && kind != PUBLISH_AUTO) || (deltaKind != NO_CHANGE)) {
+		if ((getServer().getServerPublishState() == PUBLISH_CLEAN)
+				|| (kind != PUBLISH_INCREMENTAL && kind != PUBLISH_AUTO) || (deltaKind != NO_CHANGE)) {
 			return true;
 		}
 
@@ -531,13 +532,13 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
 		Properties publishProperties = loadPublishProperties();
 
 		boolean isRemote = getPayaraServerDelegate().isRemote();
+		boolean isDockerInstance = getPayaraServerDelegate().isDockerInstance();
 		boolean isJarDeploy = getPayaraServerDelegate().getJarDeploy();
 
-		if ((!isRemote && !isJarDeploy)) {
+		if ((!isRemote && !isJarDeploy) || isDockerInstance) {
 			publishDeployedDirectory(kind, deltaKind, publishProperties, module, monitor);
 		} else {
 			publishJarFile(kind, deltaKind, publishProperties, module, monitor);
-
 		}
 
 		setModulePublishState(module, PUBLISH_STATE_NONE);
@@ -607,13 +608,17 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
 				return;
 			}
 
-			IPath path = new Path(getPayaraServerDelegate().getDomainPath() + "/eclipseApps/" + module[0].getName());
-
 			// Using PublishHelper to control the temp area to be in the same file system of
 			// the deployed apps
 			// so that the move operation Eclipse is doing sometimes can work.
-			PublishHelper helper = new PublishHelper(
-					new Path(getPayaraServerDelegate().getDomainPath() + "/eclipseAppsTmp").toFile());
+			boolean dockerInstance = getPayaraServerDelegate().isDockerInstance();
+			String hostPath = getPayaraServerDelegate().getHostPath();
+			String containerPath = getPayaraServerDelegate().getContainerPath();
+
+			String parentPath = dockerInstance ? getPayaraServerDelegate().getHostPath()
+					: getPayaraServerDelegate().getDomainPath();
+			IPath path = new Path(parentPath + "/eclipseApps/" + module[0].getName());
+			PublishHelper helper = new PublishHelper(new Path(parentPath + "/eclipseAppsTmp").toFile());
 
 			AssembleModules assembler = new AssembleModules(module, path, getPayaraServerDelegate(), helper);
 			logMessage("Deploy direcotry " + path.toFile().getAbsolutePath());
@@ -675,7 +680,7 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
 				CommandTarget command = null;
 				if (deltaKind == ADDED) {
 					command = new CommandDeploy(name, null, new File("" + path), contextRoot, properties, new File[0],
-							hotDeploy);
+							dockerInstance, hostPath, containerPath, hotDeploy);
 				} else {
 					command = new CommandRedeploy(name, null, contextRoot, properties, new File[0], keepSession,
 							hotDeploy, metadataChanged, sourcesChanged);
@@ -718,6 +723,10 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
 				String name = simplifyModuleID(module[0].getName());
 				String contextRoot = null;
 
+				boolean dockerInstance = getPayaraServerDelegate().isDockerInstance();
+				String hostPath = getPayaraServerDelegate().getHostPath();
+				String containerPath = getPayaraServerDelegate().getContainerPath();
+
 				if (isModuleType(module[0], "jst.web")) {
 					contextRoot = getContextRoot(module);
 				}
@@ -727,9 +736,9 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
 				boolean hotDeploy = getServer().getAttribute(PayaraServer.ATTR_HOTDEPLOY,
 						Boolean.parseBoolean(DEFAULT_HOT_DEPLOY));
 				try {
-					ServerAdmin
-							.executeOn(getPayaraServerDelegate()).command(new CommandDeploy(name, null, archivePath,
-									contextRoot, getDeploymentProperties(), new File[0], hotDeploy))
+					ServerAdmin.executeOn(getPayaraServerDelegate())
+							.command(new CommandDeploy(name, null, archivePath, contextRoot, getDeploymentProperties(),
+									new File[0], dockerInstance, hostPath, containerPath, hotDeploy))
 							.timeout(520).onNotCompleted(result -> {
 								logMessage("deploy is failing=" + result.getValue());
 								throw new IllegalStateException("deploy is failing=" + result.getValue());
