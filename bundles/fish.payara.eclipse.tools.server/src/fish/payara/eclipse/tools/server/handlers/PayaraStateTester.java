@@ -44,6 +44,14 @@ public class PayaraStateTester extends PropertyTester {
             }
         }
 
+        if (property.equals("isWSLInstance")) {
+            PayaraServer payaraServer = load(server, PayaraServer.class);
+
+            if (payaraServer != null) {
+                return payaraServer.isWSLInstance();
+            }
+        }
+
         return false;
     }
 

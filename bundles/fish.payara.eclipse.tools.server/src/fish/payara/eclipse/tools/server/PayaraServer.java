@@ -535,7 +535,7 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
 	}
 
 	public String getDomainsFolder() {
-		if (!isRemote()) {
+		if (!isRemote() || isWSLInstance()) {
 			return new File(getDomainPath()).getParent();
 		}
 
