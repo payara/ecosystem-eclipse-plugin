@@ -102,6 +102,12 @@ public class RunnerRestDeploy extends RunnerRest {
 				throw new CommandException(CommandException.DOCKER_HOST_APPLICATION_PATH);
 			}
 		}
+		if (command.wslInstance) {
+            // Replace backslashes with forward slashes
+            path = path.replace("\\", "/");
+            // Add "mnt" prefix and drive letter
+            path = "/mnt/" + path.substring(0, 1).toLowerCase() + path.substring(2);
+        }
 		OutputStreamWriter wr = new OutputStreamWriter(hconn.getOutputStream());
 		if (!command.dirDeploy) {
 			writeParam(wr, "path", path);

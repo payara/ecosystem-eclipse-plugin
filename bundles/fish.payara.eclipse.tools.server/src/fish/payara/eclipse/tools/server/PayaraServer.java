@@ -144,6 +144,7 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
 	public static final String DEFAULT_HOT_DEPLOY = "false";
 	public static final String DEFAULT_TYPE = "";
 	public static final String DOCKER_TYPE = "Docker";
+	public static final String WSL_TYPE = "WSL";
 	protected static final String PROP_INSTANCE_TYPE = "instance.type";
 	protected static final String PROP_HOST_PATH = "host.path";
 	protected static final String PROP_CONTAINER_PATH = "container.path";
@@ -238,16 +239,14 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
 
 	public boolean isRemote() {
 		return getServer().getServerType().supportsRemoteHosts()
-				&& (DOCKER_TYPE.equals(getInstanceType()) || !isLocalhost(getServer().getHost()));
+				&& (DOCKER_TYPE.equals(getInstanceType()) || WSL_TYPE.equals(getInstanceType()) || !isLocalhost(getServer().getHost()));
 	}
 
-	public String getDebugOptions(int debugPort) {
+    public String getDebugOptions(int debugPort) {
 		Version version = getVersion();
-
 		if (version.matches("[4")) {
 			return "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=" + debugPort;
 		}
-
 		return "-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=" + debugPort;
 	}
 
@@ -536,7 +535,7 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
 	}
 
 	public String getDomainsFolder() {
-		if (!isRemote()) {
+		if (!isRemote() || isWSLInstance()) {
 			return new File(getDomainPath()).getParent();
 		}
 
@@ -557,6 +556,10 @@ public final class PayaraServer extends ServerDelegate implements IURLProvider {
 
 	public boolean isDockerInstance() {
 		return DOCKER_TYPE.equals(getAttribute(PROP_INSTANCE_TYPE, (String) null));
+	}
+
+	public boolean isWSLInstance() {
+		return WSL_TYPE.equals(getAttribute(PROP_INSTANCE_TYPE, (String) null));
 	}
 
 	public String getInstanceType() {

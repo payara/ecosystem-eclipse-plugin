@@ -533,9 +533,10 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
 
 		boolean isRemote = getPayaraServerDelegate().isRemote();
 		boolean isDockerInstance = getPayaraServerDelegate().isDockerInstance();
+		boolean isWSLInstance = getPayaraServerDelegate().isWSLInstance();
 		boolean isJarDeploy = getPayaraServerDelegate().getJarDeploy();
 
-		if ((!isRemote && !isJarDeploy) || isDockerInstance) {
+		if ((!isRemote && !isJarDeploy) || isDockerInstance || isWSLInstance) {
 			publishDeployedDirectory(kind, deltaKind, publishProperties, module, monitor);
 		} else {
 			publishJarFile(kind, deltaKind, publishProperties, module, monitor);
@@ -612,6 +613,7 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
 			// the deployed apps
 			// so that the move operation Eclipse is doing sometimes can work.
 			boolean dockerInstance = getPayaraServerDelegate().isDockerInstance();
+			boolean wslInstance = getPayaraServerDelegate().isWSLInstance();
 			String hostPath = getPayaraServerDelegate().getHostPath();
 			String containerPath = getPayaraServerDelegate().getContainerPath();
 
@@ -680,7 +682,7 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
 				CommandTarget command = null;
 				if (deltaKind == ADDED) {
 					command = new CommandDeploy(name, null, new File("" + path), contextRoot, properties, new File[0],
-							dockerInstance, hostPath, containerPath, hotDeploy);
+							dockerInstance, wslInstance, hostPath, containerPath, hotDeploy);
 				} else {
 					command = new CommandRedeploy(name, null, contextRoot, properties, new File[0], keepSession,
 							hotDeploy, metadataChanged, sourcesChanged);
@@ -724,6 +726,7 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
 				String contextRoot = null;
 
 				boolean dockerInstance = getPayaraServerDelegate().isDockerInstance();
+				boolean wslInstance = getPayaraServerDelegate().isWSLInstance();
 				String hostPath = getPayaraServerDelegate().getHostPath();
 				String containerPath = getPayaraServerDelegate().getContainerPath();
 
@@ -738,7 +741,7 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
 				try {
 					ServerAdmin.executeOn(getPayaraServerDelegate())
 							.command(new CommandDeploy(name, null, archivePath, contextRoot, getDeploymentProperties(),
-									new File[0], dockerInstance, hostPath, containerPath, hotDeploy))
+									new File[0], dockerInstance, wslInstance, hostPath, containerPath, hotDeploy))
 							.timeout(520).onNotCompleted(result -> {
 								logMessage("deploy is failing=" + result.getValue());
 								throw new IllegalStateException("deploy is failing=" + result.getValue());

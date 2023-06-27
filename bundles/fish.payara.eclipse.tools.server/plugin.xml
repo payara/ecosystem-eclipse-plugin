@@ -686,7 +686,7 @@
             class="fish.payara.eclipse.tools.server.handlers.PayaraStateTester"
             id="fish.payara.eclipse.tools.server.PayaraStateTester"
             namespace="fish.payara.eclipse.tools.server"
-            properties="isRunning,isRemote"
+            properties="isRunning,isRemote,isWSLInstance"
             type="org.eclipse.wst.server.core.IServer">
         </propertyTester>
         <propertyTester
@@ -738,6 +738,16 @@
                     </test>
                 </and>
             </adapt>
+        </definition>
+        <definition id="fish.payara.eclipse.tools.server.isWSLInstance">
+            <and>
+                <count value="1"/>
+                <iterate ifEmpty="false">
+                    <and>
+                        <test property="fish.payara.eclipse.tools.server.isWSLInstance"/>
+                    </and>
+                </iterate>     
+            </and>
         </definition>
      
         <definition id="fish.payara.eclipse.tools.server.moreGlassfishSelected">
@@ -969,9 +979,12 @@
         >
             <enabledWhen>
                 <and>
-                    <not>    
-                        <reference definitionId="fish.payara.eclipse.tools.server.isRemoteGlassfish"/>
-                    </not>
+                    <or>
+                        <reference definitionId="fish.payara.eclipse.tools.server.isWSLInstance"/>
+                        <not>    
+                            <reference definitionId="fish.payara.eclipse.tools.server.isRemoteGlassfish"/>
+                        </not>
+                    </or>
                     <reference definitionId="fish.payara.eclipse.tools.server.oneGlassfishSelected"/>
                 </and>
             </enabledWhen>

@@ -69,7 +69,7 @@ public class CommandDeploy extends CommandTargetName {
 			throws PayaraIdeException {
 		try {
 			return ServerAdmin.<ResultString>exec(server, new CommandDeploy(null, null, application, null, null, null,
-					server.isDockerInstance(), server.getHostPath(), server.getContainerPath(), false), listener).get();
+					server.isDockerInstance(), server.isWSLInstance(), server.getHostPath(), server.getContainerPath(), false), listener).get();
 		} catch (InterruptedException | ExecutionException | CancellationException ie) {
 			throw new PayaraIdeException(ERROR_MESSAGE, ie);
 		}
@@ -100,6 +100,9 @@ public class CommandDeploy extends CommandTargetName {
 	/** Docker Instance. */
 	final boolean dockerInstance;
 
+	/** WSL Instance. */
+	final boolean wslInstance;
+
 	/** Host Path. */
 	final String hostPath;
 
@@ -122,10 +125,13 @@ public class CommandDeploy extends CommandTargetName {
 	 * @param properties     Deployment properties.
 	 * @param libraries      Not used in actual deploy command.
 	 * @param dockerInstance Docker Instance.
+	 * @param wslInstance    WSL Instance
+	 * @param hostPath
+	 * @param containerPath
 	 * @param hotDeploy      Hot Deploy.
 	 */
 	public CommandDeploy(String name, String target, File path, String contextRoot, Map<String, String> properties,
-			File[] libraries, final boolean dockerInstance, final String hostPath, final String containerPath,
+			File[] libraries, final boolean dockerInstance, final boolean wslInstance, final String hostPath, final String containerPath,
 			final boolean hotDeploy) {
 		super(COMMAND, name, target);
 
@@ -135,6 +141,7 @@ public class CommandDeploy extends CommandTargetName {
 		this.libraries = libraries;
 		this.dirDeploy = path.isDirectory();
 		this.dockerInstance = dockerInstance;
+		this.wslInstance = wslInstance;
 		this.hostPath = hostPath;
 		this.containerPath = containerPath;
 		this.hotDeploy = hotDeploy;
