@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 /******************************************************************************
- * Copyright (c) 2018-2022 Payara Foundation
+ * Copyright (c) 2018-2023 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,8 +18,11 @@
 
 package fish.payara.eclipse.tools.server.facets;
 
-public interface IGlassfishEjbDeploymentDescriptor extends IGlassfishDeploymentDescriptor {
+public interface IPayaraWebDeploymentDescriptor extends IPayaraDeploymentDescriptor {
 
-    static final String SUN_EJB_DEPLOYMENT_DESCRIPTOR_NAME = "sun-ejb-jar.xml";
+    static final String SUN_WEB_DEPLOYMENT_DESCRIPTOR_NAME = "sun-web.xml";
 
+    public void setContext(String context);
+
+    public String getContext();
 }

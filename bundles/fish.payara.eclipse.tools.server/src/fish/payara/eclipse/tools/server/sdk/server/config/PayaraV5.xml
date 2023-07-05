@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <server>
-    <tools lib="modules">
-        <asadmin jar="admin-cli.jar"/>
+    <tools lib="lib">
+        <asadmin jar="client/appserver-cli.jar"/>
     </tools>
-    <java version="1.6">
-        <platform version="1.6"/>
-        <platform version="1.7"/>
+    <java version="1.8">
         <platform version="1.8"/>
+        <platform version="11"/>
+        <platform version="17"/>
     </java>
-    <javaee version="1.6">
+    <javaee version="1.8">
         <profile version="1.3" type="full"/>
         <profile version="1.4" type="full"/>
         <profile version="1.5" type="full"/>
         <profile version="1.6" type="web"/>
         <profile version="1.6" type="full" check="full"/>
+        <profile version="1.7" type="web"/>
+        <profile version="1.7" type="full" check="full"/>
+        <profile version="1.8" type="web"/>
+        <profile version="1.8" type="full" check="full"/>
+        <profile version="8.0.0" type="web"/>
+        <profile version="8.0.0" type="full" check="full"/>
         <module type="war"/>
         <module type="car" check="full"/>
         <module type="ear" check="full"/>
@@ -27,15 +33,13 @@
         <classpath>
             <fileset dir="modules">
                 <include name="javax\..+\.jar"/>
-                <include name="bean-validator.jar"/>
+                <include name="jakarta\..+\.jar"/>
+                <include name="hibernate-validator.jar"/>
+                <include name="cdi-api.jar"/>
                 <include name="jaxb-osgi.jar"/>
                 <include name="webservices-osgi.jar"/>
                 <include name="weld-osgi-bundle.jar"/>
-                <include name="jersey-core.jar"/>
             </fileset>            
-            <fileset dir="modules/endorsed">
-                <include name=".+\.jar"/>
-            </fileset>
             <fileset dir="../mq/lib">
                 <include name="jaxm-api.jar"/>
             </fileset>
@@ -46,20 +50,29 @@
         <sources>
         </sources>
     </library>
-    <library id="Jersey 1">
+    <library id="MicroProfile">
         <classpath>
             <fileset dir="modules">
-                <include name="asm-all-repackaged\.jar"/>
+                <include name="microprofile.*\-api.jar"/>
+            </fileset>
+        </classpath>
+        <javadocs>
+        </javadocs>
+        <sources>
+        </sources>
+    </library>
+    <library id="Jersey 2">
+        <classpath>
+            <fileset dir="modules">
+                <include name="guava.+\.jar"/>
                 <include name="jackson.+\.jar"/>
-                <!-- include name="javax.ws.+\.jar"/ -->
                 <include name="jersey.+\.jar"/>
                 <include name="jettison.*\.jar"/>
-                <include name="jsr.+-api\.jar"/>
-                <include name="mimepull\.jar"/>
+                <include name="mimepull.+\.jar"/>
             </fileset>
         </classpath>
         <javadocs> 
-            <link url="http://repo1.maven.org/maven2/com/sun/jersey/glassfish/v32/jersey-gfv3-docs-and-samples/1.13/jersey-gfv3-docs-and-samples-1.13-project.zip"/>
+            <link url="https://repo1.maven.org/maven2/org/glassfish/jersey/jersey-documentation/2.9.1/jersey-documentation-2.9.1-docbook.zip"/>
         </javadocs>
         <sources>
         </sources>
@@ -67,8 +80,7 @@
     <library id="JAX-RS">
         <classpath>
             <fileset dir="modules">
-                <include name="jsr311-api.jar"/>
-                <include name="jersey-core.jar"/>
+                <include name=".+\.ws.rs-api.jar"/>
             </fileset>
         </classpath>
         <javadocs> 

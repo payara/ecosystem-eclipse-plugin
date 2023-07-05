@@ -29,7 +29,7 @@ import static fish.payara.eclipse.tools.server.PayaraServerPlugin.SYMBOLIC_NAME;
 import static fish.payara.eclipse.tools.server.PayaraServerPlugin.createErrorStatus;
 import static fish.payara.eclipse.tools.server.PayaraServerPlugin.logError;
 import static fish.payara.eclipse.tools.server.PayaraServerPlugin.logMessage;
-import static fish.payara.eclipse.tools.server.facets.internal.GlassfishDeploymentDescriptorFactory.getWebDeploymentDescriptor;
+import static fish.payara.eclipse.tools.server.facets.internal.PayaraDeploymentDescriptorFactory.getWebDeploymentDescriptor;
 import static fish.payara.eclipse.tools.server.sdk.server.parser.TreeParser.readXml;
 import static fish.payara.eclipse.tools.server.utils.ModuleUtil.isEARModule;
 import static fish.payara.eclipse.tools.server.utils.ModuleUtil.isEJBModule;

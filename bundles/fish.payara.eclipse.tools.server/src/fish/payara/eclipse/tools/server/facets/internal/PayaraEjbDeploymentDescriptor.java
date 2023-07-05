@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 /******************************************************************************
- * Copyright (c) 2018-2022 Payara Foundation
+ * Copyright (c) 2018-2023 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,14 +20,14 @@ package fish.payara.eclipse.tools.server.facets.internal;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IPath;
-import fish.payara.eclipse.tools.server.facets.IGlassfishEjbDeploymentDescriptor;
+import fish.payara.eclipse.tools.server.facets.IPayaraEjbDeploymentDescriptor;
 
-class GlassfishEjbDeploymentDescriptor extends
-        AbstractGlassfishDeploymentDescriptor implements IGlassfishEjbDeploymentDescriptor {
+class PayaraEjbDeploymentDescriptor extends
+        AbstractPayaraDeploymentDescriptor implements IPayaraEjbDeploymentDescriptor {
 
     private IFile file;
 
-    GlassfishEjbDeploymentDescriptor(IFile file) {
+    PayaraEjbDeploymentDescriptor(IFile file) {
         this.file = file;
     }
 
@@ -40,7 +40,7 @@ class GlassfishEjbDeploymentDescriptor extends
     protected boolean isPossibleToCreate() {
         // check for existence of older sun descriptor
         IPath sunDescriptor = file.getLocation().removeLastSegments(1)
-                .append(IGlassfishEjbDeploymentDescriptor.SUN_EJB_DEPLOYMENT_DESCRIPTOR_NAME);
+                .append(IPayaraEjbDeploymentDescriptor.SUN_EJB_DEPLOYMENT_DESCRIPTOR_NAME);
         if (sunDescriptor.toFile().exists()) {
             return false;
         }
