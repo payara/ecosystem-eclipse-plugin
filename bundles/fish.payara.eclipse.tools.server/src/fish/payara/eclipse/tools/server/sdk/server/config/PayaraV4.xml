@@ -29,11 +29,13 @@
             <fileset dir="modules">
                 <include name="javax\..+\.jar"/>
                 <include name="bean-validator.jar"/>
+                <include name="cdi-api.jar"/>
                 <include name="jaxb-osgi.jar"/>
                 <include name="jaxr-api-osgi.jar"/>
                 <include name="jaxrpc-api-osgi.jar"/>
                 <include name="webservices-osgi.jar"/>
                 <include name="weld-osgi-bundle.jar"/>
+                <include name="mimepull.+\.jar"/>
             </fileset>            
             <fileset dir="modules/endorsed">
                 <include name=".+\.jar"/>
@@ -59,7 +61,7 @@
             </fileset>
         </classpath>
         <javadocs> 
-            <link url="http://repo1.maven.org/maven2/org/glassfish/jersey/jersey-documentation/2.0-m05-2/jersey-documentation-2.0-m05-2-docbook.zip"/>
+            <link url="https://repo1.maven.org/maven2/org/glassfish/jersey/jersey-documentation/2.0-m05-2/jersey-documentation-2.0-m05-2-docbook.zip"/>
         </javadocs>
         <sources>
         </sources>

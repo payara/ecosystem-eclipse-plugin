@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 /******************************************************************************
- * Copyright (c) 2018-2022 Payara Foundation
+ * Copyright (c) 2018-2023 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,7 @@
 
 package fish.payara.eclipse.tools.server.facets.internal;
 
-enum GlassfishDescriptorType {
+enum PayaraDescriptorType {
     GF_WEB, GF_EJB;
 
     private static final GlassfishRootElementInfo WEB_ROOT_INFO_V31 = new GlassfishRootElementInfo(
@@ -32,7 +32,7 @@ enum GlassfishDescriptorType {
             "glassfish-ejb-jar");
 
     public static GlassfishRootElementInfo getGlassfishRootElementInfo(
-            GlassfishDescriptorType type) {
+            PayaraDescriptorType type) {
         switch (type) {
         case GF_WEB:
             return WEB_ROOT_INFO_V31;

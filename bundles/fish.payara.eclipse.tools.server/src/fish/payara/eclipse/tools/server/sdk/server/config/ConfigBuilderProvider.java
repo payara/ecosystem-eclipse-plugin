@@ -60,10 +60,12 @@ public class ConfigBuilderProvider {
      * @return Library builder configuration for given GlassFish server version.
      */
     public static URL getBuilderConfig(final Version version) {
-        if (version.matches("[4")) {
-            return ConfigBuilderProvider.class.getResource("GlassFishV4.xml");
+        if (version.matches("[6")) {
+            return ConfigBuilderProvider.class.getResource("PayaraV6.xml");
+        } else if (version.matches("[5")) {
+            return ConfigBuilderProvider.class.getResource("PayaraV5.xml");
         } else {
-            return ConfigBuilderProvider.class.getResource("GlassFishV3.xml");
+            return ConfigBuilderProvider.class.getResource("PayaraV4.xml");
         }
     }
 
