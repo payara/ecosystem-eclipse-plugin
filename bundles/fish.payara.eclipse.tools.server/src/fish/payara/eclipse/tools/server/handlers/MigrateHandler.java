@@ -97,7 +97,7 @@ public class MigrateHandler extends AbstractHandler {
     	String selectedDirectory = dialog.open();
     	if (selectedDirectory != null) {
     		if (isFile) {
-    			String targetDir = selectedDirectory + "/jakartaee10/";
+    			String targetDir = selectedDirectory + "/jakartaee10-" + genRandomNumber() + "/";
     			try {
 					Files.createDirectories(Paths.get(targetDir));
 					return targetDir + name;
@@ -105,10 +105,14 @@ public class MigrateHandler extends AbstractHandler {
 					throw new RuntimeException(e);
 				}
     		}
-    	    return selectedDirectory + "/" + name + "-JakartaEE10";
+    	    return selectedDirectory + "/" + name + "-JakartaEE10-" + genRandomNumber();
     	}
     	return "";
     }
+
+	private long genRandomNumber() {
+		return Math.round(Math.random() * 1000000);
+	}
     
     private IStructuredSelection getSelection(ExecutionEvent event) {
         ISelection selection = HandlerUtil.getCurrentSelection(event);
