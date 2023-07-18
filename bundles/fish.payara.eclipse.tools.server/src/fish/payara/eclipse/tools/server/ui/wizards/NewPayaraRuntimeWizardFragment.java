@@ -193,7 +193,6 @@ public class NewPayaraRuntimeWizardFragment extends WizardFragment {
 		JdkFilter jdkFilter = payaraRuntime.getVersion() == null ? null
 				: new JdkFilter(payaraRuntime.getJavaVersionConstraint());
 		updateJREs(jdkFilter);
-//		updateJREs();
 		label = new Label(group, SWT.NONE);
 		label.setText(GlassfishWizardResources.installedJRE);
 		data = new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_END);
@@ -232,7 +231,6 @@ public class NewPayaraRuntimeWizardFragment extends WizardFragment {
 					JdkFilter jdkFilter = payaraRuntime.getVersion() == null ? null
 							: new JdkFilter(payaraRuntime.getJavaVersionConstraint());
 					updateJREs(jdkFilter);
-//					updateJREs();
 					jrecombo.setItems(jreNames);
 					jrecombo.setText(currentVM);
 					if (jrecombo.getSelectionIndex() == -1)
@@ -264,9 +262,6 @@ public class NewPayaraRuntimeWizardFragment extends WizardFragment {
 		for (int i = 0; i < size; i++) {
 			IVMInstall vmInstall = installedJREs.get(i);
 			jreNames[i + 1] = vmInstall.getName();
-		}
-		if (jrecombo != null) {
-			jrecombo.setItems(jreNames);
 		}
 	}
 

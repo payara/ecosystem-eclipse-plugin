@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 /******************************************************************************
- * Copyright (c) 2018-2022 Payara Foundation
+ * Copyright (c) 2018-2023 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -58,15 +58,15 @@ public class SystemLibraries {
             "glassfish/modules/weld-osgi-bundle.jar",
             "glassfish/modules/bean-validator.jar",
             "glassfish/modules/jersey-*.jar",
-            "glassfish/modules/grizzly-comet.jar", //
-            "glassfish/modules/grizzly-websockets.jar", //
+            "glassfish/modules/grizzly-comet.jar",
+            "glassfish/modules/grizzly-websockets.jar",
             "glassfish/modules/glassfish-api.jar",
             "glassfish/modules/ha-api.jar",
             "glassfish/modules/endorsed/*.jar",
             "glassfish/modules/org.eclipse.persistence*.jar",
             "glassfish/modules/jaxb*.jar",
             "glassfish/modules/webservices*.jar",
-            "glassfish/modules/woodstox-osgi*.jar", //
+            "glassfish/modules/woodstox-osgi*.jar",
             "mq/lib/jaxm-api*.jar"
     };
 
@@ -81,13 +81,11 @@ public class SystemLibraries {
             "glassfish/modules/org.eclipse.persistence*.jar",
             "glassfish/modules/jaxb*.jar",
             "glassfish/modules/webservices*.jar",
-            "glassfish/modules/cdi-api.jar", // +
+            "glassfish/modules/cdi-api.jar",
             "mq/lib/jaxm-api.jar"
     };
 
-    private static final String[] LIBRARIES_5 = LIBRARIES_4;
-
-    private static final String[] LIBRARIES_5_191 = {
+    private static final String[] LIBRARIES_5 = {
             "glassfish/modules/javax.*.jar",
             "glassfish/modules/jakarta.*.jar",
             "glassfish/modules/weld-osgi-bundle.jar",
@@ -99,7 +97,7 @@ public class SystemLibraries {
             "glassfish/modules/org.eclipse.persistence*.jar",
             "glassfish/modules/jaxb*.jar",
             "glassfish/modules/webservices*.jar",
-            "glassfish/modules/cdi-api.jar", // +
+            "glassfish/modules/cdi-api.jar",
             "mq/lib/jaxm-api.jar"
     };
 
@@ -120,10 +118,6 @@ public class SystemLibraries {
     public static String[] getLibraryIncludesByVersion(Version version) {
         if (version.matches("[6")) {
             return LIBRARIES_6;
-        }
-
-        if (version.matches("[5.191")) {
-            return LIBRARIES_5_191;
         }
 
         if (version.matches("[5")) {

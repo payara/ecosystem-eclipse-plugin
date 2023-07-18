@@ -163,10 +163,10 @@
         
         <project-facet-version facet="glassfish.web" version="3.1">
             <action type="INSTALL">
-                <delegate class="fish.payara.eclipse.tools.server.facets.GlassfishWebFacetInstallDelegate"/>
+                <delegate class="fish.payara.eclipse.tools.server.facets.PayaraWebFacetInstallDelegate"/>
             </action>
             <action  type="UNINSTALL">
-                <delegate class="fish.payara.eclipse.tools.server.facets.GlassfishWebFacetUninstallDelegate"/>
+                <delegate class="fish.payara.eclipse.tools.server.facets.PayaraWebFacetUninstallDelegate"/>
             </action>   
             <constraint>
                 <requires facet="jst.web"/>
@@ -175,10 +175,10 @@
         
         <project-facet-version facet="glassfish.web" version="4.0">
             <action type="INSTALL">
-                <delegate class="fish.payara.eclipse.tools.server.facets.GlassfishWebFacetInstallDelegate"/>
+                <delegate class="fish.payara.eclipse.tools.server.facets.PayaraWebFacetInstallDelegate"/>
             </action>
             <action  type="UNINSTALL">
-                <delegate class="fish.payara.eclipse.tools.server.facets.GlassfishWebFacetUninstallDelegate"/>
+                <delegate class="fish.payara.eclipse.tools.server.facets.PayaraWebFacetUninstallDelegate"/>
             </action>   
             <constraint>
                 <requires facet="jst.web"/>
@@ -187,10 +187,10 @@
         
         <project-facet-version facet="glassfish.web" version="5">
             <action type="INSTALL">
-                <delegate class="fish.payara.eclipse.tools.server.facets.GlassfishWebFacetInstallDelegate"/>
+                <delegate class="fish.payara.eclipse.tools.server.facets.PayaraWebFacetInstallDelegate"/>
             </action>
             <action  type="UNINSTALL">
-                <delegate class="fish.payara.eclipse.tools.server.facets.GlassfishWebFacetUninstallDelegate"/>
+                <delegate class="fish.payara.eclipse.tools.server.facets.PayaraWebFacetUninstallDelegate"/>
             </action>   
             <constraint>
                 <requires facet="jst.web"/>
@@ -199,10 +199,10 @@
         
         <project-facet-version facet="glassfish.ejb" version="3.1">
             <action type="INSTALL">
-                <delegate class="fish.payara.eclipse.tools.server.facets.GlassfishEjbFacetInstallDelegate"/>
+                <delegate class="fish.payara.eclipse.tools.server.facets.PayaraEjbFacetInstallDelegate"/>
             </action>
             <action  type="UNINSTALL">
-                <delegate class="fish.payara.eclipse.tools.server.facets.GlassfishEjbFacetUninstallDelegate"/>
+                <delegate class="fish.payara.eclipse.tools.server.facets.PayaraEjbFacetUninstallDelegate"/>
             </action>   
             <constraint>
                 <requires facet="jst.ejb"/>
@@ -211,10 +211,10 @@
         
         <project-facet-version facet="glassfish.ejb" version="4.0">
             <action type="INSTALL">
-                <delegate class="fish.payara.eclipse.tools.server.facets.GlassfishEjbFacetInstallDelegate"/>
+                <delegate class="fish.payara.eclipse.tools.server.facets.PayaraEjbFacetInstallDelegate"/>
             </action>
             <action type="UNINSTALL">
-                <delegate class="fish.payara.eclipse.tools.server.facets.GlassfishEjbFacetUninstallDelegate"/>
+                <delegate class="fish.payara.eclipse.tools.server.facets.PayaraEjbFacetUninstallDelegate"/>
             </action>   
             <constraint>
                 <requires facet="jst.ejb"/>
@@ -223,10 +223,10 @@
         
         <project-facet-version facet="glassfish.ejb" version="5">
             <action type="INSTALL">
-                <delegate class="fish.payara.eclipse.tools.server.facets.GlassfishEjbFacetInstallDelegate"/>
+                <delegate class="fish.payara.eclipse.tools.server.facets.PayaraEjbFacetInstallDelegate"/>
             </action>
             <action type="UNINSTALL">
-                <delegate class="fish.payara.eclipse.tools.server.facets.GlassfishEjbFacetUninstallDelegate"/>
+                <delegate class="fish.payara.eclipse.tools.server.facets.PayaraEjbFacetUninstallDelegate"/>
             </action>   
             <constraint>
                 <requires facet="jst.ejb"/>
@@ -686,7 +686,7 @@
             class="fish.payara.eclipse.tools.server.handlers.PayaraStateTester"
             id="fish.payara.eclipse.tools.server.PayaraStateTester"
             namespace="fish.payara.eclipse.tools.server"
-            properties="isRunning,isRemote"
+            properties="isRunning,isRemote,isWSLInstance"
             type="org.eclipse.wst.server.core.IServer">
         </propertyTester>
         <propertyTester
@@ -738,6 +738,16 @@
                     </test>
                 </and>
             </adapt>
+        </definition>
+        <definition id="fish.payara.eclipse.tools.server.isWSLInstance">
+            <and>
+                <count value="1"/>
+                <iterate ifEmpty="false">
+                    <and>
+                        <test property="fish.payara.eclipse.tools.server.isWSLInstance"/>
+                    </and>
+                </iterate>     
+            </and>
         </definition>
      
         <definition id="fish.payara.eclipse.tools.server.moreGlassfishSelected">
@@ -969,9 +979,12 @@
         >
             <enabledWhen>
                 <and>
-                    <not>    
-                        <reference definitionId="fish.payara.eclipse.tools.server.isRemoteGlassfish"/>
-                    </not>
+                    <or>
+                        <reference definitionId="fish.payara.eclipse.tools.server.isWSLInstance"/>
+                        <not>    
+                            <reference definitionId="fish.payara.eclipse.tools.server.isRemoteGlassfish"/>
+                        </not>
+                    </or>
                     <reference definitionId="fish.payara.eclipse.tools.server.oneGlassfishSelected"/>
                 </and>
             </enabledWhen>

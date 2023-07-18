@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 /******************************************************************************
- * Copyright (c) 2018-2022 Payara Foundation
+ * Copyright (c) 2018-2023 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,13 +16,32 @@
  * SPDX-License-Identifier: EPL-2.0
  ******************************************************************************/
 
-package fish.payara.eclipse.tools.server.facets;
+package fish.payara.eclipse.tools.server.facets.internal;
 
-public interface IGlassfishWebDeploymentDescriptor extends IGlassfishDeploymentDescriptor {
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 
-    static final String SUN_WEB_DEPLOYMENT_DESCRIPTOR_NAME = "sun-web.xml";
+import fish.payara.eclipse.tools.server.facets.IPayaraDeploymentDescriptor;
 
-    public void setContext(String context);
+abstract class AbstractPayaraDeploymentDescriptor implements
+        IPayaraDeploymentDescriptor {
 
-    public String getContext();
+    /**
+     * Created new deployment descriptor if it's not already there.
+     *
+     */
+    @Override
+    public final void store(IProgressMonitor monitor) throws CoreException {
+        if (isPossibleToCreate()) {
+            prepareDescriptor();
+            save();
+        }
+    }
+
+    protected abstract void save();
+
+    protected abstract void prepareDescriptor();
+
+    protected abstract boolean isPossibleToCreate();
+
 }
