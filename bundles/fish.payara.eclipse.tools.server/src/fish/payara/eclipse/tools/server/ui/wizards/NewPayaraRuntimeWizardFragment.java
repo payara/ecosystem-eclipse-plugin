@@ -153,7 +153,7 @@ public class NewPayaraRuntimeWizardFragment extends WizardFragment {
 				validate(handle);
 			}
 		});
-
+		
 		label = new Label(group, SWT.NONE);
 		label.setText(GlassfishWizardResources.payaraLocation);
 		data = new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_END);
@@ -163,6 +163,9 @@ public class NewPayaraRuntimeWizardFragment extends WizardFragment {
 		serverLocation = new Text(group, SWT.BORDER);
 		data = new GridData(GridData.FILL_HORIZONTAL);
 		serverLocation.setLayoutData(data);
+		if(getServerRuntime().getLocation() != null) {
+			serverLocation.setText(getServerRuntime().getLocation().toPortableString());
+		}
 		serverLocation.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
@@ -183,9 +186,6 @@ public class NewPayaraRuntimeWizardFragment extends WizardFragment {
 					serverLocation.setText(selectedDirectory);
 					getServerRuntime().setLocation(new Path(serverLocation.getText().trim()));
 				}
-//				JdkFilter jdkFilter = payaraRuntime.getVersion() == null ? null
-//						: new JdkFilter(payaraRuntime.getJavaVersionConstraint());
-//				updateJREs(jdkFilter);
 			}
 		});
 
@@ -201,9 +201,9 @@ public class NewPayaraRuntimeWizardFragment extends WizardFragment {
 
 		jrecombo = new Combo(group, SWT.DROP_DOWN | SWT.READ_ONLY);
 		jrecombo.setItems(jreNames);
+		setDefaultJREComboText();
 		data = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
 		jrecombo.setLayoutData(data);
-
 		jrecombo.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -238,6 +238,25 @@ public class NewPayaraRuntimeWizardFragment extends WizardFragment {
 				}
 			}
 		});
+	}
+	
+	private void setDefaultJREComboText() {
+		PayaraRuntime payaraRuntime = (PayaraRuntime) getServerRuntime().loadAdapter(PayaraRuntime.class, null);
+		if (payaraRuntime != null && payaraRuntime.getVMInstall() != null) {
+			String selectedJRE = payaraRuntime.getVMInstall().getName();
+
+			int defaultIndex = -1;
+			for (int i = 0; i < jreNames.length; i++) {
+				if (jreNames[i].equals(selectedJRE)) {
+					defaultIndex = i;
+					break;
+				}
+			}
+
+			if (defaultIndex != -1) {
+				jrecombo.select(defaultIndex);
+			}
+		}
 	}
 
 	protected void updateJREs(JdkFilter jdkFilter) {
