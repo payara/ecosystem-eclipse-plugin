@@ -6,7 +6,7 @@
     <parent>
         <groupId>fish.payara.eclipse</groupId>
         <artifactId>fish.payara.eclipse.releng</artifactId>
-        <version>2.2.0</version>
+        <version>2.3.0</version>
     </parent>
     <artifactId>fish.payara.eclipse.update</artifactId>
     <packaging>eclipse-repository</packaging>
