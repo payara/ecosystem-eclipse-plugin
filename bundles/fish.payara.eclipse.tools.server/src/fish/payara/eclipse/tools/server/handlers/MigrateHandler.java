@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +43,7 @@ public class MigrateHandler extends AbstractHandler {
 	
 	public static final String PAYARA_TRANSFORMER = "fish.payara.transformer";
 	public static final String PAYARA_TRANSFORMER_MAVEN = "fish.payara.transformer.maven";
-	public static final String PAYARA_TRANSFORMER_VERSION = "0.2.10";
+	public static final String PAYARA_TRANSFORMER_VERSION = "0.2.15";
 
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
@@ -97,23 +98,22 @@ public class MigrateHandler extends AbstractHandler {
     	String selectedDirectory = dialog.open();
     	if (selectedDirectory != null) {
     		if (isFile) {
-    			String targetDir = selectedDirectory + "/jakartaee10-" + genRandomNumber() + "/";
+    			String targetDir = selectedDirectory + "/jakartaee10/";
     			try {
-					Files.createDirectories(Paths.get(targetDir));
+					final Path path = Paths.get(targetDir);
+					if (!Files.exists(path)) {
+						Files.createDirectories(path);
+					}
 					return targetDir + name;
 				} catch (IOException e) {
 					throw new RuntimeException(e);
 				}
     		}
-    	    return selectedDirectory + "/" + name + "-JakartaEE10-" + genRandomNumber();
+    	    return selectedDirectory + "/" + name + "-JakartaEE10";
     	}
     	return "";
     }
 
-	private long genRandomNumber() {
-		return Math.round(Math.random() * 1000000);
-	}
-    
     private IStructuredSelection getSelection(ExecutionEvent event) {
         ISelection selection = HandlerUtil.getCurrentSelection(event);
         if (selection instanceof IStructuredSelection) {
@@ -133,7 +133,6 @@ public class MigrateHandler extends AbstractHandler {
         try {
         	List<String> command = new ArrayList<>();
         	command.add(getMvnCommand());
-        	command.add("package");
         	command.add(getTransformCommand());
         	command.add("-DselectedSource=" + srcPath);
         	command.add("-DselectedTarget=" + targetPath);
