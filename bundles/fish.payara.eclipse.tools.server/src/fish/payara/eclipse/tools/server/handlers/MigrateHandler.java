@@ -32,9 +32,13 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
+import org.eclipse.ui.console.IConsoleConstants;
+import org.eclipse.ui.console.IConsoleView;
 import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.console.MessageConsoleStream;
 import org.eclipse.ui.handlers.HandlerUtil;
@@ -113,38 +117,46 @@ public class MigrateHandler extends AbstractHandler {
         return null;
     }
     
-    private int runMvnCommand(String srcProjectPath, String srcPath, String targetPath) {
-    	Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-        
-        MessageConsole console = new MessageConsole("Maven Command Console", null);
-        ConsolePlugin.getDefault().getConsoleManager().addConsoles(new IConsole[]{console});
-        
-        MessageConsoleStream consoleStream = console.newMessageStream();
-        
-        try {
-        	List<String> command = new ArrayList<>();
-        	command.add(getMvnCommand());
-        	command.add(getTransformCommand());
-        	command.add("-DselectedSource=" + srcPath);
-        	command.add("-DselectedTarget=" + targetPath);
-        	ProcessBuilder builder = new ProcessBuilder(command);
-        	builder.environment().put("PATH", System.getenv("PATH"));
-        	builder.directory(new File(srcProjectPath));
-        	builder.redirectErrorStream(true);
-        	Process process = builder.start();
-            
-        	BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        	String line = null;
-            while ((line = reader.readLine()) != null) {
-                consoleStream.println(line);
-            }
-            
-            return process.waitFor();
-        } catch (IOException | InterruptedException e) {
-            MessageDialog.openError(shell, "Error", "An error occurred while running the Maven command: " + e.getMessage());
-            return -1;
-        }
-    }
+	private int runMvnCommand(String srcProjectPath, String srcPath, String targetPath) {
+		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+
+		MessageConsole console = new MessageConsole("Maven Command Console", null);
+		ConsolePlugin.getDefault().getConsoleManager().addConsoles(new IConsole[] { console });
+		IConsoleView consoleView = null;
+
+		try {
+			IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+			consoleView = (IConsoleView) page.showView(IConsoleConstants.ID_CONSOLE_VIEW);
+			console.activate();
+			consoleView.display(console);
+
+			MessageConsoleStream consoleStream = console.newMessageStream();
+
+			List<String> command = new ArrayList<>();
+			command.add(getMvnCommand());
+			command.add(getTransformCommand());
+			command.add("-DselectedSource=" + srcPath);
+			command.add("-DselectedTarget=" + targetPath);
+			ProcessBuilder builder = new ProcessBuilder(command);
+			builder.environment().put("PATH", System.getenv("PATH"));
+			builder.directory(new File(srcProjectPath));
+			builder.redirectErrorStream(true);
+			Process process = builder.start();
+
+			BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+			String line = null;
+			while ((line = reader.readLine()) != null) {
+				consoleStream.println(line);
+			}
+
+			return process.waitFor();
+		} catch (IOException | InterruptedException | PartInitException e) {
+			MessageDialog.openError(shell, "Error",
+					"An error occurred while running the Maven command: " + e.getMessage());
+			return -1;
+		}
+	}
+
 
     private String getTransformCommand() {
         return String.format("%s:%s:%s:run",
