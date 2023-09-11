@@ -239,14 +239,7 @@ public class ServerTasks {
             return JDK_VERSION;
         }
 
-        String[] versions = JavaUtils.getJavaVersionString(args.getJavaHome()).split(":");
-        JDK.Version targetJDKVersion = null;
-
-        if (versions.length > 0) {
-            targetJDKVersion = JDK.getVersion(versions[0], System.getProperty("java.vendor"));
-        }
-
-        return targetJDKVersion;
+        return JavaUtils.getJavaVersion(args.getJavaHome());
     }
 
     public static Integer getDebugPort(ResultProcess process) {

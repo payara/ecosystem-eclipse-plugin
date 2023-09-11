@@ -22,6 +22,7 @@ import static java.util.logging.Level.WARNING;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -38,6 +39,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import fish.payara.eclipse.tools.server.sdk.logging.Logger;
+import fish.payara.eclipse.tools.server.sdk.server.JDK;
+import fish.payara.eclipse.tools.server.sdk.server.JDK.Version;
 import fish.payara.eclipse.tools.server.sdk.server.config.JavaSEPlatform;
 
 /**
@@ -274,63 +277,32 @@ public class JavaUtils {
 		return new JavaVersion(major, minor, revision, patch);
 	}
 
-	public static String getJavaVersionString(String javaHome) {
-		return getJavaVersionString(new File(javaVmExecutableFullPath(javaHome)));
-	}
-
-	public static String getJavaVersionString(File javaVm) {
-		List<String> javaVersions = new ArrayList<>();
-
-		try {
-			CodeSource src = JavaVersionDetector.class.getProtectionDomain().getCodeSource();
-			if (src != null) {
-
-				String className = JavaVersionDetector.class.getName();
-				String classFileName = JavaVersionDetector.class.getSimpleName() + ".class";
-				String classFilePackage = JavaVersionDetector.class.getPackage().getName().replace('.', '/');
-
-				URL classURL = JavaVersionDetector.class.getResource(classFileName);
-
-				if (classURL != null) {
-					try (InputStream inputStream = classURL.openConnection().getInputStream()) {
-
-						Path rootClassPath = Files.createTempDirectory("JavaVersionDetector");
-
-						Files.copy(
-							inputStream,
-							Files.createDirectories(rootClassPath.resolve(classFilePackage))
-								 .resolve(classFileName));
-
-						Process process = new ProcessBuilder(
-								javaVm.getAbsolutePath(),
-								VM_CLASSPATH_OPTION, rootClassPath.toAbsolutePath().toString(),
-								className)
-							.start();
-
-						try (Scanner scanner = new Scanner(process.getErrorStream())) {
-							scanner.useDelimiter("\\A")
-								   .forEachRemaining(e -> javaVersions.add(e));
-						}
-
-					}
-				}
-			}
-		} catch (Exception e) {
-			LOGGER.log(WARNING, "javaVmVersion", "Caught exception when getting VM version", e);
-		}
-
-		if (!javaVersions.isEmpty()) {
-			return javaVersions.get(0);
-		}
-
-		JavaVersion version = javaVmVersion(javaVm);
-
-		if (version != null) {
-			return version.toString();
-		}
-
-		return null;
-	}
+	public static Version getJavaVersion(String javaHome) {
+		Version javaVersion = null;
+        if(javaHome != null) {
+                try (BufferedReader bufferedReader
+                        = new BufferedReader(new FileReader(new File(javaHome, "release")));) { // NOI18N
+                    String implementorLine = null;
+                    String javaVersionLine = null;
+                    String line;
+                    while ((line = bufferedReader.readLine()) != null) {
+                        if (line.startsWith("JAVA_VERSION=")) { // NOI18N
+                            javaVersionLine = line;
+                        } else if (line.startsWith("IMPLEMENTOR=")) { // NOI18N
+                            implementorLine = line;
+                        }
+                    }
+                    if (javaVersionLine != null) {
+                    	String version = javaVersionLine.substring(javaVersionLine.indexOf("\"") + 1, javaVersionLine.lastIndexOf("\"")); // NOI18N
+                    	String vendor = implementorLine != null ? implementorLine.substring(implementorLine.indexOf("\"") + 1, implementorLine.lastIndexOf("\"")) : null; // NOI18N
+                        javaVersion = JDK.getVersion(version, vendor);
+                    }
+                } catch (IOException ex) {
+                    LOGGER.log(WARNING, "javaVmVersion", "Caught exception when getting VM version", ex);
+                }
+        }
+        return javaVersion;
+    }
 
     /**
      * Build Java VM executable full path from Java Home directory.
