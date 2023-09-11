@@ -43,7 +43,7 @@ public class MigrateHandler extends AbstractHandler {
 	
 	public static final String PAYARA_TRANSFORMER = "fish.payara.transformer";
 	public static final String PAYARA_TRANSFORMER_MAVEN = "fish.payara.transformer.maven";
-	public static final String PAYARA_TRANSFORMER_VERSION = "0.2.15";
+	public static final String PAYARA_TRANSFORMER_VERSION = "0.2.14";
 
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
@@ -80,7 +80,7 @@ public class MigrateHandler extends AbstractHandler {
                 if ("".equals(destinationPath)) return null;
 				int exitCode = runMvnCommand(srcProjectPath, srcPath, destinationPath);
 	            if (exitCode == 0) {
-	                MessageDialog.openInformation(shell, "Success", "Project " + destinationPath + " created successfully.");
+	                MessageDialog.openInformation(shell, "Success", (isFile ? "File " : "Project ") + destinationPath + " created successfully.");
 	            } else {
 	                MessageDialog.openError(shell, "Error", "Maven command failed with exit code " + exitCode + ".");
 	            }
@@ -98,16 +98,7 @@ public class MigrateHandler extends AbstractHandler {
     	String selectedDirectory = dialog.open();
     	if (selectedDirectory != null) {
     		if (isFile) {
-    			String targetDir = selectedDirectory + "/jakartaee10/";
-    			try {
-					final Path path = Paths.get(targetDir);
-					if (!Files.exists(path)) {
-						Files.createDirectories(path);
-					}
-					return targetDir + name;
-				} catch (IOException e) {
-					throw new RuntimeException(e);
-				}
+    			return selectedDirectory + "/" + name;
     		}
     	    return selectedDirectory + "/" + name + "-JakartaEE10";
     	}
