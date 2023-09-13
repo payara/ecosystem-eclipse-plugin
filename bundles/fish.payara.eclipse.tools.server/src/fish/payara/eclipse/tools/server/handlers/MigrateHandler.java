@@ -59,7 +59,6 @@ public class MigrateHandler extends AbstractHandler {
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
     	IWorkbenchWindow activeWorkbenchWindow = HandlerUtil.getActiveWorkbenchWindow(event);
-		IWorkbenchPage page = activeWorkbenchWindow.getActivePage();
     	Shell shell = activeWorkbenchWindow.getShell();
     	IStructuredSelection selection = getSelection(event);
         if (selection != null && !selection.isEmpty()) {
@@ -136,10 +135,7 @@ public class MigrateHandler extends AbstractHandler {
     	dialog.setFilterPath(srcPath);
     	String selectedDirectory = dialog.open();
     	if (selectedDirectory != null) {
-    		if (isFile) {
-    			return selectedDirectory + "/" + name;
-    		}
-    	    return selectedDirectory + "/" + name + "-JakartaEE10";
+			return selectedDirectory + "/" + name;
     	}
     	return "";
     }
