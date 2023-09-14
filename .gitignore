@@ -45,3 +45,4 @@
 /features/fish.payara.eclipse.tools.micro.feature/.polyglot.build.properties
 /features/fish.payara.eclipse.tools.server.feature/.polyglot.build.properties
 /.metadata/.plugins/org.eclipse.m2e.logback/logback.2.1.0.20221015-0744.xml
+/.metadata/
