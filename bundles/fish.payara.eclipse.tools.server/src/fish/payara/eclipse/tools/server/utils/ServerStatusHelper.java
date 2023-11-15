@@ -45,6 +45,7 @@ import fish.payara.eclipse.tools.server.PayaraRuntime;
 import fish.payara.eclipse.tools.server.PayaraServer;
 import fish.payara.eclipse.tools.server.ServerStatus;
 import fish.payara.eclipse.tools.server.deploying.PayaraServerBehaviour;
+import fish.payara.eclipse.tools.server.sdk.PayaraIdeException;
 import fish.payara.eclipse.tools.server.sdk.TaskEvent;
 import fish.payara.eclipse.tools.server.sdk.TaskState;
 import fish.payara.eclipse.tools.server.sdk.TaskStateListener;
@@ -70,19 +71,28 @@ public class ServerStatusHelper {
 
         if (server.isRemote()) {
             IServer server1 = server.getServer();
-            String remoteServerVersion = PayaraServerBehaviour.getVersion(server);
-            PayaraRuntime payaraRuntime = (PayaraRuntime) server1.getRuntime().loadAdapter(PayaraRuntime.class, null);
+			try {
+				String remoteServerVersion = PayaraServerBehaviour.getVersion(server);
+				PayaraRuntime payaraRuntime = (PayaraRuntime) server1.getRuntime().loadAdapter(PayaraRuntime.class,
+						null);
 
-            String thisServerVersion = payaraRuntime.getVersion().toString();
-            int n = thisServerVersion.indexOf(".X");
+				String thisServerVersion = payaraRuntime.getVersion().toString();
+				int n = thisServerVersion.indexOf(".X");
 
-            if (n > 0) {
-                thisServerVersion = thisServerVersion.substring(0, n + 1);
-            }
+				if (n > 0) {
+					thisServerVersion = thisServerVersion.substring(0, n + 1);
+				}
 
-            if (remoteServerVersion != null && remoteServerVersion.indexOf(thisServerVersion) < 0) {
-                return STOPPED_DOMAIN_NOT_MATCHING;
-            }
+				if (remoteServerVersion != null && remoteServerVersion.indexOf(thisServerVersion) < 0) {
+					return STOPPED_DOMAIN_NOT_MATCHING;
+				}
+			} catch (PayaraIdeException pde) {
+				if(pde.getMessage().contains("LoginException")) {
+					return RUNNING_CREDENTIAL_PROBLEM;
+				} else {
+					throw pde;
+				}
+			}
         }
 
         CommandLocation command = new CommandLocation();
