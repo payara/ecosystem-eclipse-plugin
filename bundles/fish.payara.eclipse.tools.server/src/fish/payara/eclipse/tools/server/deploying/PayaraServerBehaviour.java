@@ -324,7 +324,11 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
 		Future<ResultString> future = ServerAdmin.exec(server, new CommandVersion());
 
 		try {
-			return future.get(30, SECONDS).getValue();
+			ResultString result = future.get(30, SECONDS);
+			if (!result.isAuth()) {
+				throw new PayaraIdeException(result.getValue());
+			}
+			return result.getValue();
 		} catch (InterruptedException | ExecutionException e) {
 			throw new PayaraIdeException("Exception by calling getVersion", e);
 		} catch (TimeoutException e) {
