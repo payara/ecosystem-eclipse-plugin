@@ -325,7 +325,7 @@ public final class PayaraServerBehaviour extends ServerBehaviourDelegate impleme
 
 		try {
 			ResultString result = future.get(30, SECONDS);
-			if(!result.isAuth()) {
+			if (!result.isAuth()) {
 				throw new PayaraIdeException(result.getValue());
 			}
 			return result.getValue();
