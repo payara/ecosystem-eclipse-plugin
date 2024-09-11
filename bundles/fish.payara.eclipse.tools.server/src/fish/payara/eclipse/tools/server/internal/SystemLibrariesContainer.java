@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 /******************************************************************************
- * Copyright (c) 2018-2022 Payara Foundation
+ * Copyright (c) 2018-2024 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -276,7 +276,9 @@ public final class SystemLibrariesContainer implements IClasspathContainer {
 
         URL doc;
         String javaEEVersion;
-        if(version.matches("[6")) {
+        if(version.matches("[7")) {
+            javaEEVersion = "11";
+        } else if(version.matches("[6")) {
             javaEEVersion = "9";
         } else if(version.matches("[5")) {
             javaEEVersion = "8";

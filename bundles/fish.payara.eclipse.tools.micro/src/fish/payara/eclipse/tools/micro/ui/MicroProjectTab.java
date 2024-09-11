@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2022 Payara Foundation
+ * Copyright (c) 2020-2024 Payara Foundation
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -9,7 +9,6 @@
  */
 package fish.payara.eclipse.tools.micro.ui;
 
-import static fish.payara.eclipse.tools.micro.ui.wizards.MicroProjectWizard.ARCHETYPE_MICRO_VERSIONS;
 import static fish.payara.eclipse.tools.micro.MicroConstants.ATTR_BUILD_ARTIFACT;
 import static fish.payara.eclipse.tools.micro.MicroConstants.ATTR_CONTEXT_PATH;
 import static fish.payara.eclipse.tools.micro.MicroConstants.ATTR_DEBUG_PORT;
@@ -35,6 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import fish.payara.eclipse.tools.micro.ui.wizards.MicroProjectWizard;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
@@ -82,7 +82,7 @@ public class MicroProjectTab extends AbstractJavaMainTab {
 
 		group = SWTFactory.createGroup(mainComposite, Messages.microVersionComponentLabel, 1, 1,
 				GridData.FILL_HORIZONTAL);
-                microVersionText = SWTFactory.createCombo(group, SWT.READ_ONLY, 1, ARCHETYPE_MICRO_VERSIONS);
+                microVersionText = SWTFactory.createCombo(group, SWT.READ_ONLY, 1, MicroProjectWizard.getVersions().toArray(new String[0]));
 		microVersionText.addModifyListener(getDefaultListener());
 
 		group = SWTFactory.createGroup(mainComposite, Messages.buildArtifactComponentLabel, 1, 1,

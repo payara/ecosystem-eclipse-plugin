@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2022 Payara Foundation
+ * Copyright (c) 2020-2024 Payara Foundation
  * Copyright (c) 2008-2010 Sonatype, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -13,6 +13,12 @@ import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static java.util.stream.Collectors.toList;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.StringReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -53,6 +59,12 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkingSet;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 public class MicroProjectWizard extends Wizard implements INewWizard {
 
@@ -75,24 +87,15 @@ public class MicroProjectWizard extends Wizard implements INewWizard {
 	private static final String NAME = "\\[name\\]"; //$NON-NLS-1$
 	private static final String PROJECT_NAME_REGEX = "\\$\\{[^\\}]++\\}"; //$NON-NLS-1$
 
-	private static final String ARCHETYPE_GROUP_ID = "fish.payara.maven.archetypes"; //$NON-NLS-1$
-	private static final String ARCHETYPE_ARTIFACT_ID = "payara-micro-maven-archetype"; //$NON-NLS-1$
+	public static final String ARCHETYPE_GROUP_ID = "fish.payara.maven.archetypes"; //$NON-NLS-1$
+	public static final String ARCHETYPE_ARTIFACT_ID = "payara-micro-maven-archetype"; //$NON-NLS-1$
 	public static final String ARCHETYPE_VERSION_5X = "1.4.0"; //$NON-NLS-1$
-	public static final String ARCHETYPE_VERSION_6X = "2.0"; //$NON-NLS-1$
+	public static final String STARTER_ARCHETYPE_GROUP_ID = "fish.payara.starter";
+	public static final String STARTER_ARCHETYPE_ARTIFACT_ID = "payara-starter-archetype";
+	public static final String ARCHETYPE_VERSION_6X = "1.0-beta9"; //$NON-NLS-1$
 	private static final String ARCHETYPE_JDK_VERSION = "jdkVersion"; //$NON-NLS-1$
 	private static final String ARCHETYPE_JDK_VERSION_DEFAULT_VALUE = "1.8"; //$NON-NLS-1$
 	public static final String ARCHETYPE_MICRO_VERSION = "payaraMicroVersion"; //$NON-NLS-1$
-	private static final String ARCHETYPE_MICRO_VERSION_DEFAULT_VALUE = "6.2023.2"; //$NON-NLS-1$
-        public static final String[] ARCHETYPE_MICRO_VERSIONS = new String[]{"6.2023.2", "6.2023.1", "6.2022.2", "6.2022.1",
-            "5.2022.5", "5.2022.4", "5.2022.3",
-            "5.2022.2", "5.2022.1", "5.2021.10",
-            "5.2021.9", "5.2021.8", "5.2021.7",
-            "5.2021.6", "5.2021.5", "5.2021.4",
-            "5.2021.3", "5.2021.2", "5.2021.1",
-            "5.2020.7", "5.2020.6", "5.2020.5",
-            "5.2020.4", "5.2020.3", "5.2020.2",
-            "5.201", "5.194", "5.193.1", "5.192",
-            "5.191", "5.184", "5.183", "5.182", "5.181"}; //$NON-NLS-1$
 	public static final String ARCHETYPE_AUTOBIND_HTTP = "autoBindHttp"; //$NON-NLS-1$
 	private static final String ARCHETYPE_CONCURRENT_API = "addConcurrentApi"; //$NON-NLS-1$
 	private static final String ARCHETYPE_RESOURCE_API = "addResourceApi"; //$NON-NLS-1$
@@ -104,6 +107,57 @@ public class MicroProjectWizard extends Wizard implements INewWizard {
 	private static final String ARCHETYPE_CONTEXT_ROOT_DEFAULT_VALUE = "/"; //$NON-NLS-1$
 	private static final String ARCHETYPE_DEPLOY_WAR = "deployWar"; //$NON-NLS-1$
 	private static final String EMPTY = ""; //$NON-NLS-1$
+
+
+	public static final String DEFAULT_REPOSITORY_URL = "https://repo1.maven.org/maven2/"; // NOI18N
+
+	private static final String METADATA_URL = "fish/payara/extras/payara-micro/maven-metadata.xml"; // NOI18N
+
+	private static final List<String> versions = new ArrayList<>();
+	public static List<String> getVersions() {
+		if (versions.isEmpty()) {
+			try {
+				// Construct the full URL
+				String urlString = DEFAULT_REPOSITORY_URL + METADATA_URL;
+				URL url = new URL(urlString);
+
+				// Open connection
+				HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+				connection.setRequestMethod("GET");
+
+				// Read the response
+				BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+				StringBuilder xmlResponse = new StringBuilder();
+				String line;
+				while ((line = in.readLine()) != null) {
+					xmlResponse.append(line);
+				}
+				in.close();
+
+				// Parse the XML response
+				DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+				DocumentBuilder builder = factory.newDocumentBuilder();
+				Document doc = builder.parse(new InputSource(new StringReader(xmlResponse.toString())));
+
+				String latest = doc.getElementsByTagName("latest").item(0).getTextContent();
+				// Extract versions
+				NodeList versionNodes = doc.getElementsByTagName("version");
+				for (int i = versionNodes.getLength() - 1; i >= 0; i--) {
+					String version = versionNodes.item(i).getTextContent();
+					if ((version.contains("Alpha") || version.contains("Beta") || version.contains("SNAPSHOT")) // NOI18N
+							&& !version.equals(latest)) {
+						continue;
+					};
+					versions.add(version);
+				}
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		}
+		return versions;
+	}
 
 	@Override
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
@@ -134,12 +188,12 @@ public class MicroProjectWizard extends Wizard implements INewWizard {
 
 	private Archetype getArchetype() {
 		Archetype archetype = new Archetype();
-		archetype.setGroupId(ARCHETYPE_GROUP_ID);
-		archetype.setArtifactId(ARCHETYPE_ARTIFACT_ID);
+		archetype.setGroupId(STARTER_ARCHETYPE_GROUP_ID);
+		archetype.setArtifactId(STARTER_ARCHETYPE_ARTIFACT_ID);
 		archetype.setVersion(ARCHETYPE_VERSION_6X);
 		Properties properties = new Properties();
 		properties.put(ARCHETYPE_JDK_VERSION, ARCHETYPE_JDK_VERSION_DEFAULT_VALUE);
-		properties.put(ARCHETYPE_MICRO_VERSION, ARCHETYPE_MICRO_VERSION_DEFAULT_VALUE);
+		properties.put(ARCHETYPE_MICRO_VERSION, getVersions().get(0));
 		properties.put(ARCHETYPE_AUTOBIND_HTTP, TRUE.toString());
 		properties.put(ARCHETYPE_CONCURRENT_API, FALSE.toString());
 		properties.put(ARCHETYPE_RESOURCE_API, FALSE.toString());
