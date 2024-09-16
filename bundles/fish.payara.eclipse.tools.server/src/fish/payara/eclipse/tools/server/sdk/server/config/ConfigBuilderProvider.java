@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 /******************************************************************************
- * Copyright (c) 2018-2022 Payara Foundation
+ * Copyright (c) 2018-2024 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -60,7 +60,9 @@ public class ConfigBuilderProvider {
      * @return Library builder configuration for given GlassFish server version.
      */
     public static URL getBuilderConfig(final Version version) {
-        if (version.matches("[6")) {
+        if (version.matches("[7")) {
+            return ConfigBuilderProvider.class.getResource("PayaraV7.xml");
+        } else if (version.matches("[6")) {
             return ConfigBuilderProvider.class.getResource("PayaraV6.xml");
         } else if (version.matches("[5")) {
             return ConfigBuilderProvider.class.getResource("PayaraV5.xml");

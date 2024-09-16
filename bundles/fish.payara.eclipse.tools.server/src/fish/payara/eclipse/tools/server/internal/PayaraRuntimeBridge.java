@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 /******************************************************************************
- * Copyright (c) 2018-2022 Payara Foundation
+ * Copyright (c) 2018-2024 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -96,7 +96,9 @@ public final class PayaraRuntimeBridge implements IRuntimeBridge {
 
                 if (payaraVersion != null) {
                     String payaraMainVersion;
-                    if(payaraVersion.matches("[6")) {
+                    if(payaraVersion.matches("[7")) {
+                        payaraMainVersion = "7";
+                    } else if(payaraVersion.matches("[6")) {
                         payaraMainVersion = "6";
                     } else if(payaraVersion.matches("[5")) {
                         payaraMainVersion = "5";

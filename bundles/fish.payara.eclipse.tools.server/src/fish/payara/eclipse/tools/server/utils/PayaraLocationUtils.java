@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 /******************************************************************************
- * Copyright (c) 2018-2023 Payara Foundation
+ * Copyright (c) 2018-2024 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -223,7 +223,7 @@ public final class PayaraLocationUtils {
 			properties.load(fis);
 			int major = Integer.parseInt(properties.getProperty("major_version"));
 			int minor = Integer.parseInt(properties.getProperty("minor_version"));
-			int update = Integer.parseInt(properties.getProperty("update_version"));
+	        int update = Integer.parseInt(properties.getProperty("update_version").split("\\.")[0]);
 			return new Version(major + "." + minor + "." + update);
 		} catch (IOException e) {
 			throw new IllegalArgumentException(e);

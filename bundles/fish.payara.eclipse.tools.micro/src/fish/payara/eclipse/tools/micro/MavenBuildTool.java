@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2022 Payara Foundation
+ * Copyright (c) 2020-2024 Payara Foundation
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -89,7 +89,7 @@ public class MavenBuildTool extends BuildTool {
 		} else {
 			commands.add("package");
 		}
-		commands.add(PLUGIN + "start");
+		commands.add(PLUGIN + "dev");
 		if (contextPath != null && !contextPath.trim().isEmpty()) {
 			commands.add("-DcontextRoot=" + contextPath);
 		}

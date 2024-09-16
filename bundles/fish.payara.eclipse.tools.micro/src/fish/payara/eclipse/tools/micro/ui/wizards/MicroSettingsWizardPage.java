@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2022 Payara Foundation
+ * Copyright (c) 2020-2024 Payara Foundation
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -12,15 +12,17 @@ package fish.payara.eclipse.tools.micro.ui.wizards;
 import static fish.payara.eclipse.tools.micro.ui.wizards.MicroProjectWizard.ARCHETYPE_AUTOBIND_HTTP;
 import static fish.payara.eclipse.tools.micro.ui.wizards.MicroProjectWizard.ARCHETYPE_CONTEXT_ROOT;
 import static fish.payara.eclipse.tools.micro.ui.wizards.MicroProjectWizard.ARCHETYPE_MICRO_VERSION;
-import static fish.payara.eclipse.tools.micro.ui.wizards.MicroProjectWizard.ARCHETYPE_MICRO_VERSIONS;
 import static fish.payara.eclipse.tools.micro.ui.wizards.MicroProjectWizard.ARCHETYPE_VERSION_5X;
 import static fish.payara.eclipse.tools.micro.ui.wizards.MicroProjectWizard.ARCHETYPE_VERSION_6X;
+import static fish.payara.eclipse.tools.micro.ui.wizards.MicroProjectWizard.ARCHETYPE_GROUP_ID;
+import static fish.payara.eclipse.tools.micro.ui.wizards.MicroProjectWizard.ARCHETYPE_ARTIFACT_ID;
+import static fish.payara.eclipse.tools.micro.ui.wizards.MicroProjectWizard.STARTER_ARCHETYPE_GROUP_ID;
+import static fish.payara.eclipse.tools.micro.ui.wizards.MicroProjectWizard.STARTER_ARCHETYPE_ARTIFACT_ID;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Map;
-import java.util.Properties;
 import java.util.stream.Collectors;
 
 import org.apache.maven.archetype.catalog.Archetype;
@@ -76,7 +78,7 @@ public class MicroSettingsWizardPage extends AbstractMavenWizardPage {
 		microVersionCombo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
 		microVersionCombo.setData("name", ARCHETYPE_MICRO_VERSION); //$NON-NLS-1$
 		microVersionCombo.addModifyListener(e -> validate());
-		microVersionCombo.setItems(ARCHETYPE_MICRO_VERSIONS);
+		microVersionCombo.setItems(MicroProjectWizard.getVersions().toArray(new String[0]));
 
 		Label autobindLabel = new Label(parent, SWT.NONE);
 		autobindLabel.setText(Messages.autobindComponentLabel);
@@ -129,19 +131,25 @@ public class MicroSettingsWizardPage extends AbstractMavenWizardPage {
 	}
 
 	public Archetype getArchetype() {
-                String[] versionToken = microVersionCombo.getText().trim().split("\\.");
-		archetype.setVersion(versionToken.length > 1 && Integer.parseInt(versionToken[0]) < 6 ? ARCHETYPE_VERSION_5X : ARCHETYPE_VERSION_6X);
+		String[] versionToken = microVersionCombo.getText().trim().split("\\.");
+		if (versionToken.length > 1 && Integer.parseInt(versionToken[0]) < 6) {
+			archetype.setGroupId(ARCHETYPE_GROUP_ID);
+			archetype.setArtifactId(ARCHETYPE_ARTIFACT_ID);
+			archetype.setVersion(ARCHETYPE_VERSION_5X);
+		} else {
+			archetype.setGroupId(STARTER_ARCHETYPE_GROUP_ID);
+			archetype.setArtifactId(STARTER_ARCHETYPE_ARTIFACT_ID);
+			archetype.setVersion(ARCHETYPE_VERSION_6X);
+		}
+
 		return archetype;
 	}
 
 	public Map<String, String> getProperties() {
-                Map<String, String> properties = archetype.getProperties()
-                .entrySet().stream().collect(
-                        Collectors.toMap(
-                                e -> e.getKey().toString(),
-                                e -> e.getValue().toString()
-                        )
-                );
+		Map<String, String> properties = archetype.getProperties()
+				.entrySet()
+				.stream()
+				.collect(Collectors.toMap(e -> e.getKey().toString(), e -> e.getValue().toString()));
 		String contextRoot = contextPathCombo.getText().trim();
 		try {
 			contextRoot = contextRoot.startsWith("/") ? '/' + URLEncoder.encode(contextRoot.substring(1), UTF_8.name())

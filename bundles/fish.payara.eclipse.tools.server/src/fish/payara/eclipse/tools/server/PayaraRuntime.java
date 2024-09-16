@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 /******************************************************************************
- * Copyright (c) 2018-2022 Payara Foundation
+ * Copyright (c) 2018-2024 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,6 +35,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.IVMInstallType;
 import org.eclipse.jdt.launching.JavaRuntime;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jst.server.core.IJavaRuntime;
 import org.eclipse.jst.server.core.internal.IGenericRuntimeWorkingCopy;
 import org.eclipse.wst.server.core.IRuntimeType;
@@ -75,6 +76,7 @@ public final class PayaraRuntime extends RuntimeDelegate implements IJavaRuntime
     private static final VersionConstraint VERSION_CONSTRAINT_4 = new VersionConstraint("[1.7");
     private static final VersionConstraint VERSION_CONSTRAINT_5 = new VersionConstraint("[1.8");
     private static final VersionConstraint VERSION_CONSTRAINT_6 = new VersionConstraint("[1.8");
+    private static final VersionConstraint VERSION_CONSTRAINT_7 = new VersionConstraint("[1.8");
     protected static final String PROP_VM_INSTALL_TYPE_ID = "vm-install-type-id";
     protected static final String PROP_VM_INSTALL_ID = "vm-install-id";
 
@@ -157,7 +159,9 @@ public final class PayaraRuntime extends RuntimeDelegate implements IJavaRuntime
         String baseName = "Payara Server"; // TODO: - detect GF
 
         if (version != null) {
-        	if (version.matches("[6-7)")) {
+            if (version.matches("[7-8)")) {
+                baseName += " 7";
+            } else if (version.matches("[6-7)")) {
                 baseName += " 6";
             } else if (version.matches("[5-6)")) {
                 baseName += " 5";
@@ -222,7 +226,7 @@ public final class PayaraRuntime extends RuntimeDelegate implements IJavaRuntime
             return new Status(ERROR, SYMBOLIC_NAME, runtimeNotValid);
         }
 
-        if (!version.matches("[3.1-7)")) {
+        if (!version.matches("[3.1-8)")) {
             return new Status(ERROR, SYMBOLIC_NAME, unsupportedVersion);
         }
 
@@ -233,6 +237,10 @@ public final class PayaraRuntime extends RuntimeDelegate implements IJavaRuntime
         Version version = getVersion();
 
         if (version != null) {
+            if (version.matches("[7")) {
+                return VERSION_CONSTRAINT_7;
+            }
+
             if (version.matches("[6")) {
                 return VERSION_CONSTRAINT_6;
             }
@@ -260,7 +268,6 @@ public final class PayaraRuntime extends RuntimeDelegate implements IJavaRuntime
         // This is maybe a redundant check to the GUI annotation but
         // needed in case where a GUI is not involved (although we don't know
         // yet what case that would be)
-
         if (location == null || !location.toFile().exists()) {
             return new Status(ERROR, SYMBOLIC_NAME, bind(pathDoesNotExist, "Specified path"));
         }
