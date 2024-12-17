@@ -24,6 +24,7 @@ import org.eclipse.core.runtime.Platform;
 
 public class MavenBuildTool extends BuildTool {
 
+	public static String START_COMMAND = "dev";
 	private static final String PLUGIN = " fish.payara.maven.plugins:payara-micro-maven-plugin:";
 
 	public MavenBuildTool(IProject project) {
@@ -89,7 +90,7 @@ public class MavenBuildTool extends BuildTool {
 		} else {
 			commands.add("package");
 		}
-		commands.add(PLUGIN + "dev");
+		commands.add(PLUGIN + START_COMMAND);
 		if (contextPath != null && !contextPath.trim().isEmpty()) {
 			commands.add("-DcontextRoot=" + contextPath);
 		}
@@ -121,5 +122,9 @@ public class MavenBuildTool extends BuildTool {
 			}
 		}
 		return commands;
+	}
+
+	public static void setStartCommand(String cmd) {
+		START_COMMAND = cmd;
 	}
 }
