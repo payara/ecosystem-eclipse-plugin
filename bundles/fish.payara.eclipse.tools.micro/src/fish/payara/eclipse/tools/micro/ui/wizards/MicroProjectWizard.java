@@ -89,7 +89,7 @@ public class MicroProjectWizard extends Wizard implements INewWizard {
 
 	public static final String ARCHETYPE_GROUP_ID = "fish.payara.maven.archetypes"; //$NON-NLS-1$
 	public static final String ARCHETYPE_ARTIFACT_ID = "payara-micro-maven-archetype"; //$NON-NLS-1$
-	public static final String ARCHETYPE_VERSION_5X = "1.4.0"; //$NON-NLS-1$
+	public static final String ARCHETYPE_VERSION_5X = "1.5.0"; //$NON-NLS-1$
 	public static final String STARTER_ARCHETYPE_GROUP_ID = "fish.payara.starter";
 	public static final String STARTER_ARCHETYPE_ARTIFACT_ID = "payara-starter-archetype";
 	public static final String ARCHETYPE_VERSION_6X = "1.0-beta9"; //$NON-NLS-1$
