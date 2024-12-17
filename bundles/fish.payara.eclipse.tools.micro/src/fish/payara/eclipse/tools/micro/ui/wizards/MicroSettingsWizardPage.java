@@ -36,6 +36,8 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
+import fish.payara.eclipse.tools.micro.MavenBuildTool;
+
 public class MicroSettingsWizardPage extends AbstractMavenWizardPage {
 
 	private Combo contextPathCombo;
@@ -136,6 +138,7 @@ public class MicroSettingsWizardPage extends AbstractMavenWizardPage {
 			archetype.setGroupId(ARCHETYPE_GROUP_ID);
 			archetype.setArtifactId(ARCHETYPE_ARTIFACT_ID);
 			archetype.setVersion(ARCHETYPE_VERSION_5X);
+			MavenBuildTool.setStartCommand("start");
 		} else {
 			archetype.setGroupId(STARTER_ARCHETYPE_GROUP_ID);
 			archetype.setArtifactId(STARTER_ARCHETYPE_ARTIFACT_ID);
