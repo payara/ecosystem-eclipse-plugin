@@ -15,7 +15,7 @@
  */
 
 /******************************************************************************
- * Copyright (c) 2018-2022 Payara Foundation
+ * Copyright (c) 2018-2026 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,8 @@
 
 package fish.payara.eclipse.tools.server.sdk.server;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Optional;
 
 /**
@@ -239,11 +241,39 @@ public final class JDK {
         return new Version(major, minor, subminor, update, vendor);
     }
 
-    public static boolean isCorrectJDK(Optional<Version> minVersion, Optional<Version> maxVersion) {
-        return isCorrectJDK(JDK_VERSION, Optional.empty(), minVersion, maxVersion);
+    public static boolean isCorrectJDK(Optional<Version> minVersion,
+            Optional<Version> maxVersion) {
+        return isCorrectJDK(
+                JDK_VERSION,
+                Optional.empty(),
+                minVersion,
+                maxVersion,
+                null,
+                null
+        );
     }
 
-    public static boolean isCorrectJDK(Version version, Optional<String> vendor, Optional<Version> minVersion, Optional<Version> maxVersion) {
+    /**
+     * Checks whether a JVM option is applicable for the given JDK.
+     * Applies vendor, min/max version checks and additionally validates
+     * CRaC-related options against the selected JDK.
+     *
+     * @param version     JDK version used to start the server
+     * @param vendor      optional vendor restriction
+     * @param minVersion  optional minimum supported JDK version
+     * @param maxVersion  optional maximum supported JDK version
+     * @param jvmOption   JVM option string from domain.xml
+     * @param javaHome    Java home of the selected server JDK
+     * @return true if the option is valid for the given JDK
+     */
+    public static boolean isCorrectJDK(
+            Version version,
+            Optional<String> vendor,
+            Optional<Version> minVersion,
+            Optional<Version> maxVersion,
+            String jvmOption,
+            String javaHome) {
+
         boolean correctJDK = true;
 
         if (vendor.isPresent()) {
@@ -253,14 +283,37 @@ public final class JDK {
                 correctJDK = false;
             }
         }
+
         if (correctJDK && minVersion.isPresent()) {
             correctJDK = version.newerOrEquals(minVersion.get());
         }
+
         if (correctJDK && maxVersion.isPresent()) {
             correctJDK = version.olderOrEquals(maxVersion.get());
         }
 
+        if (correctJDK
+                && jvmOption != null
+                && jvmOption.matches("^-XX:[+-]?CRaC.*")) {
+
+            correctJDK = isCRaCJDK(javaHome);
+        }
+
         return correctJDK;
+    }
+
+    /**
+     * Checks whether the given JDK installation supports CRaC by verifying the
+     * presence of the lib/criu directory.
+     *
+     * @param javaHome Java home directory to check
+     * @return true if the JDK appears to be CRaC-enabled
+     */
+    public static boolean isCRaCJDK(String javaHome) {
+        return Optional.ofNullable(javaHome)
+                .map(home -> Path.of(home, "lib", "criu"))
+                .map(Files::exists)
+                .orElse(false);
     }
 
     /**

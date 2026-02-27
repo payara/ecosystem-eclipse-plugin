@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 /******************************************************************************
- * Copyright (c) 2018-2022 Payara Foundation
+ * Copyright (c) 2018-2026 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -152,12 +152,20 @@ public class ServerTasks {
 
         JDK.Version jdkVersion = getJavaVersion(args);
         JDK.Version targetJDKVersion = jdkVersion != null ? jdkVersion : JDK_VERSION;
-
+        String selectedJavaHome = jdkVersion != null
+                ? args.getJavaHome()
+                : System.getProperty("java.home");
         // Filter out all options that are not applicable
         List<String> optList
 	        = jvmConfigReader.getJvmOptions()
 	                .stream()
-	                .filter(fullOption -> isCorrectJDK(targetJDKVersion, fullOption.vendor, fullOption.minVersion, fullOption.maxVersion))
+                        .filter(fullOption -> isCorrectJDK(
+                        targetJDKVersion,
+                        fullOption.vendor,
+                        fullOption.minVersion,
+                        fullOption.maxVersion,
+                        fullOption.option,
+                        selectedJavaHome))
 	                .map(fullOption -> fullOption.option)
 	                .collect(toList());
 
