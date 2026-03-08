@@ -2,7 +2,7 @@
 <feature
       id="fish.payara.eclipse.tools.micro.feature"
       label="%featureName"
-      version="2.5.0"
+      version="2.6.0-SNAPSHOT"
       provider-name="%providerName">
 
    <description url="https://www.payara.fish/products/ecosystem-catalog/">
