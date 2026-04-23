@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 /******************************************************************************
- * Copyright (c) 2018-2024 Payara Foundation
+ * Copyright (c) 2018-2026 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -188,7 +188,7 @@ public final class PayaraLocationUtils {
 		return payaraLocation;
 	}
 
-	String GLASSFISH_VERSION_PROPERTIES = "glassfish\\config\\branding\\glassfish-version.properties";
+	private static final String GLASSFISH_VERSION_PROPERTIES = "glassfish/config/branding/glassfish-version.properties";
 
 	// #### PayaraLocation instance methods
 

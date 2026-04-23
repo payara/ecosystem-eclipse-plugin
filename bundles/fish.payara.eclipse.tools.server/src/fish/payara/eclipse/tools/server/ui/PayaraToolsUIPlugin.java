@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 /******************************************************************************
- * Copyright (c) 2018-2022 Payara Foundation
+ * Copyright (c) 2018-2026 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,6 @@
 
 package fish.payara.eclipse.tools.server.ui;
 
-import static org.eclipse.jface.resource.ImageDescriptor.createFromURL;
 import static org.eclipse.wst.server.core.IServer.STATE_UNKNOWN;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -31,6 +30,7 @@ import org.eclipse.wst.server.core.internal.ResourceManager;
 import org.eclipse.wst.server.core.internal.UpdateServerJob;
 
 import fish.payara.eclipse.tools.server.PayaraServer;
+import fish.payara.eclipse.tools.server.PayaraServerPlugin;
 
 /**
  * This is used as the OSGi bundle activator, as well as the central place to get images from.
@@ -96,14 +96,14 @@ public class PayaraToolsUIPlugin extends AbstractUIPlugin {
     protected void initializeImageRegistry(ImageRegistry reg) {
         super.initializeImageRegistry(reg);
 
-        reg.put(EAR_MODULE_IMG, createFromURL(getBundle().getEntry("icons/obj16/ear.gif")));
-        reg.put(EJB_MODULE_IMG, createFromURL(getBundle().getEntry("icons/obj16/ejb_module.gif")));
-        reg.put(GF_SERVER_IMG, createFromURL(getBundle().getEntry("icons/obj16/payara-blue.png")));
-        reg.put(LOG_FILE_IMG, createFromURL(getBundle().getEntry("icons/obj16/logfile.png")));
-        reg.put(WEB_MODULE_IMG, createFromURL(getBundle().getEntry("icons/obj16/web_module.gif")));
-        reg.put(WEBSERVICE_IMG, createFromURL(getBundle().getEntry("icons/obj16/webservice.png")));
-        reg.put(RESOURCES_IMG, createFromURL(getBundle().getEntry("icons/obj16/resources.gif")));
-        reg.put(GF_WIZARD, createFromURL(getBundle().getEntry("icons/wizard75x66.png")));
+        reg.put(EAR_MODULE_IMG, PayaraServerPlugin.createImageDescriptor("icons/obj16/ear.gif"));
+        reg.put(EJB_MODULE_IMG, PayaraServerPlugin.createImageDescriptor("icons/obj16/ejb_module.gif"));
+        reg.put(GF_SERVER_IMG, PayaraServerPlugin.createImageDescriptor("icons/obj16/payara-blue.png"));
+        reg.put(LOG_FILE_IMG, PayaraServerPlugin.createImageDescriptor("icons/obj16/logfile.png"));
+        reg.put(WEB_MODULE_IMG, PayaraServerPlugin.createImageDescriptor("icons/obj16/web_module.gif"));
+        reg.put(WEBSERVICE_IMG, PayaraServerPlugin.createImageDescriptor("icons/obj16/webservice.png"));
+        reg.put(RESOURCES_IMG, PayaraServerPlugin.createImageDescriptor("icons/obj16/resources.gif"));
+        reg.put(GF_WIZARD, PayaraServerPlugin.createImageDescriptor("icons/wizard75x66.png"));
     }
 
 }

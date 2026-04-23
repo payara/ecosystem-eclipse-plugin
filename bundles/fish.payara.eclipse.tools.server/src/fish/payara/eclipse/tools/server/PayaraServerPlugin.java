@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 /******************************************************************************
- * Copyright (c) 2018-2022 Payara Foundation
+ * Copyright (c) 2018-2026 Payara Foundation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,10 +23,12 @@ import static java.lang.Runtime.getRuntime;
 import static java.nio.charset.Charset.defaultCharset;
 import static org.eclipse.core.runtime.IStatus.ERROR;
 import static org.eclipse.core.runtime.IStatus.INFO;
-import static org.eclipse.jface.resource.ImageDescriptor.createFromURL;
 import static org.eclipse.wst.server.core.ServerCore.addRuntimeLifecycleListener;
 
+import java.io.ByteArrayInputStream;
 import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -39,7 +41,9 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.internal.ResourceManager;
@@ -89,18 +93,37 @@ public class PayaraServerPlugin extends AbstractUIPlugin {
     @Override
     protected void initializeImageRegistry(ImageRegistry reg) {
         super.initializeImageRegistry(reg);
-        reg.put(GF_SERVER_IMG, createFromURL(getBundle().getEntry("icons/obj16/payara-blue.png")));
-        reg.put(EAR_MODULE_IMG, createFromURL(getBundle().getEntry("icons/obj16/ear.gif")));
-        reg.put(EJB_MODULE_IMG, createFromURL(getBundle().getEntry("icons/obj16/ejb_module.gif")));
-        reg.put(LOG_FILE_IMG, createFromURL(getBundle().getEntry("icons/obj16/logfile.png")));
-        reg.put(WEB_MODULE_IMG, createFromURL(getBundle().getEntry("icons/obj16/web_module.gif")));
-        reg.put(WEBSERVICE_IMG, createFromURL(getBundle().getEntry("icons/obj16/webservice.png")));
-        reg.put(RESOURCES_IMG, createFromURL(getBundle().getEntry("icons/obj16/resources.gif")));
-        reg.put(GF_WIZARD, createFromURL(getBundle().getEntry("icons/wizard75x66.png")));
+        reg.put(GF_SERVER_IMG, createImageDescriptor("icons/obj16/payara-blue.png"));
+        reg.put(EAR_MODULE_IMG, createImageDescriptor("icons/obj16/ear.gif"));
+        reg.put(EJB_MODULE_IMG, createImageDescriptor("icons/obj16/ejb_module.gif"));
+        reg.put(LOG_FILE_IMG, createImageDescriptor("icons/obj16/logfile.png"));
+        reg.put(WEB_MODULE_IMG, createImageDescriptor("icons/obj16/web_module.gif"));
+        reg.put(WEBSERVICE_IMG, createImageDescriptor("icons/obj16/webservice.png"));
+        reg.put(RESOURCES_IMG, createImageDescriptor("icons/obj16/resources.gif"));
+        reg.put(GF_WIZARD, createImageDescriptor("icons/wizard75x66.png"));
 	}
 
+    public static ImageDescriptor createImageDescriptor(String path) {
+        if (BUNDLE == null) {
+            return ImageDescriptor.getMissingImageDescriptor();
+        }
 
-    	/**
+        var imageUrl = BUNDLE.getEntry(path);
+        if (imageUrl == null) {
+            logError("Unable to locate image resource: " + path);
+            return ImageDescriptor.getMissingImageDescriptor();
+        }
+
+        try (InputStream input = imageUrl.openStream()) {
+            byte[] imageBytes = input.readAllBytes();
+            return ImageDescriptor.createFromImageData(new ImageData(new ByteArrayInputStream(imageBytes)));
+        } catch (IOException | SWTException | IllegalArgumentException e) {
+            logError("Unable to load image resource: " + path, e);
+            return ImageDescriptor.getMissingImageDescriptor();
+        }
+    }
+
+    /**
 	 * Return the image with the given key from the image registry.
 	 * @param key java.lang.String
 	 * @return org.eclipse.jface.parts.IImage
@@ -117,26 +140,6 @@ public class PayaraServerPlugin extends AbstractUIPlugin {
 	public static ImageDescriptor getImageDescriptor(String key) {
 		 return getInstance().getImageRegistry().getDescriptor(key);
 	}
-
-//        /**
-//	 * Register an image with the registry.
-//	 * @param key java.lang.String
-//	 * @param partialURL java.lang.String
-//	 */
-//	private void registerImage(ImageRegistry registry, String key, String partialURL) {
-//		if (ICON_BASE_URL == null) {
-//			String pathSuffix = "icons/";
-//			ICON_BASE_URL = singleton.getBundle().getEntry(pathSuffix);
-//		}
-//
-//		try {
-//			ImageDescriptor id = ImageDescriptor.createFromURL(new URL(ICON_BASE_URL, partialURL));
-//			registry.put(key, id);
-//			imageDescriptors.put(key, id);
-//		} catch (Exception e) {
-//			Trace.trace(Trace.WARNING, "Error registering image", e);
-//		}
-//	}
 
     @Override
     public void stop(BundleContext v) throws Exception {
