@@ -35,6 +35,10 @@ public class Messages extends org.eclipse.osgi.util.NLS {
 
 	public static String microSettingsPageTitle;
 	public static String microSettingsPageDescription;
+	public static String platformComponentLabel;
+	public static String platformValidationMessage;
+	public static String platformMicroOption;
+	public static String platformServerOption;
 	public static String contextPathComponentLabel;
 	public static String microVersionComponentLabel;
 	public static String autobindComponentLabel;

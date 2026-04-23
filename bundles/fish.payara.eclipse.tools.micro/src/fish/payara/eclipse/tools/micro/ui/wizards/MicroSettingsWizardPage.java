@@ -11,17 +11,24 @@ package fish.payara.eclipse.tools.micro.ui.wizards;
 
 import static fish.payara.eclipse.tools.micro.ui.wizards.MicroProjectWizard.ARCHETYPE_AUTOBIND_HTTP;
 import static fish.payara.eclipse.tools.micro.ui.wizards.MicroProjectWizard.ARCHETYPE_CONTEXT_ROOT;
+import static fish.payara.eclipse.tools.micro.ui.wizards.MicroProjectWizard.ARCHETYPE_JAVA_VERSION;
 import static fish.payara.eclipse.tools.micro.ui.wizards.MicroProjectWizard.ARCHETYPE_MICRO_VERSION;
+import static fish.payara.eclipse.tools.micro.ui.wizards.MicroProjectWizard.ARCHETYPE_PAYARA_VERSION;
+import static fish.payara.eclipse.tools.micro.ui.wizards.MicroProjectWizard.ARCHETYPE_PLATFORM;
 import static fish.payara.eclipse.tools.micro.ui.wizards.MicroProjectWizard.ARCHETYPE_VERSION_5X;
-import static fish.payara.eclipse.tools.micro.ui.wizards.MicroProjectWizard.ARCHETYPE_VERSION_6X;
 import static fish.payara.eclipse.tools.micro.ui.wizards.MicroProjectWizard.ARCHETYPE_GROUP_ID;
 import static fish.payara.eclipse.tools.micro.ui.wizards.MicroProjectWizard.ARCHETYPE_ARTIFACT_ID;
+import static fish.payara.eclipse.tools.micro.ui.wizards.MicroProjectWizard.PLATFORM_MICRO;
+import static fish.payara.eclipse.tools.micro.ui.wizards.MicroProjectWizard.PLATFORM_SERVER;
 import static fish.payara.eclipse.tools.micro.ui.wizards.MicroProjectWizard.STARTER_ARCHETYPE_GROUP_ID;
 import static fish.payara.eclipse.tools.micro.ui.wizards.MicroProjectWizard.STARTER_ARCHETYPE_ARTIFACT_ID;
+import static fish.payara.eclipse.tools.micro.ui.wizards.MicroProjectWizard.STARTER_ARCHETYPE_VERSION;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -44,9 +51,13 @@ public class MicroSettingsWizardPage extends AbstractMavenWizardPage {
 
 	private Combo microVersionCombo;
 
+	private Combo platformCombo;
+
 	private Button autobindCheckbox;
 
 	private Archetype archetype;
+
+	private final Map<String, String> runtimeOptions = new LinkedHashMap<>();
 
 	public MicroSettingsWizardPage(ProjectImportConfiguration projectImportConfiguration) {
 		super(MicroSettingsWizardPage.class.getSimpleName(), projectImportConfiguration);
@@ -58,12 +69,26 @@ public class MicroSettingsWizardPage extends AbstractMavenWizardPage {
 	public void createControl(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NULL);
 		composite.setLayout(new GridLayout(3, false));
+		runtimeOptions.clear();
+		runtimeOptions.put(Messages.platformMicroOption, PLATFORM_MICRO);
+		runtimeOptions.put(Messages.platformServerOption, PLATFORM_SERVER);
 		createUI(composite);
 		validate();
 		setControl(composite);
 	}
 
 	private void createUI(Composite parent) {
+		Label platformLabel = new Label(parent, SWT.NONE);
+		platformLabel.setText(Messages.platformComponentLabel);
+
+		platformCombo = new Combo(parent, SWT.READ_ONLY);
+		platformCombo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
+		platformCombo.setItems(runtimeOptions.keySet().toArray(new String[0]));
+		platformCombo.addModifyListener(e -> {
+			refreshVersions(getSelectedPlatform(), microVersionCombo.getText().trim());
+			validate();
+		});
+
 		Label contextPathlabel = new Label(parent, SWT.NONE);
 		contextPathlabel.setText(Messages.contextPathComponentLabel);
 
@@ -80,7 +105,7 @@ public class MicroSettingsWizardPage extends AbstractMavenWizardPage {
 		microVersionCombo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
 		microVersionCombo.setData("name", ARCHETYPE_MICRO_VERSION); //$NON-NLS-1$
 		microVersionCombo.addModifyListener(e -> validate());
-		microVersionCombo.setItems(MicroProjectWizard.getVersions().toArray(new String[0]));
+		microVersionCombo.setItems(MicroProjectWizard.getVersions(PLATFORM_MICRO).toArray(new String[0]));
 
 		Label autobindLabel = new Label(parent, SWT.NONE);
 		autobindLabel.setText(Messages.autobindComponentLabel);
@@ -101,8 +126,10 @@ public class MicroSettingsWizardPage extends AbstractMavenWizardPage {
 
 	void setArchetype(Archetype archetype) {
 		this.archetype = archetype;
+		selectPlatform((String) archetype.getProperties().get(ARCHETYPE_PLATFORM));
 		contextPathCombo.setText((String) archetype.getProperties().get(ARCHETYPE_CONTEXT_ROOT));
-		microVersionCombo.setText((String) archetype.getProperties().get(ARCHETYPE_MICRO_VERSION));
+		String payaraVersion = (String) archetype.getProperties().get(ARCHETYPE_PAYARA_VERSION);
+		refreshVersions(getSelectedPlatform(), payaraVersion);
 		autobindCheckbox.setSelection(Boolean.valueOf((String) archetype.getProperties().get(ARCHETYPE_AUTOBIND_HTTP)));
 	}
 
@@ -119,6 +146,10 @@ public class MicroSettingsWizardPage extends AbstractMavenWizardPage {
 	}
 
 	private String validateInput() {
+		if (getSelectedPlatform() == null) {
+			return Messages.platformValidationMessage;
+		}
+
 		String contextPathValue = contextPathCombo.getText().trim();
 		if (contextPathValue.length() == 0) {
 			return Messages.contextPathValidationMessage;
@@ -133,22 +164,21 @@ public class MicroSettingsWizardPage extends AbstractMavenWizardPage {
 	}
 
 	public Archetype getArchetype() {
-		String[] versionToken = microVersionCombo.getText().trim().split("\\.");
-		if (versionToken.length > 1 && Integer.parseInt(versionToken[0]) < 6) {
+		if (isLegacyMicroProject()) {
 			archetype.setGroupId(ARCHETYPE_GROUP_ID);
 			archetype.setArtifactId(ARCHETYPE_ARTIFACT_ID);
 			archetype.setVersion(ARCHETYPE_VERSION_5X);
-			MavenBuildTool.setStartCommand("start");
 		} else {
 			archetype.setGroupId(STARTER_ARCHETYPE_GROUP_ID);
 			archetype.setArtifactId(STARTER_ARCHETYPE_ARTIFACT_ID);
-			archetype.setVersion(ARCHETYPE_VERSION_6X);
+			archetype.setVersion(STARTER_ARCHETYPE_VERSION);
 		}
 
 		return archetype;
 	}
 
 	public Map<String, String> getProperties() {
+		boolean legacyMicroProject = isLegacyMicroProject();
 		Map<String, String> properties = archetype.getProperties()
 				.entrySet()
 				.stream()
@@ -161,8 +191,65 @@ public class MicroSettingsWizardPage extends AbstractMavenWizardPage {
 		} catch (UnsupportedEncodingException ex) {
 			throw new IllegalStateException("Invalid context root value " + contextRoot);
 		}
-		properties.put(ARCHETYPE_MICRO_VERSION, microVersionCombo.getText());
+		if (legacyMicroProject) {
+			properties.put(ARCHETYPE_MICRO_VERSION, microVersionCombo.getText());
+			properties.remove(ARCHETYPE_PLATFORM);
+			properties.remove(ARCHETYPE_PAYARA_VERSION);
+			properties.remove(ARCHETYPE_JAVA_VERSION);
+		} else {
+			properties.put(ARCHETYPE_PLATFORM, getSelectedPlatform());
+			properties.put(ARCHETYPE_PAYARA_VERSION, microVersionCombo.getText());
+			properties.put(ARCHETYPE_JAVA_VERSION, properties.getOrDefault(ARCHETYPE_JAVA_VERSION, "17"));
+			properties.remove(ARCHETYPE_MICRO_VERSION);
+		}
 		properties.put(ARCHETYPE_AUTOBIND_HTTP, String.valueOf(autobindCheckbox.getSelection()));
 		return properties;
+	}
+
+	void configureBuildTool() {
+		MavenBuildTool.setStartCommand(isLegacyMicroProject() ? "start" : "dev");
+	}
+
+	private void selectPlatform(String platform) {
+		String resolvedPlatform = platform == null || platform.isBlank() ? PLATFORM_MICRO : platform;
+		runtimeOptions.entrySet().stream()
+				.filter(entry -> entry.getValue().equals(resolvedPlatform))
+				.findFirst()
+				.ifPresent(entry -> platformCombo.setText(entry.getKey()));
+	}
+
+	private String getSelectedPlatform() {
+		return runtimeOptions.get(platformCombo.getText());
+	}
+
+	private void refreshVersions(String platform, String selectedVersion) {
+		List<String> versions = MicroProjectWizard.getVersions(platform);
+		microVersionCombo.setItems(versions.toArray(new String[0]));
+		if (selectedVersion != null && versions.contains(selectedVersion)) {
+			microVersionCombo.setText(selectedVersion);
+		} else if (!versions.isEmpty()) {
+			microVersionCombo.setText(versions.get(0));
+		} else {
+			microVersionCombo.setText("");
+		}
+	}
+
+	private boolean isLegacyMicroProject() {
+		return usesLegacyMicroArchetype(getSelectedPlatform(), microVersionCombo.getText().trim());
+	}
+
+	private boolean usesLegacyMicroArchetype(String platform, String version) {
+		return PLATFORM_MICRO.equals(platform) && extractMajorVersion(version) < 6;
+	}
+
+	private int extractMajorVersion(String version) {
+		try {
+			String[] versionToken = version.trim().split("\\.");
+			return versionToken.length == 0 || versionToken[0].isBlank()
+					? Integer.MAX_VALUE
+					: Integer.parseInt(versionToken[0]);
+		} catch (NumberFormatException ex) {
+			return Integer.MAX_VALUE;
+		}
 	}
 }

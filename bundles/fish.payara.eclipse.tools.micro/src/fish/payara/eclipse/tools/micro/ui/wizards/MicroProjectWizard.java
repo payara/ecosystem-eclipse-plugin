@@ -18,7 +18,6 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -65,6 +64,7 @@ import org.xml.sax.InputSource;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.XMLConstants;
 
 public class MicroProjectWizard extends Wizard implements INewWizard {
 
@@ -92,10 +92,13 @@ public class MicroProjectWizard extends Wizard implements INewWizard {
 	public static final String ARCHETYPE_VERSION_5X = "1.5.0"; //$NON-NLS-1$
 	public static final String STARTER_ARCHETYPE_GROUP_ID = "fish.payara.starter";
 	public static final String STARTER_ARCHETYPE_ARTIFACT_ID = "payara-starter-archetype";
-	public static final String ARCHETYPE_VERSION_6X = "1.0-beta9"; //$NON-NLS-1$
+	public static final String STARTER_ARCHETYPE_VERSION = "2.2.1"; //$NON-NLS-1$
 	private static final String ARCHETYPE_JDK_VERSION = "jdkVersion"; //$NON-NLS-1$
 	private static final String ARCHETYPE_JDK_VERSION_DEFAULT_VALUE = "1.8"; //$NON-NLS-1$
+	public static final String ARCHETYPE_JAVA_VERSION = "javaVersion"; //$NON-NLS-1$
+	private static final String ARCHETYPE_JAVA_VERSION_DEFAULT_VALUE = "17"; //$NON-NLS-1$
 	public static final String ARCHETYPE_MICRO_VERSION = "payaraMicroVersion"; //$NON-NLS-1$
+	public static final String ARCHETYPE_PAYARA_VERSION = "payaraVersion"; //$NON-NLS-1$
 	public static final String ARCHETYPE_AUTOBIND_HTTP = "autoBindHttp"; //$NON-NLS-1$
 	private static final String ARCHETYPE_CONCURRENT_API = "addConcurrentApi"; //$NON-NLS-1$
 	private static final String ARCHETYPE_RESOURCE_API = "addResourceApi"; //$NON-NLS-1$
@@ -106,57 +109,80 @@ public class MicroProjectWizard extends Wizard implements INewWizard {
 	public static final String ARCHETYPE_CONTEXT_ROOT = "contextRoot"; //$NON-NLS-1$
 	private static final String ARCHETYPE_CONTEXT_ROOT_DEFAULT_VALUE = "/"; //$NON-NLS-1$
 	private static final String ARCHETYPE_DEPLOY_WAR = "deployWar"; //$NON-NLS-1$
+	public static final String ARCHETYPE_PLATFORM = "platform"; //$NON-NLS-1$
+	public static final String PLATFORM_SERVER = "server"; //$NON-NLS-1$
+	public static final String PLATFORM_MICRO = "micro"; //$NON-NLS-1$
 	private static final String EMPTY = ""; //$NON-NLS-1$
 
 
 	public static final String DEFAULT_REPOSITORY_URL = "https://repo1.maven.org/maven2/"; // NOI18N
 
-	private static final String METADATA_URL = "fish/payara/extras/payara-micro/maven-metadata.xml"; // NOI18N
+	private static final String PAYARA_BOM_METADATA_URL = "fish/payara/api/payara-bom/maven-metadata.xml"; // NOI18N
+	private static final String PAYARA_MICRO_METADATA_URL = "fish/payara/extras/payara-micro/maven-metadata.xml"; // NOI18N
 
-	private static final List<String> versions = new ArrayList<>();
+	private static final Map<String, List<String>> versions = new HashMap<>();
 	public static List<String> getVersions() {
-		if (versions.isEmpty()) {
-			try {
-				// Construct the full URL
-				String urlString = DEFAULT_REPOSITORY_URL + METADATA_URL;
-				URL url = new URL(urlString);
+		return getVersions(PLATFORM_MICRO);
+	}
 
-				// Open connection
-				HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-				connection.setRequestMethod("GET");
+	public static List<String> getVersions(String platform) {
+		return versions.computeIfAbsent(platform, MicroProjectWizard::loadVersions);
+	}
 
-				// Read the response
-				BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-				StringBuilder xmlResponse = new StringBuilder();
-				String line;
-				while ((line = in.readLine()) != null) {
-					xmlResponse.append(line);
-				}
-				in.close();
+	public static String getDefaultVersion(String platform) {
+		List<String> resolvedVersions = getVersions(platform);
+		return resolvedVersions.isEmpty() ? EMPTY : resolvedVersions.get(0);
+	}
 
-				// Parse the XML response
-				DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-				DocumentBuilder builder = factory.newDocumentBuilder();
-				Document doc = builder.parse(new InputSource(new StringReader(xmlResponse.toString())));
+	private static List<String> loadVersions(String platform) {
+		List<String> resolvedVersions = new ArrayList<>();
+		try {
+			// Construct the full URL
+			String metadataUrl = PLATFORM_SERVER.equals(platform) ? PAYARA_BOM_METADATA_URL : PAYARA_MICRO_METADATA_URL;
+			String urlString = DEFAULT_REPOSITORY_URL + metadataUrl;
+			URL url = new URL(urlString);
 
-				String latest = doc.getElementsByTagName("latest").item(0).getTextContent();
-				// Extract versions
-				NodeList versionNodes = doc.getElementsByTagName("version");
-				for (int i = versionNodes.getLength() - 1; i >= 0; i--) {
-					String version = versionNodes.item(i).getTextContent();
-					if ((version.contains("Alpha") || version.contains("Beta") || version.contains("SNAPSHOT")) // NOI18N
-							&& !version.equals(latest)) {
-						continue;
-					};
-					versions.add(version);
-				}
+			// Open connection
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			connection.setRequestMethod("GET");
 
-			} catch (Exception e) {
-				e.printStackTrace();
+			// Read the response
+			BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+			StringBuilder xmlResponse = new StringBuilder();
+			String line;
+			while ((line = in.readLine()) != null) {
+				xmlResponse.append(line);
 			}
+			in.close();
 
+			// Parse the XML response
+			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+			factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true); //$NON-NLS-1$
+			factory.setFeature("http://xml.org/sax/features/external-general-entities", false); //$NON-NLS-1$
+			factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false); //$NON-NLS-1$
+			factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, EMPTY);
+			factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, EMPTY);
+			factory.setXIncludeAware(false);
+			factory.setExpandEntityReferences(false);
+			DocumentBuilder builder = factory.newDocumentBuilder();
+			Document doc = builder.parse(new InputSource(new StringReader(xmlResponse.toString())));
+
+			String latest = doc.getElementsByTagName("latest").item(0).getTextContent();
+			// Extract versions
+			NodeList versionNodes = doc.getElementsByTagName("version");
+			for (int i = versionNodes.getLength() - 1; i >= 0; i--) {
+				String version = versionNodes.item(i).getTextContent();
+				if ((version.contains("Alpha") || version.contains("Beta") || version.contains("SNAPSHOT")) // NOI18N
+						&& !version.equals(latest)) {
+					continue;
+				};
+				resolvedVersions.add(version);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		return versions;
+		return resolvedVersions;
 	}
 
 	@Override
@@ -190,10 +216,13 @@ public class MicroProjectWizard extends Wizard implements INewWizard {
 		Archetype archetype = new Archetype();
 		archetype.setGroupId(STARTER_ARCHETYPE_GROUP_ID);
 		archetype.setArtifactId(STARTER_ARCHETYPE_ARTIFACT_ID);
-		archetype.setVersion(ARCHETYPE_VERSION_6X);
+		archetype.setVersion(STARTER_ARCHETYPE_VERSION);
 		Properties properties = new Properties();
 		properties.put(ARCHETYPE_JDK_VERSION, ARCHETYPE_JDK_VERSION_DEFAULT_VALUE);
-		properties.put(ARCHETYPE_MICRO_VERSION, getVersions().get(0));
+		properties.put(ARCHETYPE_JAVA_VERSION, ARCHETYPE_JAVA_VERSION_DEFAULT_VALUE);
+		properties.put(ARCHETYPE_PLATFORM, PLATFORM_MICRO);
+		properties.put(ARCHETYPE_MICRO_VERSION, getDefaultVersion(PLATFORM_MICRO));
+		properties.put(ARCHETYPE_PAYARA_VERSION, getDefaultVersion(PLATFORM_MICRO));
 		properties.put(ARCHETYPE_AUTOBIND_HTTP, TRUE.toString());
 		properties.put(ARCHETYPE_CONCURRENT_API, FALSE.toString());
 		properties.put(ARCHETYPE_RESOURCE_API, FALSE.toString());
@@ -210,6 +239,7 @@ public class MicroProjectWizard extends Wizard implements INewWizard {
 	@Override
 	public boolean performFinish() {
 		Archetype archetype = microSettingsPage.getArchetype();
+		microSettingsPage.configureBuildTool();
 		final String groupId = projectSettingsPage.getGroupId();
 		final String artifactId = projectSettingsPage.getArtifactId();
 		final String version = projectSettingsPage.getVersion();
