@@ -22,12 +22,14 @@ public interface MicroConstants {
 	String ATTR_PORT = "port";
 
 	String JAVA_HOME_ENV_VAR = "JAVA_HOME";
+	String PAYARA_JAVA_HOME_SYS_PROP = "payara.java.home";
 
 	String ATTR_CONTEXT_PATH = "contextPath";
 	String ATTR_MICRO_VERSION = "microVersion";
 	String ATTR_BUILD_ARTIFACT = "buildArtifact";
 	String ATTR_DEBUG_PORT = "debugPort";
 	String ATTR_RELOAD_ARTIFACT = "reloadArtifact";
+	String ATTR_JDK_PATH = "jdkPath";
 
 	String WAR_BUILD_ARTIFACT = "War";
 	String EXPLODED_WAR_BUILD_ARTIFACT = "Exploded War";
