@@ -95,7 +95,7 @@ public class MavenBuildTool extends BuildTool {
 			commands.add("-DcontextRoot=" + contextPath);
 		}
 		if (microVersion != null && !microVersion.trim().isEmpty()) {
-			commands.add("-DpayaraVersion=" + microVersion);
+			commands.add("-Dpayara.micro.version=" + microVersion);
 		}
 		if (hotDeploy) {
 			commands.add("-DhotDeploy=true");
